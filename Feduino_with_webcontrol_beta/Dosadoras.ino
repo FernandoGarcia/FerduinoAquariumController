@@ -35,6 +35,7 @@ void criar_arquivos()
     else if(( minuto11 > 10) && (minuto11 < 100))
     {
       file.print("00");
+      file.print(minuto11);
       file.write((uint8_t*)"\0", 1);
       writeCRLF(file);
     }
