@@ -81,19 +81,6 @@ void setup()
    }
    }*/
 
-  if(Ethernet_Shield == true)
-  {
-    selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-    
-    Ethernet.begin(mac, ip); // Comente esta linha para usar o W5100.
-    //Ethernet.begin(mac, ip, SelectSlave_ETH); // Descomente esta linha para usar o W5100.
-    
-    server.begin();
-    
-    Serial.print("Ip Server: ");
-    Serial.println(Ethernet.localIP());
-  }
-
   rtc.halt(false); // Inicia o funcionamento do RTC.
 
   byte k =  EEPROM.read(0);
@@ -138,7 +125,11 @@ void setup()
   ler_predefinido_EEPROM();
 
   selecionar_SPI(SD_CARD); // Seleciona disposito SPI que será utilizado.
-  card.init(SPI_FULL_SPEED, ChipSelect_SD); // Inicia a comunicação com o cartão SD.
+  while(!card.init(SPI_FULL_SPEED, ChipSelect_SD)) // Inicia a comunicação com o cartão SD.
+  {
+    Serial.println("Please insert a SD card.");  
+  }
+  
   volume.init(&card);
   root.openRoot(&volume);
 
@@ -154,6 +145,19 @@ void setup()
     iniciar_stamps();
   }
 
+  if(Ethernet_Shield == true)
+  {
+    selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
+    
+    Ethernet.begin(mac, ip); // Comente esta linha para usar o W5100.
+    //Ethernet.begin(mac, ip, SelectSlave_ETH); // Descomente esta linha para usar o W5100.
+    
+    server.begin();
+    
+    Serial.print("Ip Server: ");
+    Serial.println(Ethernet.localIP());
+  }
+  
   /*  if(RFM12B == true)
    {
    selecionar_SPI(RFM); // Seleciona disposito SPI que será utilizado.
