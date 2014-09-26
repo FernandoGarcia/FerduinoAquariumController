@@ -125,7 +125,7 @@ void setup()
   ler_predefinido_EEPROM();
 
   selecionar_SPI(SD_CARD); // Seleciona disposito SPI que será utilizado.
-  while(!card.init(SPI_FULL_SPEED, ChipSelect_SD)) // Inicia a comunicação com o cartão SD.
+  while(!card.init(SPI_HALF_SPEED, ChipSelect_SD)) // Inicia a comunicação com o cartão SD.
   {
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
     myGLCD.print("PLEASE INSERT A SD CARD.", CENTER, 115);
