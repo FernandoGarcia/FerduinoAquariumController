@@ -151,8 +151,8 @@ void setup()
   {
     selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
     
-    Ethernet.begin(mac, ip); // Comente esta linha para usar o W5100.
-    //Ethernet.begin(mac, ip, SelectSlave_ETH); // Descomente esta linha para usar o W5100.
+    Ethernet.begin(mac, ip, gateway, subnet); // Comente esta linha para usar o W5100.
+    //Ethernet.begin(mac, ip, gateway, subnet, SelectSlave_ETH); // Descomente esta linha para usar o W5100.
     
     server.begin();
     
