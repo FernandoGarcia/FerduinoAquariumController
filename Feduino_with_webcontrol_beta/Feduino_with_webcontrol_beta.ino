@@ -168,16 +168,16 @@ byte sonda_associada_3_temp = 0;
 //********************** Funções do RTC ********************************************************************
 //*******************************************************************************************************
 //        (SDA,SCL) Indica em quais pinos o RTC está conectado.
-//DS1307 rtc(20, 21);     // Comente esta linha para usar o Ferduino Mega 2560
- DS1307 rtc(18, 19);  // Descomente esta linha para usar o Ferduino Mega 2560
+DS1307 rtc(20, 21);     // Comente esta linha para usar o Ferduino Mega 2560
+//DS1307 rtc(18, 19);  // Descomente esta linha para usar o Ferduino Mega 2560
 Time t_temp, t;
 
 //*******************************************************************************************************
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
 UTFT        myGLCD(ITDB32WD, 38,39,40,41);   // "ITDB32WD" é o modelo do LCD
-//UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
- UTouch      myTouch(7,6,5,4,3);           // Descomente esta linha para usar o Ferduino Mega 2560
+UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
+// UTouch      myTouch(7,6,5,4,3);           // Descomente esta linha para usar o Ferduino Mega 2560
 
 unsigned long previousMillis = 0;
 byte data[56];
@@ -858,8 +858,8 @@ byte consumo = 0;
 const byte SD_CARD = 0; 
 const byte ETHER_CARD = 1;
 const byte RFM = 2;
-//const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
-const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560           
+const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
+//const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560           
 const byte SelectSlave_ETH = 53;
 const int ChipSelect_RFM = A15;
 
