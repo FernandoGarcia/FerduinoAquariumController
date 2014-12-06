@@ -468,7 +468,7 @@ unsigned long teste_led_millis = 0;
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
-boolean Stamps = true; // Altere para "false" caso não tenha ao menos um dos circuitos de PH, ORP e EC da Atlas Scientific.
+boolean Stamps = false; // Altere para "false" caso não tenha ao menos um dos circuitos de PH, ORP e EC da Atlas Scientific.
 unsigned long millis_antes = 0;
 short ph1=0; // Y0
 short ph2=1; // Y1
@@ -486,7 +486,7 @@ char senha [7] = {'1','2','3','4','5','6','\0'}; // Insira sua senha aqui. O car
 //*****************************************************************************************
 //************************** Variáveis dosadoras ******************************************
 //*****************************************************************************************
-boolean dosadoras = true; //Altere para "false" caso não tenha as dosadoras.
+boolean dosadoras = false; //Altere para "false" caso não tenha as dosadoras.
 char *arquivo[6] = {"HDP1.TXT","HDP2.TXT","HDP3.TXT","HDP4.TXT","HDP5.TXT","HDP6.TXT"};
 
 float fator_calib_dosadora_1 = 35.1; // Fator de calibração inicial 
