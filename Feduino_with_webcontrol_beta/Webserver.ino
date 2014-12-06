@@ -6,41 +6,56 @@ void processRequest()
   char *RequestString;
   byte index = 0;
   EthernetClient client = server.available();
+  uint8_t remoteIP[4];
+  IPAddress joyreef(178, 255, 75, 60);
+  client.getRemoteIP(remoteIP);
 
   if (client) 
-  {
-    while (client.connected()) 
-    {
-      if (client.available()) 
-      {
-        char c = client.read();
-        if (c != '\n' && c != '\r') 
-        {
-          if(index < 110)
-          {
-            clientline[index] = c;
-            line[index] = c;
-            index++;
-          }
-          continue;
-        }
-        clientline[index] = 0;    
-        line[index] = 0;
-        Serial.println(clientline);
+  {  
+    Serial.print(remoteIP[0]);
+    Serial.print(".");
+    Serial.print(remoteIP[1]);
+    Serial.print(".");
+    Serial.print(remoteIP[2]);
+    Serial.print(".");
+    Serial.println(remoteIP[3]);
 
-        if (strstr(clientline, "GET /"))
+    if(((remoteIP[0] == joyreef[0]) && (remoteIP[1] == joyreef[1]) && (remoteIP[2] == joyreef[2]) && (remoteIP[3] == joyreef[3])) ||
+      ((remoteIP[0] == ip[0]) && (remoteIP[1] == ip[1]) && (remoteIP[2] == ip[2])))
+    {
+      while (client.connected()) 
+      {
+        if (client.available()) 
         {
-          if(strstr(clientline,"?"))
+          char c = client.read();
+          if (c != '\n' && c != '\r') 
           {
-            //ignore any page request just look at the GET
-            requestString = strstr(clientline,"=") + 1;
-            (strstr(clientline, " HTTP"))[0] = 0;
-            RequestString = strstr(line,"=") + 1;
-            (strstr(line, " HTTP"))[0] = 0;
-            readRequest(requestString, RequestString);
-          }  
+            if(index < 110)
+            {
+              clientline[index] = c;
+              line[index] = c;
+              index++;
+            }
+            continue;
+          }
+          clientline[index] = 0;    
+          line[index] = 0;
+          Serial.println(clientline);
+
+          if (strstr(clientline, "GET /"))
+          {
+            if(strstr(clientline,"?"))
+            {
+              //ignore any page request just look at the GET
+              requestString = strstr(clientline,"=") + 1;
+              (strstr(clientline, " HTTP"))[0] = 0;
+              RequestString = strstr(line,"=") + 1;
+              (strstr(line, " HTTP"))[0] = 0;
+              readRequest(requestString, RequestString);
+            }  
+          }
+          break;
         }
-        break;
       }
     }
     delay(2);
@@ -57,18 +72,25 @@ void readRequest(char *request, char *Request)
   char *p;
   boolean invalidPass = true;
   char *pass;
-  boolean terminador = false; 
+  boolean terminador = false;
+  char credencial[50];
 
   EthernetClient client = server.available();
 
-  client.println("HTTP/1.1 200 OK");
-  client.println("Content-Type: application/json");
+  strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[8]))); // "HTTP/1.1 200 OK"
+  client.println(buffer);
+
+  strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[9]))); // "Content-Type: application/json"
+  client.println(buffer); 
+
   client.println();
 
   pass = strtok(Request, ",");
-  base64_decode(pass, pass, strlen(pass)); 
-  invalidPass = strcmp (pass, credencial);
 
+  base64_decode(pass, pass, strlen(pass)); 
+  base64_decode(credencial, Auth1, strlen(Auth1));
+
+  invalidPass = strcmp (pass, credencial);
 
   requestString = strstr(request,",") + 1;
 
@@ -105,14 +127,17 @@ void readRequest(char *request, char *Request)
     if(tentativa <= maxima_tentativa)
     {
       intervalo = millis();
-      client.print("{\"response\":\"000\"}"); 
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[10]))); // "{\"response\":\"000\"}"
+      client.print(buffer); 
     }
     else
     {
-      client.print("{\"response\":\"001\",\"interval\":\"" + String((intervalo_tentativa * 60) - ((millis() - intervalo) / 1000)) +  "\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[11]))); // "{\"response\":\"001\",\"interval\":\""
+      client.print(buffer + String((intervalo_tentativa * 60) - ((millis() - intervalo) / 1000)) +  "\"}");
     }
     delay(2);
     client.stop();
+
   }  
 }
 
@@ -121,8 +146,9 @@ void requestAction(byte ID)
   byte cont = 0;
   byte dia;
   EthernetClient client = server.available();
+  float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
 
-  switch (ID)
+    switch (ID)
   {
   case 0: // Home
     client.print("{\"theatsink\":"); 
@@ -149,12 +175,157 @@ void requestAction(byte ID)
     client.print(LedToPercent(rled_out));
     client.print(",\"uvLedW\":"); 
     client.print(LedToPercent(uvled_out));
+    client.print(",\"unix\":"); 
+    client.print(rtc.getTimeStamp());
+    client.print(",\"running\":"); 
+    client.print(millis()/1000);
+    client.print(",\"speed\":"); 
+    client.print(LedToPercent(fanSpeed));
+    client.print(",\"moonPhase\":"); 
+    client.print(fase);
+    client.print(",\"iluminated\":"); 
+    client.print(lunarCycle *100);
     client.print("}");
     break; 
 
-  case 1: // 
+  case 1:
+    //  Send{case, mode, association}
+    if (atoi(inParse[1]) == 0) // mode = 0 to read values
+    {
+      byte numberOfDevices = 0;
+      float temperatura1 = 0;
+      float temperatura2 = 0;
+      float temperatura3 = 0;
 
-    break; 
+      sensors.begin();
+      numberOfDevices = sensors.getDeviceCount();
+
+      for(byte k = 0; k < numberOfDevices; k++)
+      {
+        // Pesquisar endereços
+        if(sensors.getAddress(tempDeviceAddress, k))
+        {
+          if (k == 0)
+          { 
+            temperatura1 = sensors.getTempC(tempDeviceAddress);
+            for (byte i=0; i<8; i++) 
+            {
+              sonda1[i] = tempDeviceAddress[i];
+            }
+          }
+          if (k == 1)
+          { 
+            temperatura2 = sensors.getTempC(tempDeviceAddress);
+            for (byte i=0; i<8; i++) 
+            {
+              sonda2[i] = tempDeviceAddress[i];
+            }
+          }
+          if (k == 2)
+          { 
+            temperatura3 = sensors.getTempC(tempDeviceAddress);
+            for (byte i = 0; i < 8; i++) 
+            {
+              sonda3[i] = tempDeviceAddress[i];
+            }
+          }      
+        }
+      }
+      client.print("{\"number\":");
+      client.print(numberOfDevices);
+
+      if(numberOfDevices < 2)
+      {
+        if(sonda_associada_1 == 1)
+        {
+          sonda_associada_2 = 0;
+          sonda_associada_3 = 0;
+        }
+        else if(sonda_associada_2 == 1)
+        {
+          sonda_associada_1 = 0;
+          sonda_associada_3 = 0;
+        }
+        else if(sonda_associada_3 == 1)
+        {
+          sonda_associada_1 = 0;
+          sonda_associada_2 = 0;
+        }
+      }
+      client.print(",\"p1\":");  
+      client.print(temperatura1);
+      client.print(",\"p2\":");  
+      client.print(temperatura2);
+      client.print(",\"p3\":");  
+      client.print(temperatura3);
+      client.print(",\"ap1\":");
+      client.print(sonda_associada_1);
+      client.print(",\"ap2\":");  
+      client.print(sonda_associada_2);
+      client.print(",\"ap3\":");  
+      client.print(sonda_associada_3);
+      client.println("}");
+    }
+    else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
+    {
+      sonda_associada_1 = atoi(inParse[2]); // 0,3,2,K
+      sonda_associada_2 = atoi(inParse[3]);
+      sonda_associada_3 = atoi(inParse[4]);
+
+      for(byte i = 0; i < 8; i++)
+      {
+        if(sonda_associada_1 == 1)
+        { 
+          sensor_agua[i] = sonda1[i];
+        }
+        else if(sonda_associada_1 == 2)
+        { 
+          sensor_agua[i] = sonda2[i];
+        }
+        else
+        {
+          sensor_agua[i] = sonda3[i];
+        }
+        if(sonda_associada_2 == 1)
+        { 
+          sensor_dissipador[i] = sonda1[i];
+        }
+        else if(sonda_associada_2 == 2)
+        { 
+          sensor_dissipador[i] = sonda2[i];
+        }
+        else
+        {
+          sensor_dissipador[i] = sonda3[i];
+        }        
+
+        if(sonda_associada_3 == 1)
+        { 
+          sensor_ambiente[i] = sonda1[i];
+        }
+        else if(sonda_associada_3 == 2)
+        { 
+          sensor_ambiente[i] = sonda2[i];
+        }
+        else
+        {
+          sensor_ambiente[i] = sonda3[i];
+        }
+      }
+      contador_temp = 0;
+      temperatura_agua_temp = 0;
+      temperatura_dissipador_temp = 0;
+      temperatura_ambiente_temp = 0;
+      sensors.requestTemperatures();   // Chamada para todos os sensores.
+      tempC = (sensors.getTempC(sensor_agua));  // Lê a temperatura da água
+      tempH = (sensors.getTempC(sensor_dissipador)); // Lê a temperatura do dissipador.
+      tempA = (sensors.getTempC(sensor_ambiente)); // Lê a temperatura do ambiente.
+      SaveDallasAddress();
+
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
+    }
+    break;
 
   case 2: //config date & time //Send (case, mode, date, month, year, hour, minute, second, day of week)
     if(atoi(inParse[1]) == 0) // To save time and date send inParse[1] = 1
@@ -182,17 +353,61 @@ void requestAction(byte ID)
       rtc.setTime(atoi(inParse[5]), atoi(inParse[6]), atoi(inParse[7])); 
       rtc.setDOW(calcDOW(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2])));
       rtc.halt(false);
-      client.print("{\"response\":\"ok\"}"); 
+
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer); 
     }
     break;
 
   case 3:
-    if (atoi(inParse[1]) == 4)
+    if(atoi(inParse[1]) == 0) // Send (case, mode, values)
     {
-      web_teste = false;
-      teste_em_andamento = false;
-      ler_predefinido_EEPROM();
-      client.print("{\"response\":\"ok\"}"); 
+      client.print("{\"hour\":");
+      client.print(hora);
+      client.print(",\"minute\":");  
+      client.print(minuto);
+      client.print(",\"duration\":");  
+      client.print(duracaomaximatpa);      
+      client.print(",\"monday\":");  
+      client.print(segunda);
+      client.print(",\"tuesday\":");  
+      client.print(terca);
+      client.print(",\"wednesday\":");  
+      client.print(quarta);
+      client.print(",\"thursday\":");  
+      client.print(quinta);
+      client.print(",\"friday\":");  
+      client.print(sexta);
+      client.print(",\"saturday\":");  
+      client.print(sabado);
+      client.print(",\"sunday\":");  
+      client.print(domingo);
+      client.print(",\"status\":");  
+      client.print(bitRead(tpa_status,2));
+      client.print("}"); 
+    }
+    if(atoi(inParse[1]) == 1)
+    {
+      hora = atoi(inParse[2]);
+      minuto = atoi(inParse[3]); 
+      duracaomaximatpa = atoi(inParse[4]);
+      segunda = atoi(inParse[5]);
+      terca = atoi(inParse[6]); 
+      quarta = atoi(inParse[7]);
+      quinta = atoi(inParse[8]);
+      sexta = atoi(inParse[9]);
+      sabado = atoi(inParse[10]);
+      domingo = atoi(inParse[11]);
+      SalvartpaEEPROM();
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer); 
+    }
+    if(atoi(inParse[1]) == 2)
+    {
+      bitWrite(tpa_status,2,atoi(inParse[2])); 
+      Salvar_erro_tpa_EEPROM();
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     break;
 
@@ -219,8 +434,20 @@ void requestAction(byte ID)
       rled_out_temp = atoi(inParse[5]);
       uvled_out_temp = atoi(inParse[6]);
       web_teste = true;
+      teste_led_millis = millis();
       teste_em_andamento = true;
-      client.print("{\"response\":\"ok\"}");  
+
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer); 
+    }
+    else if (atoi(inParse[1]) == 2)
+    {
+      web_teste = false;
+      teste_em_andamento = false;
+      ler_predefinido_EEPROM();
+
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     } 
     break;
 
@@ -247,17 +474,20 @@ void requestAction(byte ID)
         cont++;
         cor[atoi(inParse[2])][i] = atoi(inParse[3 + cont]);
       }
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     else if (atoi(inParse[1]) == 2) // mode = 2 to save values to eeprom
     {
       SaveLEDToEEPROM();
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     else if (atoi(inParse[1]) == 3) // mode = 3 to discard values
     {
       ReadFromEEPROM();
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     break;
   case 6: //moonlight
@@ -276,7 +506,8 @@ void requestAction(byte ID)
       MaxI = atoi(inParse[3]);  
       Salvar_luz_noturna_EEPROM(); 
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
 
     break; 
@@ -297,7 +528,8 @@ void requestAction(byte ID)
       HtempMax = atof(inParse[3]);  
       salvar_coolersEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break;  
 
@@ -318,7 +550,8 @@ void requestAction(byte ID)
       potR = atoi(inParse[3]);  
       salvar_tempPotEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break;   
 
@@ -342,7 +575,8 @@ void requestAction(byte ID)
       alarmTempC = atof(inParse[4]); 
       SaveTempToEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break;
 
@@ -385,7 +619,8 @@ void requestAction(byte ID)
       fator_calib_dosadora_6 = fator_calib_dosadora[5];
       Salvar_calib_dosadora_EEPROM(); 
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     break;
 
@@ -394,7 +629,7 @@ void requestAction(byte ID)
     {
       config_valores_dosadoras_temp();
       config_valores_dosadoras_temp2();
-      
+
       dosadora_selecionada = atoi(inParse[2]);
       client.print("{\"hStart\":");
       client.print(hora_inicial_dosagem_personalizada[dosadora_selecionada]);
@@ -447,7 +682,8 @@ void requestAction(byte ID)
       criar_arquivos();
       Salvar_dosadora_EEPROM(); 
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }
     break;
 
@@ -471,7 +707,8 @@ void requestAction(byte ID)
       alarmPHA = atof(inParse[4]); 
       SavePHAToEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break; 
 
@@ -495,7 +732,8 @@ void requestAction(byte ID)
       alarmPHR = atof(inParse[4]); 
       SavePHRToEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break; 
 
@@ -519,7 +757,8 @@ void requestAction(byte ID)
       alarmORP = atoi(inParse[4]); 
       SaveORPToEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break;
 
@@ -543,35 +782,52 @@ void requestAction(byte ID)
       alarmDEN = atoi(inParse[4]); 
       SaveDENToEEPROM();
 
-      client.print("{\"response\":\"ok\"}");
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);
     }  
     break;
 
-  case 17:// Send (case,parameter, last value received);
-    if(atoi(inParse[1]) == 0)
+  case 17:
+    break;
+
+  case 18:// Timers
+
+    if(atoi(inParse[1]) == 0)// send (case, mode, timer selec.)
     {
-      check_arquivo_temp_agua(1, atoi(inParse[2]));
+      temporizador = atoi(inParse[2]);
+      config_valores_timers_temp();
+      client.print("{\"hStart\":");
+      client.print(on_hora[temporizador]);
+      client.print(",\"mStart\":");  
+      client.print(on_minuto[temporizador]);
+      client.print(",\"hEnd\":");  
+      client.print(off_hora[temporizador]);
+      client.print(",\"mEnd\":");  
+      client.print(off_minuto[temporizador]);
+      client.print(",\"activated\":");  
+      client.print(temporizador_ativado[temporizador]);
+      client.println("}");
     }
-    else if(atoi(inParse[1]) == 1)
-    {
-      check_arquivo_ph_agua(1, atoi(inParse[2]));
-    }
-    else if(atoi(inParse[1]) == 2)
-    {
-      check_arquivo_ph_reator(1, atoi(inParse[2])); 
-    }
-    else if(atoi(inParse[1]) == 3)
-    {
-      check_arquivo_orp(1, atoi(inParse[2])); 
-    }
-    else if(atoi(inParse[1]) == 4)
-    {
-      check_arquivo_densidade(1, atoi(inParse[2])); 
+
+    else if(atoi(inParse[1]) == 1)// send (case, mode, timer selected, values) mode = 1 to save
+    {  
+      web_timer = true;        
+      temporizador = atoi(inParse[2]);
+      on_hora[temporizador] = atoi(inParse[3]);
+      on_minuto[temporizador] = atoi(inParse[4]);
+      off_hora[temporizador] = atoi(inParse[5]);  
+      off_minuto[temporizador] = atoi(inParse[6]); 
+      temporizador_ativado[temporizador] = atoi(inParse[7]);
+      config_valores_salvar_timers();   
+      salvar_timers_EEPROM();
+      bitWrite(temporizador_modificado,(temporizador + 1),1);
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+      client.println(buffer);     
     }
     break;
+
   }
 }
-
 
 void dosagem_manual()
 {
@@ -586,6 +842,124 @@ void calibrar()
   delay(60000);
   digitalWrite(dosadora[dosadora_selecionada], LOW);
 }
+
+void enviar_dados()
+{
+  char dados[6];
+  EthernetClient client;
+  IPAddress joyreef(178, 255, 75, 58);
+  String UserName = Username;
+
+  Serial.println("Connecting...");
+
+  String PostData =
+    "{\"userName\":\""+
+    UserName+
+    "\",\"minute\":\""+
+    rtc.getTimeStamp()+
+    "\",\"A\":"+ // Temp. da água
+  dtostrf(tempC,5,2,dados)+
+    ",\"B\":"+ // Temp. dissipador
+  dtostrf(tempH,5,2,dados)+
+    ",\"C\":"+ // Temp. ambiente
+  dtostrf(tempA,5,2,dados)+
+    ",\"D\":"+ // PH do aquário
+  dtostrf(PHA,4,2,dados)+
+    ",\"E\":"+ // PH do reator de cálcio
+  dtostrf(PHR,4,2,dados)+
+    ",\"F\":"+ // Densidade
+  String(DEN)+
+    ",\"G\":"+ // ORP
+  String(ORP)+
+    ",\"H\":"+ // Status chiller, 0 = desligado e 1 = ligado
+  String(bitRead(status_parametros,0))+
+    ",\"I\":"+ // Status aquecedor, 0 = desligado e 1 = ligado
+  String(bitRead(status_parametros,1))+
+    ",\"J\":"+ // Status reator de cálcio, 0 = desligado e 1 = ligado
+  String(bitRead(status_parametros,5))+
+    ",\"K\":"+ // Status ozonizador, 0 = desligado e 1 = ligado
+  String(bitRead(status_parametros,7))+
+    ",\"L\":"+ // Status reposição de água doce, 0 = desligado e 1 = ligado
+  String(bitRead(Status,1))+
+    ",\"M\":"+ // Status niveis, 0 = baixo e 1 = normal
+  String(nivel_status)+
+    ",\"N\":"+ // Status TPA, 0 = desligado e 1 = ligado
+  String(bitRead(tpa_status,0))+
+    ",\"O\":"+ 
+    String(bitRead(temporizador_status,1))+ // Status timer 1, 0 = desligado e 1 = ligado
+  ",\"P\":"+ 
+    String(bitRead(temporizador_status,2))+ // Status timer 2, 0 = desligado e 1 = ligado
+  ",\"Q\":"+
+    String(bitRead(temporizador_status,3))+ // Status timer 3, 0 = desligado e 1 = ligado
+  ",\"R\":"+ 
+    String(bitRead(temporizador_status,4))+ // Status timer 4, 0 = desligado e 1 = ligado
+  ",\"S\":"+ 
+    String(bitRead(temporizador_status,5))+ // Status timer 5, 0 = desligado e 1 = ligado
+  ",\"T\":"+ // Sinaliza falha na TPA
+  String(bitRead(tpa_status,2))+ 
+    "}";
+
+  Serial.println (FreeRam());
+
+  if (client.connect(joyreef, 80)) 
+  {
+    Serial.println(">> Connected <<");
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /api/temp HTTP/1.1"
+    client.println(buffer);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "Host: www.joy-reef.eu"
+    client.println(buffer);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[2]))); // "Authorization: Basic "
+    client.print(buffer);
+
+    client.println(Auth1);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[3]))); // "Cache-Control: no-cache"
+    client.println(buffer);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[4]))); // "Content-Type: application/x-www-form-urlencoded"
+    client.println(buffer);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[5]))); // "Connection: close"
+    client.println(buffer);
+
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[6]))); // "Content-Length: "
+    client.print(buffer);
+
+    client.println(PostData.length());
+    client.println();
+    client.println(PostData); 
+
+    Serial.println(PostData);
+
+    delay(5);
+    client.stop();
+
+  }
+  else
+  {
+    Serial.println("Can't connect!");
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

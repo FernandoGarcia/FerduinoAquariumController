@@ -237,7 +237,7 @@ void config_valores_timers_temp()
   temporizador_ativado[4] = temporizador_5_ativado;
 }
 
-void config_valore_salvat_timers()
+void config_valores_salvar_timers()
 {
   on1_minuto = on_minuto[0];
   on1_hora = on_hora[0];

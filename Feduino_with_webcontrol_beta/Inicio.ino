@@ -8,6 +8,7 @@ void mainScreen(boolean refreshAll=false)
   day = String(t.date);                             //Atualiza se a data for diferente
   ano = String(t.year);
   int offset = 0;
+  char bufferLP[16];
 
   setFont(SMALL, 255, 255, 0, 0, 0, 0);
   myGLCD.print(rtc.getTimeStr(FORMAT_LONG), 315, 227);  
@@ -26,13 +27,12 @@ void mainScreen(boolean refreshAll=false)
     myGLCD.print("DE", 205, 227);
     myGLCD.printNumI(t.year, 225, 227);
 
-    char bufferLP[16];
+    float lunarCycle = moonPhase(t.year,t.mon, t.date); //get a value for the lunar cycle
+    
     LP.toCharArray(bufferLP, 16);
-
+    
     myGLCD.setColor(255, 255, 255);
     myGLCD.print(bufferLP, 98, 213); //Escreve descrição da fase lunar
-
-    float lunarCycle = moonPhase(t.year,t.mon, t.date); //get a value for the lunar cycle
 
       if ((lunarCycle*100) < 0) //Print % of Full to LCD
     { 
@@ -134,6 +134,29 @@ void mainScreen(boolean refreshAll=false)
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[226])));
     myGLCD.print(buffer, 212, 195); // tabela_textos[226] = "T. AMBIENTE:"    
 
+    myGLCD.setColor(0, 255, 0);
+
+    myGLCD.drawCircle(369, 11, 2);                  // Unidade t. dissipador
+    myGLCD.print("C", 372, 14);
+
+    myGLCD.drawCircle(367, 25, 2);                  // Unidade t. água
+    myGLCD.print("C", 370, 28);                     // Unidade t. água
+
+    myGLCD.print("G/L", 332, 70);                   // Unidade densidade
+    myGLCD.print("MV", 280, 84);                    // Unidade ORP
+
+    myGLCD.drawCircle(369, 192, 2);                  // Unidade t. ambiente
+    myGLCD.print("C", 370, 195);                    // Unidade t. ambiente
+
+
+    myGLCD.setColor(161, 127, 73);                  
+    myGLCD.drawRect(7, 5, 199, 208);                // Desenhar retângulos
+    myGLCD.drawRect(206, 5, 392, 208);
+  } // Fim do refreshAll
+
+ if((refreshAll == true) || (web_timer == true))
+  {
+    web_timer = false;
     if(temporizador_1_ativado == 1)
     {
       myGLCD.setColor(0, 130, 255); 
@@ -162,64 +185,44 @@ void mainScreen(boolean refreshAll=false)
 
     if(temporizador_3_ativado == 1)
     {
-     myGLCD.setColor(0, 130, 255); 
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[78])));
-     myGLCD.print(buffer, 12, 168); // tabela_textos[78] = "TIMER 3:"
+      myGLCD.setColor(0, 130, 255); 
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[78])));
+      myGLCD.print(buffer, 12, 168); // tabela_textos[78] = "TIMER 3:"
     }
     else
     {
-     myGLCD.setColor(255, 255, 255); 
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[78])));
-     myGLCD.print(buffer, 12, 168); // tabela_textos[78] = "TIMER 3:"
+      myGLCD.setColor(255, 255, 255); 
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[78])));
+      myGLCD.print(buffer, 12, 168); // tabela_textos[78] = "TIMER 3:"
     }     
 
     if(temporizador_4_ativado == 1)
     {
-     myGLCD.setColor(0, 130, 255); 
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[79])));
-     myGLCD.print(buffer, 12, 180); // tabela_textos[79] = "TIMER 4:"
+      myGLCD.setColor(0, 130, 255); 
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[79])));
+      myGLCD.print(buffer, 12, 180); // tabela_textos[79] = "TIMER 4:"
     }
     else
     {
-     myGLCD.setColor(255, 255, 255); 
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[79])));
-     myGLCD.print(buffer, 12, 180); // tabela_textos[79] = "TIMER 4:"
+      myGLCD.setColor(255, 255, 255); 
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[79])));
+      myGLCD.print(buffer, 12, 180); // tabela_textos[79] = "TIMER 4:"
     }    
 
     if(temporizador_5_ativado == 1)
     {
-     myGLCD.setColor(0, 130, 255);
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[80])));
-     myGLCD.print(buffer, 12, 192); // tabela_textos[80] = "TIMER 5:"
+      myGLCD.setColor(0, 130, 255);
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[80])));
+      myGLCD.print(buffer, 12, 192); // tabela_textos[80] = "TIMER 5:"
     }
     else
     {
-     myGLCD.setColor(255, 255, 255);
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[80])));
-     myGLCD.print(buffer, 12, 192); // tabela_textos[80] = "TIMER 5:"
-    }     
-
-    myGLCD.setColor(0, 255, 0);
-
-    myGLCD.drawCircle(369, 11, 2);                  // Unidade t. dissipador
-    myGLCD.print("C", 372, 14);
-
-    myGLCD.drawCircle(367, 25, 2);                  // Unidade t. água
-    myGLCD.print("C", 370, 28);                     // Unidade t. água
-
-    myGLCD.print("G/L", 332, 70);                   // Unidade densidade
-    myGLCD.print("MV", 280, 84);                    // Unidade ORP
-
-    myGLCD.drawCircle(369, 192, 2);                  // Unidade t. ambiente
-    myGLCD.print("C", 370, 195);                    // Unidade t. ambiente
-
-
-    myGLCD.setColor(161, 127, 73);                  
-    myGLCD.drawRect(7, 5, 199, 208);                // Desenhar retângulos
-    myGLCD.drawRect(206, 5, 392, 208);
-  } // Fim do refreshAll
-
- 
+      myGLCD.setColor(255, 255, 255);
+      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[80])));
+      myGLCD.print(buffer, 12, 192); // tabela_textos[80] = "TIMER 5:"
+    }
+  }
+  
   if ((whiteLed != wled_out) || refreshAll)  // Atualiza gráfico led branco    
   {
     whiteLed = wled_out;

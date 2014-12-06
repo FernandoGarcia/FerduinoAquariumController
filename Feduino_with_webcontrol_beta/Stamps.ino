@@ -1,9 +1,13 @@
 //------------------------------------- Leitura dos stamps
-void parametros()
+void check_parametro_ph_aquario()
 {
-  int i;
+  boolean done = false;
+  byte holding;
+  char sensorstring[15];
+
   do{
     Open_channel(ph1);
+    delay(50);
     Serial3.print(tempC); //Para se obter um valor compensado pode-se enviar um valor de temperatura da água.
     Serial3.print('\r');
     delay(500);
@@ -11,31 +15,37 @@ void parametros()
     if(Serial3.available() > 3) 
     {
       holding = Serial3.available();
-      for(i=1; i <= holding; i++)
+      for(byte i = 1; i <= holding; i++)
       {
         sensorstring[i]= Serial3.read();
       }
 
-      if(holding ==5)
+      if(holding == 5)
       {
-        PHT = ((sensorstring[1]-48)*100 + (sensorstring[3]-48)*10 + (sensorstring[4]-48));
-        PHA = PHT/100;
+        PHA = ((sensorstring[1]-48)*100 + (sensorstring[3]-48)*10 + (sensorstring[4]-48));
+        PHA /= 100;
       }
       else
       {
-        PHT = ((sensorstring[1]-48)*1000 + (sensorstring[2]-48)*100 + (sensorstring[4]-48)*10 + (sensorstring[5]-48));
-        PHA = PHT/100;
+        PHA = ((sensorstring[1]-48)*1000 + (sensorstring[2]-48)*100 + (sensorstring[4]-48)*10 + (sensorstring[5]-48));
+        PHA /= 100;
       }  
-      PHT=0;
       Serial3.flush();
       break;
     }
   } 
-  while (done==1);
-  done=0;
+  while (done == true);
+}
+
+void check_parametro_ph_reator()
+{
+  boolean done = false;
+  byte holding;
+  char sensorstring[15];
 
   do{
     Open_channel(ph2);
+    delay(50);
     Serial3.print(tempC); //Para se obter um valor compensado pode-se enviar um valor de temperatura da água.
     Serial3.print('\r');
     delay(500);
@@ -43,31 +53,36 @@ void parametros()
     if(Serial3.available() > 3) 
     {
       holding = Serial3.available();
-      for(i=1; i <= holding; i++)
+      for(byte i = 1; i <= holding; i++)
       {
         sensorstring[i]= Serial3.read();
       }
-      if(holding ==5)
+      if(holding == 5)
       {
-        PHT = ((sensorstring[1]-48)*100 + (sensorstring[3]-48)*10 + (sensorstring[4]-48));
-        PHR = PHT/100;
+        PHR = ((sensorstring[1]-48)*100 + (sensorstring[3]-48)*10 + (sensorstring[4]-48));
+        PHR /= 100;
       }
       else
       {
-        PHT = ((sensorstring[1]-48)*1000 + (sensorstring[2]-48)*100 + (sensorstring[4]-48)*10 + (sensorstring[5]-48));
-        PHR = PHT/100;
+        PHR = ((sensorstring[1]-48)*1000 + (sensorstring[2]-48)*100 + (sensorstring[4]-48)*10 + (sensorstring[5]-48));
+        PHR /= 100;
       }  
-      PHT=0;
       Serial3.flush();
       break;
     }
-
   } 
-  while (done==1);
-  done=0;
+  while (done == true);
+}
+
+void check_parametro_orp()
+{
+  boolean done = false;
+  byte holding;
+  char sensorstring[15];
 
   do{
     Open_channel(orp);
+    delay(50);
     Serial3.print("r"),
     Serial3.print('\r');
     delay(500);
@@ -75,48 +90,61 @@ void parametros()
     if(Serial3.available() > 3) 
     {
       holding = Serial3.available();
-      for(i=1; i <= holding; i++)
+      for(byte i = 1; i <= holding; i++)
       {
         sensorstring[i]= Serial3.read();
       }
-
-      ORPT = ((sensorstring[1]-48)*100 + (sensorstring[2]-48)*10 + (sensorstring[3]-48));
-      ORP = ORPT; 
-      ORPT=0;
+      if(holding == 5)
+      {
+        ORP = ((sensorstring[1]-48)*10 + (sensorstring[2]-48));
+      }
+      else
+      {
+        ORP = ((sensorstring[1]-48)*100 + (sensorstring[2]-48)*10 + (sensorstring[3]-48));
+      }
       Serial3.flush();      
       break;
     }
   } 
-  while (done==1);
-  done=0;
-/*
+  while (done == true);
+}
+
+void check_parametro_densidade()
+{
+  boolean done = false;
+  byte holding;
+  char sensorstring[15];
+
   do{
     Open_channel(ec);
+    delay(50);
     Serial3.print(tempC); //Para se obter um valor compensado pode-se enviar um valor de temperatura da água.
     Serial3.print('\r');
     delay(500);
     if(Serial3.available() > 3) 
     {
-      Serial.print("Densidade:");
       holding = Serial3.available();
-      for(i=1; i <= 15; i++)
+      for(byte i = 1; i <= 15; i++)
       {
         sensorstring[i]= Serial3.read();
         Serial.print(sensorstring[i]);
       }
       Serial.println();
+    
+      if(holding == 5)
+      {
+        DEN = ((sensorstring[1]-48)*1000 + (sensorstring[3]-48)*100 + (sensorstring[4]-48*10) + (sensorstring[5]-48));
+      }      
       Serial3.flush();
       break;
     }  
   } 
-  while (done==1);
-  done=0;
-*/
+  while (done == true);
 }
 
-void iniciar_stamps()
+void iniciar_stamp_ph_aquario()
 {
-    Open_channel(ph1); 
+  Open_channel(ph1); 
   delay(50);
   Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
   Serial3.print('\r');
@@ -125,6 +153,11 @@ void iniciar_stamps()
   Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
   Serial3.print('\r');
   delay(1000);
+  check_parametro_ph_aquario();
+}
+
+void iniciar_stamp_ph_reator()
+{
   Open_channel(ph2);
   delay(50);
   Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
@@ -134,6 +167,11 @@ void iniciar_stamps()
   Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
   Serial3.print('\r');
   delay(1000);
+  check_parametro_ph_reator();
+}
+
+void iniciar_stamp_orp()
+{
   Open_channel(orp);
   delay(50);
   Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
@@ -142,7 +180,12 @@ void iniciar_stamps()
   Serial3.flush();
   Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
   Serial3.print('\r');
-  delay(1000);    
+  delay(1000);
+  check_parametro_orp(); 
+} 
+
+void iniciar_stamp_densidade()
+{
   Open_channel(ec);
   delay(50);
   Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
@@ -152,7 +195,7 @@ void iniciar_stamps()
   Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
   Serial3.print('\r');
   delay(1000);
-  parametros(); // Verifica os "stamps".
+  check_parametro_densidade();
 }
 
 void Open_channel(short channel)
@@ -194,3 +237,10 @@ void Open_channel(short channel)
   Serial3.print('\r');
   return;
 }
+
+
+
+
+
+
+

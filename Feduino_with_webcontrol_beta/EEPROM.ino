@@ -412,7 +412,8 @@ void Salvar_wave_EEPROM()
 // 706 ponteiro para dosadora
 // 707 ponteiro para densidade
 // 708 ponteiro para led predefinido
-//Posições 709 a 710 disponíveis.
+// 709 Falha TPA.
+// Posição 710 disponível.
 
 void Salvar_luz_noturna_EEPROM()
 {
@@ -501,6 +502,12 @@ void Salvar_predefinido_EEPROM()
   EEPROM.write(823, uvled_out_temp);
   EEPROM.write(824, amanhecer_anoitecer);
 }
+
+void Salvar_erro_tpa_EEPROM()
+{
+ EEPROM.write(709, bitRead(tpa_status,2)); 
+}
+
 //*******************************************************************************************************************
 //***************************** LER EEPROM ************************************************************************** 
 //*******************************************************************************************************************
@@ -828,6 +835,12 @@ void ler_predefinido_EEPROM()
     amanhecer_anoitecer = EEPROM.read(824);
   }
 }
+
+void check_erro_tpa_EEPROM()
+{
+ bitWrite(tpa_status,2, EEPROM.read(709));
+}
+
 
 
 

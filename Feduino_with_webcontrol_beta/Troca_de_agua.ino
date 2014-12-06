@@ -27,7 +27,8 @@ void checktpa()
     shiftedmillis= millis();
   }
 
-  if ((analogRead(sensor1)<400) && (analogRead(sensor2)>400) && (analogRead(sensor3)<400) && tpa==1 && (analogRead(sensor4)>400) && ((shiftedmillis - marcadoriniciotpa) < tempo))
+  if ((analogRead(sensor1)<400) && (analogRead(sensor2)>400) && (analogRead(sensor3)<400) && (tpa == 1) 
+  && (bitRead(tpa_status,2)== false) && (analogRead(sensor4)>400) && ((shiftedmillis - marcadoriniciotpa) < tempo))
   {
     digitalWrite(bomba1Pin,HIGH); //estagio 1
     digitalWrite(bomba2Pin,LOW);
@@ -43,7 +44,7 @@ void checktpa()
       marcadoriniciotpa= millis();
     }
   }
-  else if ((analogRead(sensor1)>400) && (analogRead(sensor2)>400) && tpa==2 && ((shiftedmillis - marcadoriniciotpa) < tempo))
+  else if ((analogRead(sensor1)>400) && (analogRead(sensor2)>400) && (tpa == 2) && ((shiftedmillis - marcadoriniciotpa) < tempo))
   {
     digitalWrite(bomba1Pin,LOW); //estagio 2
     digitalWrite(bomba2Pin,HIGH);
@@ -59,7 +60,7 @@ void checktpa()
       marcadoriniciotpa= millis();
     }
   }
-  else if ((analogRead(sensor2)<400) && (analogRead(sensor1)==0) && (analogRead(sensor3)>400) && tpa==3 && ((shiftedmillis - marcadoriniciotpa) < tempo))
+  else if ((analogRead(sensor2)<400) && (analogRead(sensor1)==0) && (analogRead(sensor3)>400) && (tpa == 3) && ((shiftedmillis - marcadoriniciotpa) < tempo))
   {
     digitalWrite(bomba1Pin,LOW); // estagio 3
     digitalWrite(bomba2Pin,LOW);
@@ -75,7 +76,7 @@ void checktpa()
       marcadoriniciotpa= millis();
     }
   }
-  else if ((analogRead(sensor3)<400) && (analogRead(sensor2)>400) && (analogRead(sensor1)<400) && tpa==4 && ((shiftedmillis - marcadoriniciotpa) < tempo))
+  else if ((analogRead(sensor3)<400) && (analogRead(sensor2)>400) && (analogRead(sensor1)<400) && (tpa == 4) && ((shiftedmillis - marcadoriniciotpa) < tempo))
   {
     digitalWrite(bomba1Pin,LOW); // estagio 0
     digitalWrite(bomba2Pin,LOW);
@@ -90,6 +91,7 @@ void checktpa()
     tpa=0;
     bitWrite(tpa_status,1,0);
     bitWrite(tpa_status,2,1);
+    Salvar_erro_tpa_EEPROM();
   }
 }
 

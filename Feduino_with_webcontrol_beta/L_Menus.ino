@@ -3623,7 +3623,7 @@ void config_timer(boolean refreshAll=false)
     myGLCD.printNumI(off_hora[temporizador], 193, 100);
   }
 
-  if (off1_minuto_temp2 < 10)
+  if (off_minuto[temporizador] < 10)
   {
     myGLCD.print("0",262, 100); 
     myGLCD.printNumI(off_minuto[temporizador], 279, 100);

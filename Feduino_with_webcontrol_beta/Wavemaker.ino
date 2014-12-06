@@ -96,8 +96,7 @@ void Wavemaker()
   else if(modo_selecionado == 2)
   {
     value = int(128 + 127 * sin(2  *  PI / periodo * times));
-    Pump1PWM = value;
-    Pump2PWM = value;
+    Pump1PWM = Pump2PWM = value;
   }
 
   else if(modo_selecionado == 3)
@@ -132,18 +131,7 @@ void Wavemaker()
       Pump1PWM = 255 - value;
       Pump2PWM = value;  
 
-      if(conta < 61)
-      {
-        if (Pump1PWM < 128)
-        {
-          Pump1PWM += 128;
-        }
-        if (Pump2PWM < 128)
-        {
-          Pump2PWM += 128;
-        }
-      }
-      else if(conta > 81)
+      if((conta < 61) ||(conta > 81))
       {
         if (Pump1PWM < 128)
         {
@@ -166,7 +154,6 @@ void Wavemaker()
         }
       }
     }
-
     if (conta >= 142) // Opposite and same
     {
       conta = 0;
@@ -177,22 +164,6 @@ else if(modo_selecionado == 5)
  Pump1PWM = Pump1PWM_temp;
  Pump2PWM = Pump2PWM_temp;
 }
-  if(Pump1PWM > 255)
-  {
-    Pump1PWM = 255;
-  }
-  else if(Pump1PWM < 0)
-  {
-    Pump1PWM = 0;
-  }
-  else if(Pump2PWM > 255)
-  {
-    Pump2PWM = 255;
-  } 
-  else if(Pump2PWM < 0)
-  {
-    Pump2PWM = 0;
-  }
   analogWrite(wavemaker1, Pump1PWM);
   analogWrite(wavemaker2, Pump2PWM);
 }

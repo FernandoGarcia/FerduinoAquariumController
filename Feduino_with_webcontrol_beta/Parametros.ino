@@ -32,7 +32,7 @@ void checkTempC()
     }
   }
 
-  if ((tempC < (setTempC + offTempC)) && (tempC > (setTempC - offTempC)))          // Desliga aquecedor e chieller
+  if ((tempC < (setTempC + offTempC)) && (tempC > (setTempC - offTempC)))          // Desliga aquecedor e chiller
   {
     bitWrite(status_parametros,0,0);
     bitWrite(status_parametros,1,0);
@@ -71,7 +71,7 @@ void checkTempC()
   }
 
   int tempval = int(tempH * 10);
-  int fanSpeed = map(tempval, (HtempMin * 10), (HtempMax * 10), 0, 255);       // Controle de velocidade das ventoinhas do dissipador
+  fanSpeed = map(tempval, (HtempMin * 10), (HtempMax * 10), 0, 255);       // Controle de velocidade das ventoinhas do dissipador
   if (fanSpeed < 0)
   {  
     fanSpeed = 0;

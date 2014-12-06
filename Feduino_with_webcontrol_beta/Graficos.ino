@@ -119,52 +119,56 @@ void tempgScreen()//------------------------------------------------------------
   myGLCD.drawLine(d, 30, d, 190); // Linha de marcação do horário.
   myGLCD.print(rtc.getTimeStr(FORMAT_SHORT), d + 2, 75, 270);
 
-  file.open(&root, "LOGTDIA.TXT", O_READ);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
+  selecionar_SPI(SD_CARD);
+
+  if(file.open(&root, "LOGTDIA.TXT", O_READ))
   {
-    temperatura = atof(buf);
-    soma +=temperatura;
-
-    if(strlen(buf) == 5)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      i++;
-      k++;
+      temperatura = atof(buf);
+      soma +=temperatura;
+
+      if(strlen(buf) == 5)
+      {
+        i++;
+        k++;
+      }
+
+      if (temperatura <= 2 )
+      {
+        k -= 1;
+      }
+
+      if (i == 6)
+      {
+        media = soma / k;
+        i = 0;
+        j++;
+        soma = 0;
+        k = 0;
+
+        if ((media) > 27.5)
+        {
+          grafico = 30;
+        }
+        else if ((media >= 22.5) && (media <= 27.5))
+        {
+          grafico = (190 -((media - 22.5) * 30));
+        }
+        else
+        {
+          grafico = 190;
+        }
+        setFont(SMALL, 255, 0, 255, 0, 0, 0);
+
+        if(j < 250)
+        {
+          myGLCD.drawPixel((40 + j), grafico);
+        }
+      }
     }
-
-    if (temperatura <= 2 )
-    {
-      k -= 1;
-    }
-
-    if (i == 6)
-    {
-      media = soma / k;
-      i = 0;
-      j++;
-      soma = 0;
-      k = 0;
-
-      if ((media) > 27.5)
-      {
-        grafico = 30;
-      }
-      else if ((media >= 22.5) && (media <= 27.5))
-      {
-        grafico = (190 -((media - 22.5) * 30));
-      }
-      else
-      {
-        grafico = 190;
-      }
-      setFont(SMALL, 255, 0, 255, 0, 0, 0);
-
-      if(j < 250)
-      {
-        myGLCD.drawPixel((40 + j), grafico);
-      }
-    }
+    file.close();
   }
-  file.close();
 }
 
 void orpScreen()//------------------------------------------------------------tela =12
@@ -288,53 +292,57 @@ void orpScreen()//------------------------------------------------------------te
   myGLCD.drawLine(d, 30, d, 190); // Linha de marcação do horário.
   myGLCD.print(rtc.getTimeStr(FORMAT_SHORT), d + 2, 75, 270);
 
-  file.open(&root, "LOGODIA.TXT", O_READ);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    redox = atoi(buf);
-    soma +=redox;
-
-
-    if(strlen(buf)==3)
+  selecionar_SPI(SD_CARD);
+  
+  if(file.open(&root, "LOGODIA.TXT", O_READ))
+  {  
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      i++;
-      k++;
+      redox = atoi(buf);
+      soma +=redox;
+
+
+      if(strlen(buf)==3)
+      {
+        i++;
+        k++;
+      }
+
+      if (redox <= 2 )
+      {
+        k -= 1;
+      }
+
+      if (i==6)
+      {
+        media = soma / k;
+        i = 0;
+        j++;
+        soma = 0;
+        k = 0;
+
+        if ((media) < 180)
+        {
+          grafico = 190;
+        }
+        else if ((media) > 480)
+        {
+          grafico = 30;
+        }
+        else if ((media >= 180) && (media <= 480))
+        {
+          grafico = (190 - ((media - 180) * 0.5));
+        }
+        setFont(SMALL, 255, 0, 255, 0, 0, 0);
+
+        if(j < 250)
+        {
+          myGLCD.drawPixel((40 + j), grafico);
+        }
+      }
     }
-
-    if (redox <= 2 )
-    {
-      k -= 1;
-    }
-
-    if (i==6)
-    {
-      media = soma / k;
-      i = 0;
-      j++;
-      soma = 0;
-      k = 0;
-
-      if ((media) < 180)
-      {
-        grafico = 190;
-      }
-      else if ((media) > 480)
-      {
-        grafico = 30;
-      }
-      else if ((media >= 180) && (media <= 480))
-      {
-        grafico = (190 - ((media - 180) * 0.5));
-      }
-      setFont(SMALL, 255, 0, 255, 0, 0, 0);
-
-      if(j < 250)
-      {
-        myGLCD.drawPixel((40 + j), grafico);
-      }
-    }
+    file.close();
   }
-  file.close();
 }
 
 void PHAScreen()//-------------------------------ph do aqua-----------------------------tela =13
@@ -458,52 +466,56 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
   myGLCD.drawLine(d, 30, d, 190); // Linha de marcação do horário.
   myGLCD.print(rtc.getTimeStr(FORMAT_SHORT), d + 2, 75, 270);
 
-  file.open(&root, "LOGPDIA.TXT", O_READ);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
+  selecionar_SPI(SD_CARD);
+  
+  if(file.open(&root, "LOGPDIA.TXT", O_READ))
   {
-    pht = atof(buf);
-    soma +=pht;
-
-    if(strlen(buf)==4)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      i++;
-      k++;
+      pht = atof(buf);
+      soma +=pht;
+
+      if(strlen(buf)==4)
+      {
+        i++;
+        k++;
+      }
+
+      if (pht <= 2 )
+      {
+        k -= 1;
+      }
+
+      if (i==6)
+      {
+        media = soma / k;
+        i = 0;
+        j++;
+        soma = 0;
+        k = 0;
+
+        if ((media) > 9)
+        {
+          grafico = 30;
+        }
+        else if ((media >= 7) && (media <= 9))
+        {
+          grafico = (190-((media-7)* 75));
+        }
+        else
+        {
+          grafico = 190;
+        }
+        setFont(SMALL, 255, 0, 255, 0, 0, 0);
+
+        if(j < 250)
+        {
+          myGLCD.drawPixel((40 + j), grafico);
+        }
+      }
     }
-
-    if (pht <= 2 )
-    {
-      k -= 1;
-    }
-
-    if (i==6)
-    {
-      media = soma / k;
-      i = 0;
-      j++;
-      soma = 0;
-      k = 0;
-
-      if ((media) > 9)
-      {
-        grafico = 30;
-      }
-      else if ((media >= 7) && (media <= 9))
-      {
-        grafico = (190-((media-7)* 75));
-      }
-      else
-      {
-        grafico = 190;
-      }
-      setFont(SMALL, 255, 0, 255, 0, 0, 0);
-
-      if(j < 250)
-      {
-        myGLCD.drawPixel((40 + j), grafico);
-      }
-    }
+    file.close();
   }
-  file.close();
 }
 
 void PHRScreen()//----------------PH do reator --------------------------------------------tela =17
@@ -628,50 +640,54 @@ void PHRScreen()//----------------PH do reator ---------------------------------
   myGLCD.drawLine(d, 30, d, 190); // Linha de marcação do horário.
   myGLCD.print(rtc.getTimeStr(FORMAT_SHORT), d + 2, 75, 270);
 
-  file.open(&root, "LOGRDIA.TXT", O_READ);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
+  selecionar_SPI(SD_CARD);
+  
+  if(file.open(&root, "LOGRDIA.TXT", O_READ))
   {
-    pht = atof(buf);
-    soma += pht;
-
-    if(strlen(buf) == 4)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      i++;
-      k++;
-    }
-    if (pht <= 2 )
-    {
-      k -= 1;
-    }
-    if (i==6)
-    {
-      media = soma / k;
-      i = 0;
-      j++;
-      soma = 0;
-      k = 0;
+      pht = atof(buf);
+      soma += pht;
 
-      if ((media) > 7.4)
+      if(strlen(buf) == 4)
       {
-        grafico = 30;
+        i++;
+        k++;
       }
-      else if ((media >= 5.4) && (media <= 7.4))
+      if (pht <= 2 )
       {
-        grafico = (190 - ((media - 5.4) * 75));
+        k -= 1;
       }
-      else
+      if (i==6)
       {
-        grafico = 190;
-      }
-      setFont(SMALL, 255, 0, 255, 0, 0, 0);
+        media = soma / k;
+        i = 0;
+        j++;
+        soma = 0;
+        k = 0;
 
-      if(j < 250)
-      {
-        myGLCD.drawPixel((40 + j), grafico);
+        if ((media) > 7.4)
+        {
+          grafico = 30;
+        }
+        else if ((media >= 5.4) && (media <= 7.4))
+        {
+          grafico = (190 - ((media - 5.4) * 75));
+        }
+        else
+        {
+          grafico = 190;
+        }
+        setFont(SMALL, 255, 0, 255, 0, 0, 0);
+
+        if(j < 250)
+        {
+          myGLCD.drawPixel((40 + j), grafico);
+        }
       }
     }
+    file.close();
   }
-  file.close();
 }
 
 void densidadeScreen()//----------------grafico de densidade --------------------------------------------tela =19
@@ -798,53 +814,59 @@ void densidadeScreen()//----------------grafico de densidade -------------------
   myGLCD.drawLine(d, 30, d, 190); // Linha de marcação do horário.
   myGLCD.print(rtc.getTimeStr(FORMAT_SHORT), d + 2, 75, 270);
 
-  file.open(&root, "LOGDDIA.TXT", O_READ);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
+  selecionar_SPI(SD_CARD);
+  
+  if(file.open(&root, "LOGDDIA.TXT", O_READ))
   {
-    densidade = atof(buf);
-    soma +=densidade;
-
-    if(strlen(buf)==4)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      i++;
-      k++;
-    }
-    
-    if (densidade <= 2 )
-    {
-      k -= 1;
-    }
-    
-    if (i == 6)
-    {
-      media = soma / k;
-      i = 0;
-      j++;
-      soma = 0;
-      k = 0;
+      densidade = atof(buf);
+      soma +=densidade;
 
-      if ((media) < 1010)
+      if(strlen(buf)==4)
       {
-        grafico = 190;
+        i++;
+        k++;
       }
-      else if ((media) > 1030)
-      {
-        grafico = 30;
-      }
-      else if (1010 <= media <= 1030)
-      {
-        grafico = (190 - ((media - 1010) * 7.5));
-      }
-      setFont(SMALL, 255, 0, 255, 0, 0, 0);
 
-      if(j < 250)
+      if (densidade <= 2 )
       {
-        myGLCD.drawPixel((50 + j), grafico);
+        k -= 1;
+      }
+
+      if (i == 6)
+      {
+        media = soma / k;
+        i = 0;
+        j++;
+        soma = 0;
+        k = 0;
+
+        if ((media) < 1010)
+        {
+          grafico = 190;
+        }
+        else if ((media) > 1030)
+        {
+          grafico = 30;
+        }
+        else if (1010 <= media <= 1030)
+        {
+          grafico = (190 - ((media - 1010) * 7.5));
+        }
+        setFont(SMALL, 255, 0, 255, 0, 0, 0);
+
+        if(j < 250)
+        {
+          myGLCD.drawPixel((50 + j), grafico);
+        }
       }
     }
+    file.close();
   }
-  file.close();
 }
+
+
 
 
 
