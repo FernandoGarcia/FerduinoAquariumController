@@ -151,41 +151,41 @@ void requestAction(byte ID)
     switch (ID)
   {
   case 0: // Home
-    client.print("{\"theatsink\":"); 
+    client.print(F("{\"theatsink\":")); 
     client.print(tempH);
-    client.print(",\"twater\":"); 
+    client.print(F(",\"twater\":")); 
     client.print(tempC);
-    client.print(",\"tamb\":");  
+    client.print(F(",\"tamb\":"));  
     client.print(tempA);
-    client.print(",\"waterph\":");  
+    client.print(F(",\"waterph\":"));  
     client.print(PHA);
-    client.print(",\"reactorph\":");  
+    client.print(F(",\"reactorph\":"));  
     client.print(PHR);
-    client.print(",\"orp\":");  
+    client.print(F(",\"orp\":"));  
     client.print(ORP);
-    client.print(",\"dens\":");  
+    client.print(F(",\"dens\":"));  
     client.print(DEN);
-    client.print(",\"wLedW\":");  
+    client.print(F(",\"wLedW\":"));  
     client.print(LedToPercent(wled_out));
-    client.print(",\"bLedW\":"); 
+    client.print(F(",\"bLedW\":")); 
     client.print(LedToPercent(bled_out));
-    client.print(",\"rbLedW\":"); 
+    client.print(F(",\"rbLedW\":")); 
     client.print(LedToPercent(rbled_out));
-    client.print(",\"redLedW\":"); 
+    client.print(F(",\"redLedW\":")); 
     client.print(LedToPercent(rled_out));
-    client.print(",\"uvLedW\":"); 
+    client.print(F(",\"uvLedW\":")); 
     client.print(LedToPercent(uvled_out));
-    client.print(",\"unix\":"); 
+    client.print(F(",\"unix\":")); 
     client.print(rtc.getTimeStamp());
-    client.print(",\"running\":"); 
+    client.print(F(",\"running\":")); 
     client.print(millis()/1000);
-    client.print(",\"speed\":"); 
+    client.print(F(",\"speed\":")); 
     client.print(LedToPercent(fanSpeed));
-    client.print(",\"moonPhase\":"); 
+    client.print(F(",\"moonPhase\":")); 
     client.print(fase);
-    client.print(",\"iluminated\":"); 
+    client.print(F(",\"iluminated\":")); 
     client.print(lunarCycle *100);
-    client.print("}");
+    client.print(F("}"));
     break; 
 
   case 1:
@@ -231,7 +231,7 @@ void requestAction(byte ID)
           }      
         }
       }
-      client.print("{\"number\":");
+      client.print(F("{\"number\":"));
       client.print(numberOfDevices);
 
       if(numberOfDevices < 2)
@@ -252,19 +252,19 @@ void requestAction(byte ID)
           sonda_associada_2 = 0;
         }
       }
-      client.print(",\"p1\":");  
+      client.print(F(",\"p1\":"));  
       client.print(temperatura1);
-      client.print(",\"p2\":");  
+      client.print(F(",\"p2\":"));  
       client.print(temperatura2);
-      client.print(",\"p3\":");  
+      client.print(F(",\"p3\":"));  
       client.print(temperatura3);
-      client.print(",\"ap1\":");
+      client.print(F(",\"ap1\":"));
       client.print(sonda_associada_1);
-      client.print(",\"ap2\":");  
+      client.print(F(",\"ap2\":"));  
       client.print(sonda_associada_2);
-      client.print(",\"ap3\":");  
+      client.print(F(",\"ap3\":"));  
       client.print(sonda_associada_3);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -330,19 +330,19 @@ void requestAction(byte ID)
   case 2: //config date & time //Send (case, mode, date, month, year, hour, minute, second, day of week)
     if(atoi(inParse[1]) == 0) // To save time and date send inParse[1] = 1
     {
-      client.print("{\"date\":\"");
+      client.print(F("{\"date\":\""));
       client.print(t.year);
-      client.print("-");   
+      client.print(F("-"));   
       client.print(t.mon);  
-      client.print("-");
+      client.print(F("-"));
       client.print(t.date);
-      client.print("\",\"time\":\"");   
+      client.print(F("\",\"time\":\""));   
       client.print(t.hour);
-      client.print(":");  
+      client.print(F(":"));  
       client.print(t.min);
-      client.print(":");
+      client.print(F(":"));
       client.print(t.sec);
-      client.print("\"}");
+      client.print(F("\"}"));
     }
     else
     { 
@@ -362,29 +362,29 @@ void requestAction(byte ID)
   case 3:
     if(atoi(inParse[1]) == 0) // Send (case, mode, values)
     {
-      client.print("{\"hour\":");
+      client.print(F("{\"hour\":"));
       client.print(hora);
-      client.print(",\"minute\":");  
+      client.print(F(",\"minute\":"));  
       client.print(minuto);
-      client.print(",\"duration\":");  
+      client.print(F(",\"duration\":"));  
       client.print(duracaomaximatpa);      
-      client.print(",\"monday\":");  
+      client.print(F(",\"monday\":"));  
       client.print(segunda);
-      client.print(",\"tuesday\":");  
+      client.print(F(",\"tuesday\":"));  
       client.print(terca);
-      client.print(",\"wednesday\":");  
+      client.print(F(",\"wednesday\":"));  
       client.print(quarta);
-      client.print(",\"thursday\":");  
+      client.print(F(",\"thursday\":"));  
       client.print(quinta);
-      client.print(",\"friday\":");  
+      client.print(F(",\"friday\":"));  
       client.print(sexta);
-      client.print(",\"saturday\":");  
+      client.print(F(",\"saturday\":"));  
       client.print(sabado);
-      client.print(",\"sunday\":");  
+      client.print(F(",\"sunday\":"));  
       client.print(domingo);
-      client.print(",\"status\":");  
+      client.print(F(",\"status\":"));  
       client.print(bitRead(tpa_status,2));
-      client.print("}"); 
+      client.print(F("}")); 
     }
     if(atoi(inParse[1]) == 1)
     {
@@ -414,17 +414,17 @@ void requestAction(byte ID)
   case 4:    //individual led test - load first values
     if (atoi(inParse[1]) == 0) //Send (case, mode, wled, rled, rbled, rled, uvled) 
     {
-      client.print("{\"wLedW\":");
+      client.print(F("{\"wLedW\":"));
       client.print(wled_out);
-      client.print(",\"bLedW\":");
+      client.print(F(",\"bLedW\":"));
       client.print(bled_out);
-      client.print(",\"rbLedW\":"); 
+      client.print(F(",\"rbLedW\":")); 
       client.print(rbled_out);
-      client.print(",\"uvLedW\":"); 
+      client.print(F(",\"uvLedW\":")); 
       client.print(uvled_out);
-      client.print(",\"redLedW\":"); 
+      client.print(F(",\"redLedW\":")); 
       client.print(rled_out);
-      client.print("}");      
+      client.print(F("}"));      
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to change values
     {
@@ -455,7 +455,7 @@ void requestAction(byte ID)
     //  Send{case, mode, color, first position}
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"value0\":");
+      client.print(F("{\"value0\":"));
 
       for(byte i = 1 + atoi(inParse[3]); i < 9 + atoi(inParse[3]); i++)
       {
@@ -465,7 +465,7 @@ void requestAction(byte ID)
           client.print(",\"value" + String(i - atoi(inParse[3])) + "\":");
         }
       }
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values temporarily
     {
@@ -494,11 +494,11 @@ void requestAction(byte ID)
     //  Send{case, mode, value}
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"min\":");
+      client.print(F("{\"min\":"));
       client.print(MinI);
-      client.print(",\"max\":");  
+      client.print(F(",\"max\":"));  
       client.print(MaxI);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -516,11 +516,11 @@ void requestAction(byte ID)
     //  Send{case, mode, value}
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"minfan\":");
+      client.print(F("{\"minfan\":"));
       client.print(HtempMin);
-      client.print(",\"maxfan\":");  
+      client.print(F(",\"maxfan\":"));  
       client.print(HtempMax);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -538,11 +538,11 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"templimit\":");
+      client.print(F("{\"templimit\":"));
       client.print(tempHR);
-      client.print(",\"potred\":");  
+      client.print(F(",\"potred\":"));  
       client.print(potR);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -560,13 +560,13 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"setTemp\":");
+      client.print(F("{\"setTemp\":"));
       client.print(setTempC);
-      client.print(",\"offTemp\":");  
+      client.print(F(",\"offTemp\":"));  
       client.print(offTempC);
-      client.print(",\"alarmTemp\":");  
+      client.print(F(",\"alarmTemp\":"));  
       client.print(alarmTempC);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -596,14 +596,14 @@ void requestAction(byte ID)
     {
       dosadora_selecionada = atoi(inParse[2]);
       config_valores_calib_temp();
-      client.print("{\"calib\":");
+      client.print(F("{\"calib\":"));
       client.print(fator_calib_dosadora[dosadora_selecionada]);
-      client.println("}");
+      client.println(F("}"));
     }
     else if(atoi(inParse[1]) == 1)// send (case, mode, dosing pump selected) mode = 1 to dose
     {
       dosadora_selecionada = atoi(inParse[2]);
-      client.print("{\"wait\":70}");
+      client.print(F("{\"wait\":70}"));
       web_calibracao = true;
       millis_dosagem = millis();
     }
@@ -631,35 +631,35 @@ void requestAction(byte ID)
       config_valores_dosadoras_temp2();
 
       dosadora_selecionada = atoi(inParse[2]);
-      client.print("{\"hStart\":");
+      client.print(F("{\"hStart\":"));
       client.print(hora_inicial_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"mStart\":");  
+      client.print(F(",\"mStart\":"));  
       client.print(minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"hEnd\":");  
+      client.print(F(",\"hEnd\":"));  
       client.print(hora_final_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"mEnd\":");  
+      client.print(F(",\"mEnd\":"));  
       client.print(minuto_final_dosagem_personalizada[dosadora_selecionada]);      
-      client.print(",\"monday\":");  
+      client.print(F(",\"monday\":"));  
       client.print(segunda_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"tuesday\":");  
+      client.print(F(",\"tuesday\":"));  
       client.print(terca_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"wednesday\":");  
+      client.print(F(",\"wednesday\":"));  
       client.print(quarta_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"thursday\":");  
+      client.print(F(",\"thursday\":"));  
       client.print(quinta_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"friday\":");  
+      client.print(F(",\"friday\":"));  
       client.print(sexta_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"saturday\":");  
+      client.print(F(",\"saturday\":"));  
       client.print(sabado_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"sunday\":");  
+      client.print(F(",\"sunday\":"));  
       client.print(domingo_dosagem_personalizada[dosadora_selecionada]);
-      client.print(",\"quantity\":");  
+      client.print(F(",\"quantity\":"));  
       client.print(quantidade_dose_dosadora_personalizada[dosadora_selecionada]); 
-      client.print(",\"dose\":");  
+      client.print(F(",\"dose\":"));  
       client.print(dose_dosadora_personalizada[dosadora_selecionada]);  
-      client.print(",\"onoff\":");  
+      client.print(F(",\"onoff\":"));  
       client.print(modo_personalizado_on[dosadora_selecionada]);  
-      client.println("}");
+      client.println(F("}"));
     }
     else if(atoi(inParse[1]) == 1) // Send (case, mode, dosing pump selected, values)
     {
@@ -692,13 +692,13 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"setPHA\":");
+      client.print(F("{\"setPHA\":"));
       client.print(setPHA);
-      client.print(",\"offPHA\":");  
+      client.print(F(",\"offPHA\":"));  
       client.print(offPHA);
-      client.print(",\"alarmPHA\":");  
+      client.print(F(",\"alarmPHA\":"));  
       client.print(alarmPHA);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -717,13 +717,13 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"setPHR\":");
+      client.print(F("{\"setPHR\":"));
       client.print(setPHR);
-      client.print(",\"offPHR\":");  
+      client.print(F(",\"offPHR\":"));  
       client.print(offPHR);
-      client.print(",\"alarmPHR\":");  
+      client.print(F(",\"alarmPHR\":"));  
       client.print(alarmPHR);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -742,13 +742,13 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"setORP\":");
+      client.print(F("{\"setORP\":"));
       client.print(setORP);
-      client.print(",\"offORP\":");  
+      client.print(F(",\"offORP\":"));  
       client.print(offORP);
-      client.print(",\"alarmORP\":");  
+      client.print(F(",\"alarmORP\":"));  
       client.print(alarmORP);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -767,13 +767,13 @@ void requestAction(byte ID)
 
     if (atoi(inParse[1]) == 0) // mode = 0 to read values
     {
-      client.print("{\"setDEN\":");
+      client.print(F("{\"setDEN\":"));
       client.print(setDEN);
-      client.print(",\"offDEN\":");  
+      client.print(F(",\"offDEN\":"));  
       client.print(offDEN);
-      client.print(",\"alarmDEN\":");  
+      client.print(F(",\"alarmDEN\":"));  
       client.print(alarmDEN);
-      client.println("}");
+      client.println(F("}"));
     }
     else if (atoi(inParse[1]) == 1) // mode = 1 to save values 
     {
@@ -796,17 +796,17 @@ void requestAction(byte ID)
     {
       temporizador = atoi(inParse[2]);
       config_valores_timers_temp();
-      client.print("{\"hStart\":");
+      client.print(F("{\"hStart\":"));
       client.print(on_hora[temporizador]);
-      client.print(",\"mStart\":");  
+      client.print(F(",\"mStart\":"));  
       client.print(on_minuto[temporizador]);
-      client.print(",\"hEnd\":");  
+      client.print(F(",\"hEnd\":"));  
       client.print(off_hora[temporizador]);
-      client.print(",\"mEnd\":");  
+      client.print(F(",\"mEnd\":"));  
       client.print(off_minuto[temporizador]);
-      client.print(",\"activated\":");  
+      client.print(F(",\"activated\":"));  
       client.print(temporizador_ativado[temporizador]);
-      client.println("}");
+      client.println(F("}"));
     }
 
     else if(atoi(inParse[1]) == 1)// send (case, mode, timer selected, values) mode = 1 to save
