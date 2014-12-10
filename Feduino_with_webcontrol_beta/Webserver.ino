@@ -848,62 +848,48 @@ void enviar_dados()
   char dados[6];
   EthernetClient client;
   IPAddress joyreef(178, 255, 75, 58);
-  String UserName = Username;
+  String OneString;
+  int ContentLength = 0;
 
-  Serial.println("Connecting...");
+  OneString = Username;
+  ContentLength += OneString.length(); 
 
-  String PostData =
-    "{\"userName\":\""+
-    UserName+
-    "\",\"minute\":\""+
-    rtc.getTimeStamp()+
-    "\",\"A\":"+ // Temp. da água
-  dtostrf(tempC,5,2,dados)+
-    ",\"B\":"+ // Temp. dissipador
-  dtostrf(tempH,5,2,dados)+
-    ",\"C\":"+ // Temp. ambiente
-  dtostrf(tempA,5,2,dados)+
-    ",\"D\":"+ // PH do aquário
-  dtostrf(PHA,4,2,dados)+
-    ",\"E\":"+ // PH do reator de cálcio
-  dtostrf(PHR,4,2,dados)+
-    ",\"F\":"+ // Densidade
-  String(DEN)+
-    ",\"G\":"+ // ORP
-  String(ORP)+
-    ",\"H\":"+ // Status chiller, 0 = desligado e 1 = ligado
-  String(bitRead(status_parametros,0))+
-    ",\"I\":"+ // Status aquecedor, 0 = desligado e 1 = ligado
-  String(bitRead(status_parametros,1))+
-    ",\"J\":"+ // Status reator de cálcio, 0 = desligado e 1 = ligado
-  String(bitRead(status_parametros,5))+
-    ",\"K\":"+ // Status ozonizador, 0 = desligado e 1 = ligado
-  String(bitRead(status_parametros,7))+
-    ",\"L\":"+ // Status reposição de água doce, 0 = desligado e 1 = ligado
-  String(bitRead(Status,1))+
-    ",\"M\":"+ // Status niveis, 0 = baixo e 1 = normal
-  String(nivel_status)+
-    ",\"N\":"+ // Status TPA, 0 = desligado e 1 = ligado
-  String(bitRead(tpa_status,0))+
-    ",\"O\":"+ 
-    String(bitRead(temporizador_status,1))+ // Status timer 1, 0 = desligado e 1 = ligado
-  ",\"P\":"+ 
-    String(bitRead(temporizador_status,2))+ // Status timer 2, 0 = desligado e 1 = ligado
-  ",\"Q\":"+
-    String(bitRead(temporizador_status,3))+ // Status timer 3, 0 = desligado e 1 = ligado
-  ",\"R\":"+ 
-    String(bitRead(temporizador_status,4))+ // Status timer 4, 0 = desligado e 1 = ligado
-  ",\"S\":"+ 
-    String(bitRead(temporizador_status,5))+ // Status timer 5, 0 = desligado e 1 = ligado
-  ",\"T\":"+ // Sinaliza falha na TPA
-  String(bitRead(tpa_status,2))+ 
-    "}";
+  dtostrf(tempC,5,2,dados);
+  OneString = String(dados);
+  ContentLength += OneString.length(); 
 
-  Serial.println (FreeRam());
+  dtostrf(tempH,5,2,dados);
+  OneString = String(dados);
+  ContentLength += OneString.length();
+
+  dtostrf(tempA,5,2,dados);
+  OneString = String(dados);
+  ContentLength += OneString.length();
+
+  dtostrf(PHA,5,2,dados);
+  OneString = String(dados);
+  ContentLength += OneString.length();
+
+  dtostrf(PHR,5,2,dados);
+  OneString = String(dados);
+  ContentLength += OneString.length();  
+
+  OneString = String(DEN);
+  ContentLength += OneString.length();
+
+  OneString = String(ORP);
+  ContentLength += OneString.length();
+
+  OneString = String(rtc.getTimeStamp());
+  ContentLength += OneString.length();
+
+  ContentLength += 140;
+
+  Serial.println(F("Connecting..."));
 
   if (client.connect(joyreef, 80)) 
   {
-    Serial.println(">> Connected <<");
+    Serial.println(F(">> Connected <<"));
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /api/temp HTTP/1.1"
     client.println(buffer);
 
@@ -927,40 +913,60 @@ void enviar_dados()
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[6]))); // "Content-Length: "
     client.print(buffer);
 
-    client.println(PostData.length());
+    client.println(ContentLength);
     client.println();
-    client.println(PostData); 
 
-    Serial.println(PostData);
+    client.print(F("{\"userName\":\""));
+    client.print(Username);
+    client.print(F("\",\"minute\":\""));
+    client.print(rtc.getTimeStamp());
+    client.print(F("\",\"A\":")); // Temp. da água
+    client.print(dtostrf(tempC,5,2,dados));
+    client.print(F(",\"B\":")); // Temp. dissipador
+    client.print(dtostrf(tempH,5,2,dados));
+    client.print(F(",\"C\":")); // Temp. ambiente
+    client.print(dtostrf(tempA,5,2,dados));
+    client.print(F(",\"D\":")); // PH do aquário
+    client.print(dtostrf(PHA,4,2,dados));
+    client.print(F(",\"E\":")); // PH do reator de cálcio
+    client.print(dtostrf(PHR,4,2,dados));
+    client.print(F(",\"F\":")); // Densidade
+    client.print(DEN);
+    client.print(F(",\"G\":")); // ORP
+    client.print(ORP);
+    client.print(F(",\"H\":")); // Status chiller, 0 = desligado e 1 = ligado
+    client.print(bitRead(status_parametros,0));
+    client.print(F(",\"I\":")); // Status aquecedor, 0 = desligado e 1 = ligado
+    client.print(bitRead(status_parametros,1));
+    client.print(F(",\"J\":")); // Status reator de cálcio, 0 = desligado e 1 = ligado
+    client.print(bitRead(status_parametros,5));
+    client.print(F(",\"K\":")); // Status ozonizador, 0 = desligado e 1 = ligado
+    client.print(bitRead(status_parametros,7));
+    client.print(F(",\"L\":")); // Status reposição de água doce, 0 = desligado e 1 = ligado
+    client.print(bitRead(Status,1));
+    client.print(F(",\"M\":")); // Status niveis, 0 = baixo e 1 = normal
+    client.print(nivel_status);
+    client.print(F(",\"N\":")); // Status TPA, 0 = desligado e 1 = ligado
+    client.print(bitRead(tpa_status,0));
+    client.print(F(",\"O\":"));
+    client.print(bitRead(temporizador_status,1)); // Status timer 1, 0 = desligado e 1 = ligado
+    client.print(F(",\"P\":")); 
+    client.print(bitRead(temporizador_status,2)); // Status timer 2, 0 = desligado e 1 = ligado
+    client.print(F(",\"Q\":"));
+    client.print(bitRead(temporizador_status,3)); // Status timer 3, 0 = desligado e 1 = ligado
+    client.print(F(",\"R\":")); 
+    client.print(bitRead(temporizador_status,4)); // Status timer 4, 0 = desligado e 1 = ligado
+    client.print(F(",\"S\":")); 
+    client.print(bitRead(temporizador_status,5)); // Status timer 5, 0 = desligado e 1 = ligado
+    client.print(F(",\"T\":")); // Sinaliza falha na TPA
+    client.print(bitRead(tpa_status,2));
+    client.println(F("}"));
 
     delay(5);
     client.stop();
-
   }
   else
   {
-    Serial.println("Can't connect!");
+    Serial.println(F("Can't connect!"));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -28,7 +28,6 @@ void criar_arquivos()
       {
         minuto11 += minuto01; 
       }
-      Serial.println(minuto11);
       
       if(minuto11 < 10)
       {

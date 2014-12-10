@@ -157,7 +157,7 @@ void loop()
      Serial.print("Time: ");
      Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
 
-    Serial.print ("Free memory: ");
+    Serial.print (F("Free memory: "));
     Serial.println (FreeRam());
     /*
     Serial.print("Sensor 1: ");    

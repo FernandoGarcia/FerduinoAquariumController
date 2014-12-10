@@ -133,7 +133,7 @@ void setup()
   {
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
     myGLCD.print("PLEASE INSERT A SD CARD.", CENTER, 115); 
-    Serial.println("Please insert a SD CARD");
+    Serial.println(F("Please insert a SD CARD"));
   }
   volume.init(&card);
   root.openRoot(&volume);
@@ -161,7 +161,7 @@ void setup()
 
     server.begin(); // Inicia o servidor.
 
-    Serial.print("Ip Server: ");
+    Serial.print(F("Ip Server: "));
     Serial.println(Ethernet.localIP());
   }
 
