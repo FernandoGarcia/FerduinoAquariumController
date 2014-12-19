@@ -468,6 +468,8 @@ unsigned long teste_led_millis = 0;
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
+#define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
+//#define STAMPS_EZO     // Desomente esta linha para usar Stamps EZO
 boolean Stamps = false; // Altere para "false" caso não tenha ao menos um dos circuitos de PH, ORP e EC da Atlas Scientific.
 unsigned long millis_antes = 0;
 short ph1=0; // Y0
