@@ -391,13 +391,10 @@ void requestAction(byte ID)
       hora = atoi(inParse[2]);
       minuto = atoi(inParse[3]); 
       duracaomaximatpa = atoi(inParse[4]);
-      semana_e[0] = atoi(inParse[5]);
-      semana_e[1] = atoi(inParse[6]); 
-      semana_e[2] = atoi(inParse[7]);
-      semana_e[3] = atoi(inParse[8]);
-      semana_e[4] = atoi(inParse[9]);
-      semana_e[5] = atoi(inParse[10]);
-      semana_e[6] = atoi(inParse[11]);
+      for(byte i = 0; i < 7; i++)
+      {
+        semana_e[i] = atoi(inParse[i + 5]);
+      }
       SalvartpaEEPROM();
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
       client.println(buffer); 
@@ -611,12 +608,10 @@ void requestAction(byte ID)
     {
       dosadora_selecionada = atoi(inParse[2]);
       fator_calib_dosadora[dosadora_selecionada] = atof(inParse[3]);
-      fator_calib_dosadora_e[0] = fator_calib_dosadora[0];
-      fator_calib_dosadora_e[1] = fator_calib_dosadora[1];
-      fator_calib_dosadora_e[2] = fator_calib_dosadora[2];
-      fator_calib_dosadora_e[3] = fator_calib_dosadora[3];
-      fator_calib_dosadora_e[4] = fator_calib_dosadora[4];
-      fator_calib_dosadora_e[5] = fator_calib_dosadora[5];
+      for(byte i = 0; i < 6; i++)
+      {
+        fator_calib_dosadora_e[i] = fator_calib_dosadora[i];
+      }
       Salvar_calib_dosadora_EEPROM(); 
 
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
@@ -970,3 +965,5 @@ void enviar_dados()
     Serial.println(F("Can't connect!"));
   }
 }
+
+
