@@ -2057,11 +2057,6 @@ void desativar_dosadoras(boolean refreshAll = false)
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[129 + k + i])));  // tabela_textos[129] = "DOSADORA 1:", tabela_textos[130] = "DOSADORA 2:", tabela_textos[131] = "DOSADORA 3:"
       myGLCD.print(buffer, 120, 30 + (i * 70));                                    // tabela_textos[211] = "DOSADORA 4:", tabela_textos[212] = "DOSADORA 5:", tabela_textos[213] = "DOSADORA 6:"
     }
-    /*strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[130 + k])));
-     myGLCD.print(buffer, 120, 100);
-     
-     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[131 + k])));
-     myGLCD.print(buffer, 120, 170); */
 
     setFont(SMALL, 255, 0, 0, 0, 0, 0); 
 
