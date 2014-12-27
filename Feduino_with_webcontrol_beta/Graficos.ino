@@ -865,8 +865,3 @@ void densidadeScreen()//----------------grafico de densidade -------------------
     file.close();
   }
 }
-
-
-
-
-

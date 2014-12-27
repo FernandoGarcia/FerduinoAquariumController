@@ -73,6 +73,3 @@ double MyNormalize(double v)
     v = v + 1;
   return v;
 }
-
-
-

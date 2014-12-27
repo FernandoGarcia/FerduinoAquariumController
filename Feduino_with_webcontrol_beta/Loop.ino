@@ -52,12 +52,12 @@ void loop()
     {
       selecionar_SPI(SD_CARD); // Seleciona disposito SPI que será utilizado.
       dosadoras_millis = millis();
-      check_dosagem_personalizada_1(); // Dosadora 1 - Dosagem personalizado
-      check_dosagem_personalizada_2(); // Dosadora 2 - Dosagem personalizado
+      check_dosagem_personalizada(); // Dosadora 1 - Dosagem personalizado
+      /*check_dosagem_personalizada_2(); // Dosadora 2 - Dosagem personalizado
       check_dosagem_personalizada_3(); //Dosadora 3 - Dosagem personalizado
       check_dosagem_personalizada_4(); // Dosadora 4 - Dosagem personalizado
       check_dosagem_personalizada_5(); // Dosadora 5 - Dosagem personalizado
-      check_dosagem_personalizada_6(); //Dosadora 6 - Dosagem personalizado
+      check_dosagem_personalizada_6(); //Dosadora 6 - Dosagem personalizado*/
     }
   }
 
@@ -215,13 +215,3 @@ void loop()
     previousMillis = millis();
   }
 } //-------------------end of main loop
-
-
-
-
-
-
-
-
-
-

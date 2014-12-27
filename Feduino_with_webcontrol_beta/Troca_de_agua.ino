@@ -2,7 +2,7 @@ void checktpa()
 {
   tempo = (duracaomaximatpa * 60000ul);
 
-  if ((segunda==t.dow) || (terca==t.dow) || (quarta==t.dow) || (quinta==t.dow) || (sexta==t.dow) || (sabado==t.dow) || (domingo==t.dow))
+  if ((semana[0] == t.dow) || (semana[1] == t.dow) || (semana[2] == t.dow) || (semana[3] == t.dow) || (semana[4] == t.dow) || (semana[5] == t.dow) || (semana[6] == t.dow))
   {
     if((hora==t.hour) && (minuto==t.min) && (tpa == 0))
     {

@@ -712,13 +712,10 @@ void processMyTouch()
         hora = temp2hora;
         minuto = temp2minuto;
         duracaomaximatpa = temp2duracaomaximatpa;
-        segunda = temp2segunda;
-        terca = temp2terca;
-        quarta = temp2quarta;
-        quinta = temp2quinta;
-        sexta = temp2sexta;
-        sabado = temp2sabado;
-        domingo =temp2domingo;
+        for(byte i = 0; i < 7; i++)
+        {
+          semana_e[i] = semana[i];
+        }
         SalvartpaEEPROM();
         dispScreen = 1;
         clearScreen();
@@ -733,90 +730,92 @@ void processMyTouch()
       }
       else if ((x >= segU[0]) && (x <= segU[2]) && (y >= segU[1]) && (y <= segU[3])) 
       {
-        if (temp2segunda == 1) 
+        if (semana[0] == 1) 
         {
-          temp2segunda = 0;
+          semana[0] = 0;
           tpaScreen();
         } 
         else 
         {
-          temp2segunda = 1;
+          semana[0] = 1;
           tpaScreen();
         }
       }
       else if ((x >= terC[0]) && (x <= terC[2]) && (y >= terC[1]) && (y <= terC[3])) 
       {
-        if (temp2terca == 2) 
+        if (semana[1] == 2) 
         {
-          temp2terca = 0;
+          semana[1] = 0;
           tpaScreen();
         } 
         else {
-          temp2terca = 2;
+          semana[1] = 2;
           tpaScreen();
         }
       }
       else if ((x >= quaR[0]) && (x <= quaR[2]) && (y >= quaR[1]) && (y <= quaR[3])) 
       {
-        if (temp2quarta == 3) 
+        if (semana[2] == 3) 
         {
-          temp2quarta = 0;
+          semana[2] = 0;
           tpaScreen();
         } 
         else 
         {
-          temp2quarta = 3;
+          semana[2] = 3;
           tpaScreen();
         }
       }
       else if ((x >= quiN[0]) && (x <= quiN[2]) && (y >= quiN[1]) && (y <= quiN[3])) 
       {
 
-        if (temp2quinta == 4) 
+        if (semana[3] == 4) 
         {
-          temp2quinta = 0;
+          semana[3] = 0;
           tpaScreen();
         } 
         else 
         {
-          temp2quinta = 4;
+          semana[3] = 4;
           tpaScreen();
         }
       }
       else if ((x >= sexT[0]) && (x <= sexT[2]) && (y >= sexT[1]) && (y <= sexT[3]))
       {
-        if (temp2sexta == 5) 
+        if (semana[4] == 5) 
         {
-          temp2sexta = 0;
+          semana[4] = 0;
           tpaScreen();
         } 
         else 
         {
-          temp2sexta = 5;
+          semana[4] = 5;
           tpaScreen();
         }
       }
       else if ((x >= sabA[0]) && (x <= sabA[2]) && (y >= sabA[1]) && (y <= sabA[3])) 
       {
-        if (temp2sabado == 6) 
+        if (semana[5] == 6) 
         {
-          temp2sabado = 0;
+          semana[5] = 0;
           tpaScreen();
         } 
-        else {
-          temp2sabado = 6;
+        else
+        {
+          semana[5] = 6;
           tpaScreen();
         }
       }
       else if ((x >= domI[0]) && (x <= domI[2]) && (y >= domI[1]) && (y <= domI[3])) 
       {
-        if (temp2domingo == 7) 
+        if (semana[6] == 7) 
         {
-          temp2domingo = 0;
+          semana[6] = 0;
           tpaScreen();
         } 
-        else {
-          temp2domingo = 7;
+        else 
+        {
+          semana[6] = 7;
           tpaScreen();
         }
       }
@@ -2177,58 +2176,58 @@ void processMyTouch()
       {
         waitForIt(100, 45, 220, 85);
 
-        if(bitRead(ativar_desativar,4) == true)
+        if(bitRead(ativar_desativar, 3) == true)
         {
-          bitWrite(ativar_desativar,4 ,0);
-          desativar_dosadoras_2();
+          bitWrite(ativar_desativar, 3, 0);
+          desativar_dosadoras();
         }
         else
         {
-          desativar_dosadoras_2(true);
+          desativar_dosadoras(true);
         }          
       }
       else if ((x >= 100) && (x <= 220) && (y >= 115) && (y <= 155))           //Ativar/desatiavr dosadora 5
       {
         waitForIt(100, 115, 220, 155);
 
-        if(bitRead(ativar_desativar,5) == true)
+        if(bitRead(ativar_desativar, 4) == true)
         {
-          bitWrite(ativar_desativar,5 ,0);
-          desativar_dosadoras_2();
+          bitWrite(ativar_desativar, 4, 0);
+          desativar_dosadoras();
         }
         else
         {
-          desativar_dosadoras_2(true);
+          desativar_dosadoras(true);
         }          
       }
       else if ((x >= 100) && (x <= 220) && (y >= 185) && (y <= 225))           //Ativar/desatiavr dosadora 6
       {
         waitForIt(100, 185, 220, 225);
 
-        if(bitRead(ativar_desativar,6) == true)
+        if(bitRead(ativar_desativar, 5) == true)
         {
-          bitWrite(ativar_desativar,6 ,0);
-          desativar_dosadoras_2();
+          bitWrite(ativar_desativar, 5, 0);
+          desativar_dosadoras();
         }
         else
         {
-          desativar_dosadoras_2(true);
+          desativar_dosadoras(true);
         }          
       }
       else if ((x>=salV[0]) && (x<=salV[2]) && (y>=salV[1]) && (y<=salV[3]))           //Salvar alterações
       {
         waitForIt(salV[0], salV[1], salV[2], salV[3]);
-        if(bitRead(ativar_desativar,4) == false)
+        if(bitRead(ativar_desativar, 3) == false)
         {
-          modo_personalizado_on_4 = 0;
+          modo_personalizado_on_e[3] = 0;
         }
-        else if(bitRead(ativar_desativar,5) == false)
+        if(bitRead(ativar_desativar, 4) == false)
         {
-          modo_personalizado_on_5 = 0;
+          modo_personalizado_on_e[4] = 0;
         }
-        else if(bitRead(ativar_desativar,6) == false)
+        if(bitRead(ativar_desativar, 5) == false)
         {
-          modo_personalizado_on_6 = 0;
+          modo_personalizado_on_e[5] = 0;
         }
         Salvar_dosadora_EEPROM(); 
         dispScreen = 8;
@@ -2290,12 +2289,13 @@ void processMyTouch()
       else if ((x>=salV[0]) && x<=salV[2] && (y>=salV[1]) && (y<=salV[3]))
       {
         waitForIt(salV[0], salV[1], salV[2], salV[3]); // Função salvar
-        fator_calib_dosadora_1 = fator_calib_dosadora[0];
-        fator_calib_dosadora_2 = fator_calib_dosadora[1];
-        fator_calib_dosadora_3 = fator_calib_dosadora[2];
-        fator_calib_dosadora_4 = fator_calib_dosadora[3];
-        fator_calib_dosadora_5 = fator_calib_dosadora[4];
-        fator_calib_dosadora_6 = fator_calib_dosadora[5];
+        config_valores_salvar_dosadoras();
+        fator_calib_dosadora_e[0] = fator_calib_dosadora[0];
+        fator_calib_dosadora_e[1] = fator_calib_dosadora[1];
+        fator_calib_dosadora_e[2] = fator_calib_dosadora[2];
+        fator_calib_dosadora_e[3] = fator_calib_dosadora[3];
+        fator_calib_dosadora_e[4] = fator_calib_dosadora[4];
+        fator_calib_dosadora_e[5] = fator_calib_dosadora[5];
         Salvar_calib_dosadora_EEPROM(); 
 
         dispScreen = 21;
@@ -2945,7 +2945,7 @@ void processMyTouch()
         waitForIt(salV[0], salV[1], salV[2], salV[3]);
         dispScreen=23;
         clearScreen();
-        rever_dosagem_personalizada_2();
+        rever_dosagem_personalizada();
       }
       break;
     case 35:// -------------------------------------- Desativar dosadoras ------------------------------------------
@@ -2968,15 +2968,15 @@ void processMyTouch()
         waitForIt(deS[0], deS[1], deS[2], deS[3]);
         dispScreen = 24;
         clearScreen();
-        desativar_dosadoras_2(true);
+        desativar_dosadoras(true);
       }
       else if ((x >= 100) && (x <= 220) && (y >= 45) && (y <= 85))           //Ativar/desatiavr dosadora 1
       {
         waitForIt(100, 45, 220, 85);
 
-        if(bitRead(ativar_desativar,1) == true)
+        if(bitRead(ativar_desativar, 0) == true)
         {
-          bitWrite(ativar_desativar,1, 0);
+          bitWrite(ativar_desativar, 0, 0);
           desativar_dosadoras();
         }
         else
@@ -2988,9 +2988,9 @@ void processMyTouch()
       {
         waitForIt(100, 115, 220, 155);
 
-        if(bitRead(ativar_desativar,2) == true)
+        if(bitRead(ativar_desativar, 1) == true)
         {
-          bitWrite(ativar_desativar,2, 0);
+          bitWrite(ativar_desativar, 1, 0);
           desativar_dosadoras();
         }
         else
@@ -3002,9 +3002,9 @@ void processMyTouch()
       {
         waitForIt(100, 185, 220, 225);
 
-        if(bitRead(ativar_desativar,3) == true)
+        if(bitRead(ativar_desativar, 2) == true)
         {
-          bitWrite(ativar_desativar,3, 0);
+          bitWrite(ativar_desativar, 2, 0);
           desativar_dosadoras();
         }
         else
@@ -3015,17 +3015,17 @@ void processMyTouch()
       else if ((x>=salV[0]) && (x<=salV[2]) && (y>=salV[1]) && (y<=salV[3]))           //Salvar alterações
       {
         waitForIt(salV[0], salV[1], salV[2], salV[3]);
-        if(bitRead(ativar_desativar,1) == false)
+        if(bitRead(ativar_desativar, 0) == false)
         {
-          modo_personalizado_on_1= 0;
+          modo_personalizado_on_e[0] = 0;
         }
-        else if(bitRead(ativar_desativar,2) == false)
+        if(bitRead(ativar_desativar, 1) == false)
         {
-          modo_personalizado_on_2= 0;
+          modo_personalizado_on_e[1] = 0;
         }
-        else if(bitRead(ativar_desativar,3) == false)
+        else if(bitRead(ativar_desativar, 2) == false)
         {
-          modo_personalizado_on_3= 0;
+          modo_personalizado_on_e[2] = 0;
         }
         Salvar_dosadora_EEPROM(); 
         dispScreen = 8;
@@ -3928,9 +3928,4 @@ void processMyTouch()
       break; 
     }
   }
- // delay(300);
 }
-
-
-
-

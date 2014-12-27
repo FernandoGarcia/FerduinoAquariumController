@@ -157,7 +157,7 @@ void mainScreen(boolean refreshAll=false)
  if((refreshAll == true) || (web_timer == true))
   {
     web_timer = false;
-    if(temporizador_1_ativado == 1)
+    if(temporizador_ativado_e[0] == 1)
     {
       myGLCD.setColor(0, 130, 255); 
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[31])));
@@ -170,7 +170,7 @@ void mainScreen(boolean refreshAll=false)
       myGLCD.print(buffer, 12, 144); // tabela_textos[31] = "TIMER 1:"      
     }
 
-    if(temporizador_2_ativado == 1)
+    if(temporizador_ativado_e[1] == 1)
     {
       myGLCD.setColor(0, 130, 255); 
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[77])));
@@ -183,7 +183,7 @@ void mainScreen(boolean refreshAll=false)
       myGLCD.print(buffer, 12, 156); // tabela_textos[77] = "TIMER 2:"
     }      
 
-    if(temporizador_3_ativado == 1)
+    if(temporizador_ativado_e[2] == 1)
     {
       myGLCD.setColor(0, 130, 255); 
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[78])));
@@ -196,7 +196,7 @@ void mainScreen(boolean refreshAll=false)
       myGLCD.print(buffer, 12, 168); // tabela_textos[78] = "TIMER 3:"
     }     
 
-    if(temporizador_4_ativado == 1)
+    if(temporizador_ativado_e[3] == 1)
     {
       myGLCD.setColor(0, 130, 255); 
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[79])));
@@ -209,7 +209,7 @@ void mainScreen(boolean refreshAll=false)
       myGLCD.print(buffer, 12, 180); // tabela_textos[79] = "TIMER 4:"
     }    
 
-    if(temporizador_5_ativado == 1)
+    if(temporizador_ativado_e[4] == 1)
     {
       myGLCD.setColor(0, 130, 255);
       strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[80])));

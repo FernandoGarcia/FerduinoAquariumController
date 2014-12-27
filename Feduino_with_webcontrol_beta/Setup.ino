@@ -4,7 +4,7 @@ void setup()
   // Comente a linha abaixo para usar os pinos 0 e 1 para controle dos coolers.
   Serial.begin(38400); //Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
   Serial3.begin(38400); //Inicia a comunicação com a  porta serial 2 onde estão conectados os "stamps".
- 
+
   // Define a função dos pinos.
   pinMode(alarmPin, OUTPUT);               // Pino 0;
   pinMode(desativarFanPin, OUTPUT);        // Pino 1;
@@ -48,16 +48,13 @@ void setup()
   pinMode(ChipSelect_RFM, OUTPUT);         // Pino A15;
 
   //**************** PCF8575 ****************
-/*
+  /*
   pinMode (temporizador1, OUTPUT);         // Pino 80;
-  pinMode (temporizador2, OUTPUT);         // Pino 81;
-  pinMode (temporizador3, OUTPUT);         // Pino 82;
-  pinMode (temporizador4, OUTPUT);         // Pino 83;
-  pinMode (temporizador5, OUTPUT);         // Pino 84;
-  pinMode (solenoide1Pin, OUTPUT);         // Pino 85;*/
-
-
-
+   pinMode (temporizador2, OUTPUT);         // Pino 81;
+   pinMode (temporizador3, OUTPUT);         // Pino 82;
+   pinMode (temporizador4, OUTPUT);         // Pino 83;
+   pinMode (temporizador5, OUTPUT);         // Pino 84;
+   pinMode (solenoide1Pin, OUTPUT);         // Pino 85;*/
 
   myGLCD.InitLCD(LANDSCAPE); // Orientação da imagem no LCD.
   clearScreen();             // Limpa o LCD.
@@ -178,17 +175,3 @@ void setup()
   clearScreen();    // Limpa o LCD.
   mainScreen(true); // Exibe a tela inicial no LCD.
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

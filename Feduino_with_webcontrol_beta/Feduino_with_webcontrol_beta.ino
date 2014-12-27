@@ -50,10 +50,9 @@
 // #define ENGLISH    // If this program is useful for you, make a donation to help with development. Paypal: fefegarcia_1@hotmail.com
 // #define FRENCH     // Si ce programme est utile pour vous, faire un don pour aider au développement. Paypal: fefegarcia_1@hotmail.com
 // #define GERMAN     // Wenn dieses Programm ist nützlich für Sie, eine Spende an mit Entwicklung zu helfen. Paypal: fefegarcia_1@hotmail.com
- #define ITALIAN    // Se questo programma è utile per voi, fare una donazione per aiutare con lo sviluppo. Paypal: fefegarcia_1@hotmail.com
-// #define PORTUGUESE   // Se este programa é útil para você, faça uma doação para ajudar no desenvolvimento. Paypal: fefegarcia_1@hotmail.com
+// #define ITALIAN    // Se questo programma è utile per voi, fare una donazione per aiutare con lo sviluppo. Paypal: fefegarcia_1@hotmail.com
+#define PORTUGUESE   // Se este programa é útil para você, faça uma doação para ajudar no desenvolvimento. Paypal: fefegarcia_1@hotmail.com
 // #define SPANISH    // Si este programa es útil para usted, hacer una donación para ayudar con el desarrollo. Paypal: fefegarcia_1@hotmail.com
-
 
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas ***********************************************************
@@ -168,22 +167,21 @@ byte sonda_associada_3_temp = 0;
 //********************** Funções do RTC ********************************************************************
 //*******************************************************************************************************
 //        (SDA,SCL) Indica em quais pinos o RTC está conectado.
-DS1307 rtc(20, 21);     // Comente esta linha para usar o Ferduino Mega 2560
-//DS1307 rtc(18, 19);  // Descomente esta linha para usar o Ferduino Mega 2560
+//DS1307 rtc(20, 21);     // Comente esta linha para usar o Ferduino Mega 2560
+DS1307 rtc(18, 19);  // Descomente esta linha para usar o Ferduino Mega 2560
 Time t_temp, t;
 
 //*******************************************************************************************************
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
 UTFT        myGLCD(ITDB32WD, 38,39,40,41);   // "ITDB32WD" é o modelo do LCD
-UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
-// UTouch      myTouch(7,6,5,4,3);           // Descomente esta linha para usar o Ferduino Mega 2560
+//UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
+UTouch      myTouch(7,6,5,4,3);           // Descomente esta linha para usar o Ferduino Mega 2560
 
 unsigned long previousMillis = 0;
-byte data[56];
 String day, ano; 
-int whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
-int dispScreen = 0;
+byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
+byte dispScreen = 0;
 
 //*****************************************************************************************
 //*********************** Parâmetros ******************************************************
@@ -207,8 +205,15 @@ float tempC = 0;               // Temperatura da água
 float setTempC = 25.5;         // Temperatura desejada
 float offTempC = 0.5;          // Variação permitida da temperatura
 float alarmTempC = 1;          // Variacao para acionar o alarme de temperatura da água
-int contador_temp = 0;
+byte contador_temp = 0;
 float temperatura_agua_temp = 0; // Temperatura temporária
+
+//*****************************************************************************************
+//************************ Variáveis temporárias de controle de temperatura da água *******
+//*****************************************************************************************
+float temp2beS;           
+float temp2beO;
+float temp2beA;
 
 //*****************************************************************************************
 //************************ Variáveis do controle do PH do aquário *************************
@@ -217,6 +222,13 @@ float PHA = 0;              // PH do aquário
 float setPHA = 0;           // PH desejado do aquário
 float offPHA = 0;           // Variaçãoo permitida do PH do aquário
 float alarmPHA = 0;         // Variação para acionar o alarme de ph do aquário
+
+//*****************************************************************************************
+//************************ Variáveis temporárias de controle do PH do aquário *************
+//*****************************************************************************************
+float PHA2beS;             
+float PHA2beO;
+float PHA2beA;
 
 //*****************************************************************************************
 //************************ Variáveis de controle de densidade *****************************
@@ -235,6 +247,13 @@ float offPHR = 0;           // Variacao permitida do PH do reator
 float alarmPHR = 0;         // Variacao para acionar o alarme do PH do reator de calcio
 
 //*****************************************************************************************
+//************************ Variáveis temporárias de controle do PH do reator de cálcio ****
+//*****************************************************************************************
+float PHR2beS;             
+float PHR2beO;
+float PHR2beA;
+
+//*****************************************************************************************
 //************************ Variáveis de controle da  ORP **********************************
 //*****************************************************************************************
 int ORP = 0;                // Valores ORP
@@ -243,11 +262,25 @@ byte offORP = 10;           // Variação permitida da ORP
 byte alarmORP = 10;         // Variacão para acionar o alarme da ORP
 
 //*****************************************************************************************
+//************************ Variáveis temporárias de controle da ORP ***********************
+//*****************************************************************************************
+int ORP2beS;
+byte ORP2beO;
+byte ORP2beA;
+
+//*****************************************************************************************
+//************************ Variáveis temporárias de controle da densidade *****************
+//*****************************************************************************************
+int DEN2beS;            
+byte DEN2beO;
+byte DEN2beA;
+
+//*****************************************************************************************
 //************************ Variáveis de controle de velocidade dos coolers ****************
 //*****************************************************************************************
 float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador 
 float HtempMax = 40.5;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
-int fanSpeed = 0;         // PWM dos coolers
+byte fanSpeed = 0;         // PWM dos coolers
 
 //*****************************************************************************************
 //************** Variáveis temperárias de controle de velocidade dos coolers **************
@@ -270,41 +303,6 @@ byte tempHR_t = 0;                     // Temperatura temporária para reduzir p
 byte potR_t = 0;                       // Porcentagem temporária a ser reduzida.
 boolean temperatura_alta = false;      // Sinaliza que a temperatura dos leds está alta.
 boolean temperatura_baixou = false;    // Sinaliza que a temperatura dos leds esteve alta.
-
-//*****************************************************************************************
-//************************ Variáveis temporárias de controle de temperatura da água *******
-//*****************************************************************************************
-float temp2beS;           
-float temp2beO;
-float temp2beA;
-
-//*****************************************************************************************
-//************************ Variáveis temporárias de controle do PH do reator de cálcio ****
-//*****************************************************************************************
-float PHR2beS;             
-float PHR2beO;
-float PHR2beA;
-
-//*****************************************************************************************
-//************************ Variáveis temporárias de controle do PH do aquário *************
-//*****************************************************************************************
-float PHA2beS;             
-float PHA2beO;
-float PHA2beA;
-
-//*****************************************************************************************
-//************************ Variáveis temporárias de controle da ORP ***********************
-//*****************************************************************************************
-int ORP2beS;               //orp temporaria
-byte ORP2beO;
-byte ORP2beA;
-
-//*****************************************************************************************
-//************************ Variáveis temporárias de controle da densidade *****************
-//*****************************************************************************************
-int DEN2beS;            
-byte DEN2beO;
-byte DEN2beA;
 
 //*****************************************************************************************
 //************************ Variáveis de controle da iluminação ****************************
@@ -383,13 +381,7 @@ byte fase = 0;
 byte hora = 0;
 byte minuto = 0;
 byte duracaomaximatpa = 0;
-byte segunda = 0;
-byte terca = 0;
-byte quarta = 0;
-byte quinta = 0;
-byte sexta = 0;
-byte sabado = 0;
-byte domingo = 0;
+byte semana_e[7]; // Index 0 = segunda-feira, 1 = terça-feira, 2 = quarta-feira, 3 = quinta-feira, 4 = sexta-feira, 5 = sábado, 6 = domingo.
 byte tpa = 0;                             // Controla os estágios da TPA automática
 byte tpa_status = 0x0; // 0 = false e 1 = true
 // bit 1 = Sinaliza TPA automática em andamento
@@ -404,13 +396,7 @@ unsigned long shiftedmillis = 0;       // Evita que uma tpa inicie próximo do m
 byte temp2hora;
 byte temp2minuto;
 byte temp2duracaomaximatpa;
-byte temp2segunda;
-byte temp2terca;
-byte temp2quarta;
-byte temp2quinta;
-byte temp2sexta;
-byte temp2sabado;
-byte temp2domingo;
+byte semana[7];
 
 //****************************************************************************************
 //*********************** Variáveis de controle das funções que utilizam o cartao SD *****
@@ -439,11 +425,11 @@ byte Status = 0x0;
 //*****************************************************************************************
 boolean Ethernet_Shield = true; // Altere para "false" caso não tenha um Ethernet Shield conectado ao Arduino.
 
-char *Username  = "fernandogarcia";   // Coloque aqui o nome de usuário cadastrado no joy-reef.com
-char *APIKEY = "ec0245b";           // Cole aqui a ApiKey gerada pelo joy-reef.com
+const char *Username  = "fernandogarcia";   // Coloque aqui o nome de usuário cadastrado no joy-reef.com
+const char *APIKEY = "ec0245b";           // Cole aqui a ApiKey gerada pelo joy-reef.com
 
-byte maxima_tentativa = 3;                // Número máximo de tentativas de autenticação.
-unsigned long intervalo_tentativa = 15;   // Tempo  de espera (em minutos) para novas tentativas.
+const byte maxima_tentativa = 3;                // Número máximo de tentativas de autenticação.
+const byte intervalo_tentativa = 15;   // Tempo  de espera (em minutos) para novas tentativas.
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
@@ -452,7 +438,6 @@ IPAddress gateway(192, 168, 0, 1);                  // Configure o "Gateway" con
 IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de rede conforme a sua rede local.
 EthernetServer server(5000);                        // Coloque aqui o número da porta configurada no seu roteador para redirecionamento.
                                                     // O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
-
 unsigned long intervalo = 0;
 char *inParse[25];
 boolean web_teste = false;
@@ -461,21 +446,20 @@ boolean web_dosage = false;
 unsigned long millis_dosagem = 0;
 unsigned long millis_enviar = 0;
 boolean web_calibracao = false;
-char *token = ":";
+const char *token = ":";
 char Auth1[50];
 unsigned long teste_led_millis = 0; 
-
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
 #define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
-//#define STAMPS_EZO     // Desomente esta linha para usar Stamps EZO
+//#define STAMPS_EZO     // Descomente esta linha para usar Stamps EZO
 boolean Stamps = false; // Altere para "false" caso não tenha ao menos um dos circuitos de PH, ORP e EC da Atlas Scientific.
 unsigned long millis_antes = 0;
-short ph1=0; // Y0
-short ph2=1; // Y1
-short orp=2; // Y2
-short ec=3;  // Y3
+const byte ph1 = 0; // Y0
+const byte ph2 = 1; // Y1
+const byte orp = 2; // Y2
+const byte ec = 3;  // Y3
 
 //*****************************************************************************************
 //************************** Variáveis da solicitação de senha ****************************
@@ -483,278 +467,63 @@ short ec=3;  // Y3
 char stCurrent[7]="";
 char limpar_senha [7] = "";
 byte stCurrentLen=0;
-char senha [7] = {'1','2','3','4','5','6','\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
+const char senha [7] = {'1','2','3','4','5','6','\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
 
 //*****************************************************************************************
 //************************** Variáveis dosadoras ******************************************
 //*****************************************************************************************
 boolean dosadoras = false; //Altere para "false" caso não tenha as dosadoras.
-char *arquivo[6] = {"HDP1.TXT","HDP2.TXT","HDP3.TXT","HDP4.TXT","HDP5.TXT","HDP6.TXT"};
-
-float fator_calib_dosadora_1 = 35.1; // Fator de calibração inicial 
-float fator_calib_dosadora_2 = 35.2; // Fator de calibração inicial  
-float fator_calib_dosadora_3 = 35.3; // Fator de calibração inicial  
-float fator_calib_dosadora_4 = 35.4; // Fator de calibração inicial  
-float fator_calib_dosadora_5 = 35.5; // Fator de calibração inicial  
-float fator_calib_dosadora_6 = 35.6; // Fator de calibração inicial  
-float dose_dosadora_1_personalizada = 100.0;
-float dose_dosadora_2_personalizada = 100.0;
-float dose_dosadora_3_personalizada = 100.0;
-float dose_dosadora_4_personalizada = 100.0;
-float dose_dosadora_5_personalizada = 100.0;
-float dose_dosadora_6_personalizada = 100.0;
+const char *arquivo[6] = {"HDP1.TXT","HDP2.TXT","HDP3.TXT","HDP4.TXT","HDP5.TXT","HDP6.TXT"};
 unsigned long tempo_dosagem = 0;
 unsigned long dosadoras_millis = 0;
-float dose_dosadora_1_manual = 20.0; // Dose pré definida.
-float dose_dosadora_2_manual = 20.0; // Dose pré definida.
-float dose_dosadora_3_manual = 20.0; // Dose pré definida.
-float dose_dosadora_4_manual = 20.0; // Dose pré definida.
-float dose_dosadora_5_manual = 20.0; // Dose pré definida.
-float dose_dosadora_6_manual = 20.0; // Dose pré definida.
 boolean modo_manual = false;
 boolean modo_personalizado = false;
 boolean modo_calibrar = false;
 byte dosadora_selecionada = 0; // 0 = false, 1 = true
-byte dosadora[6] = {dosadora1, dosadora2, dosadora3, dosadora4, dosadora5, dosadora6};
+byte dosadora[6] = {dosadora1, dosadora2, dosadora3, dosadora4, dosadora5, dosadora6}; // Index 0 = dosadora 1 , 1 = dosadora 2, 2 = dosadora 3, 3 = dosadora 4, 4 = dosadora 5, 5 = dosadora 6
 byte ativar_desativar = 0x0;     // 0 = false, 1 = true
-byte modo_personalizado_on_1 = 0;
-byte modo_personalizado_on_2 = 0;
-byte modo_personalizado_on_3 = 0;
-byte modo_personalizado_on_4 = 0;
-byte modo_personalizado_on_5 = 0;
-byte modo_personalizado_on_6 = 0;
-byte segunda_dosagem_personalizada_1 = 0;
-byte segunda_dosagem_personalizada_2 = 0;
-byte segunda_dosagem_personalizada_3 = 0;
-byte segunda_dosagem_personalizada_4 = 0;
-byte segunda_dosagem_personalizada_5 = 0;
-byte segunda_dosagem_personalizada_6 = 0;
-byte hora_inicial_dosagem_personalizada_1 = 0;
-byte minuto_inicial_dosagem_personalizada_1 = 0;
-byte hora_final_dosagem_personalizada_1 = 0;
-byte minuto_final_dosagem_personalizada_1 = 0;
-byte terca_dosagem_personalizada_1 = 0;
-byte quarta_dosagem_personalizada_1 = 0;
-byte quinta_dosagem_personalizada_1 = 0;
-byte sexta_dosagem_personalizada_1 = 0;
-byte sabado_dosagem_personalizada_1 = 0;
-byte domingo_dosagem_personalizada_1 = 0;
-byte hora_inicial_dosagem_personalizada_2 = 0;
-byte minuto_inicial_dosagem_personalizada_2 = 0;
-byte hora_final_dosagem_personalizada_2 = 0;
-byte minuto_final_dosagem_personalizada_2 = 0;
-byte terca_dosagem_personalizada_2 = 0;
-byte quarta_dosagem_personalizada_2 = 0;
-byte quinta_dosagem_personalizada_2 = 0;
-byte sexta_dosagem_personalizada_2 = 0;
-byte sabado_dosagem_personalizada_2 = 0;
-byte domingo_dosagem_personalizada_2 = 0;
-byte hora_inicial_dosagem_personalizada_3 = 0;
-byte minuto_inicial_dosagem_personalizada_3 = 0;
-byte hora_final_dosagem_personalizada_3 = 0;
-byte minuto_final_dosagem_personalizada_3 = 0;
-byte terca_dosagem_personalizada_3 = 0;
-byte quarta_dosagem_personalizada_3 = 0;
-byte quinta_dosagem_personalizada_3 = 0;
-byte sexta_dosagem_personalizada_3 = 0;
-byte sabado_dosagem_personalizada_3 = 0;
-byte domingo_dosagem_personalizada_3 = 0;
-byte quantidade_dose_dosadora_1_personalizada = 0;
-byte quantidade_dose_dosadora_2_personalizada = 0;
-byte quantidade_dose_dosadora_3_personalizada = 0;
-byte hora_inicial_dosagem_personalizada_4 = 0;
-byte minuto_inicial_dosagem_personalizada_4 = 0;
-byte hora_final_dosagem_personalizada_4 = 0;
-byte minuto_final_dosagem_personalizada_4 = 0;
-byte terca_dosagem_personalizada_4 = 0;
-byte quarta_dosagem_personalizada_4 = 0;
-byte quinta_dosagem_personalizada_4 = 0;
-byte sexta_dosagem_personalizada_4 = 0;
-byte sabado_dosagem_personalizada_4 = 0;
-byte domingo_dosagem_personalizada_4 = 0;
-byte hora_inicial_dosagem_personalizada_5 = 0;
-byte minuto_inicial_dosagem_personalizada_5 = 0;
-byte hora_final_dosagem_personalizada_5 = 0;
-byte minuto_final_dosagem_personalizada_5 = 0;
-byte terca_dosagem_personalizada_5 = 0;
-byte quarta_dosagem_personalizada_5 = 0;
-byte quinta_dosagem_personalizada_5 = 0;
-byte sexta_dosagem_personalizada_5 = 0;
-byte sabado_dosagem_personalizada_5 = 0;
-byte domingo_dosagem_personalizada_5 = 0;
-int hora_inicial_dosagem_personalizada_6 = 0;
-byte minuto_inicial_dosagem_personalizada_6 = 0;
-byte hora_final_dosagem_personalizada_6 = 0;
-byte minuto_final_dosagem_personalizada_6 = 0;
-byte terca_dosagem_personalizada_6 = 0;
-byte quarta_dosagem_personalizada_6 = 0;
-byte quinta_dosagem_personalizada_6 = 0;
-byte sexta_dosagem_personalizada_6 = 0;
-byte sabado_dosagem_personalizada_6 = 0;
-byte domingo_dosagem_personalizada_6 = 0;
-byte quantidade_dose_dosadora_4_personalizada = 0;
-byte quantidade_dose_dosadora_5_personalizada = 0;
-byte quantidade_dose_dosadora_6_personalizada = 0;
+byte hora_inicial_dosagem_personalizada_e[6];
+byte minuto_inicial_dosagem_personalizada_e[6];
+byte hora_final_dosagem_personalizada_e[6];
+byte minuto_final_dosagem_personalizada_e[6];
+byte segunda_dosagem_personalizada_e[6];
+byte terca_dosagem_personalizada_e[6];
+byte quarta_dosagem_personalizada_e[6]; 
+byte quinta_dosagem_personalizada_e[6];
+byte sexta_dosagem_personalizada_e[6];
+byte sabado_dosagem_personalizada_e[6];
+byte domingo_dosagem_personalizada_e[6];
+float dose_dosadora_personalizada_e[6] = {101, 102, 103, 104, 105, 106};
+byte quantidade_dose_dosadora_personalizada_e[6];
+byte modo_personalizado_on_e[6];
+float dose_dosadora_manual_e[6] = {20, 20, 20, 20, 20, 20};
+float fator_calib_dosadora_e[6] = {35.1, 35.2, 35.3, 35.4, 35.5, 35.6};
 
 //*****************************************************************************************
 //************************** Variáveis temporárias das dosadoras **************************
 //*****************************************************************************************
-byte  modo_personalizado_on_1_temp2;
-byte  modo_personalizado_on_2_temp2;
-byte  modo_personalizado_on_3_temp2;
-byte  modo_personalizado_on_4_temp2;
-byte  modo_personalizado_on_5_temp2;
-byte  modo_personalizado_on_6_temp2;
-float fator_calib_dosadora_1_temp2;
-float fator_calib_dosadora_2_temp2;
-float fator_calib_dosadora_3_temp2;
-float dose_dosadora_1_personalizada_temp2;
-float dose_dosadora_2_personalizada_temp2;
-float dose_dosadora_3_personalizada_temp2;
-byte temp2hora_inicial_dosagem_personalizada_1;
-byte temp2minuto_inicial_dosagem_personalizada_1;
-byte temp2hora_final_dosagem_personalizada_1;
-byte temp2minuto_final_dosagem_personalizada_1;
-byte temp2segunda_dosagem_personalizada_1;
-byte temp2terca_dosagem_personalizada_1;
-byte temp2quarta_dosagem_personalizada_1;
-byte temp2quinta_dosagem_personalizada_1;
-byte temp2sexta_dosagem_personalizada_1;
-byte temp2sabado_dosagem_personalizada_1;
-byte temp2domingo_dosagem_personalizada_1;
-byte temp2hora_inicial_dosagem_personalizada_2;
-byte temp2minuto_inicial_dosagem_personalizada_2;
-byte temp2hora_final_dosagem_personalizada_2;
-byte temp2minuto_final_dosagem_personalizada_2;
-byte temp2segunda_dosagem_personalizada_2;
-byte temp2terca_dosagem_personalizada_2;
-byte temp2quarta_dosagem_personalizada_2;
-byte temp2quinta_dosagem_personalizada_2;
-byte temp2sexta_dosagem_personalizada_2;
-byte temp2sabado_dosagem_personalizada_2;
-byte temp2domingo_dosagem_personalizada_2;
-byte temp2hora_inicial_dosagem_personalizada_3;
-byte temp2minuto_inicial_dosagem_personalizada_3;
-byte temp2hora_final_dosagem_personalizada_3;
-byte temp2minuto_final_dosagem_personalizada_3;
-byte temp2segunda_dosagem_personalizada_3;
-byte temp2terca_dosagem_personalizada_3;
-byte temp2quarta_dosagem_personalizada_3;
-byte temp2quinta_dosagem_personalizada_3;
-byte temp2sexta_dosagem_personalizada_3;
-byte temp2sabado_dosagem_personalizada_3;
-byte temp2domingo_dosagem_personalizada_3;
-byte quantidade_dose_dosadora_1_personalizada_temp2;
-byte quantidade_dose_dosadora_2_personalizada_temp2;
-byte quantidade_dose_dosadora_3_personalizada_temp2;
-float fator_calib_dosadora_4_temp2;
-float fator_calib_dosadora_5_temp2;
-float fator_calib_dosadora_6_temp2;
-float dose_dosadora_4_personalizada_temp2;
-float dose_dosadora_5_personalizada_temp2;
-float dose_dosadora_6_personalizada_temp2;
-byte temp2hora_inicial_dosagem_personalizada_4;
-byte temp2minuto_inicial_dosagem_personalizada_4;
-byte temp2hora_final_dosagem_personalizada_4;
-byte temp2minuto_final_dosagem_personalizada_4;
-byte temp2segunda_dosagem_personalizada_4;
-byte temp2terca_dosagem_personalizada_4;
-byte temp2quarta_dosagem_personalizada_4;
-byte temp2quinta_dosagem_personalizada_4;
-byte temp2sexta_dosagem_personalizada_4;
-byte temp2sabado_dosagem_personalizada_4;
-byte temp2domingo_dosagem_personalizada_4;
-byte temp2hora_inicial_dosagem_personalizada_5;
-byte temp2minuto_inicial_dosagem_personalizada_5;
-byte temp2hora_final_dosagem_personalizada_5;
-byte temp2minuto_final_dosagem_personalizada_5;
-byte temp2segunda_dosagem_personalizada_5;
-byte temp2terca_dosagem_personalizada_5;
-byte temp2quarta_dosagem_personalizada_5;
-byte temp2quinta_dosagem_personalizada_5;
-byte temp2sexta_dosagem_personalizada_5;
-byte temp2sabado_dosagem_personalizada_5;
-byte temp2domingo_dosagem_personalizada_5;
-byte temp2hora_inicial_dosagem_personalizada_6;
-byte temp2minuto_inicial_dosagem_personalizada_6;
-byte temp2hora_final_dosagem_personalizada_6;
-byte temp2minuto_final_dosagem_personalizada_6;
-byte temp2segunda_dosagem_personalizada_6;
-byte temp2terca_dosagem_personalizada_6;
-byte temp2quarta_dosagem_personalizada_6;
-byte temp2quinta_dosagem_personalizada_6;
-byte temp2sexta_dosagem_personalizada_6;
-byte temp2sabado_dosagem_personalizada_6;
-byte temp2domingo_dosagem_personalizada_6;
-byte quantidade_dose_dosadora_4_personalizada_temp2;
-byte quantidade_dose_dosadora_5_personalizada_temp2;
-byte quantidade_dose_dosadora_6_personalizada_temp2;
-
-byte hora_inicial_dosagem_personalizada[6] = {
-  temp2hora_inicial_dosagem_personalizada_1, temp2hora_inicial_dosagem_personalizada_2, temp2hora_inicial_dosagem_personalizada_3,
-  temp2hora_inicial_dosagem_personalizada_4, temp2hora_inicial_dosagem_personalizada_5, temp2hora_inicial_dosagem_personalizada_6};
-
-byte minuto_inicial_dosagem_personalizada[6] = {
-  temp2minuto_inicial_dosagem_personalizada_1, temp2minuto_inicial_dosagem_personalizada_1, temp2minuto_inicial_dosagem_personalizada_1,
-  temp2minuto_inicial_dosagem_personalizada_1, temp2minuto_inicial_dosagem_personalizada_1,temp2minuto_inicial_dosagem_personalizada_1};
-
-byte hora_final_dosagem_personalizada[6] = {
-  temp2hora_final_dosagem_personalizada_1, temp2hora_final_dosagem_personalizada_2, temp2hora_final_dosagem_personalizada_3,
-  temp2hora_final_dosagem_personalizada_4, temp2hora_final_dosagem_personalizada_5, temp2hora_final_dosagem_personalizada_6};
-
-byte minuto_final_dosagem_personalizada[6] = {
-  temp2minuto_final_dosagem_personalizada_1, temp2minuto_final_dosagem_personalizada_1, temp2minuto_final_dosagem_personalizada_1,
-  temp2minuto_final_dosagem_personalizada_1, temp2minuto_final_dosagem_personalizada_1,temp2minuto_final_dosagem_personalizada_1};
-
-byte segunda_dosagem_personalizada[6] = {
-  temp2segunda_dosagem_personalizada_1, temp2segunda_dosagem_personalizada_2, temp2segunda_dosagem_personalizada_3,
-  temp2segunda_dosagem_personalizada_4, temp2segunda_dosagem_personalizada_5, temp2segunda_dosagem_personalizada_6};
-
-byte terca_dosagem_personalizada[6] = {
-  temp2terca_dosagem_personalizada_1, temp2terca_dosagem_personalizada_2, temp2terca_dosagem_personalizada_3,
-  temp2terca_dosagem_personalizada_4, temp2terca_dosagem_personalizada_5, temp2terca_dosagem_personalizada_6};
-
-byte quarta_dosagem_personalizada[6] = {
-  temp2quarta_dosagem_personalizada_1, temp2quarta_dosagem_personalizada_2, temp2quarta_dosagem_personalizada_3,
-  temp2quarta_dosagem_personalizada_4, temp2quarta_dosagem_personalizada_5, temp2quarta_dosagem_personalizada_6}; 
-
-byte quinta_dosagem_personalizada[6] = {
-  temp2quinta_dosagem_personalizada_1, temp2quinta_dosagem_personalizada_2, temp2quinta_dosagem_personalizada_3,
-  temp2quinta_dosagem_personalizada_4, temp2quinta_dosagem_personalizada_5, temp2quinta_dosagem_personalizada_6};
-
-byte sexta_dosagem_personalizada[6] = {
-  temp2sexta_dosagem_personalizada_1, temp2sexta_dosagem_personalizada_2, temp2sexta_dosagem_personalizada_3,
-  temp2sexta_dosagem_personalizada_4, temp2sexta_dosagem_personalizada_5, temp2sexta_dosagem_personalizada_6};
-
-byte sabado_dosagem_personalizada[6] = {
-  temp2sabado_dosagem_personalizada_1, temp2sabado_dosagem_personalizada_2, temp2sabado_dosagem_personalizada_3,
-  temp2sabado_dosagem_personalizada_4, temp2sabado_dosagem_personalizada_5, temp2sabado_dosagem_personalizada_6};
-
-byte domingo_dosagem_personalizada[6] = {
-  temp2domingo_dosagem_personalizada_1, temp2domingo_dosagem_personalizada_2, temp2domingo_dosagem_personalizada_3,
-  temp2domingo_dosagem_personalizada_4, temp2domingo_dosagem_personalizada_5, temp2domingo_dosagem_personalizada_6};
-
-float dose_dosadora_personalizada[6] = {
-  dose_dosadora_1_personalizada_temp2, dose_dosadora_2_personalizada_temp2, dose_dosadora_3_personalizada_temp2,
-  dose_dosadora_4_personalizada_temp2, dose_dosadora_5_personalizada_temp2, dose_dosadora_6_personalizada_temp2};
-
-byte quantidade_dose_dosadora_personalizada[6] = {
-  quantidade_dose_dosadora_1_personalizada_temp2, quantidade_dose_dosadora_2_personalizada_temp2, quantidade_dose_dosadora_3_personalizada_temp2,
-  quantidade_dose_dosadora_4_personalizada_temp2, quantidade_dose_dosadora_5_personalizada_temp2, quantidade_dose_dosadora_6_personalizada_temp2};
-
-byte modo_personalizado_on[6] = {
-  modo_personalizado_on_1_temp2, modo_personalizado_on_1_temp2, modo_personalizado_on_1_temp2,
-  modo_personalizado_on_1_temp2, modo_personalizado_on_1_temp2, modo_personalizado_on_1_temp2};
-
-float dose_dosadora_manual[6] = {
-  dose_dosadora_1_manual, dose_dosadora_2_manual, dose_dosadora_3_manual, dose_dosadora_4_manual, dose_dosadora_5_manual, dose_dosadora_6_manual};
-
-float fator_calib_dosadora[6] = {
-  fator_calib_dosadora_1, fator_calib_dosadora_2, fator_calib_dosadora_3, fator_calib_dosadora_4, fator_calib_dosadora_5, fator_calib_dosadora_6};
+byte hora_inicial_dosagem_personalizada[6]; 
+byte minuto_inicial_dosagem_personalizada[6];
+byte hora_final_dosagem_personalizada[6];
+byte minuto_final_dosagem_personalizada[6];
+byte segunda_dosagem_personalizada[6];
+byte terca_dosagem_personalizada[6];
+byte quarta_dosagem_personalizada[6]; 
+byte quinta_dosagem_personalizada[6];
+byte sexta_dosagem_personalizada[6];
+byte sabado_dosagem_personalizada[6];
+byte domingo_dosagem_personalizada[6];
+float dose_dosadora_personalizada[6];
+byte quantidade_dose_dosadora_personalizada[6];
+byte modo_personalizado_on[6];
+float dose_dosadora_manual[6];
+float fator_calib_dosadora[6];
 //*****************************************************************************************
 //************************** Variáveis dos timers *****************************************
 //*****************************************************************************************
 byte temporizador = 0;
+byte temporizador_e[5] = {temporizador1, temporizador2, temporizador3, temporizador4, temporizador5};  // Index 0 = timer 1 , 1 = timer 2, 2 = timer 3, 3 = timer 4, 4 = timer 5
+
 boolean web_timer = false;
 byte temporizador_status = 0x0; // 1 = true e 0 = false
 //bit 1 = temporizador 1
@@ -768,71 +537,21 @@ byte temporizador_modificado = 0x0;
 //bit 3 = temporizador 3
 //bit 4 = temporizador 4
 //bit 5 = temporizador 5
-byte temporizador_1_ativado = 0;
-byte temporizador_2_ativado = 0;
-byte temporizador_3_ativado = 0;
-byte temporizador_4_ativado= 0;
-byte temporizador_5_ativado= 0;
-byte on1_minuto = 0;
-byte on1_hora = 0;
-byte on2_minuto = 0;
-byte on2_hora = 0;
-byte on3_minuto = 0;
-byte on3_hora = 0;
-byte on4_minuto = 0;
-byte on4_hora = 0;
-byte on5_minuto = 0;
-byte on5_hora = 0;
-byte off1_minuto = 0;
-byte off1_hora = 0;
-byte off2_minuto = 0;
-byte off2_hora = 0;
-byte off3_minuto = 0;
-byte off3_hora = 0;
-byte off4_minuto = 0;
-byte off4_hora = 0;
-byte off5_minuto = 0;
-byte off5_hora= 0;
+
+byte on_hora_e[5]; // Index 0 = timer 1 , 1 = timer 2, 2 = timer 3, 3 = timer 4, 4 = timer 5
+byte on_minuto_e[5];
+byte off_hora_e[5];
+byte off_minuto_e[5];
+byte temporizador_ativado_e[5];
 
 //*****************************************************************************************
-//************************** Variáveis temporárias dos timers *****************************
+//******************** Variáveis temporárias dos timers ***********************************
 //*****************************************************************************************
-byte on1_minuto_temp2;
-byte on1_hora_temp2;
-byte on2_minuto_temp2;
-byte on2_hora_temp2;
-byte on3_minuto_temp2;
-byte on3_hora_temp2;
-byte on4_minuto_temp2;
-byte on4_hora_temp2;
-byte on5_minuto_temp2;
-byte on5_hora_temp2;
-byte off1_minuto_temp2;
-byte off1_hora_temp2;
-byte off2_minuto_temp2;
-byte off2_hora_temp2;
-byte off3_minuto_temp2;
-byte off3_hora_temp2;
-byte off4_minuto_temp2;
-byte off4_hora_temp2;
-byte off5_minuto_temp2;
-byte off5_hora_temp2;
-byte temporizador_1_ativado_temp2;
-byte temporizador_2_ativado_temp2;
-byte temporizador_3_ativado_temp2;
-byte temporizador_4_ativado_temp2;
-byte temporizador_5_ativado_temp2;
-
-byte on_hora[5] = {
-  on1_hora_temp2, on2_hora_temp2, on3_hora_temp2, on4_hora_temp2, on5_hora_temp2};
-byte on_minuto[5] = {
-  on1_minuto_temp2, on2_minuto_temp2, on3_minuto_temp2, on4_minuto_temp2, on5_minuto_temp2};
-byte off_hora[5] = {
-  off1_hora_temp2, off2_hora_temp2, off3_hora_temp2, off4_hora_temp2, off5_hora_temp2};
-byte off_minuto[5] = {
-  off1_minuto_temp2, off2_minuto_temp2, off3_minuto_temp2, off4_minuto_temp2, off5_minuto_temp2};
-byte temporizador_ativado[5] = {
-  temporizador_1_ativado_temp2, temporizador_2_ativado_temp2, temporizador_3_ativado_temp2, temporizador_4_ativado_temp2, temporizador_5_ativado_temp2};
+byte on_hora[5];
+byte on_minuto[5];
+byte off_hora[5];
+byte off_minuto[5];
+byte temporizador_ativado[5];
 
 //*****************************************************************************************
 //************************** Variáveis do PCF8575 *****************************************
@@ -860,10 +579,10 @@ byte consumo = 0;
 const byte SD_CARD = 0; 
 const byte ETHER_CARD = 1;
 const byte RFM = 2;
-const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
-//const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560           
+//const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
+const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560           
 const byte SelectSlave_ETH = 53;
-const int ChipSelect_RFM = A15;
+const byte ChipSelect_RFM = 69; // A15
 
 //*****************************************************************************************
 //************************* Variáveis da temperatura ambiente *****************************
@@ -984,5 +703,3 @@ char* tabela_strings[] PROGMEM =
   string4, string5, string6, string7,
   string8, string9, string10, string11
 };
-
-
