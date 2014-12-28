@@ -48,13 +48,13 @@ void setup()
   pinMode(ChipSelect_RFM, OUTPUT);         // Pino A15;
 
   //**************** PCF8575 ****************
-  /*
-  pinMode (temporizador1, OUTPUT);         // Pino 80;
+  
+   pinMode (temporizador1, OUTPUT);         // Pino 80;
    pinMode (temporizador2, OUTPUT);         // Pino 81;
    pinMode (temporizador3, OUTPUT);         // Pino 82;
    pinMode (temporizador4, OUTPUT);         // Pino 83;
    pinMode (temporizador5, OUTPUT);         // Pino 84;
-   pinMode (solenoide1Pin, OUTPUT);         // Pino 85;*/
+   pinMode (solenoide1Pin, OUTPUT);         // Pino 85;
 
   myGLCD.InitLCD(LANDSCAPE); // Orientação da imagem no LCD.
   clearScreen();             // Limpa o LCD.
