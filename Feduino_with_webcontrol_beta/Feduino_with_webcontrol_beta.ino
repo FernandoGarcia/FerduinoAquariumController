@@ -280,7 +280,7 @@ byte DEN2beA;
 //*****************************************************************************************
 float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador 
 float HtempMax = 40.5;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
-byte fanSpeed = 0;         // PWM dos coolers
+int fanSpeed = 0;         // PWM dos coolers
 
 //*****************************************************************************************
 //************** Variáveis temperárias de controle de velocidade dos coolers **************
