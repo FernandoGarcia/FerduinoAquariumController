@@ -2387,7 +2387,7 @@ void processMyTouch()
           strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[17])));
           printButton_verde(buffer, iniciaR[0], iniciaR[1], iniciaR[2], iniciaR[3]);
 
-          tempo_dosagem = map ((dose_dosadora_manual[dosadora_selecionada]*2), 0, fator_calib_dosadora[dosadora_selecionada], 0, 60000);
+          tempo_dosagem = map ((dose_dosadora_manual[dosadora_selecionada]*2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000);
           tempo_dosagem /= 2;                 
           delay(10000);
           digitalWrite(dosadora[dosadora_selecionada], HIGH);

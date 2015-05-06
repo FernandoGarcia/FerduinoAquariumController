@@ -580,7 +580,7 @@ void requestAction(byte ID)
   case 10:// dosage manual
     // send (case, dosing pump selected, dose)
     dosadora_selecionada = atoi(inParse[1]);
-    tempo_dosagem = map ((atof(inParse[2])*2), 0, fator_calib_dosadora[dosadora_selecionada], 0, 60000);
+    tempo_dosagem = map ((atof(inParse[2])*2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000);
     tempo_dosagem /= 2;
     web_dosage = true;
     client.print("{\"wait\":" + String((tempo_dosagem / 1000) + 10) + "}");
