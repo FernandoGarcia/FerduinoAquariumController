@@ -684,7 +684,7 @@ byte *cor_canal[5] = {cor_canal1, cor_canal2, cor_canal3, cor_canal4, cor_canal5
 //*****************************************************************************************
 //************************** Textos *******************************************************
 //*****************************************************************************************
-prog_char string0[] PROGMEM = "POST /api/temp HTTP/1.1";
+prog_char string0[] PROGMEM = "POST /ferduino/api/temp HTTP/1.1";
 prog_char string1[] PROGMEM = "Host: www.joy-reef.com";
 prog_char string2[] PROGMEM = "Authorization: Basic ";
 prog_char string3[] PROGMEM = "Cache-Control: no-cache";

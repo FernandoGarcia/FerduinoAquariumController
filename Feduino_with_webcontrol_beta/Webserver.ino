@@ -7,7 +7,7 @@ void processRequest()
   byte index = 0;
   EthernetClient client = server.available();
   uint8_t remoteIP[4];
-  IPAddress joyreef(178, 255, 75, 60);
+  IPAddress joyreef(5, 249, 155, 195);
   client.getRemoteIP(remoteIP);
 
   if (client) 
@@ -842,7 +842,7 @@ void enviar_dados()
 {
   char dados[6];
   EthernetClient client;
-  IPAddress joyreef(178, 255, 75, 58);
+  IPAddress joyreef(5, 249, 155, 195);
   String OneString;
   int ContentLength = 0;
 
