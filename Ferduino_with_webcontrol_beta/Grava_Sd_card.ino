@@ -14,7 +14,7 @@ void logtempgraf() //Grava dados no SD CARD para gerar  grafico de temperatura.
 
   selecionar_SPI(SD_CARD);
 
-  if(file.open(&root, "LOGTDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
+  if(file.open("LOGTDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
     if ((tempC<=1.0) || (tempC>99.9))
     {
@@ -33,10 +33,9 @@ void logtempgraf() //Grava dados no SD CARD para gerar  grafico de temperatura.
 
   if ((t.hour == 23) && (t.min > 58))
   {
-    if(file.open(&root, "LOGTDIA.TXT", O_WRITE))
+    if(file.open("LOGTDIA.TXT", O_WRITE))
     {
       file.remove();
-      file.close();
     }
   }
 }
@@ -49,8 +48,8 @@ void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquári
   }
 
   selecionar_SPI(SD_CARD);
-  
-  if(file.open(&root, "LOGPDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
+
+  if(file.open("LOGPDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
     if((PHA < 1.00) || (PHA > 9.99))
     {
@@ -68,10 +67,9 @@ void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquári
   }
   if ((t.hour == 23) && (t.min > 58))
   {
-    if(file.open(&root, "LOGPDIA.TXT", O_WRITE))
+    if(file.open("LOGPDIA.TXT", O_WRITE))
     {
       file.remove();
-      file.close();
     }
   } 
 }
@@ -84,8 +82,8 @@ void logphrgraf() //Grava dados no SD CARD para gerar  gráfico de PH do reator 
   }
 
   selecionar_SPI(SD_CARD);
-  
-  if(file.open(&root, "LOGRDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
+
+  if(file.open("LOGRDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
     if((PHR < 1.00) || (PHR > 9.99))
     {
@@ -104,10 +102,9 @@ void logphrgraf() //Grava dados no SD CARD para gerar  gráfico de PH do reator 
 
   if ((t.hour == 23) && (t.min > 58))
   {
-    if(file.open(&root, "LOGRDIA.TXT", O_WRITE))
+    if(file.open("LOGRDIA.TXT", O_WRITE))
     {
       file.remove();
-      file.close();
     }
   }
 }
@@ -120,8 +117,8 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
   }
 
   selecionar_SPI(SD_CARD);
-  
-  if(file.open(&root, "LOGODIA.TXT", O_CREAT | O_APPEND | O_WRITE))
+
+  if(file.open("LOGODIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {   
     if ((ORP<=100) || (tempC>999))
     {
@@ -140,10 +137,9 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
 
   if ((t.hour == 23) && (t.min > 58))
   {
-    if(file.open(&root, "LOGODIA.TXT", O_WRITE))
+    if(file.open("LOGODIA.TXT", O_WRITE))
     {
       file.remove();
-      file.close();
     }
   } 
 }
@@ -156,8 +152,8 @@ void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
   }
 
   selecionar_SPI(SD_CARD);
-  
-  if(file.open(&root, "LOGDDIA.TXT", O_CREAT | O_APPEND | O_WRITE))   
+
+  if(file.open("LOGDDIA.TXT", O_CREAT | O_APPEND | O_WRITE))   
   {
     if( (DEN<1000) || (DEN>9999))
     {
@@ -172,15 +168,14 @@ void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
       file.write((uint8_t*)"\0", 1);
       writeCRLF(file);
     }
+    file.close();
   }
-  file.close();
 
   if ((t.hour == 23) && (t.min > 58))
   {
-    if(file.open(&root, "LOGDDIA.TXT", O_WRITE))
+    if(file.open("LOGDDIA.TXT", O_WRITE))
     {
       file.remove();
-      file.close();
     }
   } 
 }
@@ -194,31 +189,35 @@ void check_arquivo_temp_agua()
   byte k = EEPROM.read(688);
 
   selecionar_SPI(SD_CARD);
-  
+
   if(k != t.date)
   {
-    file.open(&root, "LOGTDIA.TXT", O_WRITE);
-    file.remove();
-  }
-
-  file.open(&root, "LOGTDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    if(strlen(buf) == 5)
+    if(file.open("LOGTDIA.TXT", O_WRITE))
     {
-      contador++;
+      file.remove();
     }
   }
-  if(contador < NumMins(t.hour, t.min))
+
+  if(file.open("LOGTDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE))
   {
-    for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      file.print("00.00");
-      file.write((uint8_t*)"\0", 1);
-      writeCRLF(file);
-    } 
+      if(strlen(buf) == 5)
+      {
+        contador++;
+      }
+    }
+    if(contador < NumMins(t.hour, t.min))
+    {
+      for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+      {
+        file.print("00.00");
+        file.write((uint8_t*)"\0", 1);
+        writeCRLF(file);
+      } 
+    }
+    file.close();
   }
-  file.close();
 }
 
 void check_arquivo_ph_agua()
@@ -230,31 +229,35 @@ void check_arquivo_ph_agua()
   byte k = EEPROM.read(689);
 
   selecionar_SPI(SD_CARD);
-  
+
   if(k != t.date)
   {
-    file.open(&root, "LOGPDIA.TXT", O_WRITE);
-    file.remove();
-  }
-
-  file.open(&root, "LOGPDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    if(strlen(buf) == 4)
+    if(file.open("LOGPDIA.TXT", O_WRITE))
     {
-      contador++;
+      file.remove();
     }
   }
-  if(contador < NumMins(t.hour, t.min))
+
+  if(file.open("LOGPDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE))
   {
-    for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      file.print("0.00");
-      file.write((uint8_t*)"\0", 1);
-      writeCRLF(file);
-    } 
+      if(strlen(buf) == 4)
+      {
+        contador++;
+      }
+    }
+    if(contador < NumMins(t.hour, t.min))
+    {
+      for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+      {
+        file.print("0.00");
+        file.write((uint8_t*)"\0", 1);
+        writeCRLF(file);
+      } 
+    }
+    file.close();
   }
-  file.close();
 }
 
 void check_arquivo_ph_reator()
@@ -266,31 +269,35 @@ void check_arquivo_ph_reator()
   byte k = EEPROM.read(690);
 
   selecionar_SPI(SD_CARD);
-  
+
   if(k != t.date)
   {
-    file.open(&root, "LOGRDIA.TXT", O_WRITE);
-    file.remove();
-  }
-
-  file.open(&root, "LOGRDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    if(strlen(buf) == 4)
+    if(file.open("LOGRDIA.TXT", O_WRITE))
     {
-      contador++;
+      file.remove();
     }
   }
-  if(contador < NumMins(t.hour, t.min))
+
+  if(file.open("LOGRDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE))
   {
-    for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      file.print("0.00");
-      file.write((uint8_t*)"\0", 1);
-      writeCRLF(file);
-    } 
+      if(strlen(buf) == 4)
+      {
+        contador++;
+      }
+    }
+    if(contador < NumMins(t.hour, t.min))
+    {
+      for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+      {
+        file.print("0.00");
+        file.write((uint8_t*)"\0", 1);
+        writeCRLF(file);
+      } 
+    }
+    file.close();
   }
-  file.close();
 }
 
 void check_arquivo_orp()
@@ -302,31 +309,35 @@ void check_arquivo_orp()
   byte k = EEPROM.read(691);
 
   selecionar_SPI(SD_CARD);
-  
+
   if(k != t.date)
   {
-    file.open(&root, "LOGODIA.TXT", O_WRITE);
-    file.remove();
-  }
-
-  file.open(&root, "LOGODIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    if(strlen(buf) == 3)
+    if(file.open("LOGODIA.TXT", O_WRITE))
     {
-      contador++;
+      file.remove();
     }
   }
-  if(contador < NumMins(t.hour, t.min))
+
+  if(file.open("LOGODIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE))
   {
-    for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      file.print("000");
-      file.write((uint8_t*)"\0", 1);
-      writeCRLF(file);
-    } 
+      if(strlen(buf) == 3)
+      {
+        contador++;
+      }
+    }
+    if(contador < NumMins(t.hour, t.min))
+    {
+      for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+      {
+        file.print("000");
+        file.write((uint8_t*)"\0", 1);
+        writeCRLF(file);
+      } 
+    }
+    file.close();
   }
-  file.close();
 }
 
 void check_arquivo_densidade()
@@ -338,30 +349,35 @@ void check_arquivo_densidade()
   byte k = EEPROM.read(692);
 
   selecionar_SPI(SD_CARD);
-  
+
   if(k != t.date)
   {
-    file.open(&root, "LOGDDIA.TXT", O_WRITE);
-    file.remove();
-  }
-
-  file.open(&root, "LOGDDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE);
-  while ((n = file.read(buf, sizeof(buf))) > 0)
-  {
-    if(strlen(buf) == 4)
+    if(file.open("LOGDDIA.TXT", O_WRITE))
     {
-      contador++;
+      file.remove();
     }
   }
 
-  if(contador < NumMins(t.hour, t.min))
+  if(file.open("LOGDDIA.TXT", O_CREAT | O_READ | O_APPEND | O_WRITE))
   {
-    for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+    while ((n = file.read(buf, sizeof(buf))) > 0)
     {
-      file.print("0000");
-      file.write((uint8_t*)"\0", 1);
-      writeCRLF(file);
-    } 
+      if(strlen(buf) == 4)
+      {
+        contador++;
+      }
+    }
+
+    if(contador < NumMins(t.hour, t.min))
+    {
+      for(int i = contador; i < NumMins(t.hour, t.min) - 1; i++)
+      {
+        file.print("0000");
+        file.write((uint8_t*)"\0", 1);
+        writeCRLF(file);
+      } 
+    }
+    file.close();
   }
-  file.close();
 }
+

@@ -21,14 +21,14 @@
 //******* Dúvidas, sugestões e elogios: info@ferduino.com **********************************************************************************************
 //******************************************************************************************************************************************************
 
-// Este programa é compatível com a IDE 1.0.6
+// Este programa é compatível com a IDE 1.6.7 e 1.0.6
 
 // As funções para controle via web foram implementadas graças à preciosa ajuda do Simone Grimaldi e Danilo Castellano.
 
 //---------------------------------------------------------
 
 // Este programa foi desenvolvido com base na versão Stilo 2.1
-// Disponível nesta página http://code.google.com/p/stilo/ 
+// Disponível nesta página http://code.google.com/p/stilo/
 
 //-----------------------------------------------------------
 // Este programa é software livre; Você pode redistribuí-lo e/ou
@@ -47,33 +47,102 @@
 // Descomente a linha correspondente ao seu idioma.
 // Uncomment the line corresponding to your language.
 
-// #define ENGLISH    // If this program is useful for you, make a donation to help with development. Paypal: fefegarcia_1@hotmail.com
-// #define FRENCH     // Si ce programme est utile pour vous, faire un don pour aider au développement. Paypal: fefegarcia_1@hotmail.com
-// #define GERMAN     // Wenn dieses Programm ist nützlich für Sie, eine Spende an mit Entwicklung zu helfen. Paypal: fefegarcia_1@hotmail.com
-// #define ITALIAN    // Se questo programma è utile per voi, fare una donazione per aiutare con lo sviluppo. Paypal: fefegarcia_1@hotmail.com
+//#define ENGLISH    // If this program is useful for you, make a donation to help with development. Paypal: fefegarcia_1@hotmail.com
+//#define FRENCH     // Si ce programme est utile pour vous, faire un don pour aider au développement. Paypal: fefegarcia_1@hotmail.com
+//#define GERMAN     // Wenn dieses Programm ist nützlich für Sie, eine Spende an mit Entwicklung zu helfen. Paypal: fefegarcia_1@hotmail.com
+//#define ITALIAN    // Se questo programma vi è utile, fate una donazione per aiutare con il suo sviluppo. Paypal: fefegarcia_1@hotmail.com
 #define PORTUGUESE   // Se este programa é útil para você, faça uma doação para ajudar no desenvolvimento. Paypal: fefegarcia_1@hotmail.com
-// #define SPANISH    // Si este programa es útil para usted, hacer una donación para ayudar con el desarrollo. Paypal: fefegarcia_1@hotmail.com
+//#define SPANISH    // Si este programa es útil para usted, hacer una donación para ayudar con el desarrollo. Paypal: fefegarcia_1@hotmail.com
 
 //*************************************************************************************************
-//*************** Bibliotecas utilizadas ***********************************************************
+//**************************** ATIVAR OU DESATIVAR FUNÇÕES  ***************************************
+//**************************** ENABLE OR DISABLE FUNCTIONS ****************************************
 //*************************************************************************************************
-#include <UTFT.h>    
-#include <UTouch.h> 
+// Comment the line below to disable watchdog
+//#define WATCHDOG // Reseta o controlador se a função "wdt_reset()" não for executada em até 8 segundos.
+// Essa função minimiza problemas com o travamento do código mas, pode apresentar incompatibilidades com alguns bootloaders
+
+// Comment the line below to disable ethernet functions
+#define ETHERNET_SHIELD // Comente esta linha para desativar as funções do ethernet shield.
+
+// Comment this two lines below if have not stamps
+// Comente as duas linhas abaixo se não tiver stamps
+#define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
+//#define STAMPS_EZO     // Descomente esta linha para usar Stamps EZO
+
+// Comment this two lines below if have not RFM12B wireless transceiver
+//#define RFM12B_LED_CONTROL   // Descomente esta linha para controlar os LEDs via RF
+//#define RFM12B_RELAY_CONTROL // Descomente esta linha  para controlar os relês via RF
+
+
+// Comment the line below if have not a PCF8575
+#define USE_PCF8575 // Descomente essa linha para usar um PCF8575
+
+// Comente esta linha para desativar as mensagens no monitor serial ou para usar os pinos 0 e 1 (RX e TX) como OUTPUT
+// Comment this line to disable the messages on serial monitor or to use pins 0 and 1 (RX e TX) as OUTPUT
+#define DEBUG  // Comente esta linha para usar os pinos 0 e 1 para controle dos coolers e buzzer.
+
+// Comment the line below to disable this function
+// Comente a linha abaixo para desativar esta função
+//#define DISABLE_SKIMMER // Desliga o skimmer caso o nível no compartimento esteja alto.
+// Evita transbordamento do skimmer caso a bomba de retorno seja desligada
+
+// Comment this line to enable password screen
+// Comente esta linha para ativar a solicitação de senha.
+//#define SKIP_PASSWORD_SCREEN // comente esta linha se deseja solicitar uma senha após o primeiro toque no TFT
+
+// Comment this line to use static IP.
+// Comente esta linha para usar IP estático
+//#define USE_DHCP // Descomente esta linha para usar DHCP
+
+// Uncomment the line below to use screensaver
+// Descomente a linha abaixo para ativar o protetor de tela
+//#define USE_SCREENSAVER
+
+// Comment the line below to disable night mode for stream pumps
+// Comente a linha abaixo para desativar o modo noturno para bombas de circulação.
+#define NIGHT_MODE // Reduz a potência das bombas de circulação quando os LEDs estão desligados.
+
+// Uncomment the line below to use temperature in Fahrenheit.
+//#define USE_FAHRENHEIT // Descomente esta linha para usar temperatura em Fahrenheit 
+ 
+//*************************************************************************************************
+//*************** Bibliotecas utilizadas **********************************************************
+//*************************************************************************************************
+#include <UTFT.h>
+#include <UTouch.h>
 #include <Wire.h>
 #include <EEPROM.h>
 #include <writeAnything.h>
-#include <DS1307henning.h> // Comente esta linha para usar a versão em inglês.
-//#include <DS1307.h>      // Descomente esta linha para usar a versão em inglês.
+#include <DS1307_HENNING.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <SdFat.h>
 #include <SdFatUtil.h>
 #include <avr/pgmspace.h>
-//#include <PCF8575.h>
-//#include <JeeLib.h>
+
+#ifdef USE_PCF8575 // Do not change this line!
+#include <PCF8575.h>
+#endif // Do not change this line!
+
+#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line!
+#include <RFM12B.h>
+#endif // Do not change this line!
+
+#ifdef ETHERNET_SHIELD // Do not change this line!
 #include <Base64.h>
-#include <SPI.h> 
+#include <SPI.h>
 #include <Ethernet.h>
+#endif // Do not change this line!
+
+#ifdef WATCHDOG // Do not change this line!
+#include <avr/wdt.h>
+#endif // Do not change this line!
+
+//*************************************************************************************************
+//************************* Atualizações **********************************************************
+//*************************************************************************************************
+const char lastUpdate[] = "07/01/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -83,6 +152,10 @@
 extern uint8_t RusFont1[];    // Declara que fontes vamos usar
 extern uint8_t BigFont[];     // Declara que fontes vamos usar
 char buffer[50];
+
+#ifdef USE_SCREENSAVER
+extern uint8_t SevenSegNumFontPlus[];
+#endif
 
 //****************************************************************************************************
 //****************** Define funções dos pinos digitais e analógicos **********************************
@@ -110,8 +183,24 @@ const byte chillerPin = 43;     // Pino que liga o chiller
 const byte ledPinMoon = 44;     // Pino que liga os leds da luz noturna
 const byte wavemaker1 = 45;     // Pino que controla o wavemaker 1
 const byte wavemaker2 = 46;     // Pino que controla o wavemaker 2
+
+//***************************************************************************************************
+//***************************************************************************************************
+// Os 2 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
+// Observe que estes pinos também estão declarados na seção PCF8575.
+// Caso esteja usando um PCF8575 os pinos 47 e 48 estarão livres para ser usados em outras funções
+
+// The 2 pins below will be controlled for PCF8575 if you have an installed.
+// Notice that this pins also are declared in PCF8575 section.
+// when using a PCF8575 the pins 47 and 48 will be free to be used in others functions.
+//***************************************************************************************************
+#ifndef USE_PCF8575 // Do not change this line!
 const byte ozonizadorPin = 47;  // Pino que liga o ozonizador
 const byte reatorPin = 48;      // Pino que liga o CO2 do reator.
+#endif // Do not change this line!
+//***************************************************************************************************
+//***************************************************************************************************
+
 const byte sensoresPin = 49;    // Pino que lê os sensores de temperatura
 // Pinos 50, 51 e 52 reservados para comunicação SPI
 // Pino 53 reservado para "select slave do ethernet shield.
@@ -121,9 +210,25 @@ const byte sensor3 = 56;   // A2;      // Pino analógico que verifica se há te
 const byte sensor4 = 57;   // A3;      // Pino analógico que verifica se há tensão na bóia inferior do reservatório.
 const byte sensor5 = 58;   // A4;      // Pino analógico que verifica o nível do reef.
 const byte sensor6 = 59;   // A5;      // Pino analógico que verifica o nível do fish only.
-const byte bomba1Pin = 60; // A6;      // Bomba que tira água da quarentena.
-const byte bomba2Pin = 61; // A7;      // Bomba que tira água do sump.
-const byte bomba3Pin = 62; // A8;      // Bomba que coloca água no sump.
+
+//***************************************************************************************************
+//***************************************************************************************************
+// Os 3 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
+// Observe que estes pinos também estão declarados na seção PCF8575.
+// Caso esteja usando um PCF8575 os pinos 60, 61 e 62 estarão livres para ser usados em outras funções
+
+// The 3 pins below will be controlled for PCF8575 if you have an installed.
+// Notice that this pins also are declared in PCF8575 section.
+// when using a PCF8575 the pins 60, 61 and 62 will be free to be used in others functions.
+//***************************************************************************************************
+#ifndef USE_PCF8575 // Do not change this line! 
+const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
+const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
+const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
+#endif // Do not change this line!
+//***************************************************************************************************
+//***************************************************************************************************
+
 const byte dosadora1 = 63; // A9;      // Bomba dosadora 1
 const byte dosadora2 = 64; // A10;     // Bomba dosadora 2
 const byte dosadora3 = 65; // A11;     // Bomba dosadora 3
@@ -132,14 +237,45 @@ const byte dosadora5 = 67; // A13;     // Bomba dosadora 5
 const byte dosadora6 = 68; // A14;     // Bomba dosadora 6
 // Pino 69 (A15) reservado para SS do RFM12B
 
-///**************** PCF8575 **********************************
-const byte temporizador1 = 80;       // P0       // Pino que liga o timer 1.
-const byte temporizador2 = 81;       // P1       // Pino que liga o timer 2.
-const byte temporizador3 = 82;       // P2       // Pino que liga o timer 3.
-const byte temporizador4 = 83;       // P3       // Pino que liga o timer 4.
-const byte temporizador5 = 84;       // P4       // Pino que liga o timer 5.
-const byte solenoide1Pin = 85;       // P5       // Liga a reposicao de água doce.
+//***************************************************************************************************
+//***************************************************************************************************
+// Os 7 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
+// Observe que estes pinos também estão declarados na seção PCF8575.
 
+// The 7 pins below will be controlled for PCF8575 if you have an installed.
+// Notice that this pins also are declared in PCF8575 section.
+//***************************************************************************************************
+#ifndef USE_PCF8575 // Do not change this line!
+const byte temporizador1 = 80;           // Pino que liga o timer 1.
+const byte temporizador2 = 81;           // Pino que liga o timer 2.
+const byte temporizador3 = 82;           // Pino que liga o timer 3.
+const byte temporizador4 = 83;           // Pino que liga o timer 4.
+const byte temporizador5 = 84;           // Pino que liga o timer 5.
+const byte solenoide1Pin = 85;           // Liga a reposicao de água doce.
+const byte alimentadorPin = 86;          // Pino que controla o alimentador automático.
+const byte skimmerPin = 87;              // Pino que controla o skimmer
+#endif // Do not change this line!
+
+//****************************************************************************************************
+///************************************** PCF8575 ****************************************************
+//****************************************************************************************************
+// Do not change this part if you have not a PCF8575 installed.
+// Não altere esta parte se você não tem um PCF8575 instalado.
+#ifdef USE_PCF8575 // Do not change this line!
+const byte ozonizadorPin = 0;       // P0       // Pino que liga o ozonizador
+const byte reatorPin = 1;           // P1       // Pino que liga o CO2 do reator.
+const byte bomba1Pin = 2;           // P2       // Bomba que tira água da quarentena.
+const byte bomba2Pin = 3;           // P3       // Bomba que tira água do sump.
+const byte bomba3Pin = 4;           // P4       // Bomba que coloca água no sump.
+const byte temporizador1 = 5;       // P5       // Pino que liga o timer 1.
+const byte temporizador2 = 6;       // P6       // Pino que liga o timer 2.
+const byte temporizador3 = 7;       // P7       // Pino que liga o timer 3.
+const byte temporizador4 = 8;       // P8       // Pino que liga o timer 4.
+const byte temporizador5 = 9;       // P9       // Pino que liga o timer 5.
+const byte solenoide1Pin = 10;      // P10      // Liga a reposicao de água doce.
+const byte alimentadorPin = 11;     // P11      // Pino que controla o alimentador automático.
+const byte skimmerPin = 12;         // P12      // Pino que controla o skimmer
+#endif // Do not change this line!
 //****************************************************************************************************
 //***************** Variáveis dos sensores de temperatura ********************************************
 //****************************************************************************************************
@@ -174,21 +310,26 @@ Time t_temp, t;
 //*******************************************************************************************************
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
-UTFT        myGLCD(ITDB32WD, 38,39,40,41);   // "ITDB32WD" é o modelo do LCD
+UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 //UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
-UTouch      myTouch(7,6,5,4,3);           // Descomente esta linha para usar o Ferduino Mega 2560
+UTouch      myTouch(7, 6, 5, 4, 3);       // Descomente esta linha para usar o Ferduino Mega 2560
 
 unsigned long previousMillis = 0;
-String day, ano; 
+String day, ano;
 byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
 byte dispScreen = 0;
 
+#ifdef USE_SCREENSAVER
+unsigned long previousMillis_2 = 0;
+int interval = 60; // In seconds
+boolean firstTime = true;
+#endif
 //*****************************************************************************************
 //*********************** Parâmetros ******************************************************
 //*****************************************************************************************
 byte status_parametros = 0x0;
 //bit 0;   // Sinaliza que o chiller está ligado / desligado
-//bit 1;   // Sinaliza que o aquecedor está ligado / desligado  
+//bit 1;   // Sinaliza que o aquecedor está ligado / desligado
 //bit 2;   // Sinaliza que o alarme de temperatura está ativo
 //bit 3;   // Sinaliza que o PH do aquário esta fora do especificado
 //bit 4;   // Sinaliza que a densidade esta fora do especificado
@@ -211,7 +352,7 @@ float temperatura_agua_temp = 0; // Temperatura temporária
 //*****************************************************************************************
 //************************ Variáveis temporárias de controle de temperatura da água *******
 //*****************************************************************************************
-float temp2beS;           
+float temp2beS;
 float temp2beO;
 float temp2beA;
 
@@ -226,7 +367,7 @@ float alarmPHA = 0;         // Variação para acionar o alarme de ph do aquári
 //*****************************************************************************************
 //************************ Variáveis temporárias de controle do PH do aquário *************
 //*****************************************************************************************
-float PHA2beS;             
+float PHA2beS;
 float PHA2beO;
 float PHA2beA;
 
@@ -249,7 +390,7 @@ float alarmPHR = 0;         // Variacao para acionar o alarme do PH do reator de
 //*****************************************************************************************
 //************************ Variáveis temporárias de controle do PH do reator de cálcio ****
 //*****************************************************************************************
-float PHR2beS;             
+float PHR2beS;
 float PHR2beO;
 float PHR2beA;
 
@@ -271,21 +412,26 @@ byte ORP2beA;
 //*****************************************************************************************
 //************************ Variáveis temporárias de controle da densidade *****************
 //*****************************************************************************************
-int DEN2beS;            
+int DEN2beS;
 byte DEN2beO;
 byte DEN2beA;
 
 //*****************************************************************************************
 //************************ Variáveis de controle de velocidade dos coolers ****************
 //*****************************************************************************************
-float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador 
+#ifdef USE_FAHRENHEIT
+float HtempMin = 86.9;
+float HtempMax = 104.9;
+#else
+float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
 float HtempMax = 40.5;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
+#endif
 int fanSpeed = 0;         // PWM dos coolers
 
 //*****************************************************************************************
 //************** Variáveis temperárias de controle de velocidade dos coolers **************
 //*****************************************************************************************
-float HtempMin_temp = 0;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador 
+float HtempMin_temp = 0;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
 float HtempMax_temp = 0;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
 
 //*****************************************************************************************
@@ -309,7 +455,7 @@ boolean temperatura_baixou = false;    // Sinaliza que a temperatura dos leds es
 //*****************************************************************************************
 int LedChangTime = 0;             // Página de alteração do leds, tempo e valores.
 boolean MeanWell = true;          // Se estiver usando drivers cuja potência máxima seja obtida aplicando zero volt e a mínima seja 5 volts altere de "true" para "false".
-boolean LEDtestTick = false;      // Acelerar o tempo durante o teste dos leds. 
+boolean LEDtestTick = false;      // Acelerar o tempo durante o teste dos leds.
 int min_cnt ;
 byte bled_out;
 byte wled_out;
@@ -352,7 +498,7 @@ boolean teste_iniciado = false;
 byte predefinido_t = 0;
 byte pre_definido_ativado_t = 0;
 byte pwm_pre_definido_t = 0;
-byte led_on_minuto_t; 
+byte led_on_minuto_t;
 byte led_on_hora_t;
 byte led_off_minuto_t;
 byte led_off_hora_t;
@@ -360,19 +506,29 @@ byte amanhecer_anoitecer_t = 0;
 
 //*****************************************************************************************
 //************************* LED design ****************************************************
-//*****************************************************************************************     
-byte cor_canal1[] = {255, 255, 255};  // Branco 
+//*****************************************************************************************
+const byte cor_canal[5][3] = {
+  {255, 255, 255},
+  {9, 184, 255},
+  {58, 95, 205},
+  {255, 0, 0},
+  {224, 102, 255}
+};
+/*
+byte cor_canal1[] = {255, 255, 255};  // Branco
 byte cor_canal2[] = {9, 184, 255};    // Azul
-byte cor_canal3[] = {58, 95, 205};    // Azul Royal 
+byte cor_canal3[] = {58, 95, 205};    // Azul Royal
 byte cor_canal4[] = {255, 0, 0};      // Vermelho
-byte cor_canal5[] = {224, 102, 255};  // Violeta
+byte cor_canal5[] = {224, 102, 255};  // Violeta*/
 
 //*****************************************************************************************
 //************************ Variáveis da fase lunar ****************************************
 //*****************************************************************************************
 String LP;
-byte MaxI , tMaxI;  // Potência  máxima na Lua cheia.             
-byte MinI, tMinI;   // Potência  mínima na Lua nova.
+byte MaxI = 255; // Potência  máxima na Lua cheia.
+byte tMaxI;
+byte MinI = 0;   // Potência  mínima na Lua nova.
+byte tMinI;
 byte fase = 0;
 
 //*****************************************************************************************
@@ -385,7 +541,7 @@ byte semana_e[7]; // Index 0 = segunda-feira, 1 = terça-feira, 2 = quarta-feira
 byte tpa = 0;                             // Controla os estágios da TPA automática
 byte tpa_status = 0x0; // 0 = false e 1 = true
 // bit 1 = Sinaliza TPA automática em andamento
-// bit 2 = Sinaliza falha durante a TPA automática          
+// bit 2 = Sinaliza falha durante a TPA automática
 unsigned long tempo = 0;                 // Duração de cada estágio da TPA automática
 unsigned long marcadoriniciotpa = 0;   // Evita que uma tpa inicie próximo do millis zerar
 unsigned long shiftedmillis = 0;       // Evita que uma tpa inicie próximo do millis zerar
@@ -401,46 +557,50 @@ byte semana[7];
 //****************************************************************************************
 //*********************** Variáveis de controle das funções que utilizam o cartao SD *****
 //****************************************************************************************
-Sd2Card card;
+SdFat SD;
 SdFile file;
-SdFile root;
-SdVolume volume;
 unsigned long log_SD_millis = 0;
+void writeCRLF(SdFile& f); 
 
 //*****************************************************************************************
 //*********************** Variável do controle de níveis **********************************
 //*****************************************************************************************
-boolean nivel_status = 0;             // Sinaliza nível baixo em um dos aquários
+boolean nivel_status1 = 0;             // Sinaliza nível baixo sensor 1
+boolean nivel_status2 = 0;             // Sinaliza nível baixo sensor 2
+boolean nivel_status3 = 0;             // Sinaliza nível baixo sensor 3
+boolean nivel_status4 = 0;             // Sinaliza nível baixo sensor 4
+boolean nivel_status5 = 0;             // Sinaliza nível baixo sensor 5
+boolean nivel_status6 = 0;             // Sinaliza nível baixo sensor 6
 
 //*****************************************************************************************
 //************************ Variável de controle da reposição de água doce *****************
 //*****************************************************************************************
 byte Status = 0x0;
 // bit 1 // Sinaliza reposição ligada / desligada
-// bit 2 
-// bit 3 
+// bit 2
+// bit 3
 
 //*****************************************************************************************
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
-boolean Ethernet_Shield = true; // Altere para "false" caso não tenha um Ethernet Shield conectado ao Arduino.
+#ifdef ETHERNET_SHIELD
+const char *Username  = "fernandogarcia";           // Coloque aqui o nome de usuário cadastrado no joy-reef.com
+const char *APIKEY = "ec0245b";                     // Cole aqui a ApiKey gerada pelo joy-reef.com
 
-const char *Username  = "fernandogarcia";   // Coloque aqui o nome de usuário cadastrado no joy-reef.com
-const char *APIKEY = "ec0245b";           // Cole aqui a ApiKey gerada pelo joy-reef.com
-
-const byte maxima_tentativa = 3;                // Número máximo de tentativas de autenticação.
-const byte intervalo_tentativa = 15;   // Tempo  de espera (em minutos) para novas tentativas.
-
+const byte maxima_tentativa = 3;                    // Número máximo de tentativas de autenticação.
+const byte intervalo_tentativa = 15;                // Tempo  de espera (em minutos) para novas tentativas.
+const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Joyreef. Para desabilitar esta função altere o valor para 0 (ZERO).
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
 IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
 IPAddress gateway(192, 168, 0, 1);                  // Configure o "Gateway" conforme a sua rede local.
 IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de rede conforme a sua rede local.
 EthernetServer server(5000);                        // Coloque aqui o número da porta configurada no seu roteador para redirecionamento.
-                                                    // O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
+// O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
+
+IPAddress ferduino(104, 131, 49, 99); // Do NOT change this IP!
 unsigned long intervalo = 0;
 char *inParse[25];
-boolean web_teste = false;
 byte tentativa = 0;
 boolean web_dosage = false;
 unsigned long millis_dosagem = 0;
@@ -448,32 +608,36 @@ unsigned long millis_enviar = 0;
 boolean web_calibracao = false;
 const char *token = ":";
 char Auth1[50];
-unsigned long teste_led_millis = 0; 
+unsigned long teste_led_millis = 0;
+unsigned long close_millis = 0;
+byte notconnected = 0;
+#endif
+
+boolean web_teste = false;
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
-#define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
-//#define STAMPS_EZO     // Descomente esta linha para usar Stamps EZO
-boolean Stamps = false; // Altere para "false" caso não tenha ao menos um dos circuitos de PH, ORP e EC da Atlas Scientific.
+#if defined(STAMPS_EZO) || defined(STAMPS_V4X)
 unsigned long millis_antes = 0;
 const byte ph1 = 0; // Y0
 const byte ph2 = 1; // Y1
 const byte orp = 2; // Y2
 const byte ec = 3;  // Y3
+#endif
 
 //*****************************************************************************************
 //************************** Variáveis da solicitação de senha ****************************
 //*****************************************************************************************
-char stCurrent[7]="";
+char stCurrent[7] = "";
 char limpar_senha [7] = "";
-byte stCurrentLen=0;
-const char senha [7] = {'1','2','3','4','5','6','\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
+byte stCurrentLen = 0;
+const char senha [7] = {'1', '2', '3', '4', '5', '6', '\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
 
 //*****************************************************************************************
 //************************** Variáveis dosadoras ******************************************
 //*****************************************************************************************
-boolean dosadoras = false; //Altere para "false" caso não tenha as dosadoras.
-const char *arquivo[6] = {"HDP1.TXT","HDP2.TXT","HDP3.TXT","HDP4.TXT","HDP5.TXT","HDP6.TXT"};
+boolean dosadoras = true; //Altere para "false" caso não tenha as dosadoras.
+const char *arquivo[6] = {"HDP1.TXT", "HDP2.TXT", "HDP3.TXT", "HDP4.TXT", "HDP5.TXT", "HDP6.TXT"};
 unsigned long tempo_dosagem = 0;
 unsigned long dosadoras_millis = 0;
 boolean modo_manual = false;
@@ -488,7 +652,7 @@ byte hora_final_dosagem_personalizada_e[6];
 byte minuto_final_dosagem_personalizada_e[6];
 byte segunda_dosagem_personalizada_e[6];
 byte terca_dosagem_personalizada_e[6];
-byte quarta_dosagem_personalizada_e[6]; 
+byte quarta_dosagem_personalizada_e[6];
 byte quinta_dosagem_personalizada_e[6];
 byte sexta_dosagem_personalizada_e[6];
 byte sabado_dosagem_personalizada_e[6];
@@ -502,13 +666,13 @@ float fator_calib_dosadora_e[6] = {35.1, 35.2, 35.3, 35.4, 35.5, 35.6};
 //*****************************************************************************************
 //************************** Variáveis temporárias das dosadoras **************************
 //*****************************************************************************************
-byte hora_inicial_dosagem_personalizada[6]; 
+byte hora_inicial_dosagem_personalizada[6];
 byte minuto_inicial_dosagem_personalizada[6];
 byte hora_final_dosagem_personalizada[6];
 byte minuto_final_dosagem_personalizada[6];
 byte segunda_dosagem_personalizada[6];
 byte terca_dosagem_personalizada[6];
-byte quarta_dosagem_personalizada[6]; 
+byte quarta_dosagem_personalizada[6];
 byte quinta_dosagem_personalizada[6];
 byte sexta_dosagem_personalizada[6];
 byte sabado_dosagem_personalizada[6];
@@ -517,6 +681,7 @@ float dose_dosadora_personalizada[6];
 byte quantidade_dose_dosadora_personalizada[6];
 byte modo_personalizado_on[6];
 float dose_dosadora_manual[6];
+float volume_dosado[6];
 float fator_calib_dosadora[6];
 //*****************************************************************************************
 //************************** Variáveis dos timers *****************************************
@@ -556,31 +721,87 @@ byte temporizador_ativado[5];
 //*****************************************************************************************
 //************************** Variáveis do PCF8575 *****************************************
 //*****************************************************************************************
-/*
- boolean PCF8575TS_S = true; // Altere para "false" caso não tenha um PCF8575
- byte endereco_PCF8575TS = 0x20; // Endereço em hexadecimal = 0x20
-PCF8575 PCF8575;*/ 
+#ifdef USE_PCF8575
+byte endereco_PCF8575TS = 0x20; // Endereço em hexadecimal = 0x20
+PCF8575 PCF8575;
+#endif
 
 //*****************************************************************************************
-//************************** Comunicação RF ***********************************************
+//*********************** Wireless transceiver (RFM12B) ***********************************
 //*****************************************************************************************
-byte consumo = 0;
-/*boolean RFM12B = false; // Altere para "false" caso não tenha um RFM12B
- #define myNodeID 30          // ID do emissor (intervalo 0-30) 
- #define network     210      // Grupo (pode ser no intervalo de 1-250).
- #define freq RF12_915MHZ     // Frequência de RF12B pode ser RF12_433MHZ, RF12_868MHZ ou RF12_915MHZ. Corresponde a frequência do módulo
- typedef struct { int power1, power2, power3, battery; } PayloadTX;      // Cria uma estrutura
- PayloadTX emontx;  
- const byte emonTx_NodeID = 10;            // ID do receptor*/
+#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL)
+RFM12B radio;
+#define ACK_TIME    200
+#define MY_ID      99                   // ID deste dispositivo
+#define NETWORK_ID   100                // Todos os dispositivos devem estar na mesma rede.
+#define TARGET_ID_LED   1               // 1 = ID do dispositivos que receberá a informação
+#define TARGET_ID_RELAY   2             // 2 = ID do dispositivos que receberá a informação
+#define FREQUENCY   RF12_915MHZ         // Frequência de operação do rádio.
+#define KEY         "thisIsEncryptKey"  // Esta senha deve ter exatamente 16 caracteres.
+#define ACK_TIME    200
+const byte limite_sem_resposta = 4;     // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
+unsigned long lastPeriod_millis = 0;
+boolean requestACK_LED = false;         // true = Solicitar uma resposta do dispositivo que recebe a informação
+boolean requestACK_RELAY = false;       // true = Solicitar uma resposta do dispositivo que recebe a informação
+byte nothing = 0;
+#endif
+
+#ifdef RFM12B_LED_CONTROL
+typedef struct {
+  int  nodeId;
+  byte channel_white;
+  byte channel_blue;
+  byte channel_royalBlue;
+  byte channel_red;
+  byte channel_violet;
+  byte channel_moon;
+  byte channel_6;  // canal extra
+  byte channel_7;  // canal extra
+  byte channel_8;  // canal extra
+  byte channel_9;  // canal extra
+  byte channel_10; // canal extra
+  byte channel_11; // canal extra
+  byte channel_12; // canal extra
+  byte channel_13; // canal extra
+  byte channel_14; // canal extra
+  byte channel_15; // canal extra
+}
+Payload_led;
+Payload_led theData_led  = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+#endif
+
+#ifdef RFM12B_RELAY_CONTROL
+typedef struct {
+  int  nodeId;
+  byte relay_0;
+  byte relay_1;
+  byte relay_2;
+  byte relay_3;
+  byte relay_4;
+  byte relay_5;
+  byte relay_6;
+  byte relay_7;
+  byte relay_8;
+  byte relay_9;
+  byte relay_10;
+  byte relay_11;
+  byte relay_12;
+  byte relay_13;
+  byte relay_14;
+  byte relay_15;
+}
+Payload_relay;
+Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+#endif
 
 //*****************************************************************************************
 //************************** Dispositivos SPI *********************************************
 //*****************************************************************************************
-const byte SD_CARD = 0; 
+const byte SD_CARD = 0;
 const byte ETHER_CARD = 1;
 const byte RFM = 2;
 //const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
-const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560           
+const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560
 const byte SelectSlave_ETH = 53;
 const byte ChipSelect_RFM = 69; // A15
 
@@ -593,15 +814,46 @@ float temperatura_ambiente_temp = 0; // Temperatura temporária
 //*****************************************************************************************
 //************************* Variáveis das bombas de circulação ****************************
 //*****************************************************************************************
-byte modo_selecionado = 1; 
-byte Pump1PWM_temp = 0;    
+#ifdef NIGHT_MODE
+const float POWER_PUMP1 = 0.5; // 50%
+const float POWER_PUMP2 = 0.5; // 50%
+#endif
+byte modo_selecionado = 1;
+byte Pump1PWM_temp = 0;
 byte Pump2PWM_temp = 0;
 int periodo = 10000;
 int duracao = 5000; // Duração do ciclo em milisegundos para o modo 3.
 unsigned long millis_antes_1 = 0;
 byte conta = 0;
-byte Pump1PWM = 0;    
+byte Pump1PWM = 0;
 byte Pump2PWM = 0;
+
+//*****************************************************************************************
+//*********************** Variáveis de controle do alimentador automático *****************
+//*****************************************************************************************
+byte horario_alimentacao_e[4]; // horario_e[0] = hora para iniciar, horario_e[1] = minuto para iniciar, horario_e[2] = hora para terminar, horario_e[3] = minuto para terminar
+byte dia_alimentacao_e[7];
+byte duracao_alimentacao = 1; // Duração em segundos
+byte desligar_wavemaker = 2; // Tempo em minutos
+byte quantidade_alimentacao = 1;
+byte alimentacao_wavemaker_on_off = 0; // bit 0 = alimentação automática ativada  ou desativada bit 1 = desligar wavemaker ativado / desativado
+boolean modo_alimentacao = false;
+boolean wavemaker_on_off = false;
+unsigned long alimentacao_millis = 0;
+unsigned long wavemaker_on_off_millis = 0;
+unsigned long check_alimentador_millis = 0;
+boolean alimentacao_erro = false;
+
+//*****************************************************************************************
+//********************* Variáveis temporárias do alimentador automático *******************
+//*****************************************************************************************
+byte horario_alimentacao[4];
+byte dia_alimentacao[7];
+byte duracao_alimentacao_temp = 0;
+byte desligar_wavemaker_temp = 0;
+byte quantidade_alimentacao_temp = 0;
+byte alimentacao_wavemaker_on_off_temp = 0;
+
 //*****************************************************************************************
 //************************** Variáveis de controle da potência dos leds *******************
 //*****************************************************************************************
@@ -609,7 +861,7 @@ byte wled[96] = {                         //Potência de saída dos leds brancos
   0, 0, 0, 0, 0, 0, 0, 0,       // 0 e 2
   0, 0, 0, 0, 0, 0, 0, 0,       // 2 e 4
   0, 0, 0, 0, 12, 21, 30, 39,       // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8 
+  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8
   120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
   192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
   255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
@@ -624,7 +876,7 @@ byte bled[96] = {                       // Potência de saída dos leds azuis 25
   0, 0, 0, 0, 0, 0, 0, 0,       // 0 e 2
   0, 0, 0, 0, 0, 0, 0, 0,       // 2 e 4
   0, 0, 0, 0, 12, 21, 30, 39,       // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8 
+  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8
   120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
   192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
   255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
@@ -633,13 +885,13 @@ byte bled[96] = {                       // Potência de saída dos leds azuis 25
   39, 30, 21, 12, 0, 0, 0, 0,         // 18 a 20
   0, 0, 0, 0, 0, 0, 0, 0,         // 20 e 22
   0, 0, 0, 0, 0, 0, 0, 0          // 22 a 0
-};  
+};
 
 byte rbled[96] = {                         //Potência de saída dos leds brancos 255 = 100% da potência
   0, 0, 0, 0, 0, 0, 0, 0,       // 0 e 2
   0, 0, 0, 0, 0, 0, 0, 0,       // 2 e 4
   0, 0, 0, 0, 12, 21, 30, 39,       // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8 
+  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8
   120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
   192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
   255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
@@ -653,7 +905,7 @@ byte rled[96] = {                         //Potência de saída dos leds brancos
   0, 0, 0, 0, 0, 0, 0, 0,       // 0 e 2
   0, 0, 0, 0, 0, 0, 0, 0,       // 2 e 4
   0, 0, 0, 0, 12, 21, 30, 39,       // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8 
+  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8
   120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
   192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
   255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
@@ -667,7 +919,7 @@ byte uvled[96] = {                         //Potência de saída dos leds branco
   0, 0, 0, 0, 0, 0, 0, 0,       // 0 e 2
   0, 0, 0, 0, 0, 0, 0, 0,       // 2 e 4
   0, 0, 0, 0, 12, 21, 30, 39,       // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8 
+  48, 57, 66, 75, 84, 93, 102, 111,     // 6 e 8
   120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
   192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
   255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
@@ -679,27 +931,28 @@ byte uvled[96] = {                         //Potência de saída dos leds branco
 };
 
 byte *cor[5] = {wled, bled, rbled, rled, uvled};
-byte *cor_canal[5] = {cor_canal1, cor_canal2, cor_canal3, cor_canal4, cor_canal5};
 
 //*****************************************************************************************
 //************************** Textos *******************************************************
 //*****************************************************************************************
-prog_char string0[] PROGMEM = "POST /ferduino/api/temp HTTP/1.1";
-prog_char string1[] PROGMEM = "Host: www.joy-reef.com";
-prog_char string2[] PROGMEM = "Authorization: Basic ";
-prog_char string3[] PROGMEM = "Cache-Control: no-cache";
-prog_char string4[] PROGMEM = "Content-Type: application/x-www-form-urlencoded";
-prog_char string5[] PROGMEM = "Connection: Keep-Alive";
-prog_char string6[] PROGMEM = "Content-Length: ";
-prog_char string7[] PROGMEM = "{\"response\":\"ok\"}";
-prog_char string8[] PROGMEM = "HTTP/1.1 200 OK";
-prog_char string9[] PROGMEM = "Content-Type: application/json";
-prog_char string10[] PROGMEM = "{\"response\":\"000\"}";
-prog_char string11[] PROGMEM = "{\"response\":\"001\",\"interval\":\"";
+const char string0[] PROGMEM = "POST /webcontrol/api/index.php HTTP/1.1";
+const char string1[] PROGMEM = "Host: www.ferduino.com";
+const char string2[] PROGMEM = "Authorization: Basic ";
+const char string3[] PROGMEM = "Cache-Control: no-cache";
+const char string4[] PROGMEM = "Content-Type: application/x-www-form-urlencoded";
+const char string5[] PROGMEM = "Connection: Keep-Alive";
+const char string6[] PROGMEM = "Content-Length: ";
+const char string7[] PROGMEM = "{\"response\":\"ok\"}";
+const char string8[] PROGMEM = "HTTP/1.1 200 OK";
+const char string9[] PROGMEM = "Content-Type: application/json";
+const char string10[] PROGMEM = "{\"response\":\"000\"}";
+const char string11[] PROGMEM = "{\"response\":\"001\",\"interval\":\"";
+const char string12[] PROGMEM = "{\"response\":\"stop\"}";
 
-char* tabela_strings[] PROGMEM = 
+const char* const tabela_strings[] PROGMEM =
 {
   string0, string1, string2, string3,
   string4, string5, string6, string7,
-  string8, string9, string10, string11
+  string8, string9, string10, string11,
+  string12
 };
