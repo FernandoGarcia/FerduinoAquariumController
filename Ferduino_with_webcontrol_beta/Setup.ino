@@ -8,6 +8,7 @@ void setup()
 
 #ifdef DEBUG
   Serial.begin(38400); // Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
+  Serial.flush();
   Serial.println();
 #endif
 
@@ -78,11 +79,13 @@ void setup()
   pinMode (skimmerPin, OUTPUT);            // Pino 87;
 #endif // Do not change this line!
 
+#ifdef USE_TFT
   myGLCD.InitLCD(LANDSCAPE); // Orientação da imagem no LCD.
   clearScreen();             // Limpa o LCD.
 
   myTouch.InitTouch(LANDSCAPE);       // Orientação do "touch screen".
   myTouch.setPrecision(PREC_MEDIUM);  // Define a precisão do "touch screen".
+#endif
   
   ReadDallasAddress ();
   sensors.begin();                                //Inicia as leituras das sondas de temperatura.
@@ -106,10 +109,12 @@ void setup()
 
   if (k != 222) // Verifica se a EEPROM foi formatada por este programa
   {
+#ifdef USE_TFT
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
 
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[225]))); // "FORMATANDO A EEPROM..."
     myGLCD.print(buffer, CENTER, 115);
+#endif
 
     EEPROM.write(0, 222); // Indica que a EEPROM foi formatada por este programa
 
@@ -147,8 +152,11 @@ void setup()
   selecionar_SPI(SD_CARD);                         // Seleciona disposito SPI que será utilizado.
   while (!SD.begin(ChipSelect_SD, SPI_HALF_SPEED)) // Inicia a comunicação com o cartão SD.
   {
+#ifdef USE_TFT    
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
     myGLCD.print("PLEASE INSERT A SD CARD.", CENTER, 115);
+#endif
+    
 #ifdef DEBUG
     Serial.println(F("Please insert a SD CARD"));
 #endif
@@ -183,8 +191,10 @@ void setup()
   radio.Encrypt((byte*)KEY);
 #endif // Do not change this line!
 
+#ifdef USE_TFT
   clearScreen();    // Limpa o LCD.
   mainScreen(true); // Exibe a tela inicial no LCD.
+#endif
 
 #ifdef WATCHDOG // Do not change this line!
   wdt_enable(WDTO_8S);

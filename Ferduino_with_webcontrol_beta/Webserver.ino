@@ -7,7 +7,7 @@ void processRequest()
   char *requestString;
   char *RequestString;
   byte index = 0;
-  EthernetClient client = server.available();
+  client = server.available();
   uint8_t remoteIP[4];
   client.getRemoteIP(remoteIP);
 
@@ -82,7 +82,7 @@ void readRequest(char *request, char *Request)
   boolean terminador = false;
   char credencial[50];
 
-  EthernetClient client = server.available();
+  client = server.available();
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[8]))); // "HTTP/1.1 200 OK"
   client.println(buffer);
@@ -152,7 +152,7 @@ void requestAction(byte ID)
 {
   byte cont = 0;
   byte dia;
-  EthernetClient client = server.available();
+  client = server.available();
   float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
   int16_t n;
   char buf[7];
@@ -1121,19 +1121,13 @@ void requestAction(byte ID)
 
 void enviar_dados()
 {
-
-  char dados[6];
-  EthernetClient client;
-  String OneString;
-  int ContentLength = 0;
-  int conexao = client.connect(ferduino, 80);
-
+  ContentLength = 0;
 
 #ifdef DEBUG
   Serial.println(F("Connecting..."));
 #endif
 
-  if (conexao == true)
+  if (client.connect(ferduino, 80))
   {
     OneString = Username;
     ContentLength += OneString.length();
@@ -1144,10 +1138,7 @@ void enviar_dados()
     OneString = String(ORP);
     ContentLength += OneString.length();
 
-    OneString = String(rtc.getTimeStamp());
-    ContentLength += OneString.length();
-
-    ContentLength += 267;
+    ContentLength += 277;
 
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /api/temp HTTP/1.1"
     client.println(buffer);

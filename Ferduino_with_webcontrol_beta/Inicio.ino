@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 //---------------------------------------Tela inicial ----------------------------------------------tela =0
 void mainScreen(boolean refreshAll = false)
 {
@@ -537,7 +538,4 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 58, 90);          // Alerta de que a temperatura esteve alta para os LEDS.
   }
 }
-
-
-
-
+#endif

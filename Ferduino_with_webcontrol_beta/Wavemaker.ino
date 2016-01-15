@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 void Grafico_WaveMaker()
 {
   int Pump1PWM_t;
@@ -80,6 +81,7 @@ void Grafico_WaveMaker()
     myGLCD.printNumI(Pump2PWM_t, 285, 80);
   }
 }
+#endif
 
 void Wavemaker()
 {

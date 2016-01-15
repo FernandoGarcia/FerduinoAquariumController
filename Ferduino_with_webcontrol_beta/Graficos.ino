@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 void tempgScreen()//------------------------------------------------------------ tela =11
 {
   int x, y, z, grafico;
@@ -930,3 +931,4 @@ void densidadeScreen()//----------------grafico de densidade -------------------
     file.close();
   }
 }
+#endif

@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 //------------------------------------ Menu 1 ----------------------------------------------------------- tela =1
 void menuScreen()
 {
@@ -3570,5 +3571,4 @@ void alimentadorScreen_2(boolean refreshAll = false)
     printButton(buffer, waV[0], waV[1], waV[2], waV[3]);
   }
 }
-
-
+#endif

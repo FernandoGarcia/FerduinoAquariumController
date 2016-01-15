@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 //-------------------------------------------Touch screen----------------------------
 void processMyTouch()
 {
@@ -3830,4 +3831,4 @@ void processMyTouch()
     }
   }
 }
-
+#endif

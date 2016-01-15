@@ -68,6 +68,7 @@ void loop()
   }
 #endif
 
+#ifdef USE_TFT
   if (myTouch.dataAvailable())
   {
 #ifdef USE_SCREENSAVER
@@ -85,6 +86,7 @@ void loop()
     processMyTouch();  // Verifica se o LCD está sendo tocado e faz o processamento.
 #endif
   }
+#endif
 
 #ifdef WATCHDOG
   wdt_reset();
@@ -161,13 +163,16 @@ void loop()
   }
 #endif
 
+#ifdef USE_TFT
   if ((dispScreen == 3) && (LEDtestTick == true)) // Imprime valores se o teste de todos os leds em andamento.
   {
     testScreen();
   }
+#endif
 
   Wavemaker();
 
+#ifdef USE_TFT
   if (dispScreen == 10) // Desenha os gráficos enquanto o menu estiver aberto.
   {
     if ((modo_alimentacao == false) || (wavemaker_on_off == false))
@@ -175,6 +180,7 @@ void loop()
       Grafico_WaveMaker();
     }
   }
+#endif
 
   if (modo_alimentacao == true) // Função que desliga alimentador automático.
   {
@@ -223,7 +229,8 @@ void loop()
     {
       min_cnt = NumMins(t.hour, t.min); // Atualiza o intervalo para determinar a potência dos leds.
     }
-
+    
+#ifdef USE_TFT
     if (dispScreen == 0)
     {
 #ifdef USE_SCREENSAVER
@@ -240,6 +247,8 @@ void loop()
       mainScreen();  // Atualiza tela inicial.
 #endif
     }
+#endif
+    
     if (suavizar <= 1)
     {
       suavizar += 0.1;

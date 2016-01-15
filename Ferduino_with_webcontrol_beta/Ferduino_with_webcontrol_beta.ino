@@ -105,12 +105,16 @@
 
 // Uncomment the line below to use temperature in Fahrenheit.
 //#define USE_FAHRENHEIT // Descomente esta linha para usar temperatura em Fahrenheit 
- 
+
+//Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7.
+#define USE_TFT // Comente esta linha se você não quer usar um TFT. Estão função funciona apenas com a IDE 1.6.7.
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas **********************************************************
 //*************************************************************************************************
+#ifdef USE_TFT
 #include <UTFT.h>
 #include <UTouch.h>
+#endif
 #include <Wire.h>
 #include <EEPROM.h>
 #include <writeAnything.h>
@@ -147,10 +151,12 @@ const char lastUpdate[] = "07/01/2016"; // Data da última modificação
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
 //****************************************************************************************************
+#ifdef USE_TFT
 #define LARGE true
 #define SMALL false
 extern uint8_t RusFont1[];    // Declara que fontes vamos usar
 extern uint8_t BigFont[];     // Declara que fontes vamos usar
+#endif
 char buffer[50];
 
 #ifdef USE_SCREENSAVER
@@ -310,14 +316,17 @@ Time t_temp, t;
 //*******************************************************************************************************
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
+#ifdef USE_TFT
 UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 //UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
 UTouch      myTouch(7, 6, 5, 4, 3);       // Descomente esta linha para usar o Ferduino Mega 2560
 
-unsigned long previousMillis = 0;
 String day, ano;
 byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
+#endif
+
 byte dispScreen = 0;
+unsigned long previousMillis = 0;
 
 #ifdef USE_SCREENSAVER
 unsigned long previousMillis_2 = 0;
@@ -598,6 +607,10 @@ IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de r
 EthernetServer server(5000);                        // Coloque aqui o número da porta configurada no seu roteador para redirecionamento.
 // O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
 
+EthernetClient client;
+char dados[6];
+String OneString;
+int ContentLength = 0;
 IPAddress ferduino(104, 131, 49, 99); // Do NOT change this IP!
 unsigned long intervalo = 0;
 char *inParse[25];

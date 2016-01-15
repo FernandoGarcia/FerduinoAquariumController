@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 //**********************************************************************************************
 //*********************** Botões dos menus *****************************************************
 //**********************************************************************************************
@@ -386,10 +387,6 @@ void waitForIt(int x1, int y1, int x2, int y2)
   myGLCD.drawRoundRect (x1, y1, x2, y2);
 }
 
-int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
-{
-  return (ScheduleHour * 60) + ScheduleMinute;
-}
 //                   cor,       cor,   cor    locação x1, locação y1, locação x2, locação y2
 void desenhar_barras(int sbR, int sbG, int sbB, int sbX1, int sbY1, int sbX2, int sbY2)
 {
@@ -426,6 +423,7 @@ void drawFillRect(int x1, byte y1, int x2, byte y2, byte r, byte g, byte b)
   myGLCD.setColor(r, g, b);
   myGLCD.fillRect (x1, y1, x2, y2);
 }
+#endif
 
 #ifdef USE_SCREENSAVER
 void clockScreen()
@@ -457,3 +455,8 @@ void clockScreen()
   firstTime = false;
 }
 #endif
+
+int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
+{
+  return (ScheduleHour * 60) + ScheduleMinute;
+}
