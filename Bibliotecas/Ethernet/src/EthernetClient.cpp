@@ -37,18 +37,18 @@ int EthernetClient::connect(const char* host, uint16_t port) {
 
 int EthernetClient::connect(IPAddress ip, uint16_t port) {
   if (_sock != MAX_SOCK_NUM)
-    return 2;
+    return 0;
 
   for (int i = 0; i < MAX_SOCK_NUM; i++) {
     uint8_t s = socketStatus(i);
-
     if (s == SnSR::CLOSED || s == SnSR::FIN_WAIT || s == SnSR::CLOSE_WAIT) {
       _sock = i;
       break;
     }
   }
+
   if (_sock == MAX_SOCK_NUM)
-    return 3;
+    return 0;
 
   _srcport++;
   if (_srcport == 0) _srcport = 49152;          //Use IANA recommended ephemeral port range 49152-65535
@@ -56,14 +56,14 @@ int EthernetClient::connect(IPAddress ip, uint16_t port) {
 
   if (!::connect(_sock, rawIPAddress(ip), port)) {
     _sock = MAX_SOCK_NUM;
-    return 4;
+    return 0;
   }
 
   while (status() != SnSR::ESTABLISHED) {
     delay(1);
     if (status() == SnSR::CLOSED) {
       _sock = MAX_SOCK_NUM;
-      return 5;
+      return 0;
     }
   }
 
@@ -124,7 +124,7 @@ void EthernetClient::flush() {
 }
 
 void EthernetClient::stop() {
-if (_sock == MAX_SOCK_NUM)
+  if (_sock == MAX_SOCK_NUM)
     return;
 
   // attempt to close the connection gracefully (send a FIN to other side)
@@ -170,6 +170,10 @@ EthernetClient::operator bool() {
 
 bool EthernetClient::operator==(const EthernetClient& rhs) {
   return _sock == rhs._sock && _sock != MAX_SOCK_NUM && rhs._sock != MAX_SOCK_NUM;
+}
+
+uint8_t EthernetClient::getSocketNumber() {
+  return _sock;
 }
 
 uint8_t* EthernetClient::getRemoteIP(uint8_t remoteIP[])

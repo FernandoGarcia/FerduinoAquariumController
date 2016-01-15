@@ -15,7 +15,7 @@ int EthernetClass::begin(uint8_t *mac_address, uint8_t csPin, unsigned long time
 
 
   // Initialise the basic info
-  W5100.init();
+  W5100.init(csPin);
   SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
   W5100.setMACAddress(mac_address);
   W5100.setIPAddress(IPAddress(0,0,0,0).raw_address());
@@ -72,6 +72,11 @@ void EthernetClass::begin(uint8_t *mac, IPAddress local_ip, IPAddress dns_server
   W5100.setSubnetMask(subnet.raw_address());
   SPI.endTransaction();
   _dnsServerAddress = dns_server;
+}
+
+void EthernetClass::macAddress(byte *mac)
+{
+  W5100.getMACAddress(mac);
 }
 
 int EthernetClass::maintain(){
@@ -131,11 +136,6 @@ IPAddress EthernetClass::gatewayIP()
 IPAddress EthernetClass::dnsServerIP()
 {
   return _dnsServerAddress;
-}
-
-void EthernetClass::macAddress(byte *mac)
-{
-  W5100.getMACAddress(mac);
 }
 
 EthernetClass Ethernet;

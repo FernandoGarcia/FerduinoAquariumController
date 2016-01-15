@@ -12,7 +12,7 @@
 
 #include <SPI.h>
 
-#define SPI_CS 10
+#define ETHERNET_SHIELD_SPI_CS 10
 
 #if defined(ARDUINO_ARCH_AVR)
 #define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
@@ -330,9 +330,9 @@ private:
   uint16_t RBASE[SOCKETS]; // Rx buffer base address
 
 private:
- #define initSS()    { *cs_reg |=  cs_bit; };
- #define setSS()     { *cs_out &= ~cs_bit; };
- #define resetSS()   { *cs_out |=  cs_bit; };
+  #define initSS()    { *cs_reg |=  cs_bit; };
+  #define setSS()     { *cs_out &= ~cs_bit; };
+  #define resetSS()   { *cs_out |=  cs_bit; };
 };
 
 extern W5100Class W5100;
