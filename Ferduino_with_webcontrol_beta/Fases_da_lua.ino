@@ -38,27 +38,37 @@ float moonPhase(int moonYear, int moonMonth, int moonDay)
   //Determine the Lunar Phase
   if ((AG >= 0) && (AG <= 5.54))         // 0 a 35%        
   { 
+#ifdef USE_TFT
     LP = tabela_textos_fase[1];  // "LUA NOVA"
+#endif    
     fase = 1;
   }
   if ((AG > 5.17) && (AG <= 14.32))       //35 a 97%  
   { 
+#ifdef USE_TFT    
     LP = tabela_textos_fase[2];  // "LUA CRESCENTE"
+#endif    
     fase = 2;
   }
   if ((AG > 14.32) && (AG <= 15.21))      // 97 a 100 e de 100 a 97%     
   { 
+#ifdef USE_TFT    
     LP = tabela_textos_fase[3]; // "LUA CHEIA"
+#endif    
     fase = 3;
   }    
   if ((AG > 15.21) && (AG <= 24.36))     //97 a 35%    
   { 
+#ifdef USE_TFT    
     LP = tabela_textos_fase[4]; // "LUA MINGUANTE"
+#endif    
     fase = 4;
   }
   if ((AG >= 24.36) && (AG <= LC))       //35 a 0%
   { 
+#ifdef USE_TFT    
     LP = tabela_textos_fase[1];  // "LUA NOVA"
+#endif    
     fase = 1;
   }
 

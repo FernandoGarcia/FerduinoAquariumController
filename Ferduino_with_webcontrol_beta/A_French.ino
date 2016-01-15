@@ -1,3 +1,4 @@
+#ifdef USE_TFT
 #ifdef FRENCH
 const char texto0[] PROGMEM = "ALIMENTEUR"; // tabela_textos[0]
 const char texto1[] PROGMEM = "MENU 1";  // tabela_textos[1]
@@ -342,4 +343,5 @@ const char* const nome_canal[] PROGMEM =
   nomecanal12, nomecanal13, nomecanal14, nomecanal15, nomecanal16,nomecanal17,
   nomecanal18, nomecanal19, nomecanal20, nomecanal21
 };
+#endif
 #endif
