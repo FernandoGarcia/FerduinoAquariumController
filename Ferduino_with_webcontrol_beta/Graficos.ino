@@ -916,7 +916,7 @@ void densidadeScreen()//----------------grafico de densidade -------------------
         {
           grafico = 30;
         }
-        else if (1010 <= media <= 1030)
+        else if ((media >= 1010) && (media <= 1030))
         {
           grafico = (190 - ((media - 1010) * 7.5));
         }

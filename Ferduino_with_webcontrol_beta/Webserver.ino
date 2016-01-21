@@ -103,7 +103,7 @@ void readRequest(char *request, char *Request)
 
   if (invalidPass  == false)
   {
-    for (int j = 0; j < strlen(requestString); j++)
+    for (unsigned int j = 0; j < strlen(requestString); j++)
     {
       if (request[j] != 'K')
       {

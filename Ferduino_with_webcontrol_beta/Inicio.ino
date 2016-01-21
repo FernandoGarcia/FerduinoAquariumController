@@ -2,7 +2,7 @@
 //---------------------------------------Tela inicial ----------------------------------------------tela =0
 void mainScreen(boolean refreshAll = false)
 {
-  int ledLevel, s, u;
+  int ledLevel;
   int offset = 0;
   char bufferLP[16];
 

@@ -82,12 +82,6 @@
 #if defined(__AVR__)
 	#include "Arduino.h"
 	#include "hardware/avr/HW_AVR_defines.h"
-#elif defined(__PIC32MX__)
-	#include "WProgram.h"
-	#include "hardware/pic32/HW_PIC32_defines.h"
-#elif defined(__arm__)
-	#include "Arduino.h"
-	#include "hardware/arm/HW_ARM_defines.h"
 #endif
 
 struct _current_font
@@ -122,7 +116,7 @@ class UTFT
 		void setBackColor(byte r, byte g, byte b);
 		void setBackColor(uint32_t color);
 		word getBackColor();
-		void print(char *st, int x, int y, int deg=0);
+		void print(const char *st, int x, int y, int deg=0);
 		void print(String st, int x, int y, int deg=0);
 		void printNumI(long num, int x, int y, int length=0, char filler=' ');
 		void printNumF(double num, byte dec, int x, int y, char divider='.', int length=0, char filler=' ');

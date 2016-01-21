@@ -53,28 +53,6 @@
 	#else
 		#error "Unsupported AVR MCU!"
 	#endif
-#elif defined(__PIC32MX__)
-  #include "hardware/pic32/HW_PIC32.h"
-  #if defined(__32MX320F128H__)
-    #pragma message("Compiling for chipKIT UNO32 (__32MX320F128H__)")
-	#include "hardware/pic32/HW_PIC32MX320F128H.h"
-  #elif defined(__32MX340F512H__)
-    #pragma message("Compiling for chipKIT uC32 (__32MX340F512H__)")
-	#include "hardware/pic32/HW_PIC32MX340F512H.h"
-  #elif defined(__32MX795F512L__)
-    #pragma message("Compiling for chipKIT MAX32 (__32MX795F512L__)")
-	#include "hardware/pic32/HW_PIC32MX795F512L.h"
-  #else
-    #error "Unsupported PIC32 MCU!"
-  #endif
-#elif defined(__arm__)
-	#include "hardware/arm/HW_ARM.h"
-	#if defined(__SAM3X8E__)
-		#pragma message("Compiling for Arduino Due (AT91SAM3X8E)...")
-		#include "hardware/arm/HW_SAM3X8E.h"
-	#else
-		#error "Unsupported ARM MCU!"
-	#endif
 #endif
 #include "memorysaver.h"
 
@@ -807,7 +785,7 @@ void UTFT::rotateChar(byte c, int x, int y, int pos, int deg)
 	clrXY();
 }
 
-void UTFT::print(char *st, int x, int y, int deg)
+void UTFT::print(const char *st, int x, int y, int deg)
 {
 	int stl, i;
 

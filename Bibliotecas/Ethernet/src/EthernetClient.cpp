@@ -37,7 +37,10 @@ int EthernetClient::connect(const char* host, uint16_t port) {
 
 int EthernetClient::connect(IPAddress ip, uint16_t port) {
   if (_sock != MAX_SOCK_NUM)
-    return 0;
+    {
+      return 0;
+    }
+
 
   for (int i = 0; i < MAX_SOCK_NUM; i++) {
     uint8_t s = socketStatus(i);
@@ -48,7 +51,10 @@ int EthernetClient::connect(IPAddress ip, uint16_t port) {
   }
 
   if (_sock == MAX_SOCK_NUM)
+  {
     return 0;
+  }
+
 
   _srcport++;
   if (_srcport == 0) _srcport = 49152;          //Use IANA recommended ephemeral port range 49152-65535

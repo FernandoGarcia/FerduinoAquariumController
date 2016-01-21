@@ -146,7 +146,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "20/01/2016"; // Data da última modificação
+const char lastUpdate[] = "21/01/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -321,7 +321,7 @@ UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 //UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
 UTouch      myTouch(7, 6, 5, 4, 3);       // Descomente esta linha para usar o Ferduino Mega 2560
 
-int ano = 0;
+unsigned int ano = 0;
 byte dia = 0;
 byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
 #endif
@@ -594,8 +594,8 @@ byte Status = 0x0;
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
 #ifdef ETHERNET_SHIELD
-const char *Username  = "fernandogarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
-const char *APIKEY = "ec0245b";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
+const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
+const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
 
 const byte maxima_tentativa = 3;                    // Número máximo de tentativas de autenticação.
 const byte intervalo_tentativa = 15;                // Tempo  de espera (em minutos) para novas tentativas.
@@ -833,7 +833,7 @@ byte modo_selecionado = 1;
 byte Pump1PWM_temp = 0;
 byte Pump2PWM_temp = 0;
 int periodo = 10000;
-int duracao = 5000; // Duração do ciclo em milisegundos para o modo 3.
+unsigned int duracao = 5000; // Duração do ciclo em milisegundos para o modo 3.
 unsigned long millis_antes_1 = 0;
 byte conta = 0;
 byte Pump1PWM = 0;

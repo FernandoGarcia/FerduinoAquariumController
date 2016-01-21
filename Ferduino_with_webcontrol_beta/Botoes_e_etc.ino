@@ -328,7 +328,7 @@ void clearScreen()
   myGLCD.clrScr();
 }
 
-void printButton(char* text, int x1, int y1, int x2, int y2, boolean setFont = false, byte cor = 0)
+void printButton(const char* text, int x1, int y1, int x2, int y2, boolean setFont = false, byte cor = 0)
 {
   int stl = strlen(text);
   int fx, fy;

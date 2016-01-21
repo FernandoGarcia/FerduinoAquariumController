@@ -105,7 +105,7 @@ void checkTempC()
 
 void check_nivel() // Verifica o nível do reef e fish only.
 {
-  if ((analogRead(sensor5) > 400) || (analogRead(sensor6) > 400) || (analogRead(sensor2) < 400) && (bitRead(tpa_status, 1) == false))
+  if ((analogRead(sensor5) > 400) || (analogRead(sensor6) > 400) || ((analogRead(sensor2) < 400) && (bitRead(tpa_status, 1) == false)))
   {
     nivel_status1 = true; // Sinaliza nivel baixo em um dos aquários ou sump
   }

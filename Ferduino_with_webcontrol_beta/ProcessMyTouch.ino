@@ -2546,8 +2546,8 @@ void processMyTouch()
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[179])));
             myGLCD.print(buffer, 100, 130);
           }
-          else if ((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
-                   && (minuto_final_dosagem_personalizada[dosadora_selecionada] >= (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10))
+          else if (((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
+                   && (minuto_final_dosagem_personalizada[dosadora_selecionada] >= (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
                    || (hora_final_dosagem_personalizada[dosadora_selecionada] > hora_inicial_dosagem_personalizada[dosadora_selecionada]))
           {
             config_valores_salvar_dosadoras();
@@ -3813,8 +3813,8 @@ void processMyTouch()
               strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[179])));
               myGLCD.print(buffer, 100, 130); // "QUE A INICIAL!"
             }
-            else if ((horario_alimentacao[2] == horario_alimentacao[0])
-                     && (horario_alimentacao[3] >= (horario_alimentacao[1] + 10))
+            else if (((horario_alimentacao[2] == horario_alimentacao[0])
+                     && (horario_alimentacao[3] >= (horario_alimentacao[1] + 10)))
                      || (horario_alimentacao[2] > horario_alimentacao[0]))
             {
               config_valores_salvar_dosadoras();
