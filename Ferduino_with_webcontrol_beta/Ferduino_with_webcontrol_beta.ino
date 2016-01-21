@@ -146,7 +146,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "15/01/2016"; // Data da última modificação
+const char lastUpdate[] = "20/01/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -321,7 +321,8 @@ UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 //UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
 UTouch      myTouch(7, 6, 5, 4, 3);       // Descomente esta linha para usar o Ferduino Mega 2560
 
-String day, ano;
+int ano = 0;
+byte dia = 0;
 byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
 #endif
 
@@ -593,12 +594,12 @@ byte Status = 0x0;
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
 #ifdef ETHERNET_SHIELD
-const char *Username  = "fernandogarcia";           // Coloque aqui o nome de usuário cadastrado no joy-reef.com
-const char *APIKEY = "ec0245b";                     // Cole aqui a ApiKey gerada pelo joy-reef.com
+const char *Username  = "fernandogarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
+const char *APIKEY = "ec0245b";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
 
 const byte maxima_tentativa = 3;                    // Número máximo de tentativas de autenticação.
 const byte intervalo_tentativa = 15;                // Tempo  de espera (em minutos) para novas tentativas.
-const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Joyreef. Para desabilitar esta função altere o valor para 0 (ZERO).
+const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Para desabilitar esta função altere o valor para 0 (ZERO).
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
 IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
@@ -608,9 +609,6 @@ EthernetServer server(5000);                        // Coloque aqui o número da
 // O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
 
 EthernetClient client;
-char dados[6];
-String OneString;
-int ContentLength = 0;
 IPAddress ferduino(104, 131, 49, 99); // Do NOT change this IP!
 unsigned long intervalo = 0;
 char *inParse[25];

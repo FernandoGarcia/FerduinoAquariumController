@@ -1121,7 +1121,7 @@ void requestAction(byte ID)
 
 void enviar_dados()
 {
-  ContentLength = 0;
+  char dados[6];
 
 #ifdef DEBUG
   Serial.println(F("Connecting..."));
@@ -1129,21 +1129,10 @@ void enviar_dados()
 
   if (client.connect(ferduino, 80))
   {
-    OneString = Username;
-    ContentLength += OneString.length();
-
-    OneString = String(DEN);
-    ContentLength += OneString.length();
-
-    OneString = String(ORP);
-    ContentLength += OneString.length();
-
-    ContentLength += 277;
-
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /api/temp HTTP/1.1"
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /webcontrol/api/index.php HTTP/1.1"
     client.println(buffer);
 
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "Host: www.joy-reef.com"
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "Host: www.ferduino.com"
     client.println(buffer);
 
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[2]))); // "Authorization: Basic "
@@ -1163,7 +1152,7 @@ void enviar_dados()
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[6]))); // "Content-Length: "
     client.print(buffer);
 
-    client.println(ContentLength);
+    client.println(strlen(Username) + sizeof(DEN) + sizeof(ORP) + 277);
     client.println();
 
     client.print(F("{\"userName\":\""));

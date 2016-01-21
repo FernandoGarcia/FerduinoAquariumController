@@ -3,19 +3,17 @@
 void mainScreen(boolean refreshAll = false)
 {
   int ledLevel, s, u;
-  String oldval, rtc1, rtcm, oldano;
-  oldval = day;
-  oldano = ano;
-  day = String(t.date);                             //Atualiza se a data for diferente
-  ano = String(t.year);
   int offset = 0;
   char bufferLP[16];
 
   setFont(SMALL, 255, 255, 0, 0, 0, 0);
   myGLCD.print(rtc.getTimeStr(FORMAT_LONG), 315, 227);
 
-  if ((oldval != day) || (refreshAll == true) || (oldano != ano))
+  if ((t.date != dia) || (refreshAll == true) || (t.year != ano))
   {
+    dia = t.date;
+    ano = t.year;
+    
     drawFillRect(98, 213, 235, 226, 0, 0, 0);
 
     myGLCD.fillRect(10, 226, 314, 239); // Apaga fase lunar
