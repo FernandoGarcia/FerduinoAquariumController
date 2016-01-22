@@ -106,7 +106,7 @@
 // Uncomment the line below to use temperature in Fahrenheit.
 //#define USE_FAHRENHEIT // Descomente esta linha para usar temperatura em Fahrenheit 
 
-//Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7.
+// Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7.
 #define USE_TFT // Comente esta linha se você não quer usar um TFT. Estão função funciona apenas com a IDE 1.6.7.
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas **********************************************************
@@ -146,7 +146,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "21/01/2016"; // Data da última modificação
+const char lastUpdate[] = "22/01/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************

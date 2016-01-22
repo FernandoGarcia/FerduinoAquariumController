@@ -762,12 +762,6 @@ void processMyTouch()
           clearScreen();
           rever_configuracao_dosadoras();
         }
-        else if (checkButtons(atiV[0], atiV[1], atiV[2], atiV[3]) == true)
-        {
-          dispScreen = 35;
-          clearScreen();
-          desativar_dosadoras(true);
-        }
         break;
       case 9: //  -----------------------------------------Tela escolher graficos-----------------------------------------
         if (checkButtons(orP[0], orP[1], orP[2], orP[3]) == true)
@@ -1885,74 +1879,7 @@ void processMyTouch()
           rever_dosagem_personalizada();
         }
         break;
-      case 24:// -------------------------------------- Desativar dosadoras ------------------------------------------
-        if (checkButtons(menU[0], menU[1], menU[2], menU[3]) == true)           // volta ao menu
-        {
-          dispScreen = 1;
-          clearScreen();
-          menuScreen();
-        }
-        else if (checkButtons(volT[0], volT[1], volT[2], volT[3]) == true)           // volta ao menu desativar dosadoras
-        {
-          dispScreen = 35;
-          clearScreen();
-          desativar_dosadoras(true);
-        }
-        else if (checkButtons(100, 45, 220, 85) == true)           //Ativar/desativar dosadora 4
-        {
-          if (bitRead(ativar_desativar, 3) == true)
-          {
-            bitWrite(ativar_desativar, 3, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(100, 115, 220, 155) == true)           //Ativar/desatiavr dosadora 5
-        {
-          if (bitRead(ativar_desativar, 4) == true)
-          {
-            bitWrite(ativar_desativar, 4, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(100, 185, 220, 225) == true)           //Ativar/desatiavr dosadora 6
-        {
-          if (bitRead(ativar_desativar, 5) == true)
-          {
-            bitWrite(ativar_desativar, 5, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(salV[0], salV[1], salV[2], salV[3]) == true)           //Salvar alterações
-        {
-          if (bitRead(ativar_desativar, 3) == false)
-          {
-            modo_personalizado_on_e[3] = 0;
-          }
-          if (bitRead(ativar_desativar, 4) == false)
-          {
-            modo_personalizado_on_e[4] = 0;
-          }
-          if (bitRead(ativar_desativar, 5) == false)
-          {
-            modo_personalizado_on_e[5] = 0;
-          }
-          Salvar_dosadora_EEPROM();
-          dispScreen = 8;
-          clearScreen();
-          menu_dosadoras();
-        }
+      case 24:// -------------------------------------- livre ------------------------------------------
         break;
       case 25:// ------------------------------------ Escolher teste dos leds --------------------------------------------
         if (checkButtons(menU[0], menU[1], menU[2], menU[3]) == true)           // volta ao menu 1
@@ -2608,81 +2535,10 @@ void processMyTouch()
           rever_dosagem_personalizada();
         }
         break;
-      case 35:// -------------------------------------- Desativar dosadoras ------------------------------------------
-        if (checkButtons(menU[0], menU[1], menU[2], menU[3]) == true)           // volta ao menu
-        {
-          dispScreen = 1;
-          clearScreen();
-          menuScreen();
-        }
-        else if (checkButtons(volT[0], volT[1], volT[2], volT[3]) == true)           // volta ao menu desativar dosadoras
-        {
-          dispScreen = 8;
-          clearScreen();
-          menu_dosadoras();
-        }
-        else if (checkButtons(deS[0], deS[1], deS[2], deS[3]) == true)           // volta ao menu desativar dosadoras
-        {
-          dispScreen = 24;
-          clearScreen();
-          desativar_dosadoras(true);
-        }
-        else if (checkButtons(100, 45, 220, 85) == true)           //Ativar/desatiavar dosadora 1
-        {
-          if (bitRead(ativar_desativar, 0) == true)
-          {
-            bitWrite(ativar_desativar, 0, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(100, 115, 220, 155) == true)           //Ativar/desatiavar dosadora 2
-        {
-          if (bitRead(ativar_desativar, 1) == true)
-          {
-            bitWrite(ativar_desativar, 1, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(100, 185, 220, 225) == true)           //Ativar/desatiavar dosadora 3
-        {
-          if (bitRead(ativar_desativar, 2) == true)
-          {
-            bitWrite(ativar_desativar, 2, 0);
-            desativar_dosadoras();
-          }
-          else
-          {
-            desativar_dosadoras(true);
-          }
-        }
-        else if (checkButtons(salV[0], salV[1], salV[2], salV[3]) == true)           //Salvar alterações
-        {
-          if (bitRead(ativar_desativar, 0) == false)
-          {
-            modo_personalizado_on_e[0] = 0;
-          }
-          if (bitRead(ativar_desativar, 1) == false)
-          {
-            modo_personalizado_on_e[1] = 0;
-          }
-          else if (bitRead(ativar_desativar, 2) == false)
-          {
-            modo_personalizado_on_e[2] = 0;
-          }
-          Salvar_dosadora_EEPROM();
-          dispScreen = 8;
-          clearScreen();
-          menu_dosadoras();
-        }
+        
+      case 35:// -------------------------------------- livre ------------------------------------------
         break;
+        
       case 36: // -------------------------------- Luz noturna --------------------------------------------
         if (checkButtons(volT[0], volT[1], volT[2], volT[3]) == true)           // volta a tela configurar leds
         {
