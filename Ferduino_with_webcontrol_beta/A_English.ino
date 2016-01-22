@@ -51,7 +51,7 @@ const char texto47[] PROGMEM = "CUSTOM DOSING CONFIGURATION"; // tabela_textos[4
 const char texto48[] PROGMEM = "DOSING PUMPS SETUP"; // tabela_textos[48]
 const char texto49[] PROGMEM = "CHOOSE A TEST"; // tabela_textos[49]
 const char texto50[] PROGMEM = "CUSTOM DOSING CONFIG. REVIEW"; // tabela_textos[50]
-const char texto51[] PROGMEM = "DEACTIVATE DOSING PUMP"; // tabela_textos[51]
+const char texto51[] PROGMEM = ""; // tabela_textos[51]
 const char texto52[] PROGMEM = "MOON LIGHT   255 = 100 %"; // tabela_textos[52]
 const char texto53[] PROGMEM = "TIMER SELECT"; // tabela_textos[53]
 const char texto54[] PROGMEM = "TIMER SET 1"; // tabela_textos[54]

@@ -51,7 +51,7 @@ const char texto47[] PROGMEM = "CONFIGURAR DOSAGEM PERSONALIZADA"; // tabela_tex
 const char texto48[] PROGMEM = "ALTERAR CONFIGURACAO DAS DOSADORAS"; // tabela_textos[48]
 const char texto49[] PROGMEM = "ESCOLHA UM TIPO DE TESTE"; // tabela_textos[49]
 const char texto50[] PROGMEM = "REVER CONF. DA DOSAGEM PERSONALIZADA"; // tabela_textos[50]
-const char texto51[] PROGMEM = "DESATIVAR DOSADORAS"; // tabela_textos[51]
+const char texto51[] PROGMEM = ""; // tabela_textos[51]
 const char texto52[] PROGMEM = "LUZ NOTURNA   255 = 100 %"; // tabela_textos[52]
 const char texto53[] PROGMEM = "SELECIONE O TIMER"; // tabela_textos[53]
 const char texto54[] PROGMEM = "CONFIGURAR TIMER 1"; // tabela_textos[54]

@@ -51,7 +51,7 @@ const char texto47[] PROGMEM = "CONFIGURAR DOSIS PERSONALIZADA"; // tabela_texto
 const char texto48[] PROGMEM = "ALTERAR CONFIGURACION PERISTATICAS"; // tabela_textos[48]
 const char texto49[] PROGMEM = "ESCOLJA UN TIPO DE TEST"; // tabela_textos[49]
 const char texto50[] PROGMEM = "REVER CONF. DE DOSIS PERSONALIZADA"; // tabela_textos[50]
-const char texto51[] PROGMEM = "DESACTIVAR PERISTATICAS"; // tabela_textos[51]
+const char texto51[] PROGMEM = ""; // tabela_textos[51]
 const char texto52[] PROGMEM = "LUZ NOTURNA   255 = 100 %"; // tabela_textos[52]
 const char texto53[] PROGMEM = "SELECCIONE TEMPOR"; // tabela_textos[53]
 const char texto54[] PROGMEM = "CONFIGURAR TEMPOR 1"; // tabela_textos[54]

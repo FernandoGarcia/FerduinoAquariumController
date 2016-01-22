@@ -51,7 +51,7 @@ const char texto47[] PROGMEM = "CONFIGURAZIONE DOSAGGIO PERSONALIZZATA"; // tabe
 const char texto48[] PROGMEM = "MODIFICA CONFIGURAZIONE DI DOSAGGIO"; // tabela_textos[48]
 const char texto49[] PROGMEM = "SCEGLI UN TIPO DI TEST"; // tabela_textos[49]
 const char texto50[] PROGMEM = "MOSTRA CONF. DI DOSAGGIO PERSONALIZZATA"; // tabela_textos[50]
-const char texto51[] PROGMEM = "DISATTIVA POMPA DOSATRICE"; // tabela_textos[51]
+const char texto51[] PROGMEM = ""; // tabela_textos[51]
 const char texto52[] PROGMEM = "LUCE NOTTURNA   255 = 100 %"; // tabela_textos[52]
 const char texto53[] PROGMEM = "SELEZIONA UN TIMER"; // tabela_textos[53]
 const char texto54[] PROGMEM = "CONFIG. TIMER 1"; // tabela_textos[54]
