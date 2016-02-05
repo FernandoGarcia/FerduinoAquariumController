@@ -148,6 +148,7 @@ void setup()
   ler_predefinido_EEPROM();
   check_erro_tpa_EEPROM();
   ler_alimentador_EEPROM();
+  ler_outlets_EEPROM();
 
   selecionar_SPI(SD_CARD);                         // Seleciona disposito SPI que será utilizado.
   while (!SD.begin(ChipSelect_SD, SPI_HALF_SPEED)) // Inicia a comunicação com o cartão SD.

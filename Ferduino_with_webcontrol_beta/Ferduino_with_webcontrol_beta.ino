@@ -146,7 +146,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "22/01/2016"; // Data da última modificação
+const char lastUpdate[] = "05/02/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -349,6 +349,17 @@ byte status_parametros = 0x0;
 byte status_parametros_1 = 0x0;
 //bit 0    // Sinaliza que a ORP esta fora do especificado
 
+byte outlets[9];
+//outlets[0] = Aquecedor > 0 = auto, 1 = on, 2 = off
+//outlets[1] = Chiller > 0 = auto, 1 = on, 2 = off
+//outlets[2] = Ozonizador > 0 = auto, 1 = on, 2 = off
+//outlets[3] = Reator de cálcio > 0 = auto, 1 = on, 2 = off
+//outlets[4] = Skimmer > 0 = auto, 1 = on, 2 = off
+//outlets[5] = Bomba 1 (TPA) > 0 = auto, 1 = on, 2 = off
+//outlets[6] = Bomba 2 (TPA) > 0 = auto, 1 = on, 2 = off
+//outlets[7] = Bomba 3 (TPA) > 0 = auto, 1 = on, 2 = off
+//outlets[8] = Reposição (ATO) > 0 = auto, 1 = on, 2 = off
+byte outlets_changed[9];
 //*****************************************************************************************
 //*********************** Variáveis do controle de temperatura da água ********************
 //*****************************************************************************************

@@ -1113,8 +1113,44 @@ void requestAction(byte ID)
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
         client.println(buffer);
       }
+      break;
 
-
+    case 23:
+      if (atoi(inParse[1]) == 0) // send (case, mode)
+      {
+        client.print(F("{"));
+        for (byte i = 0; i < 9; i++)
+        {
+          client.print(F("\"mode"));
+          client.print(i + 1);
+          client.print(F("\":"));
+          client.print(outlets[i]);
+          if (i < 8)
+          {
+            client.print(F(","));
+          }
+        }
+        client.println(F("}"));
+      }
+      else if (atoi(inParse[1]) == 1)
+      {
+        salvar_outlets_EEPROM();
+        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+        client.println(buffer);
+      }
+      else if (atoi(inParse[1]) == 2)
+      {
+        outlets[atoi(inParse[2])] = atoi(inParse[3]);
+        outlets_changed[atoi(inParse[2])] = true;
+        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+        client.println(buffer);
+      }
+      else if (atoi(inParse[1]) == 3)
+      {
+        ler_outlets_EEPROM();
+        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+        client.println(buffer);
+      }
       break;
   }
 }

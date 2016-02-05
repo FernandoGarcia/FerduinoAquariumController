@@ -269,6 +269,15 @@ void salvar_alimentador_EEPROM()
   EEPROM.write(839, alimentacao_wavemaker_on_off);
 }
 
+void salvar_outlets_EEPROM()
+{
+  byte k = 66;
+  EEPROM.write(840, k);
+  for (byte i = 0; i < 9; i++)
+  {
+    EEPROM.write(841 + i, outlets[i]);
+  }
+}
 //*******************************************************************************************************************
 //***************************** LER EEPROM **************************************************************************
 //*******************************************************************************************************************
@@ -527,4 +536,16 @@ void ler_alimentador_EEPROM()
   }
 }
 
+void ler_outlets_EEPROM()
+{
+  byte k = EEPROM.read(840);
+
+  if (k == 66)
+  {
+    for (byte i = 0; i < 9; i++)
+    {
+      outlets[i] = EEPROM.read(841 + i);
+    }
+  }
+}
 
