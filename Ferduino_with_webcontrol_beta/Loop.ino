@@ -66,6 +66,19 @@ void loop()
   {
     tentativa = 0;
   }
+
+  if (outlets_settings == true)
+  {
+    if ((millis() - outlets_millis) > 300000) // Lê os valores da EEPROM se as configurações não forem salvas em até 5 minutos
+    {
+      for(byte i = 0; i < 9; i++)
+      {
+        outlets_changed[i] = true;
+      }
+      ler_outlets_EEPROM();
+      outlets_settings = false;
+    }
+  }
 #endif
 
 #ifdef USE_TFT
@@ -229,7 +242,7 @@ void loop()
     {
       min_cnt = NumMins(t.hour, t.min); // Atualiza o intervalo para determinar a potência dos leds.
     }
-    
+
 #ifdef USE_TFT
     if (dispScreen == 0)
     {
@@ -248,74 +261,74 @@ void loop()
 #endif
     }
 #endif
-    
+
     if (suavizar <= 1)
     {
       suavizar += 0.1;
     }
 #ifdef DEBUG
     /*  Serial.println();
-     Serial.print("Day of week: ");
-     Serial.println(rtc.getDOWStr());
+      Serial.print("Day of week: ");
+      Serial.println(rtc.getDOWStr());
 
-     Serial.print("Time: ");
-     Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
+      Serial.print("Time: ");
+      Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
 
     Serial.print(F("Free memory: "));
     Serial.println(FreeRam());
     /*
-    Serial.print("Sensor 1: ");
-     Serial.println(analogRead(A0));
+      Serial.print("Sensor 1: ");
+      Serial.println(analogRead(A0));
 
-     Serial.print("Sensor 2: ");
-     Serial.println(analogRead(A1));
+      Serial.print("Sensor 2: ");
+      Serial.println(analogRead(A1));
 
-     Serial.print("Sensor 3: ");
-     Serial.println(analogRead(A2));
+      Serial.print("Sensor 3: ");
+      Serial.println(analogRead(A2));
 
-     Serial.print("Sensor 4: ");
-     Serial.println(analogRead(A3));
+      Serial.print("Sensor 4: ");
+      Serial.println(analogRead(A3));
 
-     Serial.print("Sensor 5: ");
-     Serial.println(analogRead(A4));
+      Serial.print("Sensor 5: ");
+      Serial.println(analogRead(A4));
 
-     Serial.print("Sensor 6: ");
-     Serial.println(analogRead(A5));
+      Serial.print("Sensor 6: ");
+      Serial.println(analogRead(A5));
 
-     Serial.print("marcadoriniciotpa: ");
-     Serial.println(marcadoriniciotpa);
+      Serial.print("marcadoriniciotpa: ");
+      Serial.println(marcadoriniciotpa);
 
-     Serial.print("shiftedmillis: ");
-     Serial.println(shiftedmillis);
+      Serial.print("shiftedmillis: ");
+      Serial.println(shiftedmillis);
 
-     Serial.print("Duration for stage: ");
-     Serial.print(tempo/60000);
-     Serial.println(" minutes");
+      Serial.print("Duration for stage: ");
+      Serial.print(tempo/60000);
+      Serial.println(" minutes");
 
-     if (digitalRead(bomba1Pin)==HIGH)
-     {
-     Serial.println("Pump 1: ON");
-     }
-     else
-     {
-     Serial.println("Pump 1: OFF");
-     }
-     if (digitalRead(bomba2Pin)==HIGH)
-     {
-     Serial.println("Pump 2: ON");
-     }
-     else
-     {
-     Serial.println("Pump 2: OFF");
-     }
-     if (digitalRead(bomba3Pin)==HIGH)
-     {
-     Serial.println("Pump 3: ON");
-     }
-     else
-     {
-     Serial.println("Pump 3: OFF");
-     }*/
+      if (digitalRead(bomba1Pin)==HIGH)
+      {
+      Serial.println("Pump 1: ON");
+      }
+      else
+      {
+      Serial.println("Pump 1: OFF");
+      }
+      if (digitalRead(bomba2Pin)==HIGH)
+      {
+      Serial.println("Pump 2: ON");
+      }
+      else
+      {
+      Serial.println("Pump 2: OFF");
+      }
+      if (digitalRead(bomba3Pin)==HIGH)
+      {
+      Serial.println("Pump 3: ON");
+      }
+      else
+      {
+      Serial.println("Pump 3: OFF");
+      }*/
 #endif
     previousMillis = millis();
   }

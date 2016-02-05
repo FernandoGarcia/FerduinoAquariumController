@@ -1135,6 +1135,7 @@ void requestAction(byte ID)
       else if (atoi(inParse[1]) == 1)
       {
         salvar_outlets_EEPROM();
+        outlets_settings = false;
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
         client.println(buffer);
       }
@@ -1142,12 +1143,15 @@ void requestAction(byte ID)
       {
         outlets[atoi(inParse[2])] = atoi(inParse[3]);
         outlets_changed[atoi(inParse[2])] = true;
+        outlets_millis = millis();
+        outlets_settings = true;
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
         client.println(buffer);
       }
       else if (atoi(inParse[1]) == 3)
       {
         ler_outlets_EEPROM();
+        outlets_settings = false;
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
         client.println(buffer);
       }
@@ -1308,10 +1312,10 @@ void checkSockStatus()
     if ((s == 0x13))
     {
       close(i);
-/*#ifdef DEBUG
-      Serial.print(F("Socket:"));
-      Serial.println(i);
-#endif*/
+      /*#ifdef DEBUG
+            Serial.print(F("Socket:"));
+            Serial.println(i);
+        #endif*/
     }
   }
 }

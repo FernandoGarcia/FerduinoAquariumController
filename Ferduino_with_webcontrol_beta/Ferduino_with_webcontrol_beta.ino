@@ -360,6 +360,8 @@ byte outlets[9];
 //outlets[7] = Bomba 3 (TPA) > 0 = auto, 1 = on, 2 = off
 //outlets[8] = Reposição (ATO) > 0 = auto, 1 = on, 2 = off
 byte outlets_changed[9];
+boolean outlets_settings = false;
+unsigned long outlets_millis = 0;
 //*****************************************************************************************
 //*********************** Variáveis do controle de temperatura da água ********************
 //*****************************************************************************************
