@@ -265,10 +265,15 @@ char *DS1307::getDOWStr(uint8_t format)
 	char *output= "xxxxxxxxx";
 	Time t;
 	t=getTime();
-	output = TABELA_SEMANA[t.dow - 1];
 
-	if (format==FORMAT_SHORT)
-		output[3]=0;
+	if (format == FORMAT_SHORT)
+    {
+        output = TABELA_SEMANA_ABREVIADA[t.dow - 1];
+    }
+	else
+    {
+        output = TABELA_SEMANA[t.dow - 1];
+    }
 	return output;
 }
 
@@ -277,10 +282,16 @@ char *DS1307::getMonthStr(uint8_t format)
 	char *output= "xxxxxxxxx";
 	Time t;
 	t=getTime();
-	output = TABELA_MES[t.mon - 1];
 
-	if (format==FORMAT_SHORT)
-		output[3]=0;
+
+	if (format == FORMAT_SHORT)
+    {
+        output = TABELA_MES_ABREVIADA[t.mon - 1];
+    }
+    else
+    {
+      output = TABELA_MES[t.mon - 1];
+    }
 	return output;
 }
 
