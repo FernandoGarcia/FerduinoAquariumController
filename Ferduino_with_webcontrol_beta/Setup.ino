@@ -164,12 +164,12 @@ void setup()
   }
 
   t = rtc.getTime(); // Atualiza as variáveis que usam o RTC.
-  /* check_arquivo_temp_agua(); // Corrige o log de temperatura
+   check_arquivo_temp_agua(); // Corrige o log de temperatura
    check_arquivo_ph_agua();   // Corrige o log de pH da água
    check_arquivo_ph_reator(); // Corrige o log de pH do reator
    check_arquivo_orp();       // Corrige o log de ORP
    check_arquivo_densidade(); // Corrige o log de densidade
-  */
+  
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
   iniciar_stamp_ph_reator();    // Lê o pH do reator
   iniciar_stamp_orp();          // Lê a ORP
