@@ -6,7 +6,7 @@ void check_temporizadores()
     {
       if (NumMins(off_hora_e[i], off_minuto_e[i]) > NumMins(on_hora_e[i], on_minuto_e[i]))
       {
-        if ((NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i])) && (NumMins(t.hour, t.min) < NumMins(off_hora_e[i], off_minuto_e[i])))
+        if ((NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i])) && (NumMins(t.hour, t.min) <= NumMins(off_hora_e[i], off_minuto_e[i])))
         {
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], HIGH);
@@ -27,7 +27,7 @@ void check_temporizadores()
       }
       else if (NumMins(off_hora_e[i], off_minuto_e[i]) < NumMins(on_hora_e[i], on_minuto_e[i]))
       {
-        if (NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i]) || (NumMins(t.hour, t.min) < NumMins(off_hora_e[i], off_minuto_e[i])))
+        if (NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i]) || (NumMins(t.hour, t.min) <= NumMins(off_hora_e[i], off_minuto_e[i])))
         {
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], HIGH);
