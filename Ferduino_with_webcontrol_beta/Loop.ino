@@ -71,7 +71,7 @@ void loop()
   {
     if ((millis() - outlets_millis) > 300000) // Lê os valores da EEPROM se as configurações não forem salvas em até 5 minutos
     {
-      for(byte i = 0; i < 9; i++)
+      for (byte i = 0; i < 9; i++)
       {
         outlets_changed[i] = true;
       }
@@ -202,6 +202,11 @@ void loop()
       if ((millis() - alimentacao_millis) > (duracao_alimentacao * 1000L))
       {
         modo_alimentacao = false;
+        if (dispScreen == 45)
+        {
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[17])));
+          printButton(buffer, anT[0], anT[1], anT[2], anT[3]); // tabela_textos[17] = "INICIAR"
+        }
       }
     }
   }
