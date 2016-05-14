@@ -202,11 +202,13 @@ void loop()
       if ((millis() - alimentacao_millis) > (duracao_alimentacao * 1000L))
       {
         modo_alimentacao = false;
+#ifdef USE_TFT
         if (dispScreen == 45)
         {
           strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[17])));
           printButton(buffer, anT[0], anT[1], anT[2], anT[3]); // tabela_textos[17] = "INICIAR"
         }
+#endif
       }
     }
   }
