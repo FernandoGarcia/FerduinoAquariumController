@@ -97,9 +97,14 @@ void check_dosagem_personalizada()
                 delay(tempo_dosagem);
                 digitalWrite(dosadora[i], LOW);
                 volume_dosado[i] += (dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]);
+                bitWrite(erro_dosagem, i, 0);
               }
             }
             file.close();
+          }
+          else
+          {
+            bitWrite(erro_dosagem, i, 1);
           }
         }
       }

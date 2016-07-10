@@ -1150,7 +1150,19 @@ void requestAction(byte ID)
       }
       else if (atoi(inParse[1]) == 3)
       {
-        ler_outlets_EEPROM();
+        byte k = EEPROM.read(840);
+
+        if (k != 66)
+        {
+          for (byte i = 0; i < 9; i++)
+          {
+            outlets[i] = 0;
+          }
+        }
+        else
+        {
+          ler_outlets_EEPROM();
+        }
         outlets_settings = false;
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
         client.println(buffer);
@@ -1192,7 +1204,7 @@ void enviar_dados()
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[6]))); // "Content-Length: "
     client.print(buffer);
 
-    client.println(strlen(Username) + sizeof(DEN) + sizeof(ORP) + 277);
+    client.println(strlen(Username) + sizeof(DEN) + sizeof(ORP) + 319);
     client.println();
 
     client.print(F("{\"userName\":\""));
@@ -1261,6 +1273,18 @@ void enviar_dados()
     client.print(volume_dosado[4]);
     client.print(F(",\"U6\":")); // Volume dosado pela dosadora 6
     client.print(volume_dosado[5]);
+    client.print(F(",\"V1\":")); // Erro dosagem dosadora 1
+    client.print(bitRead(erro_dosagem, 0));
+    client.print(F(",\"V2\":")); // Erro dosagem dosadora 2
+    client.print(bitRead(erro_dosagem, 1));
+    client.print(F(",\"V3\":")); // Erro dosagem dosadora 3
+    client.print(bitRead(erro_dosagem, 2));
+    client.print(F(",\"V4\":")); // Erro dosagem dosadora 4
+    client.print(bitRead(erro_dosagem, 3));
+    client.print(F(",\"V5\":")); // Erro dosagem dosadora 5
+    client.print(bitRead(erro_dosagem, 4));
+    client.print(F(",\"V6\":")); // Erro dosagem dosadora 6
+    client.print(bitRead(erro_dosagem, 5));
     client.println(F("}"));
 
     delay(5);
@@ -1282,11 +1306,19 @@ void enviar_dados()
 #ifdef DEBUG
     Serial.println(F("Can't connect!"));
 #endif
-
     client.flush();
     client.stop();
-#ifdef WATCHDOG
+
     notconnected++;
+    if ((notconnected >= (limite_falha - 2)) && (notconnected < limite_falha))
+    {
+      start_ethernet();
+#ifndef WATCHDOG
+      notconnected = 0;
+#endif
+    }
+
+#ifdef WATCHDOG
     if (notconnected == limite_falha)
     {
 #ifdef DEBUG
@@ -1294,7 +1326,6 @@ void enviar_dados()
       Serial.print(F("Resetting"));
 #endif
       delay(9000);
-      notconnected = 0;
     }
 #endif
   }

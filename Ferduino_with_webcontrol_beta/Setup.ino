@@ -6,11 +6,11 @@ void setup()
 #endif // Do not change this line!
 
 
-#ifdef DEBUG
+#ifdef DEBUG //Do not change this line
   Serial.begin(38400); // Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
   Serial.flush();
   Serial.println();
-#endif
+#endif //Do not change this line
 
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
   Serial3.begin(38400); // Inicia a comunicação com a  porta serial 3 onde estão conectados os "stamps".
@@ -79,29 +79,29 @@ void setup()
   pinMode (skimmerPin, OUTPUT);            // Pino 87;
 #endif // Do not change this line!
 
-#ifdef USE_TFT
+#ifdef USE_TFT //Do not change this line
   myGLCD.InitLCD(LANDSCAPE); // Orientação da imagem no LCD.
   clearScreen();             // Limpa o LCD.
 
   myTouch.InitTouch(LANDSCAPE);       // Orientação do "touch screen".
   myTouch.setPrecision(PREC_MEDIUM);  // Define a precisão do "touch screen".
-#endif
-  
+#endif //Do not change this line
+
   ReadDallasAddress ();
   sensors.begin();                                //Inicia as leituras das sondas de temperatura.
   sensors.setResolution(sensor_agua, 10);        // Define a resolução em 10 bits.
   sensors.setResolution(sensor_dissipador, 10);  // Define a resolução em 10 bits.
   sensors.setResolution(sensor_ambiente, 10);    // Define a resolução em 10 bits.
   sensors.requestTemperatures();                 // Chamada para todos os sensores.
-#ifdef USE_FAHRENHEIT
+#ifdef USE_FAHRENHEIT //Do not change this line
   tempC = (sensors.getTempF(sensor_agua));       // Lê a temperatura da água
   tempH = (sensors.getTempF(sensor_dissipador)); // Lê a temperatura do dissipador.
   tempA = (sensors.getTempF(sensor_ambiente));   // Lê a temperatura do ambiente.
-#else
+#else //Do not change this line
   tempC = (sensors.getTempC(sensor_agua));       // Lê a temperatura da água
   tempH = (sensors.getTempC(sensor_dissipador)); // Lê a temperatura do dissipador.
   tempA = (sensors.getTempC(sensor_ambiente));   // Lê a temperatura do ambiente.
-#endif
+#endif //Do not change this line
 
   rtc.halt(false); // Inicia o funcionamento do RTC.
 
@@ -109,12 +109,12 @@ void setup()
 
   if (k != 222) // Verifica se a EEPROM foi formatada por este programa
   {
-#ifdef USE_TFT
+#ifdef USE_TFT //Do not change this line
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
 
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[225]))); // "FORMATANDO A EEPROM..."
     myGLCD.print(buffer, CENTER, 115);
-#endif
+#endif //Do not change this line
 
     EEPROM.write(0, 222); // Indica que a EEPROM foi formatada por este programa
 
@@ -131,7 +131,7 @@ void setup()
     SaveLEDToEEPROM();
   }
 
-  // Lê a variáveis guardadas na EEPROM.
+  // Lê as variáveis guardadas na EEPROM.
   ReadFromEEPROM();
   lertpaEEPROM();
   lerPHAEEPROM();
@@ -148,33 +148,59 @@ void setup()
   ler_predefinido_EEPROM();
   check_erro_tpa_EEPROM();
   ler_alimentador_EEPROM();
-  ler_outlets_EEPROM();
+
+  k = EEPROM.read(840); // Ponteiro que indica que a configuração já foi alterada
+
+  if (k != 66)
+  {
+    for (byte i = 0; i < 9; i++)
+    {
+      outlets[i] = 0;
+    }
+  }
+  else
+  {
+    ler_outlets_EEPROM();
+  }
 
   selecionar_SPI(SD_CARD);                         // Seleciona disposito SPI que será utilizado.
   while (!SD.begin(ChipSelect_SD, SPI_HALF_SPEED)) // Inicia a comunicação com o cartão SD.
   {
-#ifdef USE_TFT    
+#ifdef USE_TFT //Do not change this line    
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
     myGLCD.print("PLEASE INSERT A SD CARD.", CENTER, 115);
-#endif
-    
-#ifdef DEBUG
+#endif //Do not change this line
+
+#ifdef DEBUG //Do not change this line
     Serial.println(F("Please insert a SD CARD"));
-#endif
+#endif //Do not change this line
   }
 
   t = rtc.getTime(); // Atualiza as variáveis que usam o RTC.
-   check_arquivo_temp_agua(); // Corrige o log de temperatura
-   check_arquivo_ph_agua();   // Corrige o log de pH da água
-   check_arquivo_ph_reator(); // Corrige o log de pH do reator
-   check_arquivo_orp();       // Corrige o log de ORP
-   check_arquivo_densidade(); // Corrige o log de densidade
-  
+  check_arquivo_temp_agua(); // Corrige o log de temperatura
+  check_arquivo_ph_agua();   // Corrige o log de pH da água
+  check_arquivo_ph_reator(); // Corrige o log de pH do reator
+  check_arquivo_orp();       // Corrige o log de ORP
+  check_arquivo_densidade(); // Corrige o log de densidade
+
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
-  iniciar_stamp_ph_reator();    // Lê o pH do reator
-  iniciar_stamp_orp();          // Lê a ORP
-  // iniciar_stamp_densidade();    // Lê a densidade
-  iniciar_stamp_ph_aquario();   // Lê o pH do aquário
+
+#ifdef USE_STAMP_FOR_CALCIUM_REACTOR //Do not change this line
+  iniciar_stamp_ph_reator(); // Verifica o pH do reator de cálcio.
+#endif //Do not change this line
+
+#ifdef USE_STAMP_FOR_ORP //Do not change this line
+  iniciar_stamp_orp();       // Verifica a ORP
+#endif //Do not change this line
+
+#ifdef USE_STAMP_FOR_DENSITY //Do not change this line
+  iniciar_stamp_densidade(); // Verifica a densidade
+#endif //Do not change this line
+
+#ifdef USE_STAMP_FOR_TANK_PH //Do not change this line
+  iniciar_stamp_ph_aquario(); // Verifica o pH do aquário
+#endif //Do not change this line
+
 #endif // Do not change this line!
 
 #ifdef ETHERNET_SHIELD // Do not change this line!
@@ -192,10 +218,10 @@ void setup()
   radio.Encrypt((byte*)KEY);
 #endif // Do not change this line!
 
-#ifdef USE_TFT
+#ifdef USE_TFT //Do not change this line
   clearScreen();    // Limpa o LCD.
   mainScreen(true); // Exibe a tela inicial no LCD.
-#endif
+#endif //Do not change this line
 
 #ifdef WATCHDOG // Do not change this line!
   wdt_enable(WDTO_8S);
@@ -208,17 +234,17 @@ void setup()
 void start_ethernet()
 {
   selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-#ifdef USE_DHCP
+#ifdef USE_DHCP //Do not change this line
   Ethernet.begin(mac, SelectSlave_ETH); // Configuração do servidor.
-#else
+#else //Do not change this line
   Ethernet.begin(mac, ip, dnsServer, gateway, subnet, SelectSlave_ETH); // Configuração do servidor.
-#endif
+#endif //Do not change this line
 
   server.begin(); // Inicia o servidor.
 
-#ifdef DEBUG
+#ifdef DEBUG //Do not change this line
   Serial.print(F("IP server: "));
   Serial.println(Ethernet.localIP());
-#endif
+#endif //Do not change this line
 }
 #endif // Do not change this line!

@@ -21,7 +21,7 @@
 //******* Dúvidas, sugestões e elogios: info@ferduino.com **********************************************************************************************
 //******************************************************************************************************************************************************
 
-// Este programa é compatível com a IDE 1.6.7 e 1.0.6
+// Este programa é compatível com a IDE 1.6.9 e 1.0.6
 
 // As funções para controle via web foram implementadas graças à preciosa ajuda do Simone Grimaldi e Danilo Castellano.
 
@@ -70,6 +70,18 @@
 #define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
 //#define STAMPS_EZO     // Descomente esta linha para usar Stamps EZO
 
+// Comment the line below if you haven't a stamp for tank pH.
+#define USE_STAMP_FOR_TANK_PH // Comente esta linha se você não tem um "stamp" para o pH do aquário.
+
+// Comment the line below if you haven't a stamp for calcium reactor.
+#define USE_STAMP_FOR_CALCIUM_REACTOR // Comente esta linha se você não tem um "stamp" para o reator de cálcio.
+
+// Comment the line below if you haven't a stamp for ORP.
+#define USE_STAMP_FOR_ORP // Comente esta linha se você não tem um "stamp" para a ORP.
+
+// Comment the line below if you haven't a stamp for density.
+//#define USE_STAMP_FOR_DENSITY // Comente esta linha se você não tem um "stamp" para a densidade.
+
 // Comment this two lines below if have not RFM12B wireless transceiver
 //#define RFM12B_LED_CONTROL   // Descomente esta linha para controlar os LEDs via RF
 //#define RFM12B_RELAY_CONTROL // Descomente esta linha  para controlar os relês via RF
@@ -104,17 +116,31 @@
 #define NIGHT_MODE // Reduz a potência das bombas de circulação quando os LEDs estão desligados.
 
 // Uncomment the line below to use temperature in Fahrenheit.
-//#define USE_FAHRENHEIT // Descomente esta linha para usar temperatura em Fahrenheit 
+//#define USE_FAHRENHEIT // Descomente esta linha para usar temperatura em Fahrenheit
 
-// Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7.
-#define USE_TFT // Comente esta linha se você não quer usar um TFT. Estão função funciona apenas com a IDE 1.6.7.
+// Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7 or higher.
+#define USE_TFT // Comente esta linha se você não quer usar um TFT. Estão função funciona apenas com a IDE 1.6.7 or higher.
+
+// Uncomment the line below to use pins 18 and 19 for RTC and comment to use pins 20 and 21 for RTC.
+#define USE_PINS_18_AND_19_FOR_RTC // Descomente esta linha para usar os pinos 18 e 19 para o RTC e comente para usar os pinos 20 e 21 para o RTC.
+
+// Uncomment the line below if you are using a TFT shield.
+//#define USE_TFT_SHIELD // Descomente esta linha se você estiver usando um "TFT shield".
+
+// Uncomment the line below if you have the  SD card on ethernet shield.
+//#define USE_PIN_4_FOR_SD_CARD // Descomente esta linha se você tem o cartão SD conectado no "ethernet shield".
+
+// Uncomment the line below if you have the  SD card on TFT
+// Do not uncomment this line when using Ferduino Mega 2560
+//#define USE_PIN_53_FOR_SD_CARD // Descomente esta linha se você tem o cartão SD conectado no TFT. Não descomente esta linha se estiver usando um Ferduino Mega 2560
+
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas **********************************************************
 //*************************************************************************************************
-#ifdef USE_TFT
+#ifdef USE_TFT // Do not change this line
 #include <UTFT.h>
 #include <UTouch.h>
-#endif
+#endif // Do not change this line
 #include <Wire.h>
 #include <EEPROM.h>
 #include <writeAnything.h>
@@ -146,12 +172,12 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "13/05/2016"; // Data da última modificação
+const char lastUpdate[] = "09/07/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
 //****************************************************************************************************
-#ifdef USE_TFT
+#ifdef USE_TFT //Do not change this line
 #define LARGE true
 #define SMALL false
 extern uint8_t RusFont1[];    // Declara que fontes vamos usar
@@ -159,9 +185,9 @@ extern uint8_t BigFont[];     // Declara que fontes vamos usar
 #endif
 char buffer[50];
 
-#ifdef USE_SCREENSAVER
+#ifdef USE_SCREENSAVER //Do not change this line
 extern uint8_t SevenSegNumFontPlus[];
-#endif
+#endif //Do not change this line
 
 //****************************************************************************************************
 //****************** Define funções dos pinos digitais e analógicos **********************************
@@ -308,32 +334,37 @@ byte sonda_associada_3_temp = 0;
 //*******************************************************************************************************
 //********************** Funções do RTC ********************************************************************
 //*******************************************************************************************************
-//        (SDA,SCL) Indica em quais pinos o RTC está conectado.
-//DS1307 rtc(20, 21);     // Comente esta linha para usar o Ferduino Mega 2560
-DS1307 rtc(18, 19);  // Descomente esta linha para usar o Ferduino Mega 2560
+#ifdef USE_PINS_18_AND_19_FOR_RTC // Do not change this line
+DS1307 rtc(18, 19);     // (SDA,SCL) Indica em quais pinos o RTC está conectado.
+#else // Do not change this line
+DS1307 rtc(20, 21);  /// (SDA,SCL) Indica em quais pinos o RTC está conectado.
+#endif // Do not change this line
 Time t_temp, t;
 
 //*******************************************************************************************************
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
-#ifdef USE_TFT
+#ifdef USE_TFT // Do not change this line
 UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
-//UTouch      myTouch(6,5,4,3,2);              // Comente esta linha para usar o Ferduino Mega 2560
-UTouch      myTouch(7, 6, 5, 4, 3);       // Descomente esta linha para usar o Ferduino Mega 2560
+#ifdef USE_TFT_SHIELD // Do not change this line
+UTouch      myTouch(6,5,4,3,2);              // Pinos usados pelo "touch" no TFT shield
+#else // Do not change this line
+UTouch      myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
+#endif // Do not change this line
 
 unsigned int ano = 0;
 byte dia = 0;
 byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
-#endif
+#endif //Do not change this line
 
 byte dispScreen = 0;
 unsigned long previousMillis = 0;
 
-#ifdef USE_SCREENSAVER
+#ifdef USE_SCREENSAVER //Do not change this line
 unsigned long previousMillis_2 = 0;
 int interval = 60; // In seconds
 boolean firstTime = true;
-#endif
+#endif //Do not change this line
 //*****************************************************************************************
 //*********************** Parâmetros ******************************************************
 //*****************************************************************************************
@@ -442,13 +473,13 @@ byte DEN2beA;
 //*****************************************************************************************
 //************************ Variáveis de controle de velocidade dos coolers ****************
 //*****************************************************************************************
-#ifdef USE_FAHRENHEIT
+#ifdef USE_FAHRENHEIT //Do not change this line
 float HtempMin = 86.9;
 float HtempMax = 104.9;
-#else
+#else //Do not change this line
 float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
 float HtempMax = 40.5;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
-#endif
+#endif //Do not change this line
 int fanSpeed = 0;         // PWM dos coolers
 
 //*****************************************************************************************
@@ -538,11 +569,11 @@ const byte cor_canal[5][3] = {
   {224, 102, 255}
 };
 /*
-byte cor_canal1[] = {255, 255, 255};  // Branco
-byte cor_canal2[] = {9, 184, 255};    // Azul
-byte cor_canal3[] = {58, 95, 205};    // Azul Royal
-byte cor_canal4[] = {255, 0, 0};      // Vermelho
-byte cor_canal5[] = {224, 102, 255};  // Violeta*/
+  byte cor_canal1[] = {255, 255, 255};  // Branco
+  byte cor_canal2[] = {9, 184, 255};    // Azul
+  byte cor_canal3[] = {58, 95, 205};    // Azul Royal
+  byte cor_canal4[] = {255, 0, 0};      // Vermelho
+  byte cor_canal5[] = {224, 102, 255};  // Violeta*/
 
 //*****************************************************************************************
 //************************ Variáveis da fase lunar ****************************************
@@ -583,7 +614,7 @@ byte semana[7];
 SdFat SD;
 SdFile file;
 unsigned long log_SD_millis = 0;
-void writeCRLF(SdFile& f); 
+void writeCRLF(SdFile& f);
 
 //*****************************************************************************************
 //*********************** Variável do controle de níveis **********************************
@@ -606,13 +637,13 @@ byte Status = 0x0;
 //*****************************************************************************************
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
-#ifdef ETHERNET_SHIELD
+#ifdef ETHERNET_SHIELD //Do not change this line
 const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
 const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
 
 const byte maxima_tentativa = 3;                    // Número máximo de tentativas de autenticação.
 const byte intervalo_tentativa = 15;                // Tempo  de espera (em minutos) para novas tentativas.
-const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Para desabilitar esta função altere o valor para 0 (ZERO).
+const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.                                                      
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
 IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
@@ -635,19 +666,19 @@ char Auth1[50];
 unsigned long teste_led_millis = 0;
 unsigned long close_millis = 0;
 byte notconnected = 0;
-#endif
+#endif //Do not change this line
 
 boolean web_teste = false;
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
-#if defined(STAMPS_EZO) || defined(STAMPS_V4X)
+#if defined(STAMPS_EZO) || defined(STAMPS_V4X) //Do not change this line
 unsigned long millis_antes = 0;
 const byte ph1 = 0; // Y0
 const byte ph2 = 1; // Y1
 const byte orp = 2; // Y2
 const byte ec = 3;  // Y3
-#endif
+#endif //Do not change this line
 
 //*****************************************************************************************
 //************************** Variáveis da solicitação de senha ****************************
@@ -686,6 +717,7 @@ byte quantidade_dose_dosadora_personalizada_e[6];
 byte modo_personalizado_on_e[6];
 float dose_dosadora_manual_e[6] = {20, 20, 20, 20, 20, 20};
 float fator_calib_dosadora_e[6] = {35.1, 35.2, 35.3, 35.4, 35.5, 35.6};
+byte erro_dosagem;
 
 //*****************************************************************************************
 //************************** Variáveis temporárias das dosadoras **************************
@@ -707,6 +739,7 @@ byte modo_personalizado_on[6];
 float dose_dosadora_manual[6];
 float volume_dosado[6];
 float fator_calib_dosadora[6];
+
 //*****************************************************************************************
 //************************** Variáveis dos timers *****************************************
 //*****************************************************************************************
@@ -745,15 +778,15 @@ byte temporizador_ativado[5];
 //*****************************************************************************************
 //************************** Variáveis do PCF8575 *****************************************
 //*****************************************************************************************
-#ifdef USE_PCF8575
+#ifdef USE_PCF8575 //Do not change this line
 byte endereco_PCF8575TS = 0x20; // Endereço em hexadecimal = 0x20
 PCF8575 PCF8575;
-#endif
+#endif //Do not change this line
 
 //*****************************************************************************************
 //*********************** Wireless transceiver (RFM12B) ***********************************
 //*****************************************************************************************
-#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL)
+#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) //Do not change this line
 RFM12B radio;
 #define ACK_TIME    200
 #define MY_ID      99                   // ID deste dispositivo
@@ -768,9 +801,9 @@ unsigned long lastPeriod_millis = 0;
 boolean requestACK_LED = false;         // true = Solicitar uma resposta do dispositivo que recebe a informação
 boolean requestACK_RELAY = false;       // true = Solicitar uma resposta do dispositivo que recebe a informação
 byte nothing = 0;
-#endif
+#endif //Do not change this line
 
-#ifdef RFM12B_LED_CONTROL
+#ifdef RFM12B_LED_CONTROL //Do not change this line
 typedef struct {
   int  nodeId;
   byte channel_white;
@@ -792,9 +825,9 @@ typedef struct {
 }
 Payload_led;
 Payload_led theData_led  = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
-#endif
+#endif //Do not change this line
 
-#ifdef RFM12B_RELAY_CONTROL
+#ifdef RFM12B_RELAY_CONTROL //Do not change this line
 typedef struct {
   int  nodeId;
   byte relay_0;
@@ -816,7 +849,7 @@ typedef struct {
 }
 Payload_relay;
 Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-#endif
+#endif //Do not change this line
 
 //*****************************************************************************************
 //************************** Dispositivos SPI *********************************************
@@ -824,9 +857,21 @@ Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 const byte SD_CARD = 0;
 const byte ETHER_CARD = 1;
 const byte RFM = 2;
-//const byte ChipSelect_SD = 4; // Comente esta linha para usar o Ferduino Mega 2560
-const byte ChipSelect_SD = 5;  // Descomente esta linha para usar o Ferduino Mega 2560
+
+#if defined USE_PIN_4_FOR_SD_CARD // Do not change this line
+const byte ChipSelect_SD = 4; // Para cartão SD conectado no "ethernet shield".
+#elif defined USE_PIN_53_FOR_SD_CARD // Do not change this line
+const byte ChipSelect_SD = 53; // Para cartão SD conectado no TFT.
+#else // Do not change this line
+const byte ChipSelect_SD = 5; // Para o Ferduino Mega 2560
+#endif // Do not change this line
+
+#ifdef USE_PIN_53_FOR_SD_CARD // Do not change this line
+const byte SelectSlave_ETH = 4;
+#else // Do not change this line
 const byte SelectSlave_ETH = 53;
+#endif // Do not change this line
+
 const byte ChipSelect_RFM = 69; // A15
 
 //*****************************************************************************************
@@ -838,10 +883,10 @@ float temperatura_ambiente_temp = 0; // Temperatura temporária
 //*****************************************************************************************
 //************************* Variáveis das bombas de circulação ****************************
 //*****************************************************************************************
-#ifdef NIGHT_MODE
+#ifdef NIGHT_MODE //Do not change this line
 const float POWER_PUMP1 = 0.5; // 50%
 const float POWER_PUMP2 = 0.5; // 50%
-#endif
+#endif //Do not change this line
 byte modo_selecionado = 1;
 byte Pump1PWM_temp = 0;
 byte Pump2PWM_temp = 0;
@@ -959,6 +1004,7 @@ byte *cor[5] = {wled, bled, rbled, rled, uvled};
 //*****************************************************************************************
 //************************** Textos *******************************************************
 //*****************************************************************************************
+#ifdef ETHERNET_SHIELD //Do not change this line
 const char string0[] PROGMEM = "POST /webcontrol/api/index.php HTTP/1.1";
 const char string1[] PROGMEM = "Host: www.ferduino.com";
 const char string2[] PROGMEM = "Authorization: Basic ";
@@ -980,3 +1026,4 @@ const char* const tabela_strings[] PROGMEM =
   string8, string9, string10, string11,
   string12
 };
+#endif //Do not change this line
