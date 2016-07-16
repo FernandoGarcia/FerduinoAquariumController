@@ -282,7 +282,7 @@ void processMyTouch()
           {
             temp2beS = 40;
           }
-#endif          
+#endif
 
           tempScreen();
         }
@@ -299,7 +299,7 @@ void processMyTouch()
           {
             temp2beO = 9.9;
           }
-#endif 
+#endif
 
           tempScreen();
         }
@@ -316,7 +316,7 @@ void processMyTouch()
           {
             temp2beA = 9.9;
           }
-#endif 
+#endif
           tempScreen();
         }
         else if (checkButtons(temP[0], temP[1], temP[2], temP[3]) == true)                      //press temp plus
@@ -339,7 +339,7 @@ void processMyTouch()
         else if (checkButtons(offP[0], offP[1], offP[2], offP[3]) == true)                           //press offset plus
         {
           temp2beO += 0.1;
-#ifdef USE_FAHRENHEIT          
+#ifdef USE_FAHRENHEIT
           if (temp2beO > 18)
           {
             temp2beO = 0.1;
@@ -458,7 +458,7 @@ void processMyTouch()
               for (int i = 0; i < 8; i++)                          // Imprime valores do período.
               {
                 int k = (LedChangTime * 8) + i;
-                
+
                 drawFillRect((i * 38) + 12, 200, (i * 38) + 36, 210, 0, 0, 0);
                 setFont(SMALL, 255, 255, 255, 0, 0, 0);
                 myGLCD.printNumI( cor[cor_selecionada][k], (i * 38) + 12, 200);
@@ -2302,7 +2302,7 @@ void processMyTouch()
             stCurrent[i] = '\0';
           }
           stCurrentLen = 0;
-          
+
           drawFillRect(110, 210, 300, 225, 0, 0, 0);
         }
         else if (checkButtons(boTE[0], boTE[1], boTE[2], boTE[3]) == true)  // Botao: entrar
@@ -2337,7 +2337,7 @@ void processMyTouch()
               myGLCD.print(buffer, 35, 192); // tabela_textos[174] = "SENHA INCORRETA!"
 
               delay(1000);
-              
+
               drawFillRect(35, 192, 300, 207, 0, 0, 0);
               delay(500);
             }
@@ -2358,7 +2358,7 @@ void processMyTouch()
             myGLCD.print(buffer, 35, 192); // tabela_textos[174] = "SENHA INCORRETA!"
 
             delay(1000);
-            
+
             drawFillRect(35, 192, 300, 207, 0, 0, 0);
             for (byte i = 0; i < 3; i++)
             {
@@ -2455,26 +2455,38 @@ void processMyTouch()
           if ((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
               && (minuto_final_dosagem_personalizada[dosadora_selecionada] < (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
           {
-            setFont(SMALL, 255, 0, 0, 0, 0, 0);
+            myGLCD.setColor(255, 255, 0);
+            myGLCD.fillRoundRect(15, 90, 319, 155);
+
+            myGLCD.setColor(255, 0, 0);
+            myGLCD.drawRoundRect(15, 90, 319, 155);
+
+            setFont(SMALL, 255, 0, 0, 255, 255, 0);
 
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[176])));
             myGLCD.print(buffer, 20, 110); // "O INTERVALO ENTRE A INICIAL E A FINAL"
 
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[177])));
-            myGLCD.print(buffer, 35, 130);
+            myGLCD.print(buffer, 35, 130); // "DEVE SER DE NO MINIMO 10 MINUTOS!"
           }
           else if (hora_final_dosagem_personalizada[dosadora_selecionada] < hora_inicial_dosagem_personalizada[dosadora_selecionada])
           {
-            setFont(SMALL, 255, 0, 0, 0, 0, 0);
+            myGLCD.setColor(255, 255, 0);
+            myGLCD.fillRoundRect(15, 90, 319, 155);
+
+            myGLCD.setColor(255, 0, 0);
+            myGLCD.drawRoundRect(15, 90, 319, 155);
+
+            setFont(SMALL, 255, 0, 0, 255, 255, 0);
 
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[178])));
-            myGLCD.print(buffer, 50, 110);
+            myGLCD.print(buffer, 50, 110);// "A HORA FINAL NAO PODE SER MENOR"
 
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[179])));
-            myGLCD.print(buffer, 100, 130);
+            myGLCD.print(buffer, 100, 130); // "QUE A INICIAL!"
           }
           else if (((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
-                   && (minuto_final_dosagem_personalizada[dosadora_selecionada] >= (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
+                    && (minuto_final_dosagem_personalizada[dosadora_selecionada] >= (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
                    || (hora_final_dosagem_personalizada[dosadora_selecionada] > hora_inicial_dosagem_personalizada[dosadora_selecionada]))
           {
             config_valores_salvar_dosadoras();
@@ -2535,10 +2547,10 @@ void processMyTouch()
           rever_dosagem_personalizada();
         }
         break;
-        
+
       case 35:// -------------------------------------- livre ------------------------------------------
         break;
-        
+
       case 36: // -------------------------------- Luz noturna --------------------------------------------
         if (checkButtons(volT[0], volT[1], volT[2], volT[3]) == true)           // volta a tela configurar leds
         {
@@ -3670,7 +3682,7 @@ void processMyTouch()
               myGLCD.print(buffer, 100, 130); // "QUE A INICIAL!"
             }
             else if (((horario_alimentacao[2] == horario_alimentacao[0])
-                     && (horario_alimentacao[3] >= (horario_alimentacao[1] + 10)))
+                      && (horario_alimentacao[3] >= (horario_alimentacao[1] + 10)))
                      || (horario_alimentacao[2] > horario_alimentacao[0]))
             {
               config_valores_salvar_dosadoras();
