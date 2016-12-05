@@ -49,7 +49,17 @@ void loop()
   if (bitRead(tpa_status, 1) == false)
   {
     selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-    processRequest();
+
+    if (!MQTT.connected())
+    {
+      if ((millis() - millis_mqtt) > 30000) // Tenta reconectar após 30 segundos
+      {
+        reconnect();
+        millis_mqtt = millis();
+      }
+    }
+
+    MQTT.loop();
   }
 
   if ((millis() - millis_enviar) > 120000)
@@ -60,11 +70,6 @@ void loop()
       enviar_dados();
       millis_enviar = millis();
     }
-  }
-
-  if (millis() - intervalo > (intervalo_tentativa * 60000)) // Zera o número de tentativas de autenticação após o tempo definido.
-  {
-    tentativa = 0;
   }
 
   if (outlets_settings == true)
@@ -261,7 +266,7 @@ void loop()
     check_nivel();          // Verifica se há algum problema com os níveis dos aquários.
     check_alarme();         // Verifica os alarmes.
     check_temporizadores(); // Ativa ou desativa os timers.
-    
+
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) //Do not change this line
 
 #ifdef USE_STAMP_FOR_CALCIUM_REACTOR //Do not change this line
@@ -315,67 +320,67 @@ void loop()
       suavizar += 0.1;
     }
 #ifdef DEBUG //Do not change this line
-    /*  Serial.println();
-      Serial.print("Day of week: ");
+   /*  Serial.println();
+      Serial.print(F("Day of week: ");
       Serial.println(rtc.getDOWStr());
 
-      Serial.print("Time: ");
+      Serial.print(F("Time: ");
       Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
 
     Serial.print(F("Free memory: "));
     Serial.println(FreeRam());
     /*
-      Serial.print("Sensor 1: ");
+      Serial.print(F("Sensor 1: "));
       Serial.println(analogRead(A0));
 
-      Serial.print("Sensor 2: ");
+      Serial.print(F("Sensor 2: ");
       Serial.println(analogRead(A1));
 
-      Serial.print("Sensor 3: ");
+      Serial.print(F("Sensor 3: "));
       Serial.println(analogRead(A2));
 
-      Serial.print("Sensor 4: ");
+      Serial.print(F("Sensor 4: "));
       Serial.println(analogRead(A3));
 
-      Serial.print("Sensor 5: ");
+      Serial.print(F("Sensor 5: "));
       Serial.println(analogRead(A4));
 
-      Serial.print("Sensor 6: ");
+      Serial.print(F("Sensor 6: "));
       Serial.println(analogRead(A5));
 
-      Serial.print("marcadoriniciotpa: ");
+      Serial.print(F("marcadoriniciotpa: "));
       Serial.println(marcadoriniciotpa);
 
-      Serial.print("shiftedmillis: ");
+      Serial.print(F("shiftedmillis: "));
       Serial.println(shiftedmillis);
 
-      Serial.print("Duration for stage: ");
+      Serial.print(F("Duration for stage: "));
       Serial.print(tempo/60000);
-      Serial.println(" minutes");
+      Serial.println(F(" minutes"));
 
       if (digitalRead(bomba1Pin)==HIGH)
       {
-      Serial.println("Pump 1: ON");
+      Serial.println(F("Pump 1: ON"));
       }
       else
       {
-      Serial.println("Pump 1: OFF");
+      Serial.println(F("Pump 1: OFF"));
       }
       if (digitalRead(bomba2Pin)==HIGH)
       {
-      Serial.println("Pump 2: ON");
+      Serial.println(F("Pump 2: ON"));
       }
       else
       {
-      Serial.println("Pump 2: OFF");
+      Serial.println(F("Pump 2: OFF"));
       }
       if (digitalRead(bomba3Pin)==HIGH)
       {
-      Serial.println("Pump 3: ON");
+      Serial.println(F("Pump 3: ON"));
       }
       else
       {
-      Serial.println("Pump 3: OFF");
+      Serial.println(F("Pump 3: OFF"));
       }*/
 #endif //Do not change this line
     previousMillis = millis();

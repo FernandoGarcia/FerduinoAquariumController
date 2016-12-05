@@ -4,8 +4,13 @@ void processMyTouch()
 {
   myTouch.read();
   int x, y;                  // Coordenadas do touch screen
+#ifndef INVERT_TOUCH
   x = myTouch.getX();
   y = myTouch.getY();
+#else
+  x = 399 - myTouch.getX(); // Inverte as coordenadas X 
+  y = 239 - myTouch.getY(); // Inverte as coordenadas Y 
+#endif
 
   if (temperatura_alta == false) // Limpa mensagem de que a temperatura dos leds esteve alta.
   {

@@ -21,7 +21,7 @@
 //******* Dúvidas, sugestões e elogios: info@ferduino.com **********************************************************************************************
 //******************************************************************************************************************************************************
 
-// Este programa é compatível com a IDE 1.6.9 e 1.0.6
+// Este programa é compatível com a IDE 1.6.10 e 1.0.6
 
 // As funções para controle via web foram implementadas graças à preciosa ajuda do Simone Grimaldi e Danilo Castellano.
 
@@ -134,6 +134,8 @@
 // Do not uncomment this line when using Ferduino Mega 2560
 //#define USE_PIN_53_FOR_SD_CARD // Descomente esta linha se você tem o cartão SD conectado no TFT. Não descomente esta linha se estiver usando um Ferduino Mega 2560
 
+// Uncomment the line bellow if your touch screen have coordinates mirrored. So don't need change in ProcessMyTouch: x = 399-myTouch.getX () and y = 239-myTouch.getY ().
+//#define INVERT_TOUCH // descomente essa linha se seu "touch screen" tem as coordenadas espelhadas. Assim não será necessário alterar em "ProcessMyTouch": x = 399-myTouch.getX () and y = 239-myTouch.getY ().
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas **********************************************************
 //*************************************************************************************************
@@ -160,9 +162,10 @@
 #endif // Do not change this line!
 
 #ifdef ETHERNET_SHIELD // Do not change this line!
-#include <Base64.h>
 #include <SPI.h>
 #include <Ethernet.h>
+#include <PubSubClient.h>
+#include <ArduinoJson.h>
 #endif // Do not change this line!
 
 #ifdef WATCHDOG // Do not change this line!
@@ -172,7 +175,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "16/07/2016"; // Data da última modificação
+const char lastUpdate[] = "05/12/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -640,29 +643,21 @@ byte Status = 0x0;
 #ifdef ETHERNET_SHIELD //Do not change this line
 const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
 const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
-
-const byte maxima_tentativa = 3;                    // Número máximo de tentativas de autenticação.
-const byte intervalo_tentativa = 15;                // Tempo  de espera (em minutos) para novas tentativas.
 const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.                                                      
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
 IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
 IPAddress gateway(192, 168, 0, 1);                  // Configure o "Gateway" conforme a sua rede local.
 IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de rede conforme a sua rede local.
-EthernetServer server(5000);                        // Coloque aqui o número da porta configurada no seu roteador para redirecionamento.
-// O número da porta deverá ser obrigatóriamente um destes: 80, 5000, 6000, 7000, 8000, 8080 ou 9000.
 
 EthernetClient client;
-IPAddress ferduino(104, 131, 49, 99); // Do NOT change this IP!
-unsigned long intervalo = 0;
-char *inParse[25];
-byte tentativa = 0;
+PubSubClient MQTT(client);
+char *inParse[20];
+unsigned long millis_mqtt = 0;
 boolean web_dosage = false;
 unsigned long millis_dosagem = 0;
 unsigned long millis_enviar = 0;
 boolean web_calibracao = false;
-const char *token = ":";
-char Auth1[50];
 unsigned long teste_led_millis = 0;
 unsigned long close_millis = 0;
 byte notconnected = 0;
@@ -1005,25 +1000,11 @@ byte *cor[5] = {wled, bled, rbled, rled, uvled};
 //************************** Textos *******************************************************
 //*****************************************************************************************
 #ifdef ETHERNET_SHIELD //Do not change this line
-const char string0[] PROGMEM = "POST /webcontrol/api/index.php HTTP/1.1";
-const char string1[] PROGMEM = "Host: www.ferduino.com";
-const char string2[] PROGMEM = "Authorization: Basic ";
-const char string3[] PROGMEM = "Cache-Control: no-cache";
-const char string4[] PROGMEM = "Content-Type: application/x-www-form-urlencoded";
-const char string5[] PROGMEM = "Connection: Keep-Alive";
-const char string6[] PROGMEM = "Content-Length: ";
-const char string7[] PROGMEM = "{\"response\":\"ok\"}";
-const char string8[] PROGMEM = "HTTP/1.1 200 OK";
-const char string9[] PROGMEM = "Content-Type: application/json";
-const char string10[] PROGMEM = "{\"response\":\"000\"}";
-const char string11[] PROGMEM = "{\"response\":\"001\",\"interval\":\"";
-const char string12[] PROGMEM = "{\"response\":\"stop\"}";
+const char string0[] PROGMEM = "{\"response\":\"ok\"}";
+const char string1[] PROGMEM = "{\"response\":\"stop\"}";
 
 const char* const tabela_strings[] PROGMEM =
 {
-  string0, string1, string2, string3,
-  string4, string5, string6, string7,
-  string8, string9, string10, string11,
-  string12
+  string0, string1
 };
 #endif //Do not change this line

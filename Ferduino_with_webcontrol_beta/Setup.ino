@@ -206,10 +206,12 @@ void setup()
 #ifdef ETHERNET_SHIELD // Do not change this line!
   start_ethernet();
 
-  strcpy(buffer, Username);
-  strcat(buffer, token);
-  strcat(buffer, APIKEY);
-  base64_encode(Auth1, buffer, strlen(buffer)); // Cria a senha do servidor.
+  MQTT.setServer("104.131.49.99", 1883); // Do NOT change this IP!
+  MQTT.setCallback(requestAction);
+  if (!MQTT.connected())
+  {
+    reconnect();
+  }
 #endif // Do not change this line!
 
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line!
@@ -240,10 +242,8 @@ void start_ethernet()
   Ethernet.begin(mac, ip, dnsServer, gateway, subnet, SelectSlave_ETH); // Configuração do servidor.
 #endif //Do not change this line
 
-  server.begin(); // Inicia o servidor.
-
 #ifdef DEBUG //Do not change this line
-  Serial.print(F("IP server: "));
+  Serial.print(F("Controller IP: "));
   Serial.println(Ethernet.localIP());
 #endif //Do not change this line
 }

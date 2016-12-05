@@ -1,1295 +1,1100 @@
 #ifdef ETHERNET_SHIELD
 
-void processRequest()
+void requestAction(char* topic, byte* payload, unsigned int length)
 {
-  char clientline[110];
-  char line[110];
-  char *requestString;
-  char *RequestString;
-  byte index = 0;
-  client = server.available();
-  uint8_t remoteIP[4];
-  client.getRemoteIP(remoteIP);
-
-  if (client)
-  {
-#ifdef DEBUG
-    Serial.print(F("New client: "));
-    Serial.print(remoteIP[0]);
-    Serial.print(F("."));
-    Serial.print(remoteIP[1]);
-    Serial.print(F("."));
-    Serial.print(remoteIP[2]);
-    Serial.print(F("."));
-    Serial.println(remoteIP[3]);
-#endif
-
-    if (((remoteIP[0] == ferduino[0]) && (remoteIP[1] == ferduino[1]) && (remoteIP[2] == ferduino[2]) && (remoteIP[3] == ferduino[3])) ||
-        ((remoteIP[0] == ip[0]) && (remoteIP[1] == ip[1]) && (remoteIP[2] == ip[2])))
-    {
-      while (client.connected())
-      {
-        if (client.available())
-        {
-          char c = client.read();
-          if (c != '\n' && c != '\r')
-          {
-            if (index < 110)
-            {
-              clientline[index] = c;
-              line[index] = c;
-              index++;
-            }
-            continue;
-          }
-          clientline[index] = 0;
-          line[index] = 0;
-#ifdef DEBUG
-          Serial.println(clientline);
-#endif
-
-          if (strstr(clientline, "GET /"))
-          {
-            if (strstr(clientline, "?"))
-            {
-              //ignore any page request just look at the GET
-              requestString = strstr(clientline, "=") + 1;
-              (strstr(clientline, " HTTP"))[0] = 0;
-              RequestString = strstr(line, "=") + 1;
-              (strstr(line, " HTTP"))[0] = 0;
-              readRequest(requestString, RequestString);
-            }
-          }
-          break;
-        }
-      }
-    }
-    delay(2);
-    client.flush();
-    client.stop();
-  }
-}
-
-void readRequest(char *request, char *Request)
-{
-  char inData[50];
-  char *requestString;
-  byte count = 0;
-  char *str;
-  char *p;
-  boolean invalidPass = true;
-  char *pass;
-  boolean terminador = false;
-  char credencial[50];
-
-  client = server.available();
-
-  strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[8]))); // "HTTP/1.1 200 OK"
-  client.println(buffer);
-
-  strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[9]))); // "Content-Type: application/json"
-  client.println(buffer);
-
-  client.println();
-
-  pass = strtok(Request, ",");
-
-  base64_decode(pass, pass, strlen(pass));
-  base64_decode(credencial, Auth1, strlen(Auth1));
-
-  invalidPass = strcmp (pass, credencial);
-
-  requestString = strstr(request, ",") + 1;
-
-  if (invalidPass  == false)
-  {
-    for (unsigned int j = 0; j < strlen(requestString); j++)
-    {
-      if (request[j] != 'K')
-      {
-        inData[j] = requestString[j];
-      }
-      if (requestString[j] == 'K')
-      {
-        inData[j] = '\0';
-        p = inData;
-        terminador = true;
-
-        while ((str = strtok_r(p, ",", &p)) != NULL)
-        {
-          inParse[count] = str;
-          count++;
-        }
-      }
-    }
-  }
-  if ((invalidPass  == false) && (tentativa < maxima_tentativa) && (terminador == true))
-  {
-    tentativa = 0;
-    requestAction(atoi(inParse[0]));
-  }
-  else
-  {
-    tentativa++;
-    if (tentativa <= maxima_tentativa)
-    {
-      intervalo = millis();
-      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[10]))); // "{\"response\":\"000\"}"
-      client.print(buffer);
-    }
-    else
-    {
-      strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[11]))); // "{\"response\":\"001\",\"interval\":\""
-      client.print(buffer + String((intervalo_tentativa * 60) - ((millis() - intervalo) / 1000)) +  "\"}");
-    }
-    delay(2);
-    client.flush();
-    client.stop();
-  }
-}
-
-void requestAction(byte ID)
-{
+  StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
+  JsonObject& Json = jsonBuffer.createObject();
+  char pub_message[MQTT_MAX_PACKET_SIZE];
   byte cont = 0;
   byte dia;
-  client = server.available();
+#define COMMAND_SIZE  50
+  char clientline[COMMAND_SIZE];
+  char inData[COMMAND_SIZE];
+  byte index = 0;
+  char *str;
+  char *p;
+  boolean terminador = false;
   float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
   int16_t n;
   char buf[7];
+  char PUB_TOPIC[50];
 
-  switch (ID)
+  strcpy(PUB_TOPIC, Username);
+  strcat(PUB_TOPIC, "/");
+  strcat(PUB_TOPIC, APIKEY);
+  strcat(PUB_TOPIC, "/topic/response");
+
+#ifdef DEBUG
+  Serial.print(F("Response: ")); // Responde aos comandos
+  Serial.println(PUB_TOPIC);
+  Serial.print(F("New request: "));
+#endif
+
+  for (int i = 0; i < length; i++)
   {
-    case 0: // Home
-      client.print(F("{\"theatsink\":"));
-      client.print(tempH);
-      client.print(F(",\"twater\":"));
-      client.print(tempC);
-      client.print(F(",\"tamb\":"));
-      client.print(tempA);
-      client.print(F(",\"waterph\":"));
-      client.print(PHA);
-      client.print(F(",\"reactorph\":"));
-      client.print(PHR);
-      client.print(F(",\"orp\":"));
-      client.print(ORP);
-      client.print(F(",\"dens\":"));
-      client.print(DEN);
-      client.print(F(",\"wLedW\":"));
-      client.print(LedToPercent(wled_out));
-      client.print(F(",\"bLedW\":"));
-      client.print(LedToPercent(bled_out));
-      client.print(F(",\"rbLedW\":"));
-      client.print(LedToPercent(rbled_out));
-      client.print(F(",\"redLedW\":"));
-      client.print(LedToPercent(rled_out));
-      client.print(F(",\"uvLedW\":"));
-      client.print(LedToPercent(uvled_out));
-      client.print(F(",\"unix\":"));
-      client.print(rtc.getTimeStamp());
-      client.print(F(",\"running\":"));
-      client.print(millis() / 1000);
-      client.print(F(",\"speed\":"));
-      client.print(LedToPercent(fanSpeed));
-      client.print(F(",\"moonPhase\":"));
-      client.print(fase);
-      client.print(F(",\"iluminated\":"));
-      client.print(lunarCycle * 100);
-      client.print(F(",\"date\":\""));
-      client.print(t.year);
-      client.print(F("-"));
-      client.print(t.mon);
-      client.print(F("-"));
-      client.print(t.date);
-      client.print(F("\",\"time\":\""));
-      client.print(t.hour);
-      client.print(F(":"));
-      client.print(t.min);
-      client.print(F(":"));
-      client.print(t.sec);
-      client.print(F("\",\"update\":\""));
-      client.print(lastUpdate);
-      client.print(F("\"}"));
-      break;
-
-    case 1:
-      //  Send{case, mode, association}
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
+    char c = (char)payload[i];
+#ifdef DEBUG
+    Serial.print(c);
+#endif
+    if (c != '\n' && c != '\r')
+    {
+      if (index < COMMAND_SIZE)
       {
-        byte numberOfDevices = 0;
-        float temperatura1 = 0;
-        float temperatura2 = 0;
-        float temperatura3 = 0;
+        clientline[index] = c;
+        index++;
+      }
+      continue;
+    }
+  }
 
-        sensors.begin();
-        numberOfDevices = sensors.getDeviceCount();
+  index = 0;
 
-        for (byte k = 0; k < numberOfDevices; k++)
-        {
-          // Pesquisar endereços
-          if (sensors.getAddress(tempDeviceAddress, k))
-          {
-            if (k == 0)
-            {
-#ifdef USE_FAHRENHEIT
-              temperatura1 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura1 = sensors.getTempC(tempDeviceAddress);
+#ifdef DEBUG
+  Serial.println();
 #endif
 
-              for (byte i = 0; i < 8; i++)
+  for (unsigned int j = 0; j < strlen(clientline); j++)
+  {
+    if (clientline[j] != 'K')
+    {
+      inData[j] = clientline[j];
+    }
+    if (clientline[j] == 'K')
+    {
+      inData[j - 1] = '\0';
+      p = inData;
+      terminador = true;
+
+      while ((str = strtok_r(p, ",", &p)) != NULL)
+      {
+        inParse[index] = str;
+        index++;
+      }
+    }
+  }
+
+  if (terminador == true)
+  {
+    byte ID = atoi(inParse[0]);
+
+    switch (ID)
+    {
+      case 0: // Home
+        Json[F("theatsink")] = tempH;
+        Json[F("twater")] = tempC;
+        Json[F("tamb")] = tempA;
+        Json[F("waterph")] = PHA;
+        Json[F("reactorph")] = PHR;
+        Json[F("orp")] = ORP;
+        Json[F("dens")] = DEN;
+        Json[F("wLedW")] = LedToPercent(wled_out);
+        Json[F("bLedW")] = LedToPercent(bled_out);
+        Json[F("rbLedW")] = LedToPercent(rbled_out);
+        Json[F("redLedW")] = LedToPercent(rled_out);
+        Json[F("uvLedW")] = LedToPercent(uvled_out);
+        Json[F("unix")] = rtc.getTimeStamp();
+        Json[F("running")] = millis() / 1000;
+        Json[F("speed")] = LedToPercent(fanSpeed);
+        Json[F("moonPhase")] = fase;
+        Json[F("iluminated")] = lunarCycle * 100;
+        Json[F("date")] = String(t.year) + "-" + String (t.mon) + "-" + String (t.date);
+        Json[F("time")] = String (t.hour) + ":" + String (t.min) + ":" + String (t.sec);
+        Json[F("update")] = lastUpdate;
+
+        Json.printTo(pub_message, Json.measureLength() + 1);
+        MQTT.publish(PUB_TOPIC, pub_message, false);
+        break;
+
+      case 1:
+        //  Send{case, mode, association}
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          byte numberOfDevices = 0;
+          float temperatura1 = 0;
+          float temperatura2 = 0;
+          float temperatura3 = 0;
+
+          sensors.begin();
+          numberOfDevices = sensors.getDeviceCount();
+
+          for (byte k = 0; k < numberOfDevices; k++)
+          {
+            // Pesquisar endereços
+            if (sensors.getAddress(tempDeviceAddress, k))
+            {
+              if (k == 0)
               {
-                sonda1[i] = tempDeviceAddress[i];
+#ifdef USE_FAHRENHEIT
+                temperatura1 = sensors.getTempF(tempDeviceAddress);
+#else
+                temperatura1 = sensors.getTempC(tempDeviceAddress);
+#endif
+
+                for (byte i = 0; i < 8; i++)
+                {
+                  sonda1[i] = tempDeviceAddress[i];
+                }
+              }
+              if (k == 1)
+              {
+#ifdef USE_FAHRENHEIT
+                temperatura2 = sensors.getTempF(tempDeviceAddress);
+#else
+                temperatura2 = sensors.getTempC(tempDeviceAddress);
+#endif
+                for (byte i = 0; i < 8; i++)
+                {
+                  sonda2[i] = tempDeviceAddress[i];
+                }
+              }
+              if (k == 2)
+              {
+#ifdef USE_FAHRENHEIT
+                temperatura3 = sensors.getTempF(tempDeviceAddress);
+#else
+                temperatura3 = sensors.getTempC(tempDeviceAddress);
+#endif
+                for (byte i = 0; i < 8; i++)
+                {
+                  sonda3[i] = tempDeviceAddress[i];
+                }
               }
             }
-            if (k == 1)
+          }
+
+          Json[F("number")] = numberOfDevices;
+
+          if (numberOfDevices < 2)
+          {
+            if (sonda_associada_1 == 1)
             {
-#ifdef USE_FAHRENHEIT
-              temperatura2 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura2 = sensors.getTempC(tempDeviceAddress);
-#endif
-              for (byte i = 0; i < 8; i++)
-              {
-                sonda2[i] = tempDeviceAddress[i];
-              }
+              sonda_associada_2 = 0;
+              sonda_associada_3 = 0;
             }
-            if (k == 2)
+            else if (sonda_associada_2 == 1)
             {
-#ifdef USE_FAHRENHEIT
-              temperatura3 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura3 = sensors.getTempC(tempDeviceAddress);
-#endif
-              for (byte i = 0; i < 8; i++)
-              {
-                sonda3[i] = tempDeviceAddress[i];
-              }
+              sonda_associada_1 = 0;
+              sonda_associada_3 = 0;
+            }
+            else if (sonda_associada_3 == 1)
+            {
+              sonda_associada_1 = 0;
+              sonda_associada_2 = 0;
             }
           }
-        }
-        client.print(F("{\"number\":"));
-        client.print(numberOfDevices);
 
-        if (numberOfDevices < 2)
+          Json[F("p1")] = temperatura1;
+          Json[F("p2")] = temperatura2;
+          Json[F("p3")] = temperatura3;
+          Json[F("ap1")] = sonda_associada_1;
+          Json[F("ap2")] = sonda_associada_2;
+          Json[F("ap3")] = sonda_associada_3;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
         {
-          if (sonda_associada_1 == 1)
-          {
-            sonda_associada_2 = 0;
-            sonda_associada_3 = 0;
-          }
-          else if (sonda_associada_2 == 1)
-          {
-            sonda_associada_1 = 0;
-            sonda_associada_3 = 0;
-          }
-          else if (sonda_associada_3 == 1)
-          {
-            sonda_associada_1 = 0;
-            sonda_associada_2 = 0;
-          }
-        }
-        client.print(F(",\"p1\":"));
-        client.print(temperatura1);
-        client.print(F(",\"p2\":"));
-        client.print(temperatura2);
-        client.print(F(",\"p3\":"));
-        client.print(temperatura3);
-        client.print(F(",\"ap1\":"));
-        client.print(sonda_associada_1);
-        client.print(F(",\"ap2\":"));
-        client.print(sonda_associada_2);
-        client.print(F(",\"ap3\":"));
-        client.print(sonda_associada_3);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        sonda_associada_1 = atoi(inParse[2]); // 0,3,2,K
-        sonda_associada_2 = atoi(inParse[3]);
-        sonda_associada_3 = atoi(inParse[4]);
+          sonda_associada_1 = atoi(inParse[2]); // 0,3,2,K
+          sonda_associada_2 = atoi(inParse[3]);
+          sonda_associada_3 = atoi(inParse[4]);
 
-        for (byte i = 0; i < 8; i++)
-        {
-          if (sonda_associada_1 == 1)
+          for (byte i = 0; i < 8; i++)
           {
-            sensor_agua[i] = sonda1[i];
-          }
-          else if (sonda_associada_1 == 2)
-          {
-            sensor_agua[i] = sonda2[i];
-          }
-          else
-          {
-            sensor_agua[i] = sonda3[i];
-          }
-          if (sonda_associada_2 == 1)
-          {
-            sensor_dissipador[i] = sonda1[i];
-          }
-          else if (sonda_associada_2 == 2)
-          {
-            sensor_dissipador[i] = sonda2[i];
-          }
-          else
-          {
-            sensor_dissipador[i] = sonda3[i];
-          }
+            if (sonda_associada_1 == 1)
+            {
+              sensor_agua[i] = sonda1[i];
+            }
+            else if (sonda_associada_1 == 2)
+            {
+              sensor_agua[i] = sonda2[i];
+            }
+            else
+            {
+              sensor_agua[i] = sonda3[i];
+            }
+            if (sonda_associada_2 == 1)
+            {
+              sensor_dissipador[i] = sonda1[i];
+            }
+            else if (sonda_associada_2 == 2)
+            {
+              sensor_dissipador[i] = sonda2[i];
+            }
+            else
+            {
+              sensor_dissipador[i] = sonda3[i];
+            }
 
-          if (sonda_associada_3 == 1)
-          {
-            sensor_ambiente[i] = sonda1[i];
+            if (sonda_associada_3 == 1)
+            {
+              sensor_ambiente[i] = sonda1[i];
+            }
+            else if (sonda_associada_3 == 2)
+            {
+              sensor_ambiente[i] = sonda2[i];
+            }
+            else
+            {
+              sensor_ambiente[i] = sonda3[i];
+            }
           }
-          else if (sonda_associada_3 == 2)
-          {
-            sensor_ambiente[i] = sonda2[i];
-          }
-          else
-          {
-            sensor_ambiente[i] = sonda3[i];
-          }
-        }
-        contador_temp = 0;
-        temperatura_agua_temp = 0;
-        temperatura_dissipador_temp = 0;
-        temperatura_ambiente_temp = 0;
-        sensors.requestTemperatures();   // Chamada para todos os sensores.
+          contador_temp = 0;
+          temperatura_agua_temp = 0;
+          temperatura_dissipador_temp = 0;
+          temperatura_ambiente_temp = 0;
+          sensors.requestTemperatures();   // Chamada para todos os sensores.
 #ifdef USE_FAHRENHEIT
-        tempC = (sensors.getTempF(sensor_agua));  // Lê a temperatura da água
-        tempH = (sensors.getTempF(sensor_dissipador)); // Lê a temperatura do dissipador.
-        tempA = (sensors.getTempF(sensor_ambiente)); // Lê a temperatura do ambiente.
+          tempC = (sensors.getTempF(sensor_agua));  // Lê a temperatura da água
+          tempH = (sensors.getTempF(sensor_dissipador)); // Lê a temperatura do dissipador.
+          tempA = (sensors.getTempF(sensor_ambiente)); // Lê a temperatura do ambiente.
 #else
-        tempC = (sensors.getTempC(sensor_agua));  // Lê a temperatura da água
-        tempH = (sensors.getTempC(sensor_dissipador)); // Lê a temperatura do dissipador.
-        tempA = (sensors.getTempC(sensor_ambiente)); // Lê a temperatura do ambiente.
+          tempC = (sensors.getTempC(sensor_agua));  // Lê a temperatura da água
+          tempH = (sensors.getTempC(sensor_dissipador)); // Lê a temperatura do dissipador.
+          tempA = (sensors.getTempC(sensor_ambiente)); // Lê a temperatura do ambiente.
 #endif
 
-        SaveDallasAddress();
+          SaveDallasAddress();
 
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 2: //config date & time //Send (case, mode, date, month, year, hour, minute, second, day of week)
-      if (atoi(inParse[1]) == 0) // To save time and date send inParse[1] = 1
-      {
-        client.print(F("{\"date\":\""));
-        client.print(t.year);
-        client.print(F("-"));
-        client.print(t.mon);
-        client.print(F("-"));
-        client.print(t.date);
-        client.print(F("\",\"time\":\""));
-        client.print(t.hour);
-        client.print(F(":"));
-        client.print(t.min);
-        client.print(F(":"));
-        client.print(t.sec);
-        client.print(F("\"}"));
-      }
-      else
-      {
-        dia = validateDate(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
-        dia = validateDateForMonth(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
-        rtc.halt(true);
-        rtc.setDate(dia, atoi(inParse[3]), atoi(inParse[2]));
-        rtc.setTime(atoi(inParse[5]), atoi(inParse[6]), atoi(inParse[7]));
-        rtc.setDOW(calcDOW(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2])));
-        rtc.halt(false);
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 3:
-      if (atoi(inParse[1]) == 0) // Send (case, mode, values)
-      {
-        client.print(F("{\"hour\":"));
-        client.print(hora);
-        client.print(F(",\"minute\":"));
-        client.print(minuto);
-        client.print(F(",\"duration\":"));
-        client.print(duracaomaximatpa);
-        client.print(F(",\"monday\":"));
-        client.print(semana_e[0]);
-        client.print(F(",\"tuesday\":"));
-        client.print(semana_e[1]);
-        client.print(F(",\"wednesday\":"));
-        client.print(semana_e[2]);
-        client.print(F(",\"thursday\":"));
-        client.print(semana_e[3]);
-        client.print(F(",\"friday\":"));
-        client.print(semana_e[4]);
-        client.print(F(",\"saturday\":"));
-        client.print(semana_e[5]);
-        client.print(F(",\"sunday\":"));
-        client.print(semana_e[6]);
-        client.print(F(",\"status\":"));
-        client.print(bitRead(tpa_status, 2));
-        client.print(F("}"));
-      }
-      if (atoi(inParse[1]) == 1)
-      {
-        hora = atoi(inParse[2]);
-        minuto = atoi(inParse[3]);
-        duracaomaximatpa = atoi(inParse[4]);
-        for (byte i = 0; i < 7; i++)
-        {
-          semana_e[i] = atoi(inParse[i + 5]);
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
-        SalvartpaEEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      if (atoi(inParse[1]) == 2)
-      {
-        bitWrite(tpa_status, 2, atoi(inParse[2]));
-        Salvar_erro_tpa_EEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
+        break;
 
-    case 4:    //individual led test - load first values
-      if (atoi(inParse[1]) == 0) //Send (case, mode, wled, rled, rbled, rled, uvled)
-      {
-        client.print(F("{\"wLedW\":"));
-        client.print(wled_out);
-        client.print(F(",\"bLedW\":"));
-        client.print(bled_out);
-        client.print(F(",\"rbLedW\":"));
-        client.print(rbled_out);
-        client.print(F(",\"uvLedW\":"));
-        client.print(uvled_out);
-        client.print(F(",\"redLedW\":"));
-        client.print(rled_out);
-        client.print(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to change values
-      {
-        wled_out_temp = atoi(inParse[2]);
-        bled_out_temp = atoi(inParse[3]);
-        rbled_out_temp = atoi(inParse[4]);
-        rled_out_temp = atoi(inParse[5]);
-        uvled_out_temp = atoi(inParse[6]);
-        web_teste = true;
-        teste_led_millis = millis();
-        teste_em_andamento = true;
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 2)
-      {
-        web_teste = false;
-        teste_em_andamento = false;
-        ler_predefinido_EEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 5:
-      //  Send{case, mode, color, first position}
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"value0\":"));
-
-        for (byte i = 1 + atoi(inParse[3]); i < 9 + atoi(inParse[3]); i++)
+      case 2: //config date & time //Send (case, mode, date, month, year, hour, minute, second, day of week)
+        if (atoi(inParse[1]) == 0) // To save time and date send inParse[1] = 1
         {
-          client.print(cor[atoi(inParse[2])][i - 1]);
-          if (i < 8 + atoi(inParse[3]))
+          Json[F("date")] = String(t.year) + "-" + String(t.mon) + "-" + String(t.date);
+          Json[F("time")] = String(t.hour) + ":" + String(t.min) + ":" + String(t.sec);
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else
+        {
+          dia = validateDate(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
+          dia = validateDateForMonth(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
+          rtc.halt(true);
+          rtc.setDate(dia, atoi(inParse[3]), atoi(inParse[2]));
+          rtc.setTime(atoi(inParse[5]), atoi(inParse[6]), atoi(inParse[7]));
+          rtc.setDOW(calcDOW(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2])));
+          rtc.halt(false);
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 3:
+        if (atoi(inParse[1]) == 0) // Send (case, mode, values)
+        {
+          Json[F("hour")] = hora;
+          Json[F("minute")] = minuto;
+          Json[F("duration")] = duracaomaximatpa;
+          Json[F("monday")] = semana_e[0];
+          Json[F("tuesday")] = semana_e[1];
+          Json[F("wednesday")] = semana_e[2];
+          Json[F("thursday")] = semana_e[3];
+          Json[F("friday")] = semana_e[4];
+          Json[F("saturday")] = semana_e[5];
+          Json[F("sunday")] = semana_e[6];
+          Json[F("status")] = bitRead(tpa_status, 2);
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        if (atoi(inParse[1]) == 1)
+        {
+          hora = atoi(inParse[2]);
+          minuto = atoi(inParse[3]);
+          duracaomaximatpa = atoi(inParse[4]);
+          for (byte i = 0; i < 7; i++)
           {
-            client.print(",\"value" + String(i - atoi(inParse[3])) + "\":");
+            semana_e[i] = atoi(inParse[i + 5]);
           }
+          SalvartpaEEPROM();
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values temporarily
-      {
-        for (int i = atoi(inParse[3]); i < atoi(inParse[3]) + 8; i++)
+        if (atoi(inParse[1]) == 2)
         {
-          cont++;
-          cor[atoi(inParse[2])][i] = atoi(inParse[3 + cont]);
+          bitWrite(tpa_status, 2, atoi(inParse[2]));
+          Salvar_erro_tpa_EEPROM();
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 2) // mode = 2 to save values to eeprom
-      {
-        SaveLEDToEEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 3) // mode = 3 to discard values
-      {
-        ReadFromEEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-    case 6: //moonlight
-      //  Send{case, mode, value}
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"min\":"));
-        client.print(MinI);
-        client.print(F(",\"max\":"));
-        client.print(MaxI);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        MinI = atoi(inParse[2]);
-        MaxI = atoi(inParse[3]);
-        Salvar_luz_noturna_EEPROM();
+        break;
+      case 4:    //individual led test - load first values
+        if (atoi(inParse[1]) == 0) //Send (case, mode, wled, rled, rbled, rled, uvled)
+        {
+          Json[F("wLedW")] = wled_out;
+          Json[F("bLedW")] = bled_out;
+          Json[F("rbLedW")] = rbled_out;
+          Json[F("uvLedW")] = uvled_out;
+          Json[F("redLedW")] = rled_out;
 
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to change values
+        {
+          wled_out_temp = atoi(inParse[2]);
+          bled_out_temp = atoi(inParse[3]);
+          rbled_out_temp = atoi(inParse[4]);
+          rled_out_temp = atoi(inParse[5]);
+          uvled_out_temp = atoi(inParse[6]);
+          web_teste = true;
+          teste_led_millis = millis();
+          teste_em_andamento = true;
 
-      break;
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 2)
+        {
+          web_teste = false;
+          teste_em_andamento = false;
+          ler_predefinido_EEPROM();
 
-    case 7: //fan led
-      //  Send{case, mode, value}
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"minfan\":"));
-        client.print(HtempMin);
-        client.print(F(",\"maxfan\":"));
-        client.print(HtempMax);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        HtempMin = atof(inParse[2]);
-        HtempMax = atof(inParse[3]);
-        salvar_coolersEEPROM();
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
 
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
+      case 5:
+        //  Send{case, mode, color, first position}
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          strcpy(pub_message, "{\"value0\":");
 
-    case 8: //reduce led power
-      //  Send{case, mode, value}
+          for (byte i = 1 + atoi(inParse[3]); i < 9 + atoi(inParse[3]); i++)
+          {
+            itoa(cor[atoi(inParse[2])][i - 1], buf, 10);
+            strcat(pub_message, buf);
+            if (i < 8 + atoi(inParse[3]))
+            {
+              strcat(pub_message, ",\"value");
+              itoa(i - atoi(inParse[3]), buf, 10);
+              strcat(pub_message, buf);
+              strcat(pub_message, "\":");
+            }
+          }
+          strcat(pub_message, "}");
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values temporarily
+        {
+          for (int i = atoi(inParse[3]); i < atoi(inParse[3]) + 8; i++)
+          {
+            cont++;
+            cor[atoi(inParse[2])][i] = atoi(inParse[3 + cont]);
+          }
 
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"templimit\":"));
-        client.print(tempHR);
-        client.print(F(",\"potred\":"));
-        client.print(potR);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        tempHR = atoi(inParse[2]);
-        potR = atoi(inParse[3]);
-        salvar_tempPotEEPROM();
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 2) // mode = 2 to save values to eeprom
+        {
+          SaveLEDToEEPROM();
 
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 3) // mode = 3 to discard values
+        {
+          ReadFromEEPROM();
 
-    case 9: //water temperature control
-      //  Send{case, mode, value}
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+      case 6: //moonlight
+        //  Send{case, mode, value}
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("min")] = MinI;
+          Json[F("max")] = MaxI;
 
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"setTemp\":"));
-        client.print(setTempC);
-        client.print(F(",\"offTemp\":"));
-        client.print(offTempC);
-        client.print(F(",\"alarmTemp\":"));
-        client.print(alarmTempC);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        setTempC = atof(inParse[2]);
-        offTempC = atof(inParse[3]);
-        alarmTempC = atof(inParse[4]);
-        SaveTempToEEPROM();
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          MinI = atoi(inParse[2]);
+          MaxI = atoi(inParse[3]);
+          Salvar_luz_noturna_EEPROM();
 
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
 
-    case 10:// dosage manual
-      // send (case, dosing pump selected, dose)
-      dosadora_selecionada = atoi(inParse[1]);
-      tempo_dosagem = map ((atof(inParse[2]) * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000);
-      volume_dosado[dosadora_selecionada] += atof(inParse[2]);
-      tempo_dosagem /= 2;
-      web_dosage = true;
-      client.print("{\"wait\":" + String((tempo_dosagem / 1000) + 10) + "}");
-      millis_dosagem = millis();
-      break;
+        break;
 
-    case 11:// Calibration
+      case 7: //fan led
+        //  Send{case, mode, value}
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("minfan")] = HtempMin;
+          Json[F("maxfan")] = HtempMax;
 
-      if (atoi(inParse[1]) == 0) // send (case, mode, dosing pump selected)
-      {
-        dosadora_selecionada = atoi(inParse[2]);
-        config_valores_calib_temp();
-        client.print(F("{\"calib\":"));
-        client.print(fator_calib_dosadora[dosadora_selecionada]);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // send (case, mode, dosing pump selected) mode = 1 to dose
-      {
-        dosadora_selecionada = atoi(inParse[2]);
-        client.print(F("{\"wait\":70}"));
-        web_calibracao = true;
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          HtempMin = atof(inParse[2]);
+          HtempMax = atof(inParse[3]);
+          salvar_coolersEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 8: //reduce led power
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("templimit")] = tempHR;
+          Json[F("potred")] = potR;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          tempHR = atoi(inParse[2]);
+          potR = atoi(inParse[3]);
+          salvar_tempPotEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 9: //water temperature control
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("setTemp")] = setTempC;
+          Json[F("offTemp")] = offTempC;
+          Json[F("alarmTemp")] = alarmTempC;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          setTempC = atof(inParse[2]);
+          offTempC = atof(inParse[3]);
+          alarmTempC = atof(inParse[4]);
+          SaveTempToEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 10:// dosage manual
+        // send (case, dosing pump selected, dose)
+        dosadora_selecionada = atoi(inParse[1]);
+        tempo_dosagem = map ((atof(inParse[2]) * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000);
+        volume_dosado[dosadora_selecionada] += atof(inParse[2]);
+        tempo_dosagem /= 2;
+        web_dosage = true;
+        Json[F("wait")] = String((tempo_dosagem / 1000) + 10);
+
+        Json.printTo(pub_message, Json.measureLength() + 1);
+        MQTT.publish(PUB_TOPIC, pub_message, false);
+
         millis_dosagem = millis();
-      }
-      else if (atoi(inParse[1]) == 2) // send (case, mode, dosing pump selected, factor of calibration) mode = 2 to save
-      {
-        dosadora_selecionada = atoi(inParse[2]);
-        fator_calib_dosadora[dosadora_selecionada] = atof(inParse[3]);
-        for (byte i = 0; i < 6; i++)
+        break;
+
+      case 11:// Calibration
+
+        if (atoi(inParse[1]) == 0) // send (case, mode, dosing pump selected)
         {
-          fator_calib_dosadora_e[i] = fator_calib_dosadora[i];
+          dosadora_selecionada = atoi(inParse[2]);
+          config_valores_calib_temp();
+          Json[F("calib")] = fator_calib_dosadora[dosadora_selecionada];
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
         }
-        Salvar_calib_dosadora_EEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 12:
-      if (atoi(inParse[1]) == 0) // Send (case, mode, dosing pump selected)
-      {
-        config_valores_dosadoras_temp();
-        config_valores_dosadoras_temp2();
-
-        dosadora_selecionada = atoi(inParse[2]);
-        client.print(F("{\"hStart\":"));
-        client.print(hora_inicial_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"mStart\":"));
-        client.print(minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"hEnd\":"));
-        client.print(hora_final_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"mEnd\":"));
-        client.print(minuto_final_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"monday\":"));
-        client.print(segunda_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"tuesday\":"));
-        client.print(terca_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"wednesday\":"));
-        client.print(quarta_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"thursday\":"));
-        client.print(quinta_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"friday\":"));
-        client.print(sexta_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"saturday\":"));
-        client.print(sabado_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"sunday\":"));
-        client.print(domingo_dosagem_personalizada[dosadora_selecionada]);
-        client.print(F(",\"quantity\":"));
-        client.print(quantidade_dose_dosadora_personalizada[dosadora_selecionada]);
-        client.print(F(",\"dose\":"));
-        client.print(dose_dosadora_personalizada[dosadora_selecionada]);
-        client.print(F(",\"onoff\":"));
-        client.print(modo_personalizado_on[dosadora_selecionada]);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // Send (case, mode, dosing pump selected, values)
-      {
-        dosadora_selecionada = atoi(inParse[2]);
-        hora_inicial_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[3]);
-        minuto_inicial_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[4]);
-        hora_final_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[5]);
-        minuto_final_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[6]);
-        segunda_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[7]);
-        terca_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[8]);
-        quarta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[9]);
-        quinta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[10]);
-        sexta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[11]);
-        sabado_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[12]);
-        domingo_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[13]);
-        quantidade_dose_dosadora_personalizada[dosadora_selecionada] = atoi(inParse[14]);
-        dose_dosadora_personalizada[dosadora_selecionada] = atof(inParse[15]);
-        modo_personalizado_on[dosadora_selecionada] = atoi(inParse[16]);
-        config_valores_salvar_dosadoras();
-        criar_arquivos();
-        Salvar_dosadora_EEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 13: //PH control
-      //  Send{case, mode, value}
-
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"setPHA\":"));
-        client.print(setPHA);
-        client.print(F(",\"offPHA\":"));
-        client.print(offPHA);
-        client.print(F(",\"alarmPHA\":"));
-        client.print(alarmPHA);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        setPHA = atof(inParse[2]);
-        offPHA = atof(inParse[3]);
-        alarmPHA = atof(inParse[4]);
-        SavePHAToEEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 14: // Calcium Reactor PH control
-      //  Send{case, mode, value}
-
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"setPHR\":"));
-        client.print(setPHR);
-        client.print(F(",\"offPHR\":"));
-        client.print(offPHR);
-        client.print(F(",\"alarmPHR\":"));
-        client.print(alarmPHR);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        setPHR = atof(inParse[2]);
-        offPHR = atof(inParse[3]);
-        alarmPHR = atof(inParse[4]);
-        SavePHRToEEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 15: // ORP control
-      //  Send{case, mode, value}
-
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"setORP\":"));
-        client.print(setORP);
-        client.print(F(",\"offORP\":"));
-        client.print(offORP);
-        client.print(F(",\"alarmORP\":"));
-        client.print(alarmORP);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        setORP = atoi(inParse[2]);
-        offORP = atoi(inParse[3]);
-        alarmORP = atoi(inParse[4]);
-        SaveORPToEEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 16: // Density control
-      //  Send{case, mode, value}
-
-      if (atoi(inParse[1]) == 0) // mode = 0 to read values
-      {
-        client.print(F("{\"setDEN\":"));
-        client.print(setDEN);
-        client.print(F(",\"offDEN\":"));
-        client.print(offDEN);
-        client.print(F(",\"alarmDEN\":"));
-        client.print(alarmDEN);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // mode = 1 to save values
-      {
-        setDEN = atoi(inParse[2]);
-        offDEN = atoi(inParse[3]);
-        alarmDEN = atoi(inParse[4]);
-        SaveDENToEEPROM();
-
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 17:
-      for (byte i = 0; i < 6; i++)
-      {
-        if (i == 0)
+        else if (atoi(inParse[1]) == 1) // send (case, mode, dosing pump selected) mode = 1 to dose
         {
-          client.print(F("{"));
+          dosadora_selecionada = atoi(inParse[2]);
+          Json[F("wait")] = 70;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+
+          web_calibracao = true;
+          millis_dosagem = millis();
         }
-        client.print(F("\"filepump"));
-        client.print(i);
-        client.print(F("\":"));
-        if (file.open(arquivo[i], O_READ))
+        else if (atoi(inParse[1]) == 2) // send (case, mode, dosing pump selected, factor of calibration) mode = 2 to save
         {
-          client.print(F("\""));
+          dosadora_selecionada = atoi(inParse[2]);
+          fator_calib_dosadora[dosadora_selecionada] = atof(inParse[3]);
+          for (byte i = 0; i < 6; i++)
+          {
+            fator_calib_dosadora_e[i] = fator_calib_dosadora[i];
+          }
+          Salvar_calib_dosadora_EEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 12:
+        if (atoi(inParse[1]) == 0) // Send (case, mode, dosing pump selected)
+        {
+          config_valores_dosadoras_temp();
+          config_valores_dosadoras_temp2();
+
+          dosadora_selecionada = atoi(inParse[2]);
+
+          Json[F("hStart")] = hora_inicial_dosagem_personalizada[dosadora_selecionada];
+          Json[F("mStart")] = minuto_inicial_dosagem_personalizada[dosadora_selecionada];
+          Json[F("hEnd")] = hora_final_dosagem_personalizada[dosadora_selecionada];
+          Json[F("mEnd")] = minuto_final_dosagem_personalizada[dosadora_selecionada];
+          Json[F("monday")] = segunda_dosagem_personalizada[dosadora_selecionada];
+          Json[F("tuesday")] = terca_dosagem_personalizada[dosadora_selecionada];
+          Json[F("wednesday")] = quarta_dosagem_personalizada[dosadora_selecionada];
+          Json[F("thursday")] = quinta_dosagem_personalizada[dosadora_selecionada];
+          Json[F("friday")] = sexta_dosagem_personalizada[dosadora_selecionada];
+          Json[F("saturday")] = sabado_dosagem_personalizada[dosadora_selecionada];
+          Json[F("sunday")] = domingo_dosagem_personalizada[dosadora_selecionada];
+          Json[F("quantity")] = quantidade_dose_dosadora_personalizada[dosadora_selecionada];
+          Json[F("dose")] = dose_dosadora_personalizada[dosadora_selecionada];
+          Json[F("onoff")] = modo_personalizado_on[dosadora_selecionada];
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // Send (case, mode, dosing pump selected, values)
+        {
+          dosadora_selecionada = atoi(inParse[2]);
+          hora_inicial_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[3]);
+          minuto_inicial_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[4]);
+          hora_final_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[5]);
+          minuto_final_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[6]);
+          segunda_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[7]);
+          terca_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[8]);
+          quarta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[9]);
+          quinta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[10]);
+          sexta_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[11]);
+          sabado_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[12]);
+          domingo_dosagem_personalizada[dosadora_selecionada] = atoi(inParse[13]);
+          quantidade_dose_dosadora_personalizada[dosadora_selecionada] = atoi(inParse[14]);
+          dose_dosadora_personalizada[dosadora_selecionada] = atof(inParse[15]);
+          modo_personalizado_on[dosadora_selecionada] = atoi(inParse[16]);
+          config_valores_salvar_dosadoras();
+          criar_arquivos();
+          Salvar_dosadora_EEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 13: //PH control
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("setPHA")] = setPHA;
+          Json[F("offPHA")] = offPHA;
+          Json[F("alarmPHA")] = alarmPHA;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          setPHA = atof(inParse[2]);
+          offPHA = atof(inParse[3]);
+          alarmPHA = atof(inParse[4]);
+          SavePHAToEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 14: // Calcium Reactor PH control
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("setPHR")] = setPHR;
+          Json[F("offPHR")] = offPHR;
+          Json[F("alarmPHR")] = alarmPHR;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          setPHR = atof(inParse[2]);
+          offPHR = atof(inParse[3]);
+          alarmPHR = atof(inParse[4]);
+          SavePHRToEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 15: // ORP control
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("setORP")] = setORP;
+          Json[F("offORP")] = offORP;
+          Json[F("alarmORP")] = alarmORP;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          setORP = atoi(inParse[2]);
+          offORP = atoi(inParse[3]);
+          alarmORP = atoi(inParse[4]);
+          SaveORPToEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 16: // Density control
+        //  Send{case, mode, value}
+
+        if (atoi(inParse[1]) == 0) // mode = 0 to read values
+        {
+          Json[F("setDEN")] = setDEN;
+          Json[F("offDEN")] = offDEN;
+          Json[F("alarmDEN")] = alarmDEN;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // mode = 1 to save values
+        {
+          setDEN = atoi(inParse[2]);
+          offDEN = atoi(inParse[3]);
+          alarmDEN = atoi(inParse[4]);
+          SaveDENToEEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 17:
+        strcpy(pub_message, "{\"filepump");
+        itoa(atoi(inParse[2]), buf, 10);
+        strcat(pub_message, buf);
+        strcat(pub_message, "\":");
+        if (file.open(arquivo[atoi(inParse[2])], O_READ))
+        {
+          strcat(pub_message, "\"");
           while ((n = file.read(buf, sizeof(buf))) > 0)
           {
-            client.write(buf);
-            client.print(F(","));
+            strcat(pub_message, buf);
+            strcat(pub_message, ",");
           }
-          client.print(F("0000\""));
-          if (i < 5)
-          {
-            client.print(F(","));
-          }
-          else
-          {
-            client.print(F("}"));
-          }
+          strcat(pub_message, "0000\"}");
           file.close();
         }
         else
         {
-          client.print(F("\"0000\""));
-          if (i < 5)
+          strcat(pub_message, "0000}");
+        }
+        MQTT.publish(PUB_TOPIC, pub_message, false);
+        break;
+
+      case 18:// Timers
+
+        if (atoi(inParse[1]) == 0) // send (case, mode, timer selec.)
+        {
+          temporizador = atoi(inParse[2]);
+          config_valores_timers_temp();
+
+          Json[F("hStart")] = on_hora[temporizador];
+          Json[F("mStart")] = on_minuto[temporizador];
+          Json[F("hEnd")] = off_hora[temporizador];
+          Json[F("mEnd")] = off_minuto[temporizador];
+          Json[F("activated")] = temporizador_ativado[temporizador];
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+
+        else if (atoi(inParse[1]) == 1) // send (case, mode, timer selected, values) mode = 1 to save
+        {
+          web_timer = true;
+          temporizador = atoi(inParse[2]);
+          on_hora[temporizador] = atoi(inParse[3]);
+          on_minuto[temporizador] = atoi(inParse[4]);
+          off_hora[temporizador] = atoi(inParse[5]);
+          off_minuto[temporizador] = atoi(inParse[6]);
+          temporizador_ativado[temporizador] = atoi(inParse[7]);
+          config_valores_salvar_timers();
+          salvar_timers_EEPROM();
+          bitWrite(temporizador_modificado, (temporizador + 1), 1);
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 19: // preset mode
+        if (atoi(inParse[1]) == 0) // send (case, mode, timer selec.)
+        {
+          Json[F("hStart")] = led_on_hora;
+          Json[F("mStart")] = led_on_minuto;
+          Json[F("hEnd")] = led_off_hora;
+          Json[F("mEnd")] = led_off_minuto;
+          Json[F("activated")] = pre_definido_ativado;
+          Json[F("preset")] = predefinido;
+          Json[F("wLedW")] = wled_out_temp;
+          Json[F("bLedW")] = bled_out_temp;
+          Json[F("rbLedW")] = rbled_out_temp;
+          Json[F("uvLedW")] = uvled_out_temp;
+          Json[F("redLedW")] = rled_out_temp;
+          Json[F("PWM")] = pwm_pre_definido;
+          Json[F("ramp")] = amanhecer_anoitecer;
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else
+        {
+          led_on_hora = atoi(inParse[2]);
+          led_on_minuto = atoi(inParse[3]);
+          led_off_hora = atoi(inParse[4]);
+          led_off_minuto = atoi(inParse[5]);
+          pre_definido_ativado = atoi(inParse[6]);
+          predefinido = atoi(inParse[7]);
+          wled_out_temp = atoi(inParse[8]);
+          bled_out_temp = atoi(inParse[9]);
+          rbled_out_temp = atoi(inParse[10]);
+          uvled_out_temp = atoi(inParse[11]);
+          rled_out_temp = atoi(inParse[12]);
+          pwm_pre_definido = atoi(inParse[13]);
+          amanhecer_anoitecer = atoi(inParse[14]);
+          Salvar_predefinido_EEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 20: // Automatic feeder
+        if (atoi(inParse[1]) == 0) // send (case, mode)
+        {
+          Json[F("hStart")] = horario_alimentacao_e[0];
+          Json[F("mStart")] = horario_alimentacao_e[1];
+          Json[F("hEnd")] = horario_alimentacao_e[2];
+          Json[F("mEnd")] = horario_alimentacao_e[3];
+          Json[F("monday")] = dia_alimentacao_e[0];
+          Json[F("tuesday")] = dia_alimentacao_e[1];
+          Json[F("wednesday")] = dia_alimentacao_e[2];
+          Json[F("thursday")] = dia_alimentacao_e[3];
+          Json[F("friday")] = dia_alimentacao_e[4];
+          Json[F("saturday")] = dia_alimentacao_e[5];
+          Json[F("sunday")] = dia_alimentacao_e[6];
+          Json[F("durationFeeding")] = duracao_alimentacao;
+          Json[F("durationWaveOff")] = desligar_wavemaker;
+          Json[F("doses")] = quantidade_alimentacao;
+          Json[F("feederOnOff")] = bitRead(alimentacao_wavemaker_on_off, 0);
+          Json[F("waveOnOff")] = bitRead(alimentacao_wavemaker_on_off, 1);
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1) // send (case, mode, values)
+        {
+          for (byte i = 0; i < 4; i++)
           {
-            client.print(F(","));
+            horario_alimentacao_e[i] = atoi(inParse[i + 2]);
+          }
+          for (byte i = 0; i < 7; i++)
+          {
+            dia_alimentacao_e[i] = atoi(inParse[i + 6]);
+          }
+          duracao_alimentacao = atoi(inParse[13]);
+          desligar_wavemaker = atoi(inParse[14]);
+          quantidade_alimentacao = atoi(inParse[15]);
+          bitWrite(alimentacao_wavemaker_on_off, 0, atoi(inParse[16]));
+          bitWrite(alimentacao_wavemaker_on_off, 1, atoi(inParse[17]));
+          salvar_alimentador_EEPROM();
+          criar_arquivos_alimentador();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 2) // send (case, mode)
+        {
+          inicia_alimentacao();
+          if (modo_alimentacao == true)
+          {
+            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           }
           else
           {
-            client.print(F("}"));
+            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "{\"response\":\"stop\"}"
           }
+
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
-      }
-      break;
+        break;
 
-    case 18:// Timers
+      case 21:
+        strcpy(pub_message, "{\"filefeeder\":");
 
-      if (atoi(inParse[1]) == 0) // send (case, mode, timer selec.)
-      {
-        temporizador = atoi(inParse[2]);
-        config_valores_timers_temp();
-        client.print(F("{\"hStart\":"));
-        client.print(on_hora[temporizador]);
-        client.print(F(",\"mStart\":"));
-        client.print(on_minuto[temporizador]);
-        client.print(F(",\"hEnd\":"));
-        client.print(off_hora[temporizador]);
-        client.print(F(",\"mEnd\":"));
-        client.print(off_minuto[temporizador]);
-        client.print(F(",\"activated\":"));
-        client.print(temporizador_ativado[temporizador]);
-        client.println(F("}"));
-      }
-
-      else if (atoi(inParse[1]) == 1) // send (case, mode, timer selected, values) mode = 1 to save
-      {
-        web_timer = true;
-        temporizador = atoi(inParse[2]);
-        on_hora[temporizador] = atoi(inParse[3]);
-        on_minuto[temporizador] = atoi(inParse[4]);
-        off_hora[temporizador] = atoi(inParse[5]);
-        off_minuto[temporizador] = atoi(inParse[6]);
-        temporizador_ativado[temporizador] = atoi(inParse[7]);
-        config_valores_salvar_timers();
-        salvar_timers_EEPROM();
-        bitWrite(temporizador_modificado, (temporizador + 1), 1);
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 19: // preset mode
-      if (atoi(inParse[1]) == 0) // send (case, mode, timer selec.)
-      {
-        client.print(F("{\"hStart\":"));
-        client.print(led_on_hora);
-        client.print(F(",\"mStart\":"));
-        client.print(led_on_minuto);
-        client.print(F(",\"hEnd\":"));
-        client.print(led_off_hora);
-        client.print(F(",\"mEnd\":"));
-        client.print(led_off_minuto);
-        client.print(F(",\"activated\":"));
-        client.print(pre_definido_ativado);
-        client.print(F(",\"preset\":")); // 0 = individual control 1 = control all
-        client.print(predefinido);
-        client.print(F(",\"wLedW\":"));
-        client.print(wled_out_temp);
-        client.print(F(",\"bLedW\":"));
-        client.print(bled_out_temp);
-        client.print(F(",\"rbLedW\":"));
-        client.print(rbled_out_temp);
-        client.print(F(",\"uvLedW\":"));
-        client.print(uvled_out_temp);
-        client.print(F(",\"redLedW\":"));
-        client.print(rled_out_temp);
-        client.print(F(",\"PWM\":"));
-        client.print(pwm_pre_definido);
-        client.print(F(",\"ramp\":"));
-        client.print(amanhecer_anoitecer);
-        client.println(F("}"));
-      }
-      else
-      {
-        led_on_hora = atoi(inParse[2]);
-        led_on_minuto = atoi(inParse[3]);
-        led_off_hora = atoi(inParse[4]);
-        led_off_minuto = atoi(inParse[5]);
-        pre_definido_ativado = atoi(inParse[6]);
-        predefinido = atoi(inParse[7]);
-        wled_out_temp = atoi(inParse[8]);
-        bled_out_temp = atoi(inParse[9]);
-        rbled_out_temp = atoi(inParse[10]);
-        uvled_out_temp = atoi(inParse[11]);
-        rled_out_temp = atoi(inParse[12]);
-        pwm_pre_definido = atoi(inParse[13]);
-        amanhecer_anoitecer = atoi(inParse[14]);
-        Salvar_predefinido_EEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 20: // Automatic feeder
-      if (atoi(inParse[1]) == 0) // send (case, mode)
-      {
-        client.print(F("{\"hStart\":"));
-        client.print(horario_alimentacao_e[0]);
-        client.print(F(",\"mStart\":"));
-        client.print(horario_alimentacao_e[1]);
-        client.print(F(",\"hEnd\":"));
-        client.print(horario_alimentacao_e[2]);
-        client.print(F(",\"mEnd\":"));
-        client.print(horario_alimentacao_e[3]);
-        client.print(F(",\"monday\":"));
-        client.print(dia_alimentacao_e[0]);
-        client.print(F(",\"tuesday\":"));
-        client.print(dia_alimentacao_e[1]);
-        client.print(F(",\"wednesday\":"));
-        client.print(dia_alimentacao_e[2]);
-        client.print(F(",\"thursday\":"));
-        client.print(dia_alimentacao_e[3]);
-        client.print(F(",\"friday\":"));
-        client.print(dia_alimentacao_e[4]);
-        client.print(F(",\"saturday\":"));
-        client.print(dia_alimentacao_e[5]);
-        client.print(F(",\"sunday\":"));
-        client.print(dia_alimentacao_e[6]);
-        client.print(F(",\"durationFeeding\":"));
-        client.print(duracao_alimentacao);
-        client.print(F(",\"durationWaveOff\":"));
-        client.print(desligar_wavemaker);
-        client.print(F(",\"doses\":"));
-        client.print(quantidade_alimentacao);
-        client.print(F(",\"feederOnOff\":"));
-        client.print(bitRead(alimentacao_wavemaker_on_off, 0));
-        client.print(F(",\"waveOnOff\":"));
-        client.print(bitRead(alimentacao_wavemaker_on_off, 1));
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1) // send (case, mode, values)
-      {
-        for (byte i = 0; i < 4; i++)
+        if (file.open("FEEDER.TXT", O_READ))
         {
-          horario_alimentacao_e[i] = atoi(inParse[i + 2]);
-        }
-        for (byte i = 0; i < 7; i++)
-        {
-          dia_alimentacao_e[i] = atoi(inParse[i + 6]);
-        }
-        duracao_alimentacao = atoi(inParse[13]);
-        desligar_wavemaker = atoi(inParse[14]);
-        quantidade_alimentacao = atoi(inParse[15]);
-        bitWrite(alimentacao_wavemaker_on_off, 0, atoi(inParse[16]));
-        bitWrite(alimentacao_wavemaker_on_off, 1, atoi(inParse[17]));
-        salvar_alimentador_EEPROM();
-        criar_arquivos_alimentador();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 2) // send (case, mode)
-      {
-        inicia_alimentacao();
-        if (modo_alimentacao == true)
-        {
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
+          strcat(pub_message, "\"");
+          while ((n = file.read(buf, sizeof(buf))) > 0)
+          {
+            strcat(pub_message, buf);
+            strcat(pub_message, ",");
+          }
+          strcat(pub_message, "0000\"");
+          strcat(pub_message, "}");
+          file.close();
         }
         else
         {
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[12]))); // "{\"response\":\"stop\"}"
+          strcat(pub_message, "\"0000\"");
+          strcat(pub_message, "}");
         }
-        client.println(buffer);
-      }
-      break;
 
-    case 21:
-      client.print(F("{\"filefeeder\":"));
+        MQTT.publish(PUB_TOPIC, pub_message, false);
+        break;
 
-      if (file.open("FEEDER.TXT", O_READ))
-      {
-        client.print(F("\""));
-        while ((n = file.read(buf, sizeof(buf))) > 0)
+      case 22:
+        if (atoi(inParse[1]) == 0) // send (case, mode)
         {
-          client.write(buf);
-          client.print(F(","));
-        }
-        client.print(F("0000\""));
-        client.print(F("}"));
-        file.close();
-      }
-      else
-      {
-        client.print(F("\"0000\""));
-        client.print(F("}"));
-      }
-      break;
-    case 22:
-      if (atoi(inParse[1]) == 0) // send (case, mode)
-      {
-        client.print(F("{\"mode_selected\":"));
-        client.print(modo_selecionado);
-        client.print(F(",\"PWM1\":"));
-        client.print(Pump1PWM_temp);
-        client.print(F(",\"PWM2\":"));
-        client.print(Pump2PWM_temp);
-        client.print(F(",\"period\":"));
-        client.print(periodo);
-        client.print(F(",\"duration\":"));
-        client.print(duracao);
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1)
-      {
-        modo_selecionado = atoi(inParse[2]);
+          Json[F("mode_selected")] = modo_selecionado;
+          Json[F("PWM1")] = Pump1PWM_temp;
+          Json[F("PWM2")] = Pump2PWM_temp;
+          Json[F("period")] = periodo;
+          Json[F("duration")] = duracao;
 
-        if ((modo_selecionado == 1) || (modo_selecionado == 2))
-        {
-          periodo = atoi(inParse[3]);
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
         }
-        else if ((modo_selecionado == 3) || (modo_selecionado == 4))
+        else if (atoi(inParse[1]) == 1)
         {
-          duracao = atoi(inParse[3]);
-        }
-        else if (modo_selecionado == 5)
-        {
-          Pump1PWM_temp = atoi(inParse[3]);
-          Pump2PWM_temp = atoi(inParse[4]);
-        }
-        Salvar_wave_EEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 2)
-      {
-        modo_selecionado = atoi(inParse[2]);
+          modo_selecionado = atoi(inParse[2]);
 
-        if ((modo_selecionado == 1) || (modo_selecionado == 2))
-        {
-          periodo = atoi(inParse[3]);
-        }
-        else if ((modo_selecionado == 3) || (modo_selecionado == 4))
-        {
-          duracao = atoi(inParse[3]);
-        }
-        else if (modo_selecionado == 5)
-        {
-          Pump1PWM_temp = atoi(inParse[3]);
-          Pump2PWM_temp = atoi(inParse[4]);
-        }
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 3)
-      {
-        ler_wave_EEPROM();
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-
-    case 23:
-      if (atoi(inParse[1]) == 0) // send (case, mode)
-      {
-        client.print(F("{"));
-        for (byte i = 0; i < 9; i++)
-        {
-          client.print(F("\"mode"));
-          client.print(i + 1);
-          client.print(F("\":"));
-          client.print(outlets[i]);
-          if (i < 8)
+          if ((modo_selecionado == 1) || (modo_selecionado == 2))
           {
-            client.print(F(","));
+            periodo = atoi(inParse[3]);
           }
-        }
-        client.println(F("}"));
-      }
-      else if (atoi(inParse[1]) == 1)
-      {
-        salvar_outlets_EEPROM();
-        outlets_settings = false;
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 2)
-      {
-        outlets[atoi(inParse[2])] = atoi(inParse[3]);
-        outlets_changed[atoi(inParse[2])] = true;
-        outlets_millis = millis();
-        outlets_settings = true;
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      else if (atoi(inParse[1]) == 3)
-      {
-        byte k = EEPROM.read(840);
+          else if ((modo_selecionado == 3) || (modo_selecionado == 4))
+          {
+            duracao = atoi(inParse[3]);
+          }
+          else if (modo_selecionado == 5)
+          {
+            Pump1PWM_temp = atoi(inParse[3]);
+            Pump2PWM_temp = atoi(inParse[4]);
+          }
+          Salvar_wave_EEPROM();
 
-        if (k != 66)
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 2)
         {
+          modo_selecionado = atoi(inParse[2]);
+
+          if ((modo_selecionado == 1) || (modo_selecionado == 2))
+          {
+            periodo = atoi(inParse[3]);
+          }
+          else if ((modo_selecionado == 3) || (modo_selecionado == 4))
+          {
+            duracao = atoi(inParse[3]);
+          }
+          else if (modo_selecionado == 5)
+          {
+            Pump1PWM_temp = atoi(inParse[3]);
+            Pump2PWM_temp = atoi(inParse[4]);
+          }
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 3)
+        {
+          ler_wave_EEPROM();
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 23:
+        if (atoi(inParse[1]) == 0) // send (case, mode)
+        {
+          strcpy(pub_message, "{");
           for (byte i = 0; i < 9; i++)
           {
-            outlets[i] = 0;
+            strcat(pub_message, "\"mode");
+            itoa(i + 1, buf, 10);
+            strcat(pub_message, buf);
+            strcat(pub_message, "\":");
+            itoa(outlets[i], buf, 10);
+            strcat(pub_message, buf);
+            if (i < 8)
+            {
+              strcat(pub_message, ",");
+            }
           }
+          strcat(pub_message, "}");
+
+          MQTT.publish(PUB_TOPIC, pub_message, false);
         }
-        else
+        else if (atoi(inParse[1]) == 1)
         {
-          ler_outlets_EEPROM();
+          salvar_outlets_EEPROM();
+          outlets_settings = false;
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
-        outlets_settings = false;
-        strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[7]))); // "{\"response\":\"ok\"}"
-        client.println(buffer);
-      }
-      break;
-  }
-}
+        else if (atoi(inParse[1]) == 2)
+        {
+          outlets[atoi(inParse[2])] = atoi(inParse[3]);
+          outlets_changed[atoi(inParse[2])] = true;
+          outlets_millis = millis();
+          outlets_settings = true;
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 3)
+        {
+          byte k = EEPROM.read(840);
+
+          if (k != 66)
+          {
+            for (byte i = 0; i < 9; i++)
+            {
+              outlets[i] = 0;
+            }
+          }
+          else
+          {
+            ler_outlets_EEPROM();
+          }
+          outlets_settings = false;
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+    }// switch(ID)
+
+#ifdef DEBUG
+    if (Json.measureLength() > 2)
+    {
+      Serial.print(F("JSON size: "));
+      Serial.println(Json.measureLength());
+      Serial.println(F("JSON:"));
+      Json.prettyPrintTo(Serial);
+      Serial.println();
+    }
+    if ((pub_message != "") && (Json.measureLength() <= 2))
+    {
+      Serial.print(F("Message size: "));
+      Serial.println(strlen(pub_message));
+      Serial.println(F("Message:"));
+      Serial.println(pub_message);
+    }
+#endif
+  }// if (terminador == true)
+} //void
 
 void enviar_dados()
 {
-  char dados[6];
+  StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
+  JsonObject& Json = jsonBuffer.createObject();
+  char pub_message[MQTT_MAX_PACKET_SIZE];
+  char LOG_TOPIC[50];
+
+  strcpy(LOG_TOPIC, "log/");
+  strcat(LOG_TOPIC, Username);
+  strcat(LOG_TOPIC, "/");
+  strcat(LOG_TOPIC, APIKEY);
 
 #ifdef DEBUG
+  Serial.print(F("Log: ")); // Envia dados
+  Serial.println(LOG_TOPIC);
   Serial.println(F("Connecting..."));
 #endif
 
-  if (client.connect(ferduino, 80))
+  if (!MQTT.connected())
   {
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "POST /webcontrol/api/index.php HTTP/1.1"
-    client.println(buffer);
+    reconnect();
+  }
 
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "Host: www.ferduino.com"
-    client.println(buffer);
+  if (MQTT.connected())
+  {
+    Json[F("userName")] = Username;
+    Json[F("minute")] = rtc.getTimeStamp();
+    Json[F("A")] = tempC; // Temp. da água
+    Json[F("B")] = tempH; // Temp. dissipador
+    Json[F("C")] = tempA; // Temp. ambiente
+    Json[F("D")] = PHA; // PH do aquário
+    Json[F("E")] = PHR; // PH do reator de cálcio
+    Json[F("F")] = DEN; // Densidade
+    Json[F("G")] = ORP; // ORP
+    Json[F("H")] = bitRead(status_parametros, 0); // Status chiller, 0 = desligado e 1 = ligado
+    Json[F("I")] = bitRead(status_parametros, 1); // Status aquecedor, 0 = desligado e 1 = ligado
+    Json[F("J")] = bitRead(status_parametros, 5); // Status reator de cálcio, 0 = desligado e 1 = ligado
+    Json[F("K")] = bitRead(status_parametros, 7); // Status ozonizador, 0 = desligado e 1 = ligado
+    Json[F("L")] = bitRead(Status, 1); // Status reposição de água doce, 0 = desligado e 1 = ligado
+    Json[F("M1")] = nivel_status1; // Status nível sensor 1, 0 = baixo e 1 = normal
+    Json[F("M2")] = nivel_status2; // Status nível sensor 2, 0 = baixo e 1 = normal
+    Json[F("M3")] = nivel_status3; // Status nível sensor 3, 0 = baixo e 1 = normal
+    Json[F("M4")] = nivel_status4; // Status nível sensor 4, 0 = baixo e 1 = normal
+    Json[F("M5")] = nivel_status5; // Status nível sensor 5, 0 = baixo e 1 = normal
+    Json[F("M6")] = nivel_status6; // Status nível sensor 6, 0 = baixo e 1 = normal
+    Json[F("N")] = bitRead(tpa_status, 0); // Status TPA, 0 = desligado e 1 = ligado
+    Json[F("O")] = bitRead(temporizador_status, 1); // Status timer 1, 0 = desligado e 1 = ligado
+    Json[F("P")] = bitRead(temporizador_status, 2); // Status timer 2, 0 = desligado e 1 = ligado
+    Json[F("Q")] = bitRead(temporizador_status, 3); // Status timer 3, 0 = desligado e 1 = ligado
+    Json[F("R")] = bitRead(temporizador_status, 4); // Status timer 4, 0 = desligado e 1 = ligado
+    Json[F("S")] = bitRead(temporizador_status, 5); // Status timer 5, 0 = desligado e 1 = ligado
+    Json[F("T")] = bitRead(tpa_status, 2); // Sinaliza falha na TPA
+    Json[F("U1")] = volume_dosado[0]; // Volume dosado pela dosadora 1
+    Json[F("U2")] = volume_dosado[1]; // Volume dosado pela dosadora 2
+    Json[F("U3")] = volume_dosado[2]; // Volume dosado pela dosadora 3
+    Json[F("U4")] = volume_dosado[3]; // Volume dosado pela dosadora 4
+    Json[F("U5")] = volume_dosado[4]; // Volume dosado pela dosadora 5
+    Json[F("U6")] = volume_dosado[5]; // Volume dosado pela dosadora 6
+    Json[F("V1")] = bitRead(erro_dosagem, 0); // Erro dosagem dosadora 1
+    Json[F("V2")] = bitRead(erro_dosagem, 1); // Erro dosagem dosadora 2
+    Json[F("V3")] = bitRead(erro_dosagem, 2); // Erro dosagem dosadora 3
+    Json[F("V4")] = bitRead(erro_dosagem, 3); // Erro dosagem dosadora 4
+    Json[F("V5")] = bitRead(erro_dosagem, 4); // Erro dosagem dosadora 5
+    Json[F("V6")] = bitRead(erro_dosagem, 5); // Erro dosagem dosadora 6
 
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[2]))); // "Authorization: Basic "
-    client.print(buffer);
 
-    client.println(Auth1);
-
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[3]))); // "Cache-Control: no-cache"
-    client.println(buffer);
-
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[4]))); // "Content-Type: application/x-www-form-urlencoded"
-    client.println(buffer);
-
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[5]))); // "Connection: close"
-    client.println(buffer);
-
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[6]))); // "Content-Length: "
-    client.print(buffer);
-
-    client.println(strlen(Username) + sizeof(DEN) + sizeof(ORP) + 319);
-    client.println();
-
-    client.print(F("{\"userName\":\""));
-    client.print(Username);
-    client.print(F("\",\"minute\":\""));
-    client.print(rtc.getTimeStamp());
-    client.print(F("\",\"A\":")); // Temp. da água
-    client.print(dtostrf(tempC, 5, 2, dados));
-    client.print(F(",\"B\":")); // Temp. dissipador
-    client.print(dtostrf(tempH, 5, 2, dados));
-    client.print(F(",\"C\":")); // Temp. ambiente
-    client.print(dtostrf(tempA, 5, 2, dados));
-    client.print(F(",\"D\":")); // PH do aquário
-    client.print(dtostrf(PHA, 4, 2, dados));
-    client.print(F(",\"E\":")); // PH do reator de cálcio
-    client.print(dtostrf(PHR, 4, 2, dados));
-    client.print(F(",\"F\":")); // Densidade
-    client.print(DEN);
-    client.print(F(",\"G\":")); // ORP
-    client.print(ORP);
-    client.print(F(",\"H\":")); // Status chiller, 0 = desligado e 1 = ligado
-    client.print(bitRead(status_parametros, 0));
-    client.print(F(",\"I\":")); // Status aquecedor, 0 = desligado e 1 = ligado
-    client.print(bitRead(status_parametros, 1));
-    client.print(F(",\"J\":")); // Status reator de cálcio, 0 = desligado e 1 = ligado
-    client.print(bitRead(status_parametros, 5));
-    client.print(F(",\"K\":")); // Status ozonizador, 0 = desligado e 1 = ligado
-    client.print(bitRead(status_parametros, 7));
-    client.print(F(",\"L\":")); // Status reposição de água doce, 0 = desligado e 1 = ligado
-    client.print(bitRead(Status, 1));
-    client.print(F(",\"M1\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status1);
-    client.print(F(",\"M2\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status2);
-    client.print(F(",\"M3\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status3);
-    client.print(F(",\"M4\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status4);
-    client.print(F(",\"M5\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status5);
-    client.print(F(",\"M6\":")); // Status niveis, 0 = baixo e 1 = normal
-    client.print(nivel_status6);
-    client.print(F(",\"N\":")); // Status TPA, 0 = desligado e 1 = ligado
-    client.print(bitRead(tpa_status, 0));
-    client.print(F(",\"O\":"));
-    client.print(bitRead(temporizador_status, 1)); // Status timer 1, 0 = desligado e 1 = ligado
-    client.print(F(",\"P\":"));
-    client.print(bitRead(temporizador_status, 2)); // Status timer 2, 0 = desligado e 1 = ligado
-    client.print(F(",\"Q\":"));
-    client.print(bitRead(temporizador_status, 3)); // Status timer 3, 0 = desligado e 1 = ligado
-    client.print(F(",\"R\":"));
-    client.print(bitRead(temporizador_status, 4)); // Status timer 4, 0 = desligado e 1 = ligado
-    client.print(F(",\"S\":"));
-    client.print(bitRead(temporizador_status, 5)); // Status timer 5, 0 = desligado e 1 = ligado
-    client.print(F(",\"T\":")); // Sinaliza falha na TPA
-    client.print(bitRead(tpa_status, 2));
-    client.print(F(",\"U1\":")); // Volume dosado pela dosadora 1
-    client.print(volume_dosado[0]);
-    client.print(F(",\"U2\":")); // Volume dosado pela dosadora 2
-    client.print(volume_dosado[1]);
-    client.print(F(",\"U3\":")); // Volume dosado pela dosadora 3
-    client.print(volume_dosado[2]);
-    client.print(F(",\"U4\":")); // Volume dosado pela dosadora 4
-    client.print(volume_dosado[3]);
-    client.print(F(",\"U5\":")); // Volume dosado pela dosadora 5
-    client.print(volume_dosado[4]);
-    client.print(F(",\"U6\":")); // Volume dosado pela dosadora 6
-    client.print(volume_dosado[5]);
-    client.print(F(",\"V1\":")); // Erro dosagem dosadora 1
-    client.print(bitRead(erro_dosagem, 0));
-    client.print(F(",\"V2\":")); // Erro dosagem dosadora 2
-    client.print(bitRead(erro_dosagem, 1));
-    client.print(F(",\"V3\":")); // Erro dosagem dosadora 3
-    client.print(bitRead(erro_dosagem, 2));
-    client.print(F(",\"V4\":")); // Erro dosagem dosadora 4
-    client.print(bitRead(erro_dosagem, 3));
-    client.print(F(",\"V5\":")); // Erro dosagem dosadora 5
-    client.print(bitRead(erro_dosagem, 4));
-    client.print(F(",\"V6\":")); // Erro dosagem dosadora 6
-    client.print(bitRead(erro_dosagem, 5));
-    client.println(F("}"));
-
-    delay(5);
-    client.flush();
-    client.stop();
+    Json.printTo(pub_message, Json.measureLength() + 1);
+    MQTT.publish(LOG_TOPIC, pub_message, false);
 
     for (byte i = 0; i < 6; i++)
     {
@@ -1299,6 +1104,11 @@ void enviar_dados()
 
 #ifdef DEBUG
     Serial.println(F(">> Connected <<"));
+    Serial.print(F("JSON size: "));
+    Serial.println(Json.measureLength());
+    Serial.println(F("JSON:"));
+    Json.prettyPrintTo(Serial);
+    Serial.println();
 #endif
   }
   else
@@ -1306,8 +1116,6 @@ void enviar_dados()
 #ifdef DEBUG
     Serial.println(F("Can't connect!"));
 #endif
-    client.flush();
-    client.stop();
 
     notconnected++;
     if ((notconnected >= (limite_falha - 2)) && (notconnected < limite_falha))
@@ -1343,11 +1151,92 @@ void checkSockStatus()
     if ((s == 0x13))
     {
       close(i);
-      /*#ifdef DEBUG
-            Serial.print(F("Socket:"));
-            Serial.println(i);
-        #endif*/
+#ifdef DEBUG
+      Serial.print(F("Socket:"));
+      Serial.println(i);
+#endif
     }
   }
 }
+
+void reconnect()
+{
+  byte i = 0;
+  char SUB_TOPIC[50];
+  char CLIENT_ID[20];
+
+  strcpy(SUB_TOPIC, Username);
+  strcat(SUB_TOPIC, "/");
+  strcat(SUB_TOPIC, APIKEY);
+  strcat(SUB_TOPIC, "/topic/command");
+
+  strcpy(CLIENT_ID, "ID: ");
+  strcat(CLIENT_ID, Username);
+
+  selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
+
+  while ((!MQTT.connected()) && (i < 5))
+  {
+#ifdef DEBUG
+    Serial.println(F("Attempting MQTT connection..."));
+#endif
+    if (MQTT.connect(CLIENT_ID, Username, APIKEY))
+    {
+#ifdef DEBUG
+      Serial.println(F("Connected!"));
+      Serial.print(F("Command: ")); // Recebe os commandos
+      Serial.println(SUB_TOPIC);
+#endif
+      MQTT.subscribe(SUB_TOPIC);
+    }
+    else
+    {
+#ifdef DEBUG
+      int Status = MQTT.state();
+
+      switch (Status)
+      {
+        case -4:
+          Serial.println(F("Connection timeout"));
+          break;
+
+        case -3:
+          Serial.println(F("Connection lost"));
+          break;
+
+        case -2:
+          Serial.println(F("Connect failed"));
+          break;
+
+        case -1:
+          Serial.println(F("Disconnected"));
+          break;
+
+        case 1:
+          Serial.println(F("Bad protocol"));
+          break;
+
+        case 2:
+          Serial.println(F("Bad client ID"));
+          break;
+
+        case 3:
+          Serial.println(F("Unavailable"));
+          break;
+
+        case 4:
+          Serial.println(F("Bad credentials"));
+          break;
+
+        case 5:
+          Serial.println(F("Unauthorized"));
+          break;
+      }
+#endif
+    }
+    i++;
+    delay(200);
+  }
+}
+
 #endif
