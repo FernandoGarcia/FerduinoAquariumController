@@ -39,17 +39,19 @@ void loop()
   }
 
 #ifdef ETHERNET_SHIELD //Do not change this line
+#ifndef USE_ESP8266 //Do not change this line
   if ((millis() - close_millis) > 1000)
   {
     selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
     checkSockStatus();
     close_millis = millis();
   }
+#endif //Do not change this line
 
   if (bitRead(tpa_status, 1) == false)
   {
+#ifndef USE_ESP8266 //Do not change this line
     selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-
     if (!MQTT.connected())
     {
       if ((millis() - millis_mqtt) > 30000) // Tenta reconectar após 30 segundos
@@ -60,6 +62,10 @@ void loop()
     }
 
     MQTT.loop();
+
+#else //Do not change this line
+    ESP8266.Process();
+#endif //Do not change this line
   }
 
   if ((millis() - millis_enviar) > 120000)
@@ -320,12 +326,12 @@ void loop()
       suavizar += 0.1;
     }
 #ifdef DEBUG //Do not change this line
-   /*  Serial.println();
-      Serial.print(F("Day of week: ");
-      Serial.println(rtc.getDOWStr());
+    /*  Serial.println();
+       Serial.print(F("Day of week: ");
+       Serial.println(rtc.getDOWStr());
 
-      Serial.print(F("Time: ");
-      Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
+       Serial.print(F("Time: ");
+       Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
 
     Serial.print(F("Free memory: "));
     Serial.println(FreeRam());

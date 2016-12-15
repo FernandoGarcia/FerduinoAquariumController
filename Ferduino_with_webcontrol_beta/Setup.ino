@@ -204,6 +204,8 @@ void setup()
 #endif // Do not change this line!
 
 #ifdef ETHERNET_SHIELD // Do not change this line!
+
+#ifndef USE_ESP8266 // Do not change this line! 
   start_ethernet();
 
   MQTT.setServer("104.131.49.99", 1883); // Do NOT change this IP!
@@ -212,6 +214,14 @@ void setup()
   {
     reconnect();
   }
+#else
+  Serial2.begin(38400);
+
+  ESP8266.wifiCb.attach(wifiCb);
+  sincronizar();
+  
+#endif // Do not change this line!  
+
 #endif // Do not change this line!
 
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line!
@@ -233,6 +243,7 @@ void setup()
 //****************************** Fim do setup() *****************************************************************************************
 //***************************************************************************************************************************************
 #ifdef ETHERNET_SHIELD // Do not change this line!
+#ifndef USE_ESP8266 //Do not change this line
 void start_ethernet()
 {
   selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
@@ -247,4 +258,5 @@ void start_ethernet()
   Serial.println(Ethernet.localIP());
 #endif //Do not change this line
 }
+#endif // Do not change this line!
 #endif // Do not change this line!

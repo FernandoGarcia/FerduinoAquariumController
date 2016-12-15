@@ -21,7 +21,7 @@
 //******* Dúvidas, sugestões e elogios: info@ferduino.com **********************************************************************************************
 //******************************************************************************************************************************************************
 
-// Este programa é compatível com a IDE 1.6.10 e 1.0.6
+// Este programa é compatível com a IDE 1.6.10
 
 // As funções para controle via web foram implementadas graças à preciosa ajuda do Simone Grimaldi e Danilo Castellano.
 
@@ -64,6 +64,9 @@
 
 // Comment the line below to disable ethernet functions
 #define ETHERNET_SHIELD // Comente esta linha para desativar as funções do ethernet shield.
+
+// Uncomment the line bellow to use an ESP8266 as WIFI module
+//#define USE_ESP8266 // Descomente esta linha para usar um ESP8266 como módulo WIFI.
 
 // Comment this two lines below if have not stamps
 // Comente as duas linhas abaixo se não tiver stamps
@@ -162,9 +165,14 @@
 #endif // Do not change this line!
 
 #ifdef ETHERNET_SHIELD // Do not change this line!
+#ifndef USE_ESP8266 // Do not change this line!
 #include <SPI.h>
 #include <Ethernet.h>
 #include <PubSubClient.h>
+#else // Do not change this line!
+#include <ELClient.h>
+#include <ELClientMqtt.h>
+#endif // Do not change this line!
 #include <ArduinoJson.h>
 #endif // Do not change this line!
 
@@ -175,7 +183,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "05/12/2016"; // Data da última modificação
+const char lastUpdate[] = "15/12/2016"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -208,8 +216,17 @@ const byte ledPinRoyBlue = 11;   // Pino que liga os leds "royal blue"
 const byte ledPinRed = 12;       // Pino que liga os leds vermelho
 const byte fanPin = 13;          // Pino que controla a velocidade das ventoinhas do dissipador
 // Pinos 14 e 15 reservados para a porta serial 3 que se comunica com os "Stamps"
+
+#ifndef USE_ESP8266 // Do not change this line!
+// When using an ESP8266 as WIFI module is needed move this pins to any free pins to use the multiplexer for stamps.
+// Quando usar um ESP8266 como módulo WIFI é necessário mudar estes pinos para outros livres para poder usar o multiplexador dos "stamps".
 const byte multiplexadorS0Pin = 16; // Pino S0 de controle dos stamps
 const byte multiplexadorS1Pin = 17; // Pino S1 de controle dos stamps
+#else // Do not change this line!
+const byte multiplexadorS0Pin = 88; // Move to free pin to use the multiplexer and ESP8266
+const byte multiplexadorS1Pin = 89; // Move to free pin to use the multiplexer and ESP8266
+#endif // Do not change this line!
+
 // Pinos 18 e 19 reservados para o RTC.
 // Pinos 20 e 21 reservados para comunicação I2C do PCF8575.
 // Pinos 22 à 41 reservados para o LCD.
@@ -644,6 +661,8 @@ byte Status = 0x0;
 const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
 const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
 const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.                                                      
+
+#ifndef USE_ESP8266 //Do not change this line  
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
 byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
 IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
@@ -652,6 +671,13 @@ IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de r
 
 EthernetClient client;
 PubSubClient MQTT(client);
+#else //Do not change this line
+ELClient ESP8266(&Serial2);
+ELClientMqtt MQTT(&ESP8266);
+boolean MQTT_connected = false;
+#define MQTT_MAX_PACKET_SIZE 550
+#endif //Do not change this line
+
 char *inParse[20];
 unsigned long millis_mqtt = 0;
 boolean web_dosage = false;

@@ -1,10 +1,15 @@
 #ifdef ETHERNET_SHIELD
 
+#ifndef USE_ESP8266 // Do not change this line
+
 void requestAction(char* topic, byte* payload, unsigned int length)
+#else // Do not change this line
+void mqttData(void* response)
+#endif // Do not change this line
 {
   StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
   JsonObject& Json = jsonBuffer.createObject();
-  char pub_message[MQTT_MAX_PACKET_SIZE];
+  char pub_message[MQTT_MAX_PACKET_SIZE] = "";
   byte cont = 0;
   byte dia;
 #define COMMAND_SIZE  50
@@ -25,11 +30,13 @@ void requestAction(char* topic, byte* payload, unsigned int length)
   strcat(PUB_TOPIC, "/topic/response");
 
 #ifdef DEBUG
+  Serial.println();
   Serial.print(F("Response: ")); // Responde aos comandos
   Serial.println(PUB_TOPIC);
   Serial.print(F("New request: "));
 #endif
 
+#ifndef USE_ESP8266 // Do not change this line
   for (int i = 0; i < length; i++)
   {
     char c = (char)payload[i];
@@ -48,6 +55,21 @@ void requestAction(char* topic, byte* payload, unsigned int length)
   }
 
   index = 0;
+
+#else // Do not change this line
+  ELClientResponse *res = (ELClientResponse *)response;
+  String topic = res->popString();
+#ifdef DEBUG
+  //Serial.print(F("Topic: "));
+  //Serial.println(topic);
+#endif
+  String message = res->popString();
+  message.toCharArray(clientline, sizeof(clientline));
+#ifdef DEBUG
+  Serial.print(F("Message: "));
+  Serial.println(message);
+#endif
+#endif // Do not change this line
 
 #ifdef DEBUG
   Serial.println();
@@ -1016,13 +1038,21 @@ void requestAction(char* topic, byte* payload, unsigned int length)
       Json.prettyPrintTo(Serial);
       Serial.println();
     }
-    if ((pub_message != "") && (Json.measureLength() <= 2))
+    if ((strlen(pub_message) > 0) && (Json.measureLength() <= 2))
     {
       Serial.print(F("Message size: "));
       Serial.println(strlen(pub_message));
       Serial.println(F("Message:"));
       Serial.println(pub_message);
     }
+    if ((strlen(buffer) > 0) && (strlen(pub_message) == 0) && (Json.measureLength() <= 2))
+    {
+      Serial.print(F("Buffer size: "));
+      Serial.println(strlen(buffer));
+      Serial.println(F("Buffer:"));
+      Serial.println(buffer);
+    }
+    Serial.println();
 #endif
   }// if (terminador == true)
 } //void
@@ -1040,17 +1070,25 @@ void enviar_dados()
   strcat(LOG_TOPIC, APIKEY);
 
 #ifdef DEBUG
+  Serial.println();
   Serial.print(F("Log: ")); // Envia dados
   Serial.println(LOG_TOPIC);
   Serial.println(F("Connecting..."));
 #endif
 
+#ifndef USE_ESP8266 // Do not change this line
   if (!MQTT.connected())
   {
     reconnect();
   }
 
   if (MQTT.connected())
+#else // Do not change this line
+
+  sincronizar();
+
+  if (MQTT_connected == true)
+#endif // Do not change this line
   {
     Json[F("userName")] = Username;
     Json[F("minute")] = rtc.getTimeStamp();
@@ -1108,7 +1146,7 @@ void enviar_dados()
     Serial.println(Json.measureLength());
     Serial.println(F("JSON:"));
     Json.prettyPrintTo(Serial);
-    Serial.println();
+    Serial.println("");
 #endif
   }
   else
@@ -1120,7 +1158,12 @@ void enviar_dados()
     notconnected++;
     if ((notconnected >= (limite_falha - 2)) && (notconnected < limite_falha))
     {
+#ifndef USE_ESP8266 // Do not change this line!
       start_ethernet();
+#else  // Do not change this line!
+      sincronizar();
+#endif  // Do not change this line!
+
 #ifndef WATCHDOG
       notconnected = 0;
 #endif
@@ -1138,6 +1181,8 @@ void enviar_dados()
 #endif
   }
 }
+
+#ifndef USE_ESP8266 //Do not change this line
 
 #include <utility/w5100.h>
 #include <utility/socket.h>
@@ -1238,5 +1283,6 @@ void reconnect()
     delay(200);
   }
 }
+#endif //Do not change this line
 
-#endif
+#endif //Do not change this line
