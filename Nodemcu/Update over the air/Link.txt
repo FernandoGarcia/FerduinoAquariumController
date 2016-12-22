@@ -1,0 +1,3 @@
+Link to download ESP8266 package:
+
+http://arduino.esp8266.com/stable/package_esp8266com_index.json

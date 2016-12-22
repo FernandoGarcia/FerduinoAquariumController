@@ -31,8 +31,8 @@ void checktpa()
   }
 
   if ((outlets[5] == 0) && (outlets[6] == 0) && (outlets[7] == 0))
-{
-  tempo = (duracaomaximatpa * 60000ul);
+  {
+    tempo = (duracaomaximatpa * 60000ul);
 
     if ((semana[0] == t.dow) || (semana[1] == t.dow) || (semana[2] == t.dow) || (semana[3] == t.dow) || (semana[4] == t.dow) || (semana[5] == t.dow) || (semana[6] == t.dow))
     {
@@ -162,56 +162,56 @@ void checktpa()
 
 
   if (outlets[5] == 1)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba1Pin, HIGH);
+    PCF8575.digitalWrite(bomba1Pin, HIGH);
 #else
-  digitalWrite(bomba1Pin, HIGH);
+    digitalWrite(bomba1Pin, HIGH);
 #endif
   }
 
   if (outlets[6] == 1)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba2Pin, HIGH);
+    PCF8575.digitalWrite(bomba2Pin, HIGH);
 #else
-  digitalWrite(bomba2Pin, HIGH);
+    digitalWrite(bomba2Pin, HIGH);
 #endif
   }
 
   if (outlets[7] == 1)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba3Pin, HIGH);
+    PCF8575.digitalWrite(bomba3Pin, HIGH);
 #else
-  digitalWrite(bomba3Pin, HIGH);
+    digitalWrite(bomba3Pin, HIGH);
 #endif
   }
 
   if (outlets[5] == 2)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba1Pin, LOW);
+    PCF8575.digitalWrite(bomba1Pin, LOW);
 #else
-  digitalWrite(bomba1Pin, LOW);
+    digitalWrite(bomba1Pin, LOW);
 #endif
   }
 
   if (outlets[6] == 2)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba2Pin, LOW);
+    PCF8575.digitalWrite(bomba2Pin, LOW);
 #else
-  digitalWrite(bomba2Pin, LOW);
+    digitalWrite(bomba2Pin, LOW);
 #endif
   }
 
   if (outlets[7] == 2)
-{
+  {
 #ifdef USE_PCF8575
-  PCF8575.digitalWrite(bomba3Pin, LOW);
+    PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-  digitalWrite(bomba3Pin, LOW);
+    digitalWrite(bomba3Pin, LOW);
 #endif
   }
 }
