@@ -1220,7 +1220,7 @@ void reconnect()
 
   selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
 
-  while ((!MQTT.connected()) && (i < 5))
+  while ((!MQTT.connected()) && (i < 3))
   {
 #ifdef DEBUG
     Serial.println(F("Attempting MQTT connection..."));
