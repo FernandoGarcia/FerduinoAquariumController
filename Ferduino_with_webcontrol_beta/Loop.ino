@@ -54,7 +54,7 @@ void loop()
     selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
     if (!MQTT.connected())
     {
-      if ((millis() - millis_mqtt) > 30000) // Tenta reconectar após 30 segundos
+      if ((millis() - millis_mqtt) > 300000) // Tenta reconectar após 5 minutos
       {
         reconnect();
         millis_mqtt = millis();

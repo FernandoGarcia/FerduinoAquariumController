@@ -1,17 +1,33 @@
-****Ferduino controlador de aquários****
+This project is based on the Arduino platform.
 
-Este programa é software livre; Você pode redistribuí-lo e/ou modificá-lo sob os termos da GNU (General Public License) como publicada pela Free Software Foundation versão 3 da licença, ou (por sua opção) qualquer versão posterior. Este programa é distribuído na esperança que seja útil, mas sem qualquer garantia; sem mesmo a garantia implícita de comercialização ou propósito particular. Consulte o GNU General Public License para mais detalhes.
+This project started from the need to make partial water changes automatics in my 3 tanks.
+After accomplishing what I wanted, the project has grown to the point it’s today.
 
-Funções implementadas até o momento.
+The code was written based on version 2.1 of Stilo available [url=https://code.google.com/archive/p/stilo/downloads]here[/url].
 
-Controle para duas cores de "LEDs" independentes; Controle de temperatura; Controle de PH; Controle de ORP; Mensuração de densidade; Trocas de água automática; Controle de reposição de água; Gráfico de PH; Gráfico de ORP; Armazenamento de parâmetros no cartão SD; Envio de dados para o cosm.com; Dosagem automática de elementos químicos; Temporizadores.
+All work was done thanks to the people who devote their time sharing their knowledge on forums.
 
-Em breve:
+Therefore, this is completely Open Source and always will be.
 
-Interface com o PCF8575; "Wavemaker"; Calibração das sondas de PH, ORP e densidade através da tela; Efeitos na iluminação como nuvens e relâmpagos; Medidor de consumo elétrico.
+Features:
 
-Sugestões de novas funções são bem vindas.
+Temperature control for water;
+PH control for calcium reactor;
+PH monitor for tank;
+ORP control;
+Density monitor;
+Auto top off;
+Level monitor;
+Partial water change automatic;
+LED light control for 6 channels (5 day light + 1 moonlight);
+Temperature control for LED;
+Control for 5 timers;
+Dosage control for up to 6 dosing pumps;
+Control for DC pumps;
+Graphs of parameters;
+Web control, graphs and status in real time online (beta);
+Automatic feeder.
 
-Veja os parâmetros em tempo real.
+TODO
 
-https://cosm.com/feeds/69337
+Energy monitor.

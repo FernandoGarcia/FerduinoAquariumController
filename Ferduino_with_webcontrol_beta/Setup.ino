@@ -208,7 +208,7 @@ void setup()
 #ifndef USE_ESP8266 // Do not change this line! 
   start_ethernet();
 
-  MQTT.setServer("104.131.49.99", 1883); // Do NOT change this IP!
+  MQTT.setServer("www.ferduino.com", 1883); // Do NOT change this URL!
   MQTT.setCallback(requestAction);
   if (!MQTT.connected())
   {
