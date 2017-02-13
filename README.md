@@ -31,6 +31,76 @@ Therefore, this is completely Open Source and always will be.
 * Web control, graphs and status in real time online (beta);
 * Automatic feeder.
 
+## Part list:
+
+[1 x Arduino mega 2560]
+
+<img src="http://arduino.cc/en/uploads/Main/ArduinoMega2560_R3_Fronte.jpg">
+
+[1 x TFT touch screen with resolution 400 x 240]
+
+<img src="http://imall.iteadstudio.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/im120419006_3.jpg">
+
+[1 X TFT shield with RTC]
+
+<img src="http://hifiduino.files.wordpress.com/2012/03/dsc01434.jpg">
+
+[3 x Temperature sensor DS18B20]
+
+<img src="http://www.kiatronics.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/img_5143a.jpg">
+
+[1 x Relay board]
+
+<img src="http://ferduino.com/wp-content/uploads/2015/09/SSR-module-board-16-channels.jpg">
+
+[Prototype shield] or [screw shield]
+
+<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
+
+<img src="http://shop.aqualed-light.com/images/due_mega_screw_top800x600.jpg">
+
+<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
+
+1 x [Ethernet shield W5100],  [module] or [ESP8266] (WiFi)
+
+<img src="http://arduino.cc/en/uploads/Main/ArduinoEthernetShieldV3.jpg">
+
+<img src="http://www.robotshop.com/media/files/images/w5100-ethernet-network-module-1-large.jpg">
+
+<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
+
+[6 x Float switch]
+
+<img src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=53">
+
+[6 x Dosing pump]
+
+<img src="https://farm9.staticflickr.com/8285/7711962498_8b684c255f_c.jpg">
+
+[Circuits pH, ORP and EC]
+
+<img src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=54">
+
+[1 x Multi circuit UART carrier board]
+
+<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=234">
+
+[1 x PCF8575]
+
+<img src="https://farm9.staticflickr.com/8219/8314703390_8313292651_c.jpg">
+
+## Circuits
+
+Please visit [this topic] to see circuits details.
+
+## Code installation
+
+Please visit [this tutorial] to see how to install this code.
+
+## Support:
+
+Please visit us Forum to get support.
+
 ## TODO
 
 Energy monitor.
@@ -38,3 +108,21 @@ Energy monitor.
 [Stilo]: https://code.google.com/archive/p/stilo/downloads
 [Web control]: http://ferduino.com/webcontrol
 [Arduino]: http://arduino.cc
+[Forum]: http://ferduino.com/forum
+[this topic]: http://ferduino.com/forum/viewtopic.php?f=24&t=40
+[this tutorial]: http://ferduino.com/forum/viewtopic.php?f=8&t=34
+[1 x Arduino mega 2560]: http://www.ebay.com/sch/i.html?_odkw=arduino+mega+2560r3&LH_BIN=1&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR5.TRC2.A0.H0.Xarduino+mega+2560+r3&_nkw=arduino+mega+2560+r3&_sacat=0
+[1 x TFT touch screen with resolution 400 x 240]: http://www.ebay.com/itm/111114349519
+[1 X TFT shield with RTC]: http://imall.iteadstudio.com/prototyping/kits/im120717001.html
+[3 x Temperature sensor DS18B20]: http://www.ebay.com/sch/i.html?_trksid=p2055845.m570.l1313.TR11.TRC1.A0.H0.Xds18b20&_nkw=ds18b20&_sacat=0&_from=R40
+[1 x Relay board]: http://ferduino.com/product/solid-state-relay-board-16-channels/
+[Prototype shield]: http://www.ebay.com/sch/i.html?_odkw=relay+board+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xprototype+shield+arduino+mega&_nkw=prototype+shield+arduino+mega&_sacat=0
+[screw shield]: http://shop.aqualed-light.com/product_info.php?cPath=1_17&products_id=30
+[Ethernet shield W5100]: http://www.ebay.com/sch/i.html?_odkw=ethernet+shield+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xethernet+shield+arduino+mega+2560&_nkw=ethernet+shield+arduino+mega+2560&_sacat=0
+[module]: http://www.ebay.com/sch/i.html?_odkw=ethernet+shield+module&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR3.TRC2.A0.H0.Xethernet+module&_nkw=ethernet+module&_sacat=0
+[ESP8266]: https://goo.gl/wCq4uc
+[6 x Float switch]: http://www.ebay.com/sch/i.html?_trksid=p2055845.m570.l1311.R4.TR11.TRC1.A0.H0.Xfloat+sw&_nkw=float+switch+aquarium&_sacat=0&_from=R40
+[6 x Dosing pump]: http://www.ebay.com/sch/i.html?_odkw=dosing+pump&LH_BIN=1&_osacat=20754&_from=R40&_trksid=p2045573.m570.l1313.TR1.TRC0.A0.H0.Xdosing+pump+12v&_nkw=dosing+pump+12v&_sacat=20754
+[Circuits pH, ORP and EC]: https://www.atlas-scientific.com/circuits.html?
+[1 x Multi circuit UART carrier board]: http://atlas-scientific.com/product_pages/components/multi_carrier.html?
+[1 x PCF8575]: http://www.ebay.com/sch/i.html?_from=R40&_trksid=p2050601.m570.l1313.TR1.TRC0.A0.H0.Xpcf8575.TRS0&_nkw=pcf8575&_sacat=0
