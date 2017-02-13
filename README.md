@@ -35,47 +35,47 @@ Therefore, this is completely Open Source and always will be.
 
 [1 x Arduino mega 2560]
 
-<img src="http://arduino.cc/en/uploads/Main/ArduinoMega2560_R3_Fronte.jpg">
+<img width="50%" src="http://arduino.cc/en/uploads/Main/ArduinoMega2560_R3_Fronte.jpg">
 
 [1 x TFT touch screen with resolution 400 x 240]
 
-<img src="http://imall.iteadstudio.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/im120419006_3.jpg">
+<img width="50%" src="http://imall.iteadstudio.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/im120419006_3.jpg">
 
 [1 X TFT shield with RTC]
 
-<img src="http://hifiduino.files.wordpress.com/2012/03/dsc01434.jpg">
+<img width="50%" src="http://hifiduino.files.wordpress.com/2012/03/dsc01434.jpg">
 
 [3 x Temperature sensor DS18B20]
 
-<img src="http://www.kiatronics.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/img_5143a.jpg">
+<img width="50%" src="http://www.kiatronics.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/img_5143a.jpg">
 
 [1 x Relay board]
 
-<img src="http://ferduino.com/wp-content/uploads/2015/09/SSR-module-board-16-channels.jpg">
+<img width="50%" src="http://ferduino.com/wp-content/uploads/2015/09/SSR-module-board-16-channels.jpg">
 
 [Prototype shield] or [screw shield]
 
-<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
 
-<img src="http://shop.aqualed-light.com/images/due_mega_screw_top800x600.jpg">
+<img width="50%" src="http://shop.aqualed-light.com/images/due_mega_screw_top800x600.jpg">
 
-<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
 
 1 x [Ethernet shield W5100],  [module] or [ESP8266] (WiFi)
 
-<img src="http://arduino.cc/en/uploads/Main/ArduinoEthernetShieldV3.jpg">
+<img width="50%" src="http://arduino.cc/en/uploads/Main/ArduinoEthernetShieldV3.jpg">
 
-<img src="http://www.robotshop.com/media/files/images/w5100-ethernet-network-module-1-large.jpg">
+<img width="50%" src="http://www.robotshop.com/media/files/images/w5100-ethernet-network-module-1-large.jpg">
 
-<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
 
 [6 x Float switch]
 
-<img src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=53">
+<img width="50%" src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=53">
 
 [6 x Dosing pump]
 
-<img src="https://farm9.staticflickr.com/8285/7711962498_8b684c255f_c.jpg">
+<img width="50%" src="https://farm9.staticflickr.com/8285/7711962498_8b684c255f_c.jpg">
 
 [Circuits pH, ORP and EC]
 
@@ -87,7 +87,7 @@ Therefore, this is completely Open Source and always will be.
 
 [1 x PCF8575]
 
-<img src="https://farm9.staticflickr.com/8219/8314703390_8313292651_c.jpg">
+<img width="50%" src="https://farm9.staticflickr.com/8219/8314703390_8313292651_c.jpg">
 
 ## Circuits
 
