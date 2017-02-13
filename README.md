@@ -33,17 +33,17 @@ Therefore, this is completely Open Source and always will be.
 
 ## Web interface
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/Dashboard-1-32z457oz1jfj0oxstpk4cq.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=511">
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/charts-1-32z456k9gwmu097ycww7wq.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=512">
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/cont-1-32z456263qi2w28gtg5lhm.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=513">
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/dosing-1-32z452o1du3zur2xf25w5m.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=514">
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/feeder-1-32z452jijjkt2pc216z8ju.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=515">
 
-<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/Led-1-32z44x9j796wcnzfut7p56.png">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=516">
 
 ## Part list:
 
