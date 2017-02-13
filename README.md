@@ -93,6 +93,15 @@ Therefore, this is completely Open Source and always will be.
 
 Please visit [this topic] to see circuits details.
 
+## Assembly details
+
+[TFT shield]
+
+[Ethernet shield and module]
+
+[Add WiFi with less than $5]
+
+
 ## Code installation
 
 Please visit [this tutorial] to see how to install this code.
@@ -126,3 +135,6 @@ Energy monitor.
 [Circuits pH, ORP and EC]: https://www.atlas-scientific.com/circuits.html?
 [1 x Multi circuit UART carrier board]: http://atlas-scientific.com/product_pages/components/multi_carrier.html?
 [1 x PCF8575]: http://www.ebay.com/sch/i.html?_from=R40&_trksid=p2050601.m570.l1313.TR1.TRC0.A0.H0.Xpcf8575.TRS0&_nkw=pcf8575&_sacat=0
+[TFT shield]: http://www.ferduino.com/forum/viewtopic.php?f=24&t=41
+[Ethernet shield and module]: http://www.ferduino.com/forum/viewtopic.php?f=24&t=36
+[Add WiFi with less than $5]: http://www.ferduino.com/forum/viewtopic.php?f=24&t=382
