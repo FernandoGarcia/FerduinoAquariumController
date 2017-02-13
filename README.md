@@ -101,14 +101,13 @@ Please visit [this topic] to see circuits details.
 
 [Add WiFi with less than $5]
 
-
 ## Code installation
 
 Please visit [this tutorial] to see how to install this code.
 
 ## Support:
 
-Please visit our Forum to get support.
+Please visit our [Forum] to get support.
 
 ## TODO
 
