@@ -61,7 +61,7 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
 
-1 x [Ethernet shield W5100],  [module] or [ESP8266] (WiFi)
+1 x [Ethernet shield W5100],  [module] or [ESP8266]
 
 <img width="50%" src="http://arduino.cc/en/uploads/Main/ArduinoEthernetShieldV3.jpg">
 
