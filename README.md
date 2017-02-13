@@ -99,7 +99,7 @@ Please visit [this tutorial] to see how to install this code.
 
 ## Support:
 
-Please visit us Forum to get support.
+Please visit our Forum to get support.
 
 ## TODO
 
