@@ -31,6 +31,20 @@ Therefore, this is completely Open Source and always will be.
 * Web control, graphs and status in real time online (beta);
 * Automatic feeder.
 
+## Web interface
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/Dashboard-1-32z457oz1jfj0oxstpk4cq.png">
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/charts-1-32z456k9gwmu097ycww7wq.png">
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/cont-1-32z456263qi2w28gtg5lhm.png">
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/dosing-1-32z452o1du3zur2xf25w5m.png">
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/feeder-1-32z452jijjkt2pc216z8ju.png">
+
+<img width="50%" src="https://www.mercatinoacquario.it/wp-content/uploads/bfi_thumb/Led-1-32z44x9j796wcnzfut7p56.png">
+
 ## Part list:
 
 [1 x Arduino mega 2560]
