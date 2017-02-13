@@ -35,6 +35,6 @@ Therefore, this is completely Open Source and always will be.
 
 Energy monitor.
 
-[Stilo] : https://code.google.com/archive/p/stilo/downloads
-[Web control] : http://ferduino.com/webcontrol
-[Arduino] : http://arduino.cc
+[Stilo]: https://code.google.com/archive/p/stilo/downloads
+[Web control]: http://ferduino.com/webcontrol
+[Arduino]: http://arduino.cc
