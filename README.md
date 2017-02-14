@@ -12,7 +12,7 @@ All work was done thanks to the people who devote their time sharing their knowl
 
 Therefore, this is completely Open Source and always will be.
 
-## Features:
+## Features
 
 * Temperature control for water;
 * PH control for calcium reactor;
@@ -31,6 +31,24 @@ Therefore, this is completely Open Source and always will be.
 * Web control, graphs and status in real time online (beta);
 * Automatic feeder.
 
+## TFT touch screen interface
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=26">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=28">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=38">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=27">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=240">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=451">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=242">
+
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=241">
+
 ## Web interface
 
 <img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=511">
@@ -45,7 +63,7 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=516">
 
-## Part list:
+## Part list
 
 [1 x Arduino mega 2560]
 
@@ -119,7 +137,7 @@ Please visit [this topic] to see circuits details.
 
 Please visit [this tutorial] to see how to install this code.
 
-## Support:
+## Support
 
 Please visit our [Forum] to get support.
 
