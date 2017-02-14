@@ -28,8 +28,9 @@ Therefore, this is completely Open Source and always will be.
 * Dosage control for up to 6 dosing pumps;
 * Control for DC pumps;
 * Graphs of parameters;
-* Web control, graphs and status in real time online (beta);
-* Automatic feeder.
+* Web control, graphs, alerts by email and status in real time online;
+* Automatic feeder;
+* Graphic interface multilanguage.
 
 ## TFT touch screen interface
 
