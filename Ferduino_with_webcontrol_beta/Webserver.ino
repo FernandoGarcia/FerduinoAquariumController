@@ -2,9 +2,9 @@
 
 #ifndef USE_ESP8266 // Do not change this line
 
-void requestAction(char* topic, byte* payload, unsigned int length)
+  void requestAction(char* topic, byte* payload, unsigned int length)
 #else // Do not change this line
-void mqttData(void* response)
+  void mqttData(void* response)
 #endif // Do not change this line
 {
   StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
@@ -1026,6 +1026,9 @@ void mqttData(void* response)
           strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
+        break;
+
+      default: // Break the loop if function called doesn't match.
         break;
     }// switch(ID)
 
