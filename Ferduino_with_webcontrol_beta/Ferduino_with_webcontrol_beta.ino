@@ -144,7 +144,7 @@
 //*************************************************************************************************
 #ifdef USE_TFT // Do not change this line
 #include <UTFT.h>
-#include <UTouch.h>
+#include <URTouch.h>
 #endif // Do not change this line
 #include <Wire.h>
 #include <EEPROM.h>
@@ -183,7 +183,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "09/02/2017"; // Data da última modificação
+const char lastUpdate[] = "25/02/2017"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -367,9 +367,9 @@ Time t_temp, t;
 #ifdef USE_TFT // Do not change this line
 UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 #ifdef USE_TFT_SHIELD // Do not change this line
-UTouch      myTouch(6,5,4,3,2);              // Pinos usados pelo "touch" no TFT shield
+URTouch      myTouch(6,5,4,3,2);              // Pinos usados pelo "touch" no TFT shield
 #else // Do not change this line
-UTouch      myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
+URTouch      myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
 #endif // Do not change this line
 
 unsigned int ano = 0;

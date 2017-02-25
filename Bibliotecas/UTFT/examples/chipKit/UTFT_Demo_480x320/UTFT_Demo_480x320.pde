@@ -1,5 +1,6 @@
-// UTFT_Demo_480x320 (C)2013 Henning Karlsen
-// web: http://www.henningkarlsen.com/electronics
+// UTFT_Demo_480x320 
+// Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
+// web: http://www.RinkyDinkElectronics.com/
 //
 // This program is a demo of how to use most of the functions
 // of the library with a supported display modules.
@@ -15,11 +16,14 @@
 // Declare which fonts we will be using
 extern uint8_t SmallFont[];
 
-// Uncomment the next line for chipKit Uno32/uC32
-UTFT myGLCD(CTE32HR,34,35,36,37);   // Remember to change the model parameter to suit your display module!
-
-// Uncomment the next line for chipKit Max32
-//UTFT myGLCD(CTE32HR,82,83,84,85);   // Remember to change the model parameter to suit your display module!
+// Set the pins to the correct ones for your development shield
+// ------------------------------------------------------------
+// My chipKit Uno32/uC32 shield                : <display model>,38,39,40,41
+// My chipKit Max32 shield                     : <display model>,82,83,84,85
+// AquaLEDSource All in One Super Screw Shield : <display model>,82,83,84,85
+//
+// Remember to change the model parameter to suit your display module!
+UTFT myGLCD(CTE32HR,82,83,84,85);
 
 void setup()
 {
@@ -49,7 +53,7 @@ void loop()
   myGLCD.print("* Universal Color TFT Display Library *", CENTER, 1);
   myGLCD.setBackColor(64, 64, 64);
   myGLCD.setColor(255,255,0);
-  myGLCD.print("<http://electronics.henningkarlsen.com>", CENTER, 307);
+  myGLCD.print("<http://www.RinkyDinkElectronics.com/>", CENTER, 307);
 
   myGLCD.setColor(0, 0, 255);
   myGLCD.drawRect(0, 14, 479, 305);

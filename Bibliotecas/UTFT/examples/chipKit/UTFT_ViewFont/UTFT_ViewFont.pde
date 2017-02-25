@@ -1,5 +1,6 @@
-// UTFT_ViewFont (C)2012 Henning Karlsen
-// web: http://www.henningkarlsen.com/electronics
+// UTFT_ViewFont 
+// Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
+// web: http://www.RinkyDinkElectronics.com/
 //
 // This program is a demo of the included fonts.
 //
@@ -16,11 +17,14 @@ extern uint8_t SmallFont[];
 extern uint8_t BigFont[];
 extern uint8_t SevenSegNumFont[];
 
-// Uncomment the next line for chipKit Uno32/uC32
-UTFT myGLCD(ITDB24D,34,35,36,37);   // Remember to change the model parameter to suit your display module!
-
-// Uncomment the next line for chipKit Max32
-//UTFT myGLCD(ITDB24D,82,83,84,85);   // Remember to change the model parameter to suit your display module!
+// Set the pins to the correct ones for your development shield
+// ------------------------------------------------------------
+// My chipKit Uno32/uC32 shield                : <display model>,38,39,40,41
+// My chipKit Max32 shield                     : <display model>,82,83,84,85
+// AquaLEDSource All in One Super Screw Shield : <display model>,82,83,84,85
+//
+// Remember to change the model parameter to suit your display module!
+UTFT myGLCD(ITDB32S,82,83,84,85);
 
 void setup()
 {

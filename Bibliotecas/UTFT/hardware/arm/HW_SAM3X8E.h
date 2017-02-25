@@ -1,9 +1,9 @@
 // *** Hardwarespecific functions ***
 void UTFT::_hw_special_init()
 {
-	//REG_PIOA_OWER = 0xFFFFFFFF;
-	//REG_PIOB_OWER = 0xFFFFFFFF;
-	//REG_PIOC_OWER = 0xFFFFFFFF;  
+#ifdef EHOUSE_DUE_SHIELD
+    pinMode(24, OUTPUT); digitalWrite(24, HIGH); // Set the TFT_RD pin permanently HIGH as it is not supported by UTFT
+#endif
 }
 
 void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
@@ -69,7 +69,7 @@ void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
 		pulse_low(P_SCL, B_SCL);
 		break;
 	case 8:
-#ifdef CTE_DUE_SHIELD
+#if defined(CTE_DUE_SHIELD) || defined(EHOUSE_DUE_SHIELD)
 		REG_PIOC_CODR=0xFF000;
 		REG_PIOC_SODR=(VH<<12) & 0xFF000;
 		pulse_low(P_WR, B_WR);
@@ -77,95 +77,36 @@ void UTFT::LCD_Writ_Bus(char VH,char VL, byte mode)
 		REG_PIOC_SODR=(VL<<12) & 0xFF000;
 		pulse_low(P_WR, B_WR);
 #else
-		//Clear port registers
-		REG_PIOA_CODR=0xc000; //PA14,PA15
-		REG_PIOB_CODR=0x4000000; //PB26
-		REG_PIOD_CODR=0x64f; //PD0-3,PD6,PD9-10
-
-		//DB08 on PIN22 -> PIO_PB26
-		REG_PIOB_SODR=(VH<<26) & 0x4000000;
-		//DB09 on PIN23 -> PIO_PA14
-		REG_PIOA_SODR=(VH<<13) & 0x4000;
-		//DB10 on PIN24 -> PIO_PA15
-		REG_PIOA_SODR=(VH<<13) & 0x8000;
-		//DB11 on PIN25 -> PIO_PD0
-		REG_PIOD_SODR=(VH>>3) & 0x01;
-		//DB12 on PIN26 -> PIO_PD1
-		REG_PIOD_SODR=(VH>>3) & 0x02;
-		//DB13 on PIN27 -> PIO_PD2
-		REG_PIOD_SODR=(VH>>3) & 0x04;
-		//DB14 on PIN28 -> PIO_PD3
-		REG_PIOD_SODR=(VH>>3) & 0x08;
-		//DB15 on PIN29 -> PIO_PD6
-		REG_PIOD_SODR=(VH>>1) & 0x40;
+		REG_PIOA_CODR=0x0000C000;
+		REG_PIOD_CODR=0x0000064F;
+		REG_PIOA_SODR=(VH & 0x06)<<13;
+		(VH & 0x01) ? REG_PIOB_SODR = 0x4000000 : REG_PIOB_CODR = 0x4000000;
+		REG_PIOD_SODR=((VH & 0x78)>>3) | ((VH & 0x80)>>1);
 		pulse_low(P_WR, B_WR);
 
-		REG_PIOA_CODR=0xc000; //PA14,PA15
-		REG_PIOB_CODR=0x4000000; //PB26
-		REG_PIOD_CODR=0x64f; //PD0-3,PD6,PD9-10
-		//DB08 on PIN22 -> PIO_PB26
-		REG_PIOB_SODR=(VL<<26) & 0x4000000;
-		//DB09 on PIN23 -> PIO_PA14
-		REG_PIOA_SODR=(VL<<13) & 0x4000;
-		//DB10 on PIN24 -> PIO_PA15
-		REG_PIOA_SODR=(VL<<13) & 0x8000;
-		//DB11 on PIN25 -> PIO_PD0
-		REG_PIOD_SODR=(VL>>3) & 0x01;
-		//DB12 on PIN26 -> PIO_PD1
-		REG_PIOD_SODR=(VL>>3) & 0x02;
-		//DB13 on PIN27 -> PIO_PD2
-		REG_PIOD_SODR=(VL>>3) & 0x04;
-		//DB14 on PIN28 -> PIO_PD3
-		REG_PIOD_SODR=(VL>>3) & 0x08;
-		//DB15 on PIN29 -> PIO_PD6
-		REG_PIOD_SODR=(VL>>1) & 0x40;
+		REG_PIOA_CODR=0x0000C000;
+		REG_PIOD_CODR=0x0000064F;
+		REG_PIOA_SODR=(VL & 0x06)<<13;
+		(VL & 0x01) ? REG_PIOB_SODR = 0x4000000 : REG_PIOB_CODR = 0x4000000;
+		REG_PIOD_SODR=((VL & 0x78)>>3) | ((VL & 0x80)>>1);
 		pulse_low(P_WR, B_WR);
 #endif
 		break;
 	case 16:
-#ifdef CTE_DUE_SHIELD
+#if defined(CTE_DUE_SHIELD)
         REG_PIOC_CODR=0xFF1FE;
 		REG_PIOC_SODR=(VL<<1) & 0x1FE;
 		REG_PIOC_SODR=(VH<<12) & 0xFF000;
+#elif defined(EHOUSE_DUE_SHIELD)
+		PIOC->PIO_ODSR = ((PIOC->PIO_ODSR&(~0x000FF3FC)) | ((((uint32_t)VL)<<2) | (((uint32_t)VH)<<12)));
 #else
-		//Clear port registers
-		REG_PIOA_CODR=0xc080; //PA7,PA14,PA15
-		REG_PIOB_CODR=0x4000000; //PB26
-		REG_PIOC_CODR=0x3e; //PC1 - PC5
-		REG_PIOD_CODR=0x64f; //PD0-3,PD6,PD9-10
-                
-		//DB00 on PIN37 -> PIO_PC5
-		REG_PIOC_SODR=(VL<<5) & 0x20;
-		//DB01 on PIN36 -> PIO_PC4
-		REG_PIOC_SODR=(VL<<3) & 0x10;
-		//DB02 on PIN35 -> PIO_PC3
-		REG_PIOC_SODR=(VL<<1) & 0x08;
-		//DB03 on PIN34 -> PIO_PC2
-		REG_PIOC_SODR=(VL>>1) & 0x04;
-		//DB04 on PIN33 -> PIO_PC1
-		REG_PIOC_SODR=(VL>>3) & 0x02;
-		//DB05 on PIN32 -> PIO_PD10
-		REG_PIOD_SODR=(VL<<5) & 0x400;
-		//DB06 on PIN31 -> PIO_PA7
-		REG_PIOA_SODR=(VL<<1) & 0x80;
-		//DB07 on PIN30 -> PIO_PD9
-		REG_PIOD_SODR=(VL<<2) & 0x200;
-		//DB08 on PIN22 -> PIO_PB26
-		REG_PIOB_SODR=(VH<<26) & 0x4000000;
-		//DB09 on PIN23 -> PIO_PA14
-		REG_PIOA_SODR=(VH<<13) & 0x4000;
-		//DB10 on PIN24 -> PIO_PA15
-		REG_PIOA_SODR=(VH<<13) & 0x8000;
-		//DB11 on PIN25 -> PIO_PD0
-		REG_PIOD_SODR=(VH>>3) & 0x01;
-		//DB12 on PIN26 -> PIO_PD1
-		REG_PIOD_SODR=(VH>>3) & 0x02;
-		//DB13 on PIN27 -> PIO_PD2
-		REG_PIOD_SODR=(VH>>3) & 0x04;
-		//DB14 on PIN28 -> PIO_PD3
-		REG_PIOD_SODR=(VH>>3) & 0x08;
-		//DB15 on PIN29 -> PIO_PD6
-		REG_PIOD_SODR=(VH>>1) & 0x40;
+		REG_PIOA_CODR=0x0000C080;
+		REG_PIOC_CODR=0x0000003E;
+		REG_PIOD_CODR=0x0000064F;
+		REG_PIOA_SODR=((VH & 0x06)<<13) | ((VL & 0x40)<<1);
+		(VH & 0x01) ? REG_PIOB_SODR = 0x4000000 : REG_PIOB_CODR = 0x4000000;
+		REG_PIOC_SODR=((VL & 0x01)<<5) | ((VL & 0x02)<<3) | ((VL & 0x04)<<1) | ((VL & 0x08)>>1) | ((VL & 0x10)>>3);
+		REG_PIOD_SODR=((VH & 0x78)>>3) | ((VH & 0x80)>>1) | ((VL & 0x20)<<5) | ((VL & 0x80)<<2);
 #endif
 		pulse_low(P_WR, B_WR);
 		break;
@@ -179,10 +120,18 @@ void UTFT::_set_direction_registers(byte mode)
 {
 	if (mode!=LATCHED_16)
 	{
-#ifdef CTE_DUE_SHIELD
+#if defined(CTE_DUE_SHIELD)
 		if (mode==16)
 		{
 			REG_PIOC_OER=0x000FF1FE;
+		}
+		else
+			REG_PIOC_OER=0x000FF000;
+#elif defined(EHOUSE_DUE_SHIELD)
+		if (mode==16)
+		{
+			REG_PIOC_OER=0x000FF3FC;
+			REG_PIOC_OWER=0x000FF3FC;
 		}
 		else
 			REG_PIOC_OER=0x000FF000;
@@ -207,49 +156,20 @@ void UTFT::_fast_fill_16(int ch, int cl, long pix)
 {
 	long blocks;
 
-#ifdef CTE_DUE_SHIELD
+#if defined(CTE_DUE_SHIELD)
     REG_PIOC_CODR=0xFF1FE;
 	REG_PIOC_SODR=(cl<<1) & 0x1FE;
 	REG_PIOC_SODR=(ch<<12) & 0xFF000;
+#elif defined(EHOUSE_DUE_SHIELD)
+	PIOC->PIO_ODSR = ((PIOC->PIO_ODSR&(~0x000FF3FC)) | ((((uint32_t)cl)<<2) | (((uint32_t)ch)<<12)));
 #else
-	//Clear port registers
-	REG_PIOA_CODR=0xc080; //PA7,PA14,PA15
-	REG_PIOB_CODR=0x4000000; //PB26
-	REG_PIOC_CODR=0x3e; //PC1 - PC5
-	REG_PIOD_CODR=0x64f; //PD0-3,PD6,PD9-10
-                
-	//DB00 on PIN37 -> PIO_PC5
-	REG_PIOC_SODR=(cl<<5) & 0x20;
-	//DB01 on PIN36 -> PIO_PC4
-	REG_PIOC_SODR=(cl<<3) & 0x10;
-	//DB02 on PIN35 -> PIO_PC3
-	REG_PIOC_SODR=(cl<<1) & 0x08;
-	//DB03 on PIN34 -> PIO_PC2
-	REG_PIOC_SODR=(cl>>1) & 0x04;
-	//DB04 on PIN33 -> PIO_PC1
-	REG_PIOC_SODR=(cl>>3) & 0x02;
-	//DB05 on PIN32 -> PIO_PD10
-	REG_PIOD_SODR=(cl<<5) & 0x400;
-	//DB06 on PIN31 -> PIO_PA7
-	REG_PIOA_SODR=(cl<<1) & 0x80;
-	//DB07 on PIN30 -> PIO_PD9
-	REG_PIOD_SODR=(cl<<2) & 0x200;
-	//DB08 on PIN22 -> PIO_PB26
-	REG_PIOB_SODR=(ch<<26) & 0x4000000;
-	//DB09 on PIN23 -> PIO_PA14
-	REG_PIOA_SODR=(ch<<13) & 0x4000;
-	//DB10 on PIN24 -> PIO_PA15
-	REG_PIOA_SODR=(ch<<13) & 0x8000;
-	//DB11 on PIN25 -> PIO_PD0
-	REG_PIOD_SODR=(ch>>3) & 0x01;
-	//DB12 on PIN26 -> PIO_PD1
-	REG_PIOD_SODR=(ch>>3) & 0x02;
-	//DB13 on PIN27 -> PIO_PD2
-	REG_PIOD_SODR=(ch>>3) & 0x04;
-	//DB14 on PIN28 -> PIO_PD3
-	REG_PIOD_SODR=(ch>>3) & 0x08;
-	//DB15 on PIN29 -> PIO_PD6
-	REG_PIOD_SODR=(ch>>1) & 0x40;
+	REG_PIOA_CODR=0x0000C080;
+	REG_PIOC_CODR=0x0000003E;
+	REG_PIOD_CODR=0x0000064F;
+	REG_PIOA_SODR=((ch & 0x06)<<13) | ((cl & 0x40)<<1);
+	(ch & 0x01) ? REG_PIOB_SODR = 0x4000000 : REG_PIOB_CODR = 0x4000000;
+	REG_PIOC_SODR=((cl & 0x01)<<5) | ((cl & 0x02)<<3) | ((cl & 0x04)<<1) | ((cl & 0x08)>>1) | ((cl & 0x10)>>3);
+	REG_PIOD_SODR=((ch & 0x78)>>3) | ((ch & 0x80)>>1) | ((cl & 0x20)<<5) | ((cl & 0x80)<<2);
 #endif
 
 	blocks = pix/16;
@@ -283,31 +203,15 @@ void UTFT::_fast_fill_8(int ch, long pix)
 {
 	long blocks;
 
-#ifdef CTE_DUE_SHIELD
+#if defined(CTE_DUE_SHIELD) || defined(EHOUSE_DUE_SHIELD)
     REG_PIOC_CODR=0xFF000;
 	REG_PIOC_SODR=(ch<<12) & 0xFF000;
 #else
-	//Clear port registers
-	REG_PIOA_CODR=0xc000; //PA14,PA15
-	REG_PIOB_CODR=0x4000000; //PB26
-	REG_PIOD_CODR=0x64f; //PD0-3,PD6,PD9-10
-
-	//DB08 on PIN22 -> PIO_PB26
-	REG_PIOB_SODR=(ch<<26) & 0x4000000;
-	//DB09 on PIN23 -> PIO_PA14
-	REG_PIOA_SODR=(ch<<13) & 0x4000;
-	//DB10 on PIN24 -> PIO_PA15
-	REG_PIOA_SODR=(ch<<13) & 0x8000;
-	//DB11 on PIN25 -> PIO_PD0
-	REG_PIOD_SODR=(ch>>3) & 0x01;
-	//DB12 on PIN26 -> PIO_PD1
-	REG_PIOD_SODR=(ch>>3) & 0x02;
-	//DB13 on PIN27 -> PIO_PD2
-	REG_PIOD_SODR=(ch>>3) & 0x04;
-	//DB14 on PIN28 -> PIO_PD3
-	REG_PIOD_SODR=(ch>>3) & 0x08;
-	//DB15 on PIN29 -> PIO_PD6
-	REG_PIOD_SODR=(ch>>1) & 0x40;
+	REG_PIOA_CODR=0x0000C000;
+	REG_PIOD_CODR=0x0000064F;
+	REG_PIOA_SODR=(ch & 0x06)<<13;
+	(ch & 0x01) ? REG_PIOB_SODR = 0x4000000 : REG_PIOB_CODR = 0x4000000;
+	REG_PIOD_SODR=((ch & 0x78)>>3) | ((ch & 0x80)>>1);
 #endif
 
 	blocks = pix/16;

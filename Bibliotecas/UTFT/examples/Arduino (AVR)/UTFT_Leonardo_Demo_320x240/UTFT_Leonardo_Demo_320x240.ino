@@ -1,5 +1,6 @@
-// UTFT_Leonardo_Demo_320x240 (C)2013 Henning Karlsen
-// web: http://www.henningkarlsen.com/electronics
+// UTFT_Leonardo_Demo_320x240 
+// Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
+// web: http://www.RinkyDinkElectronics.com/
 //
 // This program is a reduced demo of how to use some of the functions
 // of the library with a supported display modules on an Arduino Leonardo.
@@ -49,7 +50,7 @@ void loop()
   myGLCD.print("* Universal Color TFT Display Library *", CENTER, 1);
   myGLCD.setBackColor(64, 64, 64);
   myGLCD.setColor(255,255,0);
-  myGLCD.print("<http://electronics.henningkarlsen.com>", CENTER, 227);
+  myGLCD.print("<http://www.RinkyDinkElectronics.com/>", CENTER, 227);
 
   myGLCD.setColor(0, 0, 255);
   myGLCD.drawRect(0, 14, 319, 225);

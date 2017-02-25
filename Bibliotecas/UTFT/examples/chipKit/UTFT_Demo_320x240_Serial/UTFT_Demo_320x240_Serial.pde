@@ -1,5 +1,6 @@
-// UTFT_Demo_320x240_Serial (C)2013 Henning Karlsen
-// web: http://www.henningkarlsen.com/electronics
+// UTFT_Demo_320x240_Serial 
+// Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
+// web: http://www.RinkyDinkElectronics.com/
 //
 // This program is a demo of how to use most of the functions
 // of the library with a supported display modules.
@@ -15,10 +16,14 @@
 // Declare which fonts we will be using
 extern uint8_t SmallFont[];
 
-UTFT myGLCD(TFT01_22SP,9,8,12,11,10);   // Remember to change the model parameter to suit your display module!
+// Usage: myGLCD(<model code>, SDA, SCL, CS, RST[, RS]);
+//UTFT myGLCD(TFT01_22SP,9,8,12,11,10);            // ElecFreaks TFT01-2.2SP
+//UTFT myGLCD(TFT01_24SP,9,8,12,11,10);            // ElecFreaks TFT01-2.4SP
+UTFT myGLCD(TFT22SHLD,3,4,7,5,6);                  // ElecFreaks TFT2.2SP Shield
 
 void setup()
 {
+// Just get some random numbers
   randomSeed(analogRead(0));
   
 // Setup the LCD
@@ -45,7 +50,7 @@ void loop()
   myGLCD.print("* Universal Color TFT Display Library *", CENTER, 1);
   myGLCD.setBackColor(64, 64, 64);
   myGLCD.setColor(255,255,0);
-  myGLCD.print("<http://electronics.henningkarlsen.com>", CENTER, 227);
+  myGLCD.print("<http://www.RinkyDinkElectronics.com/>", CENTER, 227);
 
   myGLCD.setColor(0, 0, 255);
   myGLCD.drawRect(0, 14, 319, 225);
