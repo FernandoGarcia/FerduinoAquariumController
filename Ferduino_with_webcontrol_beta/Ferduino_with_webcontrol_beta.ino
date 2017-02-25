@@ -809,7 +809,6 @@ PCF8575 PCF8575;
 //*****************************************************************************************
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) //Do not change this line
 RFM12B radio;
-#define ACK_TIME    200
 #define MY_ID      99                   // ID deste dispositivo
 #define NETWORK_ID   100                // Todos os dispositivos devem estar na mesma rede.
 #define TARGET_ID_LED   1               // 1 = ID do dispositivos que receberá a informação

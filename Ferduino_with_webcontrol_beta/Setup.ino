@@ -219,7 +219,7 @@ void setup()
 
   ESP8266.wifiCb.attach(wifiCb);
   sincronizar();
-  
+
 #endif // Do not change this line!  
 
 #endif // Do not change this line!
@@ -228,6 +228,12 @@ void setup()
   selecionar_SPI(RFM);                      // Seleciona disposito SPI que será utilizado.
   radio.Initialize(MY_ID, FREQUENCY, NETWORK_ID);
   radio.Encrypt((byte*)KEY);
+  
+#ifdef DEBUG //Do not change this line
+  char buff[50];
+  sprintf(buff, "\nTransmitting at %d Mhz...", FREQUENCY == RF12_433MHZ ? 433 : FREQUENCY == RF12_868MHZ ? 868 : 915);
+  Serial.println(buff);
+#endif // Do not change this line!
 #endif // Do not change this line!
 
 #ifdef USE_TFT //Do not change this line
