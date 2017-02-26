@@ -80,7 +80,7 @@ Therefore, this is completely Open Source and always will be.
 
 [3 x Temperature sensor DS18B20]
 
-<img width="50%" src="http://www.kiatronics.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/img_5143a.jpg">
+<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=524">
 
 [1 x Relay board]
 
