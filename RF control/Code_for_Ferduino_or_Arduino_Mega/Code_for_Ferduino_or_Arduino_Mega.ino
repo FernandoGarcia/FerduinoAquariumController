@@ -204,4 +204,24 @@ void loop()
     RF_LED();
     lastPeriod_millis = millis();
   }
+
+  if (radio.ReceiveComplete())
+  {
+    if (radio.CRCPass())
+    {
+      Serial.print('[');
+      Serial.print(radio.GetSender(), DEC);
+      Serial.print("] ");
+      for (byte i = 0; i < *radio.DataLen; i++)
+      {
+        Serial.print((char)radio.Data[i]);
+      }
+
+      if (radio.ACKRequested())
+      {
+        radio.SendACK();
+        Serial.print(" - ACK sent.");
+      }
+    }
+  }
 }
