@@ -4,7 +4,7 @@
 This project is based on the [Arduino] platform.
 
 This project started from the need to make partial water changes automatics in my 3 tanks.
-After accomplishing what I wanted, the project has grown to the point it’s today.
+After accomplishing what I wanted, the project has grown to the point itâ€™s today.
 
 The code was written based on version 2.1 of [Stilo].
 
@@ -153,7 +153,7 @@ Energy monitor.
 [this topic]: http://ferduino.com/forum/viewtopic.php?f=24&t=40
 [this tutorial]: http://ferduino.com/forum/viewtopic.php?f=8&t=34
 [1 x Arduino mega 2560]: http://www.ebay.com/sch/i.html?_odkw=arduino+mega+2560r3&LH_BIN=1&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR5.TRC2.A0.H0.Xarduino+mega+2560+r3&_nkw=arduino+mega+2560+r3&_sacat=0
-[1 x TFT touch screen with resolution 400 x 240]: http://www.ebay.com/itm/111114349519
+[1 x TFT touch screen with resolution 400 x 240]: https://goo.gl/Wtl9TL
 [1 X TFT shield with RTC]: http://imall.iteadstudio.com/prototyping/kits/im120717001.html
 [3 x Temperature sensor DS18B20]: http://www.ebay.com/sch/i.html?_trksid=p2055845.m570.l1313.TR11.TRC1.A0.H0.Xds18b20&_nkw=ds18b20&_sacat=0&_from=R40
 [1 x Relay board]: http://ferduino.com/product/solid-state-relay-board-16-channels/
