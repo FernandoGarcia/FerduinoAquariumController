@@ -278,6 +278,30 @@ void salvar_outlets_EEPROM()
     EEPROM.write(841 + i, outlets[i]);
   }
 }
+
+void Salvar_clima_EEPROM()
+{
+  byte k = 66;
+  EEPROM.write(850, k);
+
+  for (byte i = 0; i < NUMERO_CANAIS; i++)
+  {
+    EEPROM.write(851 + i, desativarNuvemCanal[i]);
+  }
+  EEPROM.write(857, quantDuracaoMinMaxNuvem[0]);
+  EEPROM.write(858, quantDuracaoMinMaxNuvem[1]);
+  EEPROM.write(859, quantDuracaoMinMaxNuvem[2]);
+  EEPROM.write(860, quantDuracaoMinMaxNuvem[3]);
+  EEPROM.write(861, probNuvemRelampago[0]);
+  EEPROM.write(862, probNuvemRelampago[1]);
+  EEPROM.write(863, nuvemCadaXdias);
+  for (byte i = 0; i < NUMERO_CANAIS; i++)
+  {
+    EEPROM.write(864 + i, desativarRelampagoCanal[i]);
+  }
+  EEPROM.write(870, duracaoMinMaxRelampago[0]);
+  EEPROM.write(871, duracaoMinMaxRelampago[1]);
+}
 //*******************************************************************************************************************
 //***************************** LER EEPROM **************************************************************************
 //*******************************************************************************************************************
@@ -544,3 +568,29 @@ void ler_outlets_EEPROM()
   }
 }
 
+void ler_clima_EEPROM()
+{
+  byte k;
+  k = EEPROM.read(850);
+
+  if (k == 66)
+  {
+    for (byte i = 0; i < NUMERO_CANAIS; i++)
+    {
+      desativarNuvemCanal[i] = EEPROM.read(851 + i);
+    }
+    quantDuracaoMinMaxNuvem[0] = EEPROM.read(857);
+    quantDuracaoMinMaxNuvem[1] = EEPROM.read(858);
+    quantDuracaoMinMaxNuvem[2] = EEPROM.read(859);
+    quantDuracaoMinMaxNuvem[3] = EEPROM.read(860);
+    probNuvemRelampago[0] = EEPROM.read(861);
+    probNuvemRelampago[1] = EEPROM.read(862);
+    nuvemCadaXdias = EEPROM.read(863);
+    for (byte i = 0; i < NUMERO_CANAIS; i++)
+    {
+      desativarRelampagoCanal[i] = EEPROM.read(864 + i);
+    }
+    duracaoMinMaxRelampago[0] = EEPROM.read(870);
+    duracaoMinMaxRelampago[1] = EEPROM.read(871);
+  }
+}

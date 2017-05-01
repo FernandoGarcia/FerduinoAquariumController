@@ -3,7 +3,37 @@ void loop()
 {
   t = rtc.getTime(); // Atualiza as variáveis que usam o RTC.
 
-  LED_levels_output(); // Atualiza a potência de saída dos leds
+  if (executandoNuvem == false)
+  {
+    LED_levels_output(); // Atualiza a potência de saída dos leds
+  }
+  else
+  {
+    checkNuvemRelampago();
+  }
+
+  if (NumMins(t.hour, t.min) != lastMinute)
+  {
+    lastMinute = NumMins(t.hour, t.min);
+
+    if ((haveraNuvem == true) && (executandoNuvem == false))
+    {
+      for (int i = 1; i <= quantNuvens; i++)
+      {
+        if (NumMins(t.hour, t.min) == horaNuvem[i])
+        {
+          executandoNuvem = true;
+          inicioNuvem = true;
+          millis_nuvem = millis();
+        }
+      }
+    }
+
+    if (NumMins(t.hour, t.min) == 0)
+    {
+      probabilidadeNuvem(); // Calcula a probabilidade de ocorrer nuvens.
+    }
+  }
 
   checktpa(); // Verifica e executa a TPA automática.
 
@@ -337,22 +367,22 @@ void loop()
     Serial.println(FreeRam());
     /*
       Serial.print(F("Sensor 1: "));
-      Serial.println(analogRead(A0));
+      Serial.println(myAnalogRead(A0));
 
       Serial.print(F("Sensor 2: ");
-      Serial.println(analogRead(A1));
+      Serial.println(myAnalogRead(A1));
 
       Serial.print(F("Sensor 3: "));
-      Serial.println(analogRead(A2));
+      Serial.println(myAnalogRead(A2));
 
       Serial.print(F("Sensor 4: "));
-      Serial.println(analogRead(A3));
+      Serial.println(myAnalogRead(A3));
 
       Serial.print(F("Sensor 5: "));
-      Serial.println(analogRead(A4));
+      Serial.println(myAnalogRead(A4));
 
       Serial.print(F("Sensor 6: "));
-      Serial.println(analogRead(A5));
+      Serial.println(myAnalogRead(A5));
 
       Serial.print(F("marcadoriniciotpa: "));
       Serial.println(marcadoriniciotpa);

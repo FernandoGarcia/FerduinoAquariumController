@@ -428,27 +428,27 @@ void drawFillRect(int x1, byte y1, int x2, byte y2, byte r, byte g, byte b)
 #ifdef USE_SCREENSAVER
 void clockScreen()
 {
-  if(firstTime == true)
+  if (firstTime == true)
   {
-   clearScreen(); 
+    clearScreen();
   }
   myGLCD.setFont(SevenSegNumFontPlus);
   myGLCD.setColor(0, 174, 255);
   myGLCD.print(rtc.getTimeStr(FORMAT_LONG), CENTER, 100);
-  
+
   myGLCD.setFont(BigFont);
-  
+
   myGLCD.print(rtc.getDOWStr(FORMAT_SHORT), 99, 170);
   myGLCD.print(",", 150, 170);
-  
-  if(t.date < 10)
+
+  if (t.date < 10)
   {
     myGLCD.print("0", 169, 170);
     myGLCD.printNumI(t.date, 185, 170);
   }
   else
   {
-   myGLCD.printNumI(t.date, 169, 170); 
+    myGLCD.printNumI(t.date, 169, 170);
   }
   myGLCD.print("DE", 211, 170);
   myGLCD.print(rtc.getMonthStr(FORMAT_SHORT), 253, 170);
@@ -460,3 +460,55 @@ int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
 {
   return (ScheduleHour * 60) + ScheduleMinute;
 }
+
+void myPinMode(int pin, boolean mode)
+{
+  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
+  {
+    pinMode(pin, mode);
+  }
+  else
+  {
+
+  }
+}
+
+void myDigitalWrite(int pin, boolean level)
+{
+  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
+  {
+    digitalWrite(pin, level);
+  }
+  else
+  {
+
+  }
+}
+
+void myAnalogWrite(int pin, byte pwm)
+{
+  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
+  {
+    analogWrite(pin, pwm);
+  }
+  else
+  {
+
+  }
+}
+
+int myAnalogRead(int pin)
+{
+  int value = 6666;
+
+  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
+  {
+    value = analogRead(pin);
+  }
+  else
+  {
+
+  }
+  return value;
+}
+

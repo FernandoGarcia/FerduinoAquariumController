@@ -42,14 +42,14 @@ void checkTempC()
   {
     outlets_changed[0] = false;
     bitWrite(status_parametros, 1, 0);
-    digitalWrite(aquecedorPin, LOW);
+    myDigitalWrite(aquecedorPin, LOW);
   }
 
   if (outlets_changed[1] == true)
   {
     outlets_changed[1] = false;
     bitWrite(status_parametros, 0, 0);
-    digitalWrite(chillerPin, LOW);
+    myDigitalWrite(chillerPin, LOW);
   }
 
   if ((outlets[0] == 0) && (outlets[1] == 0))
@@ -58,8 +58,8 @@ void checkTempC()
     {
       bitWrite(status_parametros, 0, 0);
       bitWrite(status_parametros, 1, 0);
-      digitalWrite(aquecedorPin, LOW);
-      digitalWrite(chillerPin, LOW);
+      myDigitalWrite(aquecedorPin, LOW);
+      myDigitalWrite(chillerPin, LOW);
     }
 
     if (offTempC > 0)
@@ -67,12 +67,12 @@ void checkTempC()
       if ((tempC > (setTempC + offTempC)))            // Liga o chiller
       {
         bitWrite(status_parametros, 0, 1);
-        digitalWrite(chillerPin, HIGH);
+        myDigitalWrite(chillerPin, HIGH);
       }
       if ((tempC < (setTempC - offTempC)))             // Liga o aquecedor
       {
         bitWrite(status_parametros, 1, 1);
-        digitalWrite(aquecedorPin, HIGH);
+        myDigitalWrite(aquecedorPin, HIGH);
       }
     }
 
@@ -84,39 +84,39 @@ void checkTempC()
     {
       bitWrite(status_parametros, 0, 0);
       bitWrite(status_parametros, 1, 0);
-      digitalWrite(aquecedorPin, LOW);
-      digitalWrite(chillerPin, LOW);
+      myDigitalWrite(aquecedorPin, LOW);
+      myDigitalWrite(chillerPin, LOW);
     }
 
     if ((bitRead(status_parametros, 0) == true) &&  (bitRead(status_parametros, 1) == true)) // Evita aquecedor e chiller ligados ao mesmo tempo.
     {
       bitWrite(status_parametros, 0, 0);
       bitWrite(status_parametros, 1, 0);
-      digitalWrite(aquecedorPin, LOW);
-      digitalWrite(chillerPin, LOW);
+      myDigitalWrite(aquecedorPin, LOW);
+      myDigitalWrite(chillerPin, LOW);
     }
   }
 
   if (outlets[0] == 1)
   {
     bitWrite(status_parametros, 1, 1);
-    digitalWrite(aquecedorPin, HIGH);
+    myDigitalWrite(aquecedorPin, HIGH);
   }
   else if (outlets[0] == 2)
   {
     bitWrite(status_parametros, 1, 0);
-    digitalWrite(aquecedorPin, LOW);
+    myDigitalWrite(aquecedorPin, LOW);
   }
 
   if (outlets[1] == 1)
   {
     bitWrite(status_parametros, 0, 1);
-    digitalWrite(chillerPin, HIGH);
+    myDigitalWrite(chillerPin, HIGH);
   }
   else if (outlets[1] == 2)
   {
     bitWrite(status_parametros, 0, 0);
-    digitalWrite(chillerPin, LOW);
+    myDigitalWrite(chillerPin, LOW);
   }
 
   int tempval = int(tempH * 10);
@@ -130,21 +130,21 @@ void checkTempC()
   {
     fanSpeed = 255;
   }
-  analogWrite(fanPin, fanSpeed);
+  myAnalogWrite(fanPin, fanSpeed);
 
   if (tempH < HtempMin) // Desativa os coolers se a temperatura estiver abaixo da mínima definida.
   {
-    digitalWrite(desativarFanPin, LOW);
+    myDigitalWrite(desativarFanPin, LOW);
   }
   else
   {
-    digitalWrite(desativarFanPin, HIGH);
+    myDigitalWrite(desativarFanPin, HIGH);
   }
 }
 
 void check_nivel() // Verifica o nível do reef e fish only.
 {
-  if ((analogRead(sensor5) > 400) || (analogRead(sensor6) > 400) || ((analogRead(sensor2) < 400) && (bitRead(tpa_status, 1) == false)))
+  if ((myAnalogRead(sensor5) > 400) || (myAnalogRead(sensor6) > 400) || ((myAnalogRead(sensor2) < 400) && (bitRead(tpa_status, 1) == false)))
   {
     nivel_status1 = true; // Sinaliza nivel baixo em um dos aquários ou sump
   }
@@ -155,7 +155,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
 
   // Edit this part according to your requirements.
 
-  /*if(analogRead(sensor1) < 400)
+  /*if(myAnalogRead(sensor1) < 400)
     {
     nivel_status1 = true; // Sinaliza nivel baixo sensor 1
     }
@@ -163,7 +163,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
     {
     nivel_status1 = false; // Sinaliza nível normal sensor 1
     }
-    if(analogRead(sensor2) < 400)
+    if(myAnalogRead(sensor2) < 400)
     {
     nivel_status2 = true; // Sinaliza nivel baixo sensor 2
     }
@@ -171,7 +171,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
     {
     nivel_status2 = false; // Sinaliza nível normal sensor 2
     }
-    if(analogRead(sensor3) < 400)
+    if(myAnalogRead(sensor3) < 400)
     {
     nivel_status3 = true; // Sinaliza nivel baixo sensor 3
     }
@@ -179,7 +179,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
     {
     nivel_status3 = false; // Sinaliza nível normal sensor 3
     }
-    if(analogRead(sensor4) < 400)
+    if(myAnalogRead(sensor4) < 400)
     {
     nivel_status4 = true; // Sinaliza nivel baixo sensor 4
     }
@@ -187,7 +187,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
     {
     nivel_status4 = false; // Sinaliza nível normal sensor 4
     }
-    if(analogRead(sensor5) < 400)
+    if(myAnalogRead(sensor5) < 400)
     {
     nivel_status5 = true; // Sinaliza nivel baixo sensor 5
     }
@@ -195,7 +195,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
     {
     nivel_status5 = false; // Sinaliza nível normal sensor 5
     }
-    if(analogRead(sensor6) < 400)
+    if(myAnalogRead(sensor6) < 400)
     {
     nivel_status6 = true; // Sinaliza nivel baixo sensor 6
     }
@@ -227,7 +227,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #else
-    digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
+    myDigitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #endif
   }
 
@@ -239,7 +239,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #else
-      digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
+      myDigitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #endif
     }
     else
@@ -250,7 +250,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
         PCF8575.digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #else
-        digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
+        myDigitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #endif
       }
       if (offPHR > 0)
@@ -261,7 +261,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
 #else
-          digitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
+          myDigitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
 #endif
         }
       }
@@ -273,7 +273,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
 #else
-    digitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
+    myDigitalWrite(reatorPin, HIGH); // Liga co2 do reator de cálcio
 #endif
   }
   else if (outlets[3] == 2)
@@ -282,7 +282,7 @@ void check_PH_reator()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(reatorPin, LOW); // Liga co2 do reator de cálcio
 #else
-    digitalWrite(reatorPin, LOW); // Liga co2 do reator de cálcio
+    myDigitalWrite(reatorPin, LOW); // Liga co2 do reator de cálcio
 #endif
   }
 }
@@ -308,7 +308,7 @@ void check_PH_aquario()
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #else
-      digitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
+      myDigitalWrite(reatorPin, LOW);  // Desliga co2 do reator de cálcio
 #endif
     }
   }
@@ -350,7 +350,7 @@ void check_ORP()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
 #else
-    digitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
+    myDigitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
 #endif
   }
 
@@ -362,7 +362,7 @@ void check_ORP()
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
 #else
-      digitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
+      myDigitalWrite(ozonizadorPin, LOW); // Desliga ozonizador
 #endif
     }
     else
@@ -373,7 +373,7 @@ void check_ORP()
 #ifdef USE_PCF8575
         PCF8575.digitalWrite(ozonizadorPin, LOW);  // Desliga ozonizador
 #else
-        digitalWrite(ozonizadorPin, LOW);  // Desliga ozonizador
+        myDigitalWrite(ozonizadorPin, LOW);  // Desliga ozonizador
 #endif
       }
       if (offORP > 0)
@@ -384,7 +384,7 @@ void check_ORP()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
 #else
-          digitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
+          myDigitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
 #endif
         }
       }
@@ -396,7 +396,7 @@ void check_ORP()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
 #else
-    digitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
+    myDigitalWrite(ozonizadorPin, HIGH); // Liga ozonizador
 #endif
   }
   else if (outlets[2] == 2)
@@ -405,7 +405,7 @@ void check_ORP()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(ozonizadorPin, LOW); // Liga ozonizador
 #else
-    digitalWrite(ozonizadorPin, LOW); // Liga ozonizador
+    myDigitalWrite(ozonizadorPin, LOW); // Liga ozonizador
 #endif
   }
 }
@@ -414,11 +414,11 @@ void check_alarme()
   if ((bitRead(status_parametros, 2) == true) || (bitRead(status_parametros, 3) == true) || (bitRead(status_parametros, 4) == true) ||
       (bitRead(status_parametros, 6) == true) || (bitRead(status_parametros_1, 1) == true) || (bitRead(tpa_status, 2) == true))
   {
-    digitalWrite (alarmPin, HIGH);
+    myDigitalWrite (alarmPin, HIGH);
   }
   else
   {
-    digitalWrite (alarmPin, LOW);
+    myDigitalWrite (alarmPin, LOW);
   }
 }
 
@@ -432,18 +432,18 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(solenoide1Pin, LOW);
 #else
-    digitalWrite(solenoide1Pin, LOW);
+    myDigitalWrite(solenoide1Pin, LOW);
 #endif
   }
 
   if (outlets[8] == 0)
   {
-    if ((analogRead(sensor3) > 400) && (analogRead(sensor2) > 400) && (bitRead(tpa_status, 1) == false) && (bitRead(status_parametros, 0) == false) && (bitRead(tpa_status, 2) == false))
+    if ((myAnalogRead(sensor3) > 400) && (myAnalogRead(sensor2) > 400) && (bitRead(tpa_status, 1) == false) && (bitRead(status_parametros, 0) == false) && (bitRead(tpa_status, 2) == false))
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(solenoide1Pin, HIGH);
 #else
-      digitalWrite(solenoide1Pin, HIGH);
+      myDigitalWrite(solenoide1Pin, HIGH);
 #endif
       bitWrite(Status, 1, 1); //sinaliza reposição em andamento
     }
@@ -452,7 +452,7 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(solenoide1Pin, LOW);
 #else
-      digitalWrite(solenoide1Pin, LOW);
+      myDigitalWrite(solenoide1Pin, LOW);
 #endif
       bitWrite(Status, 1, 0);
     }
@@ -463,7 +463,7 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(solenoide1Pin, HIGH);
 #else
-    digitalWrite(solenoide1Pin, HIGH);
+    myDigitalWrite(solenoide1Pin, HIGH);
 #endif
   }
   else if (outlets[8] == 2)
@@ -472,7 +472,7 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(solenoide1Pin, LOW);
 #else
-    digitalWrite(solenoide1Pin, LOW);
+    myDigitalWrite(solenoide1Pin, LOW);
 #endif
   }
 }
@@ -486,18 +486,18 @@ void check_level_skimmer()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(skimmerPin, LOW);
 #else
-    digitalWrite(skimmerPin, LOW);
+    myDigitalWrite(skimmerPin, LOW);
 #endif
   }
 
   if (outlets[4] == 0)
   {
-    if (analogRead(sensor3) < 400)
+    if (myAnalogRead(sensor3) < 400)
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(skimmerPin, LOW);
 #else
-      digitalWrite(skimmerPin, LOW);
+      myDigitalWrite(skimmerPin, LOW);
 #endif
     }
     else
@@ -505,7 +505,7 @@ void check_level_skimmer()
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(skimmerPin, HIGH);
 #else
-      digitalWrite(skimmerPin, HIGH);
+      myDigitalWrite(skimmerPin, HIGH);
 #endif
     }
   }
@@ -514,7 +514,7 @@ void check_level_skimmer()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(skimmerPin, HIGH);
 #else
-    digitalWrite(skimmerPin, HIGH);
+    myDigitalWrite(skimmerPin, HIGH);
 #endif
   }
   else if (outlets[4] == 2)
@@ -522,7 +522,7 @@ void check_level_skimmer()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(skimmerPin, LOW);
 #else
-    digitalWrite(skimmerPin, LOW);
+    myDigitalWrite(skimmerPin, LOW);
 #endif
   }
 }

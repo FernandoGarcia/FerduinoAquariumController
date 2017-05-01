@@ -11,7 +11,7 @@ void check_temporizadores()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], HIGH);
 #else
-          digitalWrite(temporizador_e[i], HIGH);
+          myDigitalWrite(temporizador_e[i], HIGH);
 #endif
           bitWrite(temporizador_status, (i + 1), 1);
         }
@@ -20,7 +20,7 @@ void check_temporizadores()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], LOW);
 #else
-          digitalWrite(temporizador_e[i], LOW);
+          myDigitalWrite(temporizador_e[i], LOW);
 #endif
           bitWrite(temporizador_status, (i + 1), 0);
         }
@@ -32,7 +32,7 @@ void check_temporizadores()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], HIGH);
 #else
-          digitalWrite(temporizador_e[i], HIGH);
+          myDigitalWrite(temporizador_e[i], HIGH);
 #endif
           bitWrite(temporizador_status, (i + 1), 1);
         }
@@ -41,7 +41,7 @@ void check_temporizadores()
 #ifdef USE_PCF8575
           PCF8575.digitalWrite(temporizador_e[i], LOW);
 #else
-          digitalWrite(temporizador_e[i], LOW);
+          myDigitalWrite(temporizador_e[i], LOW);
 #endif
           bitWrite(temporizador_status, (i + 1), 0);
         }
@@ -52,7 +52,7 @@ void check_temporizadores()
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(temporizador_e[i], LOW);
 #else
-      digitalWrite(temporizador_e[i], LOW);
+      myDigitalWrite(temporizador_e[i], LOW);
 #endif
       bitWrite(temporizador_status, (i + 1), 0);
       bitWrite(temporizador_modificado, (i + 1), 0);

@@ -1,27 +1,27 @@
 void selecionar_SPI(int dispositivo)
 {
-  switch(dispositivo)
+  switch (dispositivo)
   {
-  case 0: // Utilizar cartão sd.
-    digitalWrite(ChipSelect_SD, LOW);
-    digitalWrite(SelectSlave_ETH, HIGH);
-    digitalWrite(ChipSelect_RFM, HIGH);
-    delay(10);
-    break; 
+    case 0: // Utilizar cartão sd.
+      myDigitalWrite(ChipSelect_SD, LOW);
+      myDigitalWrite(SelectSlave_ETH, HIGH);
+      myDigitalWrite(ChipSelect_RFM, HIGH);
+      delay(10);
+      break;
 
-  case 1: // Utilizar ethercard
-    digitalWrite(SelectSlave_ETH, LOW);
-    digitalWrite(ChipSelect_SD, HIGH);
-    digitalWrite(ChipSelect_RFM, HIGH);
-    delay(10);
-    break; 
+    case 1: // Utilizar ethercard
+      myDigitalWrite(SelectSlave_ETH, LOW);
+      myDigitalWrite(ChipSelect_SD, HIGH);
+      myDigitalWrite(ChipSelect_RFM, HIGH);
+      delay(10);
+      break;
 
-  case 2: // Utilizar RFM12B
-    digitalWrite(ChipSelect_RFM, LOW);
-    digitalWrite(SelectSlave_ETH, HIGH);
-    digitalWrite(ChipSelect_SD, HIGH);
-    delay(10);
-    break; 
+    case 2: // Utilizar RFM12B
+      myDigitalWrite(ChipSelect_RFM, LOW);
+      myDigitalWrite(SelectSlave_ETH, HIGH);
+      myDigitalWrite(ChipSelect_SD, HIGH);
+      delay(10);
+      break;
   }
   return;
 }

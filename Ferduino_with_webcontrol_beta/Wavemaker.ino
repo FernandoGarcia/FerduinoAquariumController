@@ -182,6 +182,6 @@ void Wavemaker()
     Pump2PWM *= POWER_PUMP2;
   }
 #endif
-  analogWrite(wavemaker1, Pump1PWM);
-  analogWrite(wavemaker2, Pump2PWM);
+  myAnalogWrite(wavemaker1, Pump1PWM);
+  myAnalogWrite(wavemaker2, Pump2PWM);
 }

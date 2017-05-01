@@ -23,6 +23,7 @@ Therefore, this is completely Open Source and always will be.
 * Level monitor;
 * Partial water change automatic;
 * LED light control for 6 channels (5 day light + 1 moonlight);
+* Clouds and lightnings simulation; 
 * Temperature control for LED;
 * Control for 5 timers;
 * Dosage control for up to 6 dosing pumps;

@@ -6,7 +6,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba1Pin, LOW);
 #else
-    digitalWrite(bomba1Pin, LOW);
+    myDigitalWrite(bomba1Pin, LOW);
 #endif
   }
 
@@ -16,7 +16,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba2Pin, LOW);
 #else
-    digitalWrite(bomba2Pin, LOW);
+    myDigitalWrite(bomba2Pin, LOW);
 #endif
   }
 
@@ -26,7 +26,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-    digitalWrite(bomba3Pin, LOW);
+    myDigitalWrite(bomba3Pin, LOW);
 #endif
   }
 
@@ -59,17 +59,17 @@ void checktpa()
       shiftedmillis = millis();
     }
 
-    if ((analogRead(sensor1) < 400) && (analogRead(sensor2) > 400) && (analogRead(sensor3) < 400) && (tpa == 1)
-        && (bitRead(tpa_status, 2) == false) && (analogRead(sensor4) > 400) && ((shiftedmillis - marcadoriniciotpa) < tempo))
+    if ((myAnalogRead(sensor1) < 400) && (myAnalogRead(sensor2) > 400) && (myAnalogRead(sensor3) < 400) && (tpa == 1)
+        && (bitRead(tpa_status, 2) == false) && (myAnalogRead(sensor4) > 400) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(bomba1Pin, HIGH); //estagio 1
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-      digitalWrite(bomba1Pin, HIGH); //estagio 1
-      digitalWrite(bomba2Pin, LOW);
-      digitalWrite(bomba3Pin, LOW);
+      myDigitalWrite(bomba1Pin, HIGH); //estagio 1
+      myDigitalWrite(bomba2Pin, LOW);
+      myDigitalWrite(bomba3Pin, LOW);
 #endif
 
       tpa = 2;
@@ -83,16 +83,16 @@ void checktpa()
         marcadoriniciotpa = millis();
       }
     }
-    else if ((analogRead(sensor1) > 400) && (analogRead(sensor2) > 400) && (tpa == 2) && ((shiftedmillis - marcadoriniciotpa) < tempo))
+    else if ((myAnalogRead(sensor1) > 400) && (myAnalogRead(sensor2) > 400) && (tpa == 2) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(bomba1Pin, LOW); //estagio 2
       PCF8575.digitalWrite(bomba2Pin, HIGH);
       PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-      digitalWrite(bomba1Pin, LOW); //estagio 2
-      digitalWrite(bomba2Pin, HIGH);
-      digitalWrite(bomba3Pin, LOW);
+      myDigitalWrite(bomba1Pin, LOW); //estagio 2
+      myDigitalWrite(bomba2Pin, HIGH);
+      myDigitalWrite(bomba3Pin, LOW);
 #endif
 
       tpa = 3;
@@ -106,16 +106,16 @@ void checktpa()
         marcadoriniciotpa = millis();
       }
     }
-    else if ((analogRead(sensor2) < 400) && (analogRead(sensor1) == 0) && (analogRead(sensor3) > 400) && (tpa == 3) && ((shiftedmillis - marcadoriniciotpa) < tempo))
+    else if ((myAnalogRead(sensor2) < 400) && (myAnalogRead(sensor1) == 0) && (myAnalogRead(sensor3) > 400) && (tpa == 3) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(bomba1Pin, LOW); // estagio 3
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, HIGH);
 #else
-      digitalWrite(bomba1Pin, LOW); // estagio 3
-      digitalWrite(bomba2Pin, LOW);
-      digitalWrite(bomba3Pin, HIGH);
+      myDigitalWrite(bomba1Pin, LOW); // estagio 3
+      myDigitalWrite(bomba2Pin, LOW);
+      myDigitalWrite(bomba3Pin, HIGH);
 #endif
 
       tpa = 4;
@@ -129,16 +129,16 @@ void checktpa()
         marcadoriniciotpa = millis();
       }
     }
-    else if ((analogRead(sensor3) < 400) && (analogRead(sensor2) > 400) && (analogRead(sensor1) < 400) && (tpa == 4) && ((shiftedmillis - marcadoriniciotpa) < tempo))
+    else if ((myAnalogRead(sensor3) < 400) && (myAnalogRead(sensor2) > 400) && (myAnalogRead(sensor1) < 400) && (tpa == 4) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
 #ifdef USE_PCF8575
       PCF8575.digitalWrite(bomba1Pin, LOW); // estagio 0
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-      digitalWrite(bomba1Pin, LOW); // estagio 0
-      digitalWrite(bomba2Pin, LOW);
-      digitalWrite(bomba3Pin, LOW);
+      myDigitalWrite(bomba1Pin, LOW); // estagio 0
+      myDigitalWrite(bomba2Pin, LOW);
+      myDigitalWrite(bomba3Pin, LOW);
 #endif
       bitWrite(tpa_status, 1, 0);
     }
@@ -149,9 +149,9 @@ void checktpa()
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-      digitalWrite(bomba1Pin, LOW); //desliga as bombas todas e mete tpa=0 para não entrar no ciclo outra vez
-      digitalWrite(bomba2Pin, LOW);
-      digitalWrite(bomba3Pin, LOW);
+      myDigitalWrite(bomba1Pin, LOW); //desliga as bombas todas e mete tpa=0 para não entrar no ciclo outra vez
+      myDigitalWrite(bomba2Pin, LOW);
+      myDigitalWrite(bomba3Pin, LOW);
 #endif
       tpa = 0;
       bitWrite(tpa_status, 1, 0);
@@ -166,7 +166,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba1Pin, HIGH);
 #else
-    digitalWrite(bomba1Pin, HIGH);
+    myDigitalWrite(bomba1Pin, HIGH);
 #endif
   }
 
@@ -175,7 +175,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba2Pin, HIGH);
 #else
-    digitalWrite(bomba2Pin, HIGH);
+    myDigitalWrite(bomba2Pin, HIGH);
 #endif
   }
 
@@ -184,7 +184,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba3Pin, HIGH);
 #else
-    digitalWrite(bomba3Pin, HIGH);
+    myDigitalWrite(bomba3Pin, HIGH);
 #endif
   }
 
@@ -193,7 +193,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba1Pin, LOW);
 #else
-    digitalWrite(bomba1Pin, LOW);
+    myDigitalWrite(bomba1Pin, LOW);
 #endif
   }
 
@@ -202,7 +202,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba2Pin, LOW);
 #else
-    digitalWrite(bomba2Pin, LOW);
+    myDigitalWrite(bomba2Pin, LOW);
 #endif
   }
 
@@ -211,7 +211,7 @@ void checktpa()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(bomba3Pin, LOW);
 #else
-    digitalWrite(bomba3Pin, LOW);
+    myDigitalWrite(bomba3Pin, LOW);
 #endif
   }
 }

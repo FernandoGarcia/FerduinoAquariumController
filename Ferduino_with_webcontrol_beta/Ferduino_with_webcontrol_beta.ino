@@ -138,7 +138,19 @@
 //#define USE_PIN_53_FOR_SD_CARD // Descomente esta linha se você tem o cartão SD conectado no TFT. Não descomente esta linha se estiver usando um Ferduino Mega 2560
 
 // Uncomment the line bellow if your touch screen have coordinates mirrored. So don't need change in ProcessMyTouch: x = 399-myTouch.getX () and y = 239-myTouch.getY ().
-//#define INVERT_TOUCH // descomente essa linha se seu "touch screen" tem as coordenadas espelhadas. Assim não será necessário alterar em "ProcessMyTouch": x = 399-myTouch.getX () and y = 239-myTouch.getY ().
+//#define INVERT_TOUCH // Descomente essa linha se seu "touch screen" tem as coordenadas espelhadas. Assim não será necessário alterar em "ProcessMyTouch": x = 399-myTouch.getX () and y = 239-myTouch.getY ().
+
+// Uncomment the line below to enable an extra channel for lightning during the night.
+//#define USE_EXTRA_CHANNEL_FOR_LIGHTNING_DURING_NIGHT // Descomente esta linha para utilizar um canal extra para relâmpagos durante a noite.
+
+// Select the extra channel to be used for lightning during the night. 0 = white, 1 = blue, 2 = royal blue, 3 = red, 4 = UV
+#define EXTRA_CHANNEL_FOR_LIGHTNING 0 // Selecione o canal extra para ser usado para relâmpagos noturnos. 0 = branco, 1 = azul, 2 = azul royal, 3 = vermelho, 4 = ultra violeta
+
+// Define the minimum PWM value to clouds and lightning. If the current PWM is smaller than this value the effect won't be done over the channel.
+// When the PWM is smaller than this value the clouds and lightnigs are considered nocturnal. So the lightning will use the extra channel if moon PWM is higher than this value.
+#define MIN_PWM_NUVEM 30 // Define o valor mínimo de PWM para nuvens e relâmpagos. Se o PWM atual for menor que este valor o efeito não será executado sobre o canal. 
+// Quando o PWM é menor que este valor as nuvens e relâmpagos são considereados noturnos. Então o relâmpago will usar o canal extra se o PWM lua for maior que este valor.
+
 //*************************************************************************************************
 //*************** Bibliotecas utilizadas **********************************************************
 //*************************************************************************************************
@@ -183,7 +195,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "25/02/2017"; // Data da última modificação
+const char lastUpdate[] = "01/05/2017"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -203,6 +215,7 @@ extern uint8_t SevenSegNumFontPlus[];
 //****************************************************************************************************
 //****************** Define funções dos pinos digitais e analógicos **********************************
 //****************************************************************************************************
+#define MAX_PIN_NUMBER 69 // Numero de pinos disponíveis no Arduino Mega.
 // Pinos 0 e 1 reservados para a porta serial 0.
 const byte alarmPin = 0;          // Pino que aciona o alarme
 const byte desativarFanPin = 1;   // Pino que desativa os coolers.
@@ -273,7 +286,7 @@ const byte sensor6 = 59;   // A5;      // Pino analógico que verifica o nível 
 // Notice that this pins also are declared in PCF8575 section.
 // when using a PCF8575 the pins 60, 61 and 62 will be free to be used in others functions.
 //***************************************************************************************************
-#ifndef USE_PCF8575 // Do not change this line! 
+#ifndef USE_PCF8575 // Do not change this line!
 const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
 const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
 const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
@@ -303,7 +316,7 @@ const byte temporizador2 = 81;           // Pino que liga o timer 2.
 const byte temporizador3 = 82;           // Pino que liga o timer 3.
 const byte temporizador4 = 83;           // Pino que liga o timer 4.
 const byte temporizador5 = 84;           // Pino que liga o timer 5.
-const byte solenoide1Pin = 85;           // Liga a reposicao de água doce.
+const byte solenoide1Pin = 85;           // Liga a reposição de água doce.
 const byte alimentadorPin = 86;          // Pino que controla o alimentador automático.
 const byte skimmerPin = 87;              // Pino que controla o skimmer
 #endif // Do not change this line!
@@ -324,7 +337,7 @@ const byte temporizador2 = 6;       // P6       // Pino que liga o timer 2.
 const byte temporizador3 = 7;       // P7       // Pino que liga o timer 3.
 const byte temporizador4 = 8;       // P8       // Pino que liga o timer 4.
 const byte temporizador5 = 9;       // P9       // Pino que liga o timer 5.
-const byte solenoide1Pin = 10;      // P10      // Liga a reposicao de água doce.
+const byte solenoide1Pin = 10;      // P10      // Liga a reposição de água doce.
 const byte alimentadorPin = 11;     // P11      // Pino que controla o alimentador automático.
 const byte skimmerPin = 12;         // P12      // Pino que controla o skimmer
 #endif // Do not change this line!
@@ -367,7 +380,7 @@ Time t_temp, t;
 #ifdef USE_TFT // Do not change this line
 UTFT        myGLCD(ITDB32WD, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
 #ifdef USE_TFT_SHIELD // Do not change this line
-URTouch      myTouch(6,5,4,3,2);              // Pinos usados pelo "touch" no TFT shield
+URTouch      myTouch(6, 5, 4, 3, 2);          // Pinos usados pelo "touch" no TFT shield
 #else // Do not change this line
 URTouch      myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
 #endif // Do not change this line
@@ -566,6 +579,37 @@ boolean hora_modificada = false;
 byte amanhecer_anoitecer = 60;
 boolean teste_iniciado = false;
 
+#define NUMERO_CANAIS 6
+#define TEMPO_RAMPA 50
+byte pinoLED[NUMERO_CANAIS] = {ledPinWhite, ledPinBlue, ledPinRoyBlue, ledPinRed, ledPinUV, ledPinMoon}; // Branco, azul, azul royal, vermelho, violeta, luz noturna
+boolean desativarNuvemCanal[NUMERO_CANAIS] = {false, false, false, false, false, false};
+byte probNuvemRelampago[2] = {100, 99}; // [0]= nuvem, [1] = relâmpago
+byte nuvemCadaXdias = 1;
+byte quantDuracaoMinMaxNuvem[4] = {1, 10, 2, 9}; // Quant. mín., quant. máx., duração min., duração máx.
+boolean haveraNuvem = false;
+boolean haveraRelampago = false;
+byte duracaoNuvem = 0;
+byte duracaoRelampago = 0;
+byte quantNuvens = 0;
+int horaNuvem[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Em minutos.
+boolean executandoNuvem = false;
+boolean executarAgora = false;
+unsigned long millis_nuvem = 0;
+int lastMinute = 0;
+int espere = 0;
+unsigned long millisRampa = 0;
+boolean pontoBaixo[NUMERO_CANAIS] = {false, false, false, false, false, false};
+boolean aguarde = false;
+boolean inicioNuvem = false;
+byte pwm_nuvem[NUMERO_CANAIS] = {0, 0, 0, 0, 0, 0};
+byte passo[NUMERO_CANAIS] = {0, 0, 0, 0, 0, 0};
+unsigned long LED_millis = 0;
+boolean relampagoNoturno = false;
+boolean temDelay = false;
+byte valorAnterior = 0;
+boolean desativarRelampagoCanal[NUMERO_CANAIS] = {true, true, true, true, true, true};
+byte duracaoMinMaxRelampago[2] = {1, 5}; // Duração min., duração máx.
+
 //*****************************************************************************************
 //**************** Variáveis temporárias de controle da iluminação ************************
 //*****************************************************************************************
@@ -593,7 +637,8 @@ const byte cor_canal[5][3] = {
   byte cor_canal2[] = {9, 184, 255};    // Azul
   byte cor_canal3[] = {58, 95, 205};    // Azul Royal
   byte cor_canal4[] = {255, 0, 0};      // Vermelho
-  byte cor_canal5[] = {224, 102, 255};  // Violeta*/
+  byte cor_canal5[] = {224, 102, 255};  // Violeta
+*/
 
 //*****************************************************************************************
 //************************ Variáveis da fase lunar ****************************************
@@ -660,7 +705,7 @@ byte Status = 0x0;
 #ifdef ETHERNET_SHIELD //Do not change this line
 const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
 const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
-const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.                                                      
+const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.
 
 #ifndef USE_ESP8266 //Do not change this line  
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.

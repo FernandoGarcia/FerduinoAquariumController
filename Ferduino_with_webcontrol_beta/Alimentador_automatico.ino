@@ -5,7 +5,7 @@ void alimentador_automatico()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(alimentadorPin, HIGH);
 #else
-    digitalWrite(alimentadorPin, HIGH);
+    myDigitalWrite(alimentadorPin, HIGH);
 #endif
   }
   else
@@ -13,7 +13,7 @@ void alimentador_automatico()
 #ifdef USE_PCF8575
     PCF8575.digitalWrite(alimentadorPin, LOW);
 #else
-    digitalWrite(alimentadorPin, LOW);
+    myDigitalWrite(alimentadorPin, LOW);
 #endif
   }
 }
@@ -73,14 +73,14 @@ void criar_arquivos_alimentador()
   {
     file.remove();
   }
-  if(bitRead(alimentacao_wavemaker_on_off, 0) == true)
+  if (bitRead(alimentacao_wavemaker_on_off, 0) == true)
   {
     if (file.open("FEEDER.TXT", O_CREAT | O_APPEND | O_WRITE))
     {
       minuto01 = NumMins(horario_alimentacao_e[2], horario_alimentacao_e[3]) - NumMins(horario_alimentacao_e[0], horario_alimentacao_e[1]);
-  
+
       minuto01 /= 1 + quantidade_alimentacao;
-  
+
       for (int i = 1; i <= quantidade_alimentacao; i++)
       {
         contador += 1;
@@ -92,7 +92,7 @@ void criar_arquivos_alimentador()
         {
           minuto11 += minuto01;
         }
-  
+
         if (minuto11 < 10)
         {
           file.print("000");

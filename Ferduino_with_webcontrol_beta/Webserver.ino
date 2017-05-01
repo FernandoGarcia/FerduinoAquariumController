@@ -2,9 +2,9 @@
 
 #ifndef USE_ESP8266 // Do not change this line
 
-  void requestAction(char* topic, byte* payload, unsigned int length)
+void requestAction(char* topic, byte* payload, unsigned int length)
 #else // Do not change this line
-  void mqttData(void* response)
+void mqttData(void* response)
 #endif // Do not change this line
 {
   StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
@@ -12,7 +12,7 @@
   char pub_message[MQTT_MAX_PACKET_SIZE] = "";
   byte cont = 0;
   byte dia;
-#define COMMAND_SIZE  50
+#define COMMAND_SIZE  60
   char clientline[COMMAND_SIZE];
   char inData[COMMAND_SIZE];
   byte index = 0;
@@ -98,6 +98,12 @@
   if (terminador == true)
   {
     byte ID = atoi(inParse[0]);
+
+    if (executarAgora == true)
+    {
+      executarAgora = false;
+      executandoNuvem = false;
+    }
 
     switch (ID)
     {
@@ -1025,6 +1031,109 @@
 
           strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        break;
+
+      case 24:
+        if (atoi(inParse[1]) == 0)
+        {
+          Json[F("White")] = desativarNuvemCanal[0];
+          Json[F("Blue")] = desativarNuvemCanal[1];
+          Json[F("RoyalBlue")] = desativarNuvemCanal[2];
+          Json[F("Red")] = desativarNuvemCanal[3];
+          Json[F("UV")] = desativarNuvemCanal[4];
+          Json[F("Moon")] = desativarNuvemCanal[5];
+          Json[F("every")] = nuvemCadaXdias;
+          Json[F("cloud")] = probNuvemRelampago[0];
+          Json[F("lightning")] = probNuvemRelampago[1];
+          Json[F("quantMin")] = quantDuracaoMinMaxNuvem[0];
+          Json[F("quantMax")] = quantDuracaoMinMaxNuvem[1];
+          Json[F("durationMin")] = quantDuracaoMinMaxNuvem[2];
+          Json[F("durationMax")] = quantDuracaoMinMaxNuvem[3];
+          Json[F("WhiteR")] = desativarRelampagoCanal[0];
+          Json[F("BlueR")] = desativarRelampagoCanal[1];
+          Json[F("RoyalBlueR")] = desativarRelampagoCanal[2];
+          Json[F("RedR")] = desativarRelampagoCanal[3];
+          Json[F("UVR")] = desativarRelampagoCanal[4];
+          Json[F("MoonR")] = desativarRelampagoCanal[5];
+          Json[F("durationMinL")] = duracaoMinMaxRelampago[0];
+          Json[F("durationMaxL")] = duracaoMinMaxRelampago[1];
+
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        else if (atoi(inParse[1]) == 1)
+        {
+          nuvemCadaXdias = atoi(inParse[2]);
+          probNuvemRelampago[0] = atoi(inParse[3]); // Probabilidade de nuvem
+          desativarNuvemCanal[0] = atoi(inParse[4]); // Ativar/desativar canal branco
+          desativarNuvemCanal[1] = atoi(inParse[5]); // Ativar/desativar canal azul
+          desativarNuvemCanal[2] = atoi(inParse[6]); // Ativar/desativar canal azul royal
+          desativarNuvemCanal[3] = atoi(inParse[7]); // Ativar/desativar canal vermelho
+          desativarNuvemCanal[4] = atoi(inParse[8]); // Ativar/desativar canal uv
+          quantDuracaoMinMaxNuvem[0] = atoi(inParse[9]); // Quantidade mínma de nuvens
+          quantDuracaoMinMaxNuvem[1] = atoi(inParse[10]); // Quantidade máxima de nuvens
+          quantDuracaoMinMaxNuvem[2] = atoi(inParse[11]); // Duração mínima da nuvem
+          quantDuracaoMinMaxNuvem[3] = atoi(inParse[12]); // Duração máxima da nuvem
+          probNuvemRelampago[1] = atoi(inParse[13]); // Probabilidade de relâmpago
+          desativarNuvemCanal[5] = atoi(inParse[14]); // Ativar/desativar canal da luz noturna
+          desativarRelampagoCanal[0] = atoi(inParse[15]); // Ativar/desativar relampago no canal branco
+          desativarRelampagoCanal[1] = atoi(inParse[16]); // Ativar/desativar relampago no canal azul
+          desativarRelampagoCanal[2] = atoi(inParse[17]); // Ativar/desativar relampago no canal azul royal
+          desativarRelampagoCanal[3] = atoi(inParse[18]); // Ativar/desativar relampago no canal vermelho
+          desativarRelampagoCanal[4] = atoi(inParse[19]); // Ativar/desativar relampago no canal uv
+          desativarRelampagoCanal[5] = atoi(inParse[20]); // Ativar/desativar relampago no canal da luz noturna
+          duracaoMinMaxRelampago[0] = atoi(inParse[21]); // Duração mínima do relâmpago
+          duracaoMinMaxRelampago[1] = atoi(inParse[22]); // Duração máxima do relâmpago
+
+          Salvar_clima_EEPROM();
+          probabilidadeNuvem(); // Calcula a probabilidade de ocorrer nuvens.
+
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
+        }
+        else if (atoi(inParse[1]) == 2)
+        {
+          executandoNuvem = true;
+          inicioNuvem = true;
+          executarAgora = true;
+          millis_nuvem = millis();
+
+          Json[F("wait")] = String(duracaoNuvem + duracaoRelampago);
+          Json.printTo(pub_message, Json.measureLength() + 1);
+          MQTT.publish(PUB_TOPIC, pub_message, false);
+        }
+        break;
+
+      case 25:
+        if (atoi(inParse[1]) == 0)
+        {
+          strcpy(pub_message, "{\"horaNuvem\":[");
+
+          for (byte i = 0; i < 16; i++)
+          {
+            itoa(horaNuvem[i], buf, 10);
+            strcat(pub_message, buf);
+
+            if (i < 15)
+            {
+              strcat(pub_message, ",");
+            }
+          }
+
+          strcat(pub_message, "], \"haveraNuvem\":");
+
+          itoa(haveraNuvem, buf, 10);
+          strcat(pub_message, buf);
+
+          strcat(pub_message, ", \"haveraRelampago\":");
+
+          itoa(haveraRelampago, buf, 10);
+          strcat(pub_message, buf);
+
+          strcat(pub_message, "}");
+
+          MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         break;
 
