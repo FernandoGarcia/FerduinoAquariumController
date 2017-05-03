@@ -17,7 +17,6 @@ void LED_levels_output()
 {
   int sector, sstep, t1, t2 ;
   float reduzir = 1.00;
-  byte b_out, w_out, moon_out, rb_out, r_out, uv_out;
 
   if (tempH >= tempHR)
   {
@@ -227,41 +226,31 @@ void LED_levels_output()
   float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
   moonled_out = ((MinI * (1 - lunarCycle)) + (MaxI * lunarCycle) + 0.5) * reduzir;
 
-  if (MeanWell == true)
+  if (MeanWell == false)
   {
-    b_out = bled_out;
-    w_out = wled_out;
-    rb_out = rbled_out;
-    r_out = rled_out;
-    uv_out = uvled_out;
-    moon_out = moonled_out;
-  }
-  else
-  {
-    b_out = (255 - bled_out);
-    w_out = (255 - wled_out);
-    rb_out = (255 - rbled_out);
-    r_out = (255 - rled_out);
-    uv_out = (255 - uvled_out);
-    moon_out = (255 - moonled_out);
+    bled_out = (255 - bled_out);
+    wled_out = (255 - wled_out);
+    rbled_out = (255 - rbled_out);
+    rled_out = (255 - rled_out);
+    uvled_out = (255 - uvled_out);
+    moonled_out = (255 - moonled_out);
   }
   if (suavizar < 1)
   {
-    b_out = suavizar * b_out;
-    w_out = suavizar * w_out;
-    rb_out = suavizar * rb_out;
-    r_out = suavizar * r_out;
-    uv_out = suavizar * uv_out;
-    moon_out = suavizar * moon_out;
+    bled_out *= suavizar;
+    wled_out *= suavizar;
+    rbled_out *= suavizar;
+    rled_out *= suavizar;
+    uvled_out *= suavizar;
+    moonled_out *= suavizar;
   }
 
-
-  myAnalogWrite(ledPinBlue, b_out);
-  myAnalogWrite(ledPinWhite, w_out);
-  myAnalogWrite(ledPinRoyBlue, rb_out);
-  myAnalogWrite(ledPinRed, r_out);
-  myAnalogWrite(ledPinUV, uv_out);
-  myAnalogWrite(ledPinMoon, moon_out);
+  myAnalogWrite(ledPinBlue, bled_out);
+  myAnalogWrite(ledPinWhite, wled_out);
+  myAnalogWrite(ledPinRoyBlue, rbled_out);
+  myAnalogWrite(ledPinRed, rled_out);
+  myAnalogWrite(ledPinUV, uvled_out);
+  myAnalogWrite(ledPinMoon, moonled_out);
 }
 
 int check( byte *pt1, byte *pt2, int lstep)
