@@ -289,9 +289,14 @@ void iniciar_stamp_densidade()
   Serial3.print('\r');
   delay(1000);
 
-  Serial3.print("O,S"); // Disable salinity reading
+  Serial3.print("O,SG"); // Disable specific gravit reading
   Serial3.print('\r');
   delay(1000);
+
+  Serial3.print("O,S,1"); // Enable salinity reading
+  Serial3.print('\r');
+  delay(1000);
+  
   check_parametro_densidade();
 }
 
