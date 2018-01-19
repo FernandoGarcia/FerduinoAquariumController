@@ -1185,20 +1185,11 @@ void enviar_dados()
   Serial.println();
   Serial.print(F("Log: ")); // Envia dados
   Serial.println(LOG_TOPIC);
-  Serial.println(F("Connecting..."));
 #endif
 
 #ifndef USE_ESP8266 // Do not change this line
-  if (!MQTT.connected())
-  {
-    reconnect();
-  }
-
   if (MQTT.connected())
 #else // Do not change this line
-
-  sincronizar();
-
   if (MQTT_connected == true)
 #endif // Do not change this line
   {
@@ -1253,7 +1244,6 @@ void enviar_dados()
     notconnected = 0;
 
 #ifdef DEBUG
-    Serial.println(F(">> Connected <<"));
     Serial.print(F("JSON size: "));
     Serial.println(Json.measureLength());
     Serial.println(F("JSON:"));
@@ -1264,7 +1254,8 @@ void enviar_dados()
   else
   {
 #ifdef DEBUG
-    Serial.println(F("Can't connect!"));
+    Serial.println(F("Not connected!"));
+    Serial.println();
 #endif
 
     notconnected++;
