@@ -94,6 +94,14 @@ void loop()
     MQTT.loop();
 
 #else //Do not change this line
+    if (MQTT_connected == false)
+    {
+      if ((millis() - millis_mqtt) > 300000) // Tenta reconectar após 5 minutos
+      {
+        sincronizar();
+        millis_mqtt = millis();
+      }
+    }
     ESP8266.Process();
 #endif //Do not change this line
   }
