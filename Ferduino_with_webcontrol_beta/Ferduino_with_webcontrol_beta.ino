@@ -184,6 +184,7 @@
 #else // Do not change this line!
 #include <ELClient.h>
 #include <ELClientMqtt.h>
+#include <SoftwareSerial.h>
 #endif // Do not change this line!
 #include <ArduinoJson.h>
 #endif // Do not change this line!
@@ -195,7 +196,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "20/01/2018"; // Data da última modificação
+const char lastUpdate[] = "17/03/2018"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -229,17 +230,8 @@ const byte ledPinRoyBlue = 11;   // Pino que liga os leds "royal blue"
 const byte ledPinRed = 12;       // Pino que liga os leds vermelho
 const byte fanPin = 13;          // Pino que controla a velocidade das ventoinhas do dissipador
 // Pinos 14 e 15 reservados para a porta serial 3 que se comunica com os "Stamps"
-
-#ifndef USE_ESP8266 // Do not change this line!
-// When using an ESP8266 as WIFI module is needed move this pins to any free pins to use the multiplexer for stamps.
-// Quando usar um ESP8266 como módulo WIFI é necessário mudar estes pinos para outros livres para poder usar o multiplexador dos "stamps".
 const byte multiplexadorS0Pin = 16; // Pino S0 de controle dos stamps
 const byte multiplexadorS1Pin = 17; // Pino S1 de controle dos stamps
-#else // Do not change this line!
-const byte multiplexadorS0Pin = 88; // Move to free pin to use the multiplexer and ESP8266
-const byte multiplexadorS1Pin = 89; // Move to free pin to use the multiplexer and ESP8266
-#endif // Do not change this line!
-
 // Pinos 18 e 19 reservados para o RTC.
 // Pinos 20 e 21 reservados para comunicação I2C do PCF8575.
 // Pinos 22 à 41 reservados para o LCD.
@@ -288,12 +280,19 @@ const byte sensor6 = 59;   // A5;      // Pino analógico que verifica o nível 
 //***************************************************************************************************
 #ifndef USE_PCF8575 // Do not change this line!
 const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
+#ifndef USE_ESP8266 // Do not change this line!
 const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
 const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
+#else // Do not change this line!
+// When using an ESP8266 as WiFi module is needed move this pins to any free pins.
+// Quando usar um ESP8266 como módulo WiFi é necessário mudar estes pinos para outros livres.
+const byte bomba2Pin = 88; // Move to free pin.
+const byte bomba3Pin = 89; // Move to free pin.
 #endif // Do not change this line!
-//***************************************************************************************************
-//***************************************************************************************************
+#endif // Do not change this line!
 
+//***************************************************************************************************
+//***************************************************************************************************
 const byte dosadora1 = 63; // A9;      // Bomba dosadora 1
 const byte dosadora2 = 64; // A10;     // Bomba dosadora 2
 const byte dosadora3 = 65; // A11;     // Bomba dosadora 3
@@ -717,7 +716,8 @@ IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de r
 EthernetClient client;
 PubSubClient MQTT(client);
 #else //Do not change this line
-ELClient ESP8266(&Serial2);
+SoftwareSerial virtualPort (A8, A7);  // RX, TX
+ELClient ESP8266(&virtualPort);
 ELClientMqtt MQTT(&ESP8266);
 boolean MQTT_connected = false;
 #define MQTT_MAX_PACKET_SIZE 550
