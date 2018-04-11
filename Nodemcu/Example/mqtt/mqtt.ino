@@ -1,8 +1,8 @@
 #include <ELClient.h>
 #include <ELClientMqtt.h>
-#include <SoftwareSerial.h>
+#include <NeoSWSerial.h>
 
-SoftwareSerial virtualPort (A8, A7);  // RX, TX
+NeoSWSerial virtualPort (A8, A7);  // RX, TX
 
 const char *Username  = "FernandoGarcia";
 const char *APIKEY = "2e4e116a";
@@ -115,7 +115,7 @@ void resetCb()
 void setup()
 {
   Serial.begin(38400);
-  virtualPort.begin(38400);
+  virtualPort.begin(9600);
 
   while (!Serial)
   {

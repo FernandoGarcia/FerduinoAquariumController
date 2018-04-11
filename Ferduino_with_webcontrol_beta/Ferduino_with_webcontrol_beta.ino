@@ -184,7 +184,7 @@
 #else // Do not change this line!
 #include <ELClient.h>
 #include <ELClientMqtt.h>
-#include <SoftwareSerial.h>
+#include <NeoSWSerial.h>
 #endif // Do not change this line!
 #include <ArduinoJson.h>
 #endif // Do not change this line!
@@ -196,7 +196,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "17/03/2018"; // Data da última modificação
+const char lastUpdate[] = "11/04/2018"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -716,7 +716,7 @@ IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de r
 EthernetClient client;
 PubSubClient MQTT(client);
 #else //Do not change this line
-SoftwareSerial virtualPort (A8, A7);  // RX, TX
+NeoSWSerial virtualPort (A8, A7);  // RX, TX
 ELClient ESP8266(&virtualPort);
 ELClientMqtt MQTT(&ESP8266);
 boolean MQTT_connected = false;
