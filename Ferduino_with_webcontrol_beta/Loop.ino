@@ -178,8 +178,10 @@ void loop()
     check_parametro_orp();       // Verifica a ORP
 #endif //Do not change this line
 
+#ifndef TILT_HYDROMETER //Do not change this line
 #ifdef USE_STAMP_FOR_DENSITY //Do not change this line
     check_parametro_densidade(); // Verifica a densidade
+#endif //Do not change this line
 #endif //Do not change this line
 
 #ifdef USE_STAMP_FOR_TANK_PH //Do not change this line
@@ -321,8 +323,10 @@ void loop()
     check_ORP();       // Verifica a ORP
 #endif //Do not change this line
 
+#ifndef TILT_HYDROMETER //Do not change this line
 #ifdef USE_STAMP_FOR_DENSITY //Do not change this line
     check_densidade(); // Verifica a densidade
+#endif //Do not change this line
 #endif //Do not change this line
 
 #ifdef USE_STAMP_FOR_TANK_PH //Do not change this line

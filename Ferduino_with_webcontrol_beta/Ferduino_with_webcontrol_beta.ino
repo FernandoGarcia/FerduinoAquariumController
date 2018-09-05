@@ -85,6 +85,10 @@
 // Comment the line below if you haven't a stamp for density.
 //#define USE_STAMP_FOR_DENSITY // Comente esta linha se você não tem um "stamp" para a densidade.
 
+// Uncomment the line bellow to use a digital tilt hydrometer (iSpindel) instead EC stamp and probe.
+// Descomente a linha abaixo para usar o densímetro digital (iSpindel) em vez de stamp e sonda de condutividade.
+#define TILT_HYDROMETER
+
 // Comment this two lines below if have not RFM12B wireless transceiver
 //#define RFM12B_LED_CONTROL   // Descomente esta linha para controlar os LEDs via RF
 //#define RFM12B_RELAY_CONTROL // Descomente esta linha  para controlar os relês via RF
@@ -196,7 +200,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "11/04/2018"; // Data da última modificação
+const char lastUpdate[] = "05/09/2018"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -461,6 +465,7 @@ float PHA2beA;
 //************************ Variáveis de controle de densidade *****************************
 //*****************************************************************************************
 int DEN = 0;                 // Densidade
+int DEN_AUX = 0;             // Variável de densidade auxiliar para ser usar usada com o densímetro digital (iSpindel)
 int setDEN = 1025;           // Densidade desejada
 byte offDEN = 2;             // Variação permitida da densidade
 byte alarmDEN = 1;           // Variação para acionar o alarme de densidade

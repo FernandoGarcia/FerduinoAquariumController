@@ -1137,6 +1137,24 @@ void mqttData(void* response)
         }
         break;
 
+      case 26:
+        if (atoi(inParse[1]) == 0)
+        {
+#ifdef TILT_HYDROMETER
+          DEN = atof(inParse[2]) * 1000;
+#else
+          DEN_AUX = atof(inParse[2]) * 1000;
+#endif
+
+#ifdef DEBUG
+          Serial.print(F("Density: "));
+          Serial.println(DEN);
+          Serial.print(F("Density aux: "));
+          Serial.println(DEN_AUX);
+#endif
+        }
+        break;
+
       default: // Break the loop if function called doesn't match.
         break;
     }// switch(ID)

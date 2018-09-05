@@ -137,8 +137,10 @@ void setup()
   iniciar_stamp_orp();       // Verifica a ORP
 #endif //Do not change this line
 
+#ifndef TILT_HYDROMETER // Do not change this line
 #ifdef USE_STAMP_FOR_DENSITY //Do not change this line
   iniciar_stamp_densidade(); // Verifica a densidade
+#endif //Do not change this line
 #endif //Do not change this line
 
 #ifdef USE_STAMP_FOR_TANK_PH //Do not change this line
