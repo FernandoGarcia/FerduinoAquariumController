@@ -200,7 +200,7 @@
 //*************************************************************************************************
 //************************* Atualizações **********************************************************
 //*************************************************************************************************
-const char lastUpdate[] = "05/09/2018"; // Data da última modificação
+const char lastUpdate[] = "18/09/2018"; // Data da última modificação
 
 //****************************************************************************************************
 //****************** Variáveis de textos e fontes ****************************************************
@@ -433,6 +433,7 @@ unsigned long outlets_millis = 0;
 //*********************** Variáveis do controle de temperatura da água ********************
 //*****************************************************************************************
 float tempC = 0;               // Temperatura da água
+float temp_AUX = 0;            // Variável que armazena temperatura enviado pelo hidrômetro.
 float setTempC = 25.5;         // Temperatura desejada
 float offTempC = 0.5;          // Variação permitida da temperatura
 float alarmTempC = 1;          // Variacao para acionar o alarme de temperatura da água

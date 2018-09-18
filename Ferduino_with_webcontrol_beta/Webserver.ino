@@ -1141,16 +1141,18 @@ void mqttData(void* response)
         if (atoi(inParse[1]) == 0)
         {
 #ifdef TILT_HYDROMETER
-          DEN = atof(inParse[2]) * 1000;
+          DEN = atof(inParse[2]);
 #else
-          DEN_AUX = atof(inParse[2]) * 1000;
+          DEN_AUX = atof(inParse[2]);
 #endif
-
+          temp_AUX = atof(inParse[3]);
 #ifdef DEBUG
           Serial.print(F("Density: "));
           Serial.println(DEN);
           Serial.print(F("Density aux: "));
           Serial.println(DEN_AUX);
+          Serial.print(F("Temperature aux: "));
+          Serial.println(temp_AUX);
 #endif
         }
         break;

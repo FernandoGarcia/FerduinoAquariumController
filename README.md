@@ -75,9 +75,13 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="http://imall.iteadstudio.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/im120419006_3.jpg">
 
-[1 X TFT shield with RTC]
+[1 X TFT shield]
 
-<img width="50%" src="http://hifiduino.files.wordpress.com/2012/03/dsc01434.jpg">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=616">
+
+[1 x RTC DS3231 module without external EEPROM]
+
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=617">
 
 [3 x Temperature sensor DS18B20]
 
@@ -155,7 +159,8 @@ Energy monitor.
 [this tutorial]: http://ferduino.com/forum/viewtopic.php?f=8&t=34
 [1 x Arduino mega 2560]: http://www.ebay.com/sch/i.html?_odkw=arduino+mega+2560r3&LH_BIN=1&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR5.TRC2.A0.H0.Xarduino+mega+2560+r3&_nkw=arduino+mega+2560+r3&_sacat=0
 [1 x TFT touch screen with resolution 400 x 240]: https://goo.gl/Wtl9TL
-[1 X TFT shield with RTC]: http://imall.iteadstudio.com/prototyping/kits/im120717001.html
+[1 X TFT shield]: https://www.elecfreaks.com/estore/lcd-tft01-arduino-mega-shield-v2-0-shd10.html
+[1 X RTC DS3231 Module without external EEPROM]: https://goo.gl/weNRNj
 [3 x Temperature sensor DS18B20]: http://www.ebay.com/sch/i.html?_trksid=p2055845.m570.l1313.TR11.TRC1.A0.H0.Xds18b20&_nkw=ds18b20&_sacat=0&_from=R40
 [1 x Relay board]: http://ferduino.com/product/solid-state-relay-board-16-channels/
 [Prototype shield]: http://www.ebay.com/sch/i.html?_odkw=relay+board+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xprototype+shield+arduino+mega&_nkw=prototype+shield+arduino+mega&_sacat=0
