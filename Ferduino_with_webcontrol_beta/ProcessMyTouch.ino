@@ -8,8 +8,8 @@ void processMyTouch()
   x = myTouch.getX();
   y = myTouch.getY();
 #else
-  x = 399 - myTouch.getX(); // Inverte as coordenadas X 
-  y = 239 - myTouch.getY(); // Inverte as coordenadas Y 
+  x = 399 - myTouch.getX(); // Inverte as coordenadas X
+  y = 239 - myTouch.getY(); // Inverte as coordenadas Y
 #endif
 
   if (temperatura_alta == false) // Limpa mensagem de que a temperatura dos leds esteve alta.
@@ -1933,7 +1933,6 @@ void processMyTouch()
         }
         else if (checkButtons(salV[0], salV[1], salV[2], salV[3]) == true)
         {
-          config_valores_salvar_dosadoras();
           fator_calib_dosadora_e[0] = fator_calib_dosadora[0];
           fator_calib_dosadora_e[1] = fator_calib_dosadora[1];
           fator_calib_dosadora_e[2] = fator_calib_dosadora[2];
@@ -3690,7 +3689,6 @@ void processMyTouch()
                       && (horario_alimentacao[3] >= (horario_alimentacao[1] + 10)))
                      || (horario_alimentacao[2] > horario_alimentacao[0]))
             {
-              config_valores_salvar_dosadoras();
               dispScreen = 37;
               clearScreen();
               menuScreen_2();
