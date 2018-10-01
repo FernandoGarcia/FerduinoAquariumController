@@ -47,14 +47,14 @@ void Grafico_WaveMaker()
     myGLCD.setColor(255, 255, 0);
     myGLCD.printNumI(Pump1PWM_t, 256, 80);
     myGLCD.setColor(0, 0, 0);
-    myGLCD.print("  ", 264, 80);
+    myGLCD.print((char *)"  ", 264, 80);
   }
   else if ((Pump1PWM_t >= 10) && (Pump1PWM_t <= 99))
   {
     myGLCD.setColor(255, 255, 0);
     myGLCD.printNumI(Pump1PWM_t, 256, 80);
     myGLCD.setColor(0, 0, 0);
-    myGLCD.print(" ", 272, 80);
+    myGLCD.print((char *)" ", 272, 80);
   }
   else
   {
@@ -67,14 +67,14 @@ void Grafico_WaveMaker()
     myGLCD.setColor(255, 255, 0);
     myGLCD.printNumI(Pump2PWM_t, 285, 80);
     myGLCD.setColor(0, 0, 0);
-    myGLCD.print("   ", 293, 80);
+    myGLCD.print((char *)"   ", 293, 80);
   }
   else if ((Pump2PWM_t >= 10) && (Pump2PWM_t <= 99))
   {
     myGLCD.setColor(255, 255, 0);
     myGLCD.printNumI(Pump2PWM_t, 285, 80);
     myGLCD.setColor(0, 0, 0);
-    myGLCD.print(" ", 301, 80);
+    myGLCD.print((char *)" ", 301, 80);
   }
   else
   {

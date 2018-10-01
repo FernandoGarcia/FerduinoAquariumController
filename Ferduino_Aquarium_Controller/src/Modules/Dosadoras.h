@@ -4,8 +4,6 @@ void criar_arquivos()
   int minuto01 = 0;
   int minuto11 = 0;
 
-  selecionar_SPI(SD_CARD); // Seleciona disposito SPI que será utilizado.
-
   if (file.open(arquivo[dosadora_selecionada], O_WRITE))
   {
     file.remove();
@@ -68,7 +66,6 @@ void check_dosagem_personalizada()
   int16_t n;
   char buf[7];
   int minuto01 = 0;
-  int minuto11 = 0;
 
   for (byte i = 0; i < 6; i++)
   {
@@ -81,8 +78,6 @@ void check_dosagem_personalizada()
             || (quinta_dosagem_personalizada_e[i] == t.dow) || (sexta_dosagem_personalizada_e[i] == t.dow)
             || (sabado_dosagem_personalizada_e[i] == t.dow) || (domingo_dosagem_personalizada_e[i] == t.dow))
         {
-          selecionar_SPI(SD_CARD);
-          delay(50);
 
           if (file.open(arquivo[i], O_READ))
           {
@@ -183,4 +178,3 @@ void calibrar()
   delay(60000);
   myDigitalWrite(dosadora[dosadora_selecionada], LOW);
 }
-

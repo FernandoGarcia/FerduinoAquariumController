@@ -23,7 +23,7 @@ void check_alimentador()
   int16_t n;
   char buf[7];
   int minuto01 = 0;
-  int minuto11 = 0;
+
   if ((NumMins(t.hour, t.min) >= NumMins(horario_alimentacao_e[0], horario_alimentacao_e[1])) && (NumMins(t.hour, t.min) <= NumMins(horario_alimentacao_e[2], horario_alimentacao_e[3])))
   {
     if ((bitRead(alimentacao_wavemaker_on_off, 0)  == true) && (modo_alimentacao == false))
@@ -32,9 +32,6 @@ void check_alimentador()
           || (dia_alimentacao_e[3] == t.dow) || (dia_alimentacao_e[4] == t.dow) || (dia_alimentacao_e[5] == t.dow)
           || (dia_alimentacao_e[6] == t.dow))
       {
-        selecionar_SPI(SD_CARD);
-        delay(50);
-
         if (file.open("FEEDER.TXT", O_READ))
         {
           while ((n = file.read(buf, sizeof(buf))) > 0)
@@ -179,7 +176,3 @@ void inicia_alimentacao()
     modo_alimentacao = wavemaker_on_off = false;
   }
 }
-
-
-
-

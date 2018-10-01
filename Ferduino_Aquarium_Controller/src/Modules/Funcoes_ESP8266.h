@@ -1,7 +1,3 @@
-#ifdef ETHERNET_SHIELD // Do not change this line
-
-#ifdef USE_ESP8266 // Do not change this line
-
 void wifiCb(void* response)
 {
   ELClientResponse *res = (ELClientResponse*)response;
@@ -12,14 +8,12 @@ void wifiCb(void* response)
 
     if (status == STATION_GOT_IP)
     {
-      Serial.println(F("WIFI connected!"));
+      LOGLN(F("WIFI connected!"));
     }
     else
     {
       MQTT_connected = false;
-#ifdef DEBUG
-      Serial.println(F("Can't connect to WIFI network!"));
-#endif
+      LOGLN(F("Can't connect to WIFI network!"));
     }
   }
 }
@@ -32,20 +26,17 @@ void mqttConnected(void* response)
   strcat(SUB_TOPIC, APIKEY);
   strcat(SUB_TOPIC, "/topic/command");
 
-#ifdef DEBUG
-  Serial.println(F("MQTT connected!"));
-  Serial.print(F("Command: ")); // Responde aos comandos
-  Serial.println(SUB_TOPIC);
-#endif
+  LOGLN(F("MQTT connected!"));
+  LOG(F("Command: ")); // Responde aos comandos
+  LOGLN(SUB_TOPIC);
+
   MQTT.subscribe(SUB_TOPIC);
   MQTT_connected = true;
 }
 
 void mqttDisconnected(void* response)
 {
-#ifdef DEBUG
-  Serial.println(F("MQTT disconnected"));
-#endif
+  LOGLN(F("MQTT disconnected"));
   MQTT_connected = false;
 }
 
@@ -54,26 +45,20 @@ void sincronizar()
   boolean ok = false;
   byte i = 0;
 
-#ifdef DEBUG
-  Serial.println(F("Syncing Arduino and ESP8266..."));
-#endif
+  LOGLN(F("Syncing Arduino and ESP8266..."));
 
   while ((ok == false) && (i < 10))
   {
     ok = ESP8266.Sync();
     if (!ok)
     {
-#ifdef DEBUG
-      Serial.println(F("Sync failed!"));
-#endif
+      LOGLN(F("Sync failed!"));
       i++;
     }
   }
   if (ok == true)
   {
-#ifdef DEBUG
-    Serial.println(F("Synced!"));
-#endif
+    LOGLN(F("Synced!"));
     MQTT.connectedCb.attach(mqttConnected);
     MQTT.disconnectedCb.attach(mqttDisconnected);
     MQTT.dataCb.attach(mqttData);
@@ -84,6 +69,3 @@ void sincronizar()
     MQTT_connected = false;
   }
 }
-#endif // Do not change this line
-
-#endif // Do not change this line

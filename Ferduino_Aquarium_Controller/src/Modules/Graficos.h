@@ -1,19 +1,9 @@
-#ifdef USE_TFT
 void tempgScreen()//------------------------------------------------------------ tela =11
 {
-  int x, y, z, grafico;
+  int x = 0, y  = 0, z = 0, grafico = 0, j = 0, i = 0, k = 0, f = 30;
   int16_t n;
   char buf[8];
-  float temperatura;
-  int j = 0;
-  int i = 0;
-  int k = 0;
-  float soma = 0.0f; // Soma dos valores de todos os elementos
-  float media = 0.0f; // Média dos valores
-  float linhaR;
-  float linhaG;
-  float linhaB;
-  int f = 30;
+  float temperatura = 0, soma = 0.0f, media = 0.0f, linhaR = 0, linhaG = 0, linhaB = 0;
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[25])));
   printHeader(buffer); // tabela_textos[25] = "GRAFICO DE TEMPERATURA DA AGUA"
@@ -39,16 +29,16 @@ void tempgScreen()//------------------------------------------------------------
     f -= 20;
   }
 
-  myGLCD.print("0", 275, 193);
+  myGLCD.print((char *)"0", 275, 193);
   myGLCD.drawCircle(15, 21, 2);
 
 #ifdef USE_FAHRENHEIT
-  myGLCD.print("F", 20, 18);
+  myGLCD.print((char *)"F", 20, 18);
 #else
-  myGLCD.print("C", 20, 18);
+  myGLCD.print((char *)"C", 20, 18);
 #endif
 
-  myGLCD.print("H", 290, 193);
+  myGLCD.print((char *)"H", 290, 193);
 
   myGLCD.drawLine(40, 30, 40, 190); // Eixo y
   myGLCD.drawLine(40, 190, 290, 190);  // Eixo x
@@ -239,23 +229,12 @@ void tempgScreen()//------------------------------------------------------------
 
 void orpScreen()//------------------------------------------------------------tela =12
 {
-  int x, y, z;
-  int orp = setORP;
-  int orpmais = offORP;
-  int orpmenos = offORP;
-  float linhaR;
-  float linhaG;
-  float linhaB;
-  int j = 0;
-  int i = 0;
-  int k = 0;
-  int soma = 0; // soma dos valores de todos os elementos
-  int media = 0; // média dos valores.
-  int grafico;
+  int x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, soma = 0, media = 0, grafico = 0, redox = 0, f = 30;
+  int orp = setORP, orpmais = offORP, orpmenos = offORP;
+  float linhaR = 0, linhaG = 0, linhaB = 0;
   int16_t n;
   char buf[6];
-  int redox;
-  int f = 30;
+
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[26])));
   printHeader(buffer); // tabela_textos[26] = "GRAFICO DE ORP"
@@ -273,9 +252,9 @@ void orpScreen()//------------------------------------------------------------te
     myGLCD.printNumI(i, f, 193);
     f -= 20;
   }
-  myGLCD.print("0", 275, 193);
-  myGLCD.print("MV", 18, 18);
-  myGLCD.print("H", 290, 193);
+  myGLCD.print((char *)"0", 275, 193);
+  myGLCD.print((char *)"MV", 18, 18);
+  myGLCD.print((char *)"H", 290, 193);
   myGLCD.drawLine(40, 190, 290, 190);  //eixo x
   myGLCD.drawLine(40, 30, 40, 190); //eixo y
 
@@ -413,23 +392,11 @@ void orpScreen()//------------------------------------------------------------te
 
 void PHAScreen()//-------------------------------ph do aqua-----------------------------tela =13
 {
-  float x, y, z;
-  float ph = setPHA;
-  float phmais = offPHA;
-  float phmenos = offPHA;
-  float linhaR;
-  float linhaG;
-  float linhaB;
-  int j = 0;
-  int i = 0;
-  int k = 0;
-  float soma = 0.0f; // soma dos valores de todos os elementos
-  float media = 0.0f; // média dos valores.
-  int grafico;
+  float x = 0, y = 0, z = 0, f = 30, j = 0, i = 0, grafico = 0, k = 0;
+  float ph = setPHA, phmais = offPHA, phmenos = offPHA;
+  float linhaR = 0, linhaG = 0, linhaB = 0, soma = 0.0f, media = 0.0f, pht = 0;
   int16_t n;
   char buf[7];
-  float pht;
-  int f = 30;
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[27])));
   printHeader(buffer); //tabela_textos[27] = "GRAFICO DE PH DO AQUARIO"
@@ -447,9 +414,9 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
     myGLCD.printNumI(i, f, 193);
     f -= 20;
   }
-  myGLCD.print("0", 275, 193);
-  myGLCD.print("PH", 17, 18);
-  myGLCD.print("H", 290, 193);
+  myGLCD.print((char *)"0", 275, 193);
+  myGLCD.print((char *)"PH", 17, 18);
+  myGLCD.print((char *)"H", 290, 193);
 
   myGLCD.drawLine(40, 30, 40, 190); //eixo y
   myGLCD.drawLine(40, 190, 290, 190);  //eixo x
@@ -586,23 +553,12 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
 
 void PHRScreen()//----------------PH do reator --------------------------------------------tela =17
 {
-  float x, y, z;
-  float ph = setPHR;
-  float phmais = offPHR;
-  float phmenos = offPHR;
-  float linhaR;
-  float linhaG;
-  float linhaB;
-  int j = 0;
-  int i = 0;
-  int k = 0;
-  float soma = 0.0f; // soma dos valores de todos os elementos
-  float media = 0.0f; // média dos valores.
-  int grafico;
+  float x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, grafico = 0;
+  float ph = setPHR, phmais = offPHR, phmenos = offPHR;
+  float linhaR = 0, linhaG = 0, linhaB = 0;
+  float soma = 0.0f, media = 0.0f, pht = 0, f = 30;
   int16_t n;
   char buf[7];
-  float pht;
-  int f = 30;
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[28])));
   printHeader(buffer); //tabela_textos[28] = "GRAFICO DE PH DO REATOR DE CALCIO"
@@ -621,9 +577,9 @@ void PHRScreen()//----------------PH do reator ---------------------------------
     myGLCD.printNumI(i, f, 193);
     f -= 20;
   }
-  myGLCD.print("0", 275, 193);
-  myGLCD.print("PH", 17, 18);
-  myGLCD.print("H", 290, 193);
+  myGLCD.print((char *)"0", 275, 193);
+  myGLCD.print((char *)"PH", 17, 18);
+  myGLCD.print((char *)"H", 290, 193);
 
   myGLCD.drawLine(40, 30, 40, 190); //eixo y
   myGLCD.drawLine(40, 190, 290, 190);  //eixo x
@@ -758,23 +714,11 @@ void PHRScreen()//----------------PH do reator ---------------------------------
 
 void densidadeScreen()//----------------grafico de densidade --------------------------------------------tela =19
 {
-  float x, y, z;
-  float dens = setDEN;
-  float densmais = offDEN;
-  float densmenos = offDEN;
-  float linhaR;
-  float linhaG;
-  float linhaB;
-  int j = 0;
-  int i = 0;
-  int k = 0;
-  int soma = 0; // soma dos valores de todos os elementos
-  int media = 0; // média dos valores.
-  int grafico;
+  float x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, soma = 0, media = 0, grafico = 0, densidade = 0, f = 30;
+  float dens = setDEN, densmais = offDEN, densmenos = offDEN;
+  float linhaR = 0, linhaG = 0, linhaB = 0;
   int16_t n;
   char buf[7];
-  int densidade;
-  int f = 30;
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[29])));
   printHeader(buffer); //tabela_textos[29] = "GRAFICO DE DENSIDADE"
@@ -794,9 +738,9 @@ void densidadeScreen()//----------------grafico de densidade -------------------
     f -= 20;
   }
 
-  myGLCD.print("0", 285, 193);
-  myGLCD.print("DENS.", 12, 18);
-  myGLCD.print("H", 300, 193);
+  myGLCD.print((char *)"0", 285, 193);
+  myGLCD.print((char *)"DENS.", 12, 18);
+  myGLCD.print((char *)"H", 300, 193);
 
   myGLCD.drawLine(50, 30, 50, 190); //eixo y
   myGLCD.drawLine(50, 190, 300, 190);  //eixo x
@@ -931,4 +875,3 @@ void densidadeScreen()//----------------grafico de densidade -------------------
     file.close();
   }
 }
-#endif

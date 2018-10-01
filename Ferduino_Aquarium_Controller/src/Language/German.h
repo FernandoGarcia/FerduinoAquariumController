@@ -1,4 +1,3 @@
-#ifdef USE_TFT
 #ifdef GERMAN
 const char texto0[] PROGMEM = "ZUBRINGER"; // tabela_textos[0]
 const char texto1[] PROGMEM = "MENU 1";  // tabela_textos[1]
@@ -263,7 +262,7 @@ const char texto259[] PROGMEM = "DESLIGAR WAVEMAKER";// tabela_textos[259]
 const char texto260[] PROGMEM = "DURANTE";// tabela_textos[260]
 const char texto261[] PROGMEM = "(MINUTOS):";// tabela_textos[261]
 
-const char* const tabela_textos[] PROGMEM = 
+const char* const tabela_textos[] PROGMEM =
 {
   texto0, texto1, texto2, texto3, texto4, texto5, texto6, texto7,
   texto8, texto9, texto10, texto11, texto12, texto13, texto14, texto15,
@@ -309,7 +308,7 @@ const char* const tabela_textos_fase[] PROGMEM =
   "NEUMOND", // tabela_textos_fase[1]
   "HALBMOND", // tabela_textos_fase[2]
   "VOLLMOND",  // tabela_textos_fase[3]
-  "ABNEHMENDER MOND" // tabela_textos_fase[4]  
+  "ABNEHMENDER MOND" // tabela_textos_fase[4]
 };
 
 const char  nomecanal0[] PROGMEM = "";                  // nome_canal[0]
@@ -336,12 +335,11 @@ const char  nomecanal20[] PROGMEM = "STAERKE LED ROT:255 = 100%";
 const char  nomecanal21[] PROGMEM = "STAERKE LED VIOLETT: 255 = 100%";
 
 const char* const nome_canal[] PROGMEM =
-{ 
+{
   nomecanal0, nomecanal1, nomecanal2, nomecanal3, nomecanal4, nomecanal5,
   nomecanal6, nomecanal7, nomecanal8, nomecanal9, nomecanal10, nomecanal11,
   nomecanal12, nomecanal13, nomecanal14, nomecanal15, nomecanal16,nomecanal17,
   nomecanal18, nomecanal19, nomecanal20, nomecanal21
 };
 
-#endif
 #endif

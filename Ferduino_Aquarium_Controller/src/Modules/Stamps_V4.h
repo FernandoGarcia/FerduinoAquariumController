@@ -122,7 +122,7 @@ void check_parametro_densidade()
 {
   boolean done = false;
   byte holding;
-  char sensorstring[15];
+  char sensorstring[16];
 
   do {
     Open_channel(ec);

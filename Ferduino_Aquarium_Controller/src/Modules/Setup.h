@@ -9,7 +9,7 @@ void setup()
 #ifdef DEBUG //Do not change this line
   Serial.begin(38400); // Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
   Serial.flush();
-  Serial.println();
+  LOGLN();
 #endif //Do not change this line
 
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
@@ -55,9 +55,7 @@ void setup()
     myGLCD.print(buffer, CENTER, 115);
 #endif //Do not change this line
 
-#ifdef DEBUG
-    Serial.println(F("Formatting EEPROM..."));
-#endif
+    LOGLN(F("Formatting EEPROM..."));
 
     EEPROM.write(0, 222); // Indica que a EEPROM foi formatada por este programa
 
@@ -110,14 +108,12 @@ void setup()
   selecionar_SPI(SD_CARD);                         // Seleciona disposito SPI que será utilizado.
   while (!SD.begin(ChipSelect_SD, SPI_HALF_SPEED)) // Inicia a comunicação com o cartão SD.
   {
-#ifdef USE_TFT //Do not change this line    
+#ifdef USE_TFT //Do not change this line
     setFont(LARGE, 255, 0, 0, 0, 0, 0);
-    myGLCD.print("PLEASE INSERT A SD CARD.", CENTER, 115);
+    myGLCD.print((char *)"PLEASE INSERT A SD CARD.", CENTER, 115);
 #endif //Do not change this line
 
-#ifdef DEBUG //Do not change this line
-    Serial.println(F("Please insert a SD CARD"));
-#endif //Do not change this line
+    LOGLN(F("Please insert a SD CARD"));
   }
 
   t = rtc.getTime(); // Atualiza as variáveis que usam o RTC.
@@ -151,7 +147,7 @@ void setup()
 
 #ifdef ETHERNET_SHIELD // Do not change this line!
 
-#ifndef USE_ESP8266 // Do not change this line! 
+#ifndef USE_ESP8266 // Do not change this line!
   start_ethernet();
 
   MQTT.setServer("www.ferduino.com", 1883); // Do NOT change this URL!
@@ -166,7 +162,7 @@ void setup()
   ESP8266.wifiCb.attach(wifiCb);
   sincronizar();
 
-#endif // Do not change this line!  
+#endif // Do not change this line!
 
 #endif // Do not change this line!
 
@@ -178,7 +174,7 @@ void setup()
 #ifdef DEBUG //Do not change this line
   char buff[50];
   sprintf(buff, "\nTransmitting at %d Mhz...", FREQUENCY == RF12_433MHZ ? 433 : FREQUENCY == RF12_868MHZ ? 868 : 915);
-  Serial.println(buff);
+  LOGLN(buff);
 #endif // Do not change this line!
 #endif // Do not change this line!
 
@@ -189,7 +185,7 @@ void setup()
 
 #ifdef WATCHDOG // Do not change this line!
   wdt_enable(WDTO_8S);
-#endif // Do not change this line!  
+#endif // Do not change this line!
 
   randomSeed(millis()); // Referência para a função random().
   probabilidadeNuvem(); // Calcula a probabilidade de ocorrer nuvens.
@@ -201,17 +197,15 @@ void setup()
 #ifndef USE_ESP8266 //Do not change this line
 void start_ethernet()
 {
-  selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-#ifdef USE_DHCP //Do not change this line
-  Ethernet.begin(mac, SelectSlave_ETH); // Configuração do servidor.
-#else //Do not change this line
-  Ethernet.begin(mac, ip, dnsServer, gateway, subnet, SelectSlave_ETH); // Configuração do servidor.
-#endif //Do not change this line
+  selecionar_SPI(ETHER_CARD);     // Seleciona disposito SPI que será utilizado.
+  #ifdef USE_DHCP //Do not change this line
+  Ethernet.begin(mac, SelectSlave_ETH);       // Configuração do servidor.
+  #else //Do not change this line
+  Ethernet.begin(mac, ip, dnsServer, gateway, subnet, SelectSlave_ETH);       // Configuração do servidor.
+  #endif //Do not change this line
 
-#ifdef DEBUG //Do not change this line
-  Serial.print(F("Controller IP: "));
-  Serial.println(Ethernet.localIP());
-#endif //Do not change this line
+  LOG(F("Controller IP: "));
+  LOGLN(Ethernet.localIP());
 }
 #endif // Do not change this line!
 #endif // Do not change this line!
@@ -281,4 +275,3 @@ void configPins()
   myPinMode(skimmerPin, OUTPUT);            // Pino 87;
 #endif // Do not change this line!
 }
-

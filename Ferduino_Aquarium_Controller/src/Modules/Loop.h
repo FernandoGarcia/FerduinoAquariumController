@@ -367,82 +367,70 @@ void loop()
     {
       suavizar += 0.1;
     }
-#ifdef DEBUG //Do not change this line
-    /*  Serial.println();
-       Serial.print(F("Day of week: ");
-       Serial.println(rtc.getDOWStr());
+    /*  LOGLN();
+       LOG(F("Day of week: ");
+       LOGLN(rtc.getDOWStr());
 
-       Serial.print(F("Time: ");
-       Serial.println(rtc.getTimeStr(FORMAT_LONG));*/
+       LOG(F("Time: ");
+       LOGLN(rtc.getTimeStr(FORMAT_LONG));
+     */
 
-    Serial.print(F("Free memory: "));
-    Serial.println(FreeRam());
+    LOG(F("Free memory: "));
+    LOGLN(FreeRam());
     /*
-      Serial.print(F("Sensor 1: "));
-      Serial.println(myAnalogRead(A0));
+       LOG(F("Sensor 1: "));
+       LOGLN(myAnalogRead(A0));
 
-      Serial.print(F("Sensor 2: ");
-      Serial.println(myAnalogRead(A1));
+       LOG(F("Sensor 2: ");
+       LOGLN(myAnalogRead(A1));
 
-      Serial.print(F("Sensor 3: "));
-      Serial.println(myAnalogRead(A2));
+       LOG(F("Sensor 3: "));
+       LOGLN(myAnalogRead(A2));
 
-      Serial.print(F("Sensor 4: "));
-      Serial.println(myAnalogRead(A3));
+       LOG(F("Sensor 4: "));
+       LOGLN(myAnalogRead(A3));
 
-      Serial.print(F("Sensor 5: "));
-      Serial.println(myAnalogRead(A4));
+       LOG(F("Sensor 5: "));
+       LOGLN(myAnalogRead(A4));
 
-      Serial.print(F("Sensor 6: "));
-      Serial.println(myAnalogRead(A5));
+       LOG(F("Sensor 6: "));
+       LOGLN(myAnalogRead(A5));
 
-      Serial.print(F("marcadoriniciotpa: "));
-      Serial.println(marcadoriniciotpa);
+       LOG(F("marcadoriniciotpa: "));
+       LOGLN(marcadoriniciotpa);
 
-      Serial.print(F("shiftedmillis: "));
-      Serial.println(shiftedmillis);
+       LOG(F("shiftedmillis: "));
+       LOGLN(shiftedmillis);
 
-      Serial.print(F("Duration for stage: "));
-      Serial.print(tempo/60000);
-      Serial.println(F(" minutes"));
+       LOG(F("Duration for stage: "));
+       LOG(tempo/60000);
+       LOGLN(F(" minutes"));
 
-      if (digitalRead(bomba1Pin)==HIGH)
-      {
-      Serial.println(F("Pump 1: ON"));
-      }
-      else
-      {
-      Serial.println(F("Pump 1: OFF"));
-      }
-      if (digitalRead(bomba2Pin)==HIGH)
-      {
-      Serial.println(F("Pump 2: ON"));
-      }
-      else
-      {
-      Serial.println(F("Pump 2: OFF"));
-      }
-      if (digitalRead(bomba3Pin)==HIGH)
-      {
-      Serial.println(F("Pump 3: ON"));
-      }
-      else
-      {
-      Serial.println(F("Pump 3: OFF"));
-      }*/
-#endif //Do not change this line
+       if (digitalRead(bomba1Pin)==HIGH)
+       {
+       LOGLN(F("Pump 1: ON"));
+       }
+       else
+       {
+       LOGLN(F("Pump 1: OFF"));
+       }
+       if (digitalRead(bomba2Pin)==HIGH)
+       {
+       LOGLN(F("Pump 2: ON"));
+       }
+       else
+       {
+       LOGLN(F("Pump 2: OFF"));
+       }
+       if (digitalRead(bomba3Pin)==HIGH)
+       {
+       LOGLN(F("Pump 3: ON"));
+       }
+       else
+       {
+       LOGLN(F("Pump 3: OFF"));
+       }*/
     previousMillis = millis();
   }
 
 } //-------------------end of main loop
-
-
-
-
-
-
-
-
-
-
-

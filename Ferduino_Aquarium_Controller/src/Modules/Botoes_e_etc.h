@@ -439,18 +439,18 @@ void clockScreen()
   myGLCD.setFont(BigFont);
 
   myGLCD.print(rtc.getDOWStr(FORMAT_SHORT), 99, 170);
-  myGLCD.print(",", 150, 170);
+  myGLCD.print((char *)",", 150, 170);
 
   if (t.date < 10)
   {
-    myGLCD.print("0", 169, 170);
+    myGLCD.print((char *)"0", 169, 170);
     myGLCD.printNumI(t.date, 185, 170);
   }
   else
   {
     myGLCD.printNumI(t.date, 169, 170);
   }
-  myGLCD.print("DE", 211, 170);
+  myGLCD.print((char *)"DE", 211, 170);
   myGLCD.print(rtc.getMonthStr(FORMAT_SHORT), 253, 170);
   firstTime = false;
 }

@@ -1,6 +1,6 @@
 //Write CR LF to a file
 
-void writeCRLF(SdFile& f) 
+void writeCRLF(SdFile& f)
 {
   f.write((uint8_t*)"\r\n", 2);
 }
@@ -9,10 +9,8 @@ void logtempgraf() //Grava dados no SD CARD para gerar  grafico de temperatura.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
-    EEPROM.write(688, t.date); 
+    EEPROM.write(688, t.date);
   }
-
-  selecionar_SPI(SD_CARD);
 
   if(file.open("LOGTDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
@@ -41,13 +39,11 @@ void logtempgraf() //Grava dados no SD CARD para gerar  grafico de temperatura.
 }
 
 void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquário.
-{ 
+{
   if(NumMins(t.hour,t.min) == 1)
   {
-    EEPROM.write(689, t.date); 
+    EEPROM.write(689, t.date);
   }
-
-  selecionar_SPI(SD_CARD);
 
   if(file.open("LOGPDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
@@ -58,7 +54,7 @@ void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquári
       writeCRLF(file);
     }
     else
-    {   
+    {
       file.print(PHA);
       file.write((uint8_t*)"\0", 1);
       writeCRLF(file);
@@ -71,17 +67,15 @@ void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquári
     {
       file.remove();
     }
-  } 
+  }
 }
 
 void logphrgraf() //Grava dados no SD CARD para gerar  gráfico de PH do reator de calcio.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
-    EEPROM.write(690, t.date); 
+    EEPROM.write(690, t.date);
   }
-
-  selecionar_SPI(SD_CARD);
 
   if(file.open("LOGRDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
@@ -113,13 +107,11 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
-    EEPROM.write(691, t.date); 
+    EEPROM.write(691, t.date);
   }
 
-  selecionar_SPI(SD_CARD);
-
   if(file.open("LOGODIA.TXT", O_CREAT | O_APPEND | O_WRITE))
-  {   
+  {
     if ((ORP<=100) || (tempC>999))
     {
       file.print("000");
@@ -141,19 +133,17 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
     {
       file.remove();
     }
-  } 
+  }
 }
 
 void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
-    EEPROM.write(692, t.date); 
+    EEPROM.write(692, t.date);
   }
 
-  selecionar_SPI(SD_CARD);
-
-  if(file.open("LOGDDIA.TXT", O_CREAT | O_APPEND | O_WRITE))   
+  if(file.open("LOGDDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
     if( (DEN<1000) || (DEN>9999))
     {
@@ -162,7 +152,7 @@ void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
       writeCRLF(file);
     }
     else
-    {    
+    {
 
       file.print(DEN);
       file.write((uint8_t*)"\0", 1);
@@ -177,7 +167,7 @@ void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
     {
       file.remove();
     }
-  } 
+  }
 }
 
 void check_arquivo_temp_agua()
@@ -187,8 +177,6 @@ void check_arquivo_temp_agua()
   int contador = 0;
 
   byte k = EEPROM.read(688);
-
-  selecionar_SPI(SD_CARD);
 
   if(k != t.date)
   {
@@ -214,7 +202,7 @@ void check_arquivo_temp_agua()
         file.print("00.00");
         file.write((uint8_t*)"\0", 1);
         writeCRLF(file);
-      } 
+      }
     }
     file.close();
   }
@@ -227,8 +215,6 @@ void check_arquivo_ph_agua()
   int contador = 0;
 
   byte k = EEPROM.read(689);
-
-  selecionar_SPI(SD_CARD);
 
   if(k != t.date)
   {
@@ -254,7 +240,7 @@ void check_arquivo_ph_agua()
         file.print("0.00");
         file.write((uint8_t*)"\0", 1);
         writeCRLF(file);
-      } 
+      }
     }
     file.close();
   }
@@ -267,8 +253,6 @@ void check_arquivo_ph_reator()
   int contador = 0;
 
   byte k = EEPROM.read(690);
-
-  selecionar_SPI(SD_CARD);
 
   if(k != t.date)
   {
@@ -294,7 +278,7 @@ void check_arquivo_ph_reator()
         file.print("0.00");
         file.write((uint8_t*)"\0", 1);
         writeCRLF(file);
-      } 
+      }
     }
     file.close();
   }
@@ -307,8 +291,6 @@ void check_arquivo_orp()
   int contador = 0;
 
   byte k = EEPROM.read(691);
-
-  selecionar_SPI(SD_CARD);
 
   if(k != t.date)
   {
@@ -334,7 +316,7 @@ void check_arquivo_orp()
         file.print("000");
         file.write((uint8_t*)"\0", 1);
         writeCRLF(file);
-      } 
+      }
     }
     file.close();
   }
@@ -347,8 +329,6 @@ void check_arquivo_densidade()
   int contador = 0;
 
   byte k = EEPROM.read(692);
-
-  selecionar_SPI(SD_CARD);
 
   if(k != t.date)
   {
@@ -375,9 +355,8 @@ void check_arquivo_densidade()
         file.print("0000");
         file.write((uint8_t*)"\0", 1);
         writeCRLF(file);
-      } 
+      }
     }
     file.close();
   }
 }
-

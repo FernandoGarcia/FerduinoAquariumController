@@ -1,4 +1,3 @@
-#ifdef USE_TFT
 #ifdef FRENCH
 const char texto0[] PROGMEM = "ALIMENTEUR"; // tabela_textos[0]
 const char texto1[] PROGMEM = "MENU 1";  // tabela_textos[1]
@@ -199,7 +198,7 @@ const char texto195[] PROGMEM = "RPE:"; // tabela_textos[195]
 const char texto196[] PROGMEM = "BAS!"; // tabela_textos[196]
 const char texto197[] PROGMEM = "NORMAL"; // tabela_textos[197]
 const char texto198[] PROGMEM = "J"; // tabela_textos[198] // Quinta
-const char texto199[] PROGMEM = "V"; //  tabela_textos[199] // Sexta 
+const char texto199[] PROGMEM = "V"; //  tabela_textos[199] // Sexta
 const char texto200[] PROGMEM = "S"; // tabela_textos[200] // Sábado
 const char texto201[] PROGMEM = "CONFIG. LEDS";// tabela_textos[201]
 const char texto202[] PROGMEM = "CONFIGURATION LEDS"; // tabela_textos[202]
@@ -263,7 +262,7 @@ const char texto259[] PROGMEM = "DEBRANCHER WAVEMAKER";// tabela_textos[259]
 const char texto260[] PROGMEM = "COURS";// tabela_textos[260]
 const char texto261[] PROGMEM = "(MINUTES):";// tabela_textos[261]
 
-const char* const tabela_textos[] PROGMEM = 
+const char* const tabela_textos[] PROGMEM =
 {
   texto0, texto1, texto2, texto3, texto4, texto5, texto6, texto7,
   texto8, texto9, texto10, texto11, texto12, texto13, texto14, texto15,
@@ -275,24 +274,24 @@ const char* const tabela_textos[] PROGMEM =
   texto56, texto57, texto58, texto59, texto60, texto61, texto62, texto63,
   texto64, texto65, texto66, texto67, texto68, texto69, texto70, texto71,
   texto72, texto73, texto74, texto75, texto76, texto77, texto78, texto79,
-  texto80, texto81, texto82, texto83, texto84, texto85, texto86, texto87, 
+  texto80, texto81, texto82, texto83, texto84, texto85, texto86, texto87,
   texto88, texto89, texto90, texto91, texto92, texto93, texto94, texto95,
   texto96, texto97, texto98, texto99, texto100, texto101, texto102, texto103,
   texto104, texto105, texto106, texto107, texto108, texto109, texto110,
   texto111, texto112, texto113, texto114, texto115, texto116, texto117,
-  texto118, texto119, texto120, texto121, texto122, texto123, texto124, 
-  texto125, texto126, texto127, texto128, texto129, texto130, texto131,  
+  texto118, texto119, texto120, texto121, texto122, texto123, texto124,
+  texto125, texto126, texto127, texto128, texto129, texto130, texto131,
   texto132, texto133, texto134, texto135, texto136, texto137, texto138,
   texto139, texto140, texto141, texto142, texto143, texto144, texto145,
   texto146, texto147, texto148, texto149, texto150, texto151, texto152,
   texto153, texto154, texto155, texto156, texto157, texto158, texto159,
-  texto160, texto161, texto162, texto163, texto164, texto165, texto166, 
-  texto167, texto168, texto169, texto170, texto171, texto172, texto173, 
+  texto160, texto161, texto162, texto163, texto164, texto165, texto166,
+  texto167, texto168, texto169, texto170, texto171, texto172, texto173,
   texto174, texto175, texto176, texto177, texto178, texto179, texto180,
   texto181, texto182, texto183, texto184, texto185, texto186, texto187,
-  texto188, texto189, texto190, texto191, texto192, texto193, texto194, 
-  texto195, texto196, texto197, texto198, texto199, texto200, texto201, 
-  texto202, texto203, texto204, texto205, texto206, texto207, texto208, 
+  texto188, texto189, texto190, texto191, texto192, texto193, texto194,
+  texto195, texto196, texto197, texto198, texto199, texto200, texto201,
+  texto202, texto203, texto204, texto205, texto206, texto207, texto208,
   texto209, texto210, texto211, texto212, texto213, texto214, texto215,
   texto216, texto217, texto218, texto219, texto220, texto221, texto222,
   texto223, texto224, texto225, texto226, texto227, texto228, texto229,
@@ -309,18 +308,18 @@ const char* const tabela_textos_fase[] PROGMEM =
 "NOUV. LUNE", // tabela_textos_fase[1]
 "LUNE MONT.", // tabela_textos_fase[2]
 "PLEINE LUNE",  // tabela_textos_fase[3]
-"LUNE DESC." // tabela_textos_fase[4]  
+"LUNE DESC." // tabela_textos_fase[4]
 };
 
 const char  nomecanal0[] PROGMEM = "";                  // nome_canal[0]
-const char  nomecanal1[] PROGMEM = "BLC";               // nome_canal[1] = Branco 
+const char  nomecanal1[] PROGMEM = "BLC";               // nome_canal[1] = Branco
 const char  nomecanal2[] PROGMEM = "BLE";               // nome_canal[2] = Azul
-const char  nomecanal3[] PROGMEM = "BLR";               // nome_canal[3] = Azul Royal 
+const char  nomecanal3[] PROGMEM = "BLR";               // nome_canal[3] = Azul Royal
 const char  nomecanal4[] PROGMEM = "ROU";               // nome_canal[4] = Vermelho
 const char  nomecanal5[] PROGMEM = "VIO";               // nome_canal[5] = Violeta
-const char  nomecanal6[] PROGMEM = "BLANC";               // nome_canal[6] = Branco 
+const char  nomecanal6[] PROGMEM = "BLANC";               // nome_canal[6] = Branco
 const char  nomecanal7[] PROGMEM = "BLEU";               // nome_canal[7] = Azul
-const char  nomecanal8[] PROGMEM = "BLEU ROYAL";               // nome_canal[8] = Azul Royal 
+const char  nomecanal8[] PROGMEM = "BLEU ROYAL";               // nome_canal[8] = Azul Royal
 const char  nomecanal9[] PROGMEM = "VERT";               // nome_canal[9] = Vermelho
 const char  nomecanal10[] PROGMEM = "VIOLET";               // nome_canal[10] = Violeta
 const char  nomecanal11[] PROGMEM = "CHOISIR UNE COULEUR";
@@ -336,12 +335,11 @@ const char  nomecanal20[] PROGMEM = "PUISSANCE DES LEDS VERTES:255 = 100%";
 const char  nomecanal21[] PROGMEM = "PUISSANCE DES LEDS VIOLETES: 255 = 100%";
 
 
-const char* const nome_canal[] PROGMEM = 
-{ 
+const char* const nome_canal[] PROGMEM =
+{
   nomecanal0, nomecanal1, nomecanal2, nomecanal3, nomecanal4, nomecanal5,
   nomecanal6, nomecanal7, nomecanal8, nomecanal9, nomecanal10, nomecanal11,
   nomecanal12, nomecanal13, nomecanal14, nomecanal15, nomecanal16,nomecanal17,
   nomecanal18, nomecanal19, nomecanal20, nomecanal21
 };
-#endif
 #endif

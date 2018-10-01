@@ -4,9 +4,7 @@ void checkNuvemRelampago()
   {
     executandoNuvem = false;
     inicioNuvem = false;
-#ifdef DEBUG
-    Serial.println(F("Fim da nuvem e relampago"));
-#endif
+    LOGLN(F("Fim da nuvem e relampago"));
   }
 
   if ((millis() - millis_nuvem) < (duracaoNuvem * 60000)) // Apenas nuvem
@@ -138,13 +136,11 @@ void checkTempoRampa()
 
 void checkRampaNuvem()
 {
-  byte pwmAtualLED[NUMERO_CANAIS] = {wled_out, bled_out, rbled_out, rled_out, uvled_out, moonled_out} ; // Branco, azul, azul royal, vermelho, violeta, luz noturna
+  byte pwmAtualLED[NUMERO_CANAIS] = {wled_out, bled_out, rbled_out, rled_out, uvled_out, moonled_out};  // Branco, azul, azul royal, vermelho, violeta, luz noturna
 
   if (inicioNuvem == true)
   {
-#ifdef DEBUG
-    Serial.println(F("Executando Nuvem"));
-#endif
+    LOGLN(F("Executando Nuvem"));
     inicioNuvem = false;
     for (byte i = 0; i < NUMERO_CANAIS; i++)
     {
@@ -178,7 +174,7 @@ void checkRampaNuvem()
     if (pwmAtualLED[i] > MIN_PWM_NUVEM)
     {
       /* if (desativarNuvemCanal[i] == true)
-        {*/
+         {*/
       if (passo[i] == 0)
       {
         if (pwm_nuvem[i] >= int(pwmAtualLED[i] * 0.2))
@@ -222,16 +218,12 @@ void probabilidadeNuvem()
   if (aleatorio >= probNuvemRelampago[0]) // [0]= nuvem, [1] = relâmpago
   {
     haveraNuvem = false;
-#ifdef DEBUG
-    Serial.println(F("Nao havera nuvem"));
-#endif
+    LOGLN(F("Nao havera nuvem"));
   }
   else
   {
     haveraNuvem = true;
-#ifdef DEBUG
-    Serial.println(F("Havera nuvem"));
-#endif
+    LOGLN(F("Havera nuvem"));
   }
 
   if ((t.date % nuvemCadaXdias) != 0)
@@ -243,34 +235,29 @@ void probabilidadeNuvem()
   {
     quantNuvens = random(quantDuracaoMinMaxNuvem[0], quantDuracaoMinMaxNuvem[1] + 1); // Quant. mín., quant. máx., duração min., duração máx.
 
-#ifdef DEBUG
-    Serial.print(F("Duracao nuvem: "));
-    Serial.println(duracaoNuvem);
+    LOG(F("Duracao nuvem: "));
+    LOGLN(duracaoNuvem);
     int hora;
     int minuto;
-#endif
 
     for (int i = 1; i <= quantNuvens; i++)
     {
       horaNuvem[i] = random(1, 1440);
 
-#ifdef DEBUG
-
       minuto = horaNuvem[i] % 60;
       hora = (horaNuvem[i] - minuto) / 60;
 
-      Serial.print(F("Hora Nuvem "));//
-      Serial.print(i);
-      Serial.print(F(": "));
-      Serial.print(hora);
-      Serial.print(F(":"));
-      Serial.println(minuto);
+      LOG(F("Hora Nuvem "));//
+      LOG(i);
+      LOG(F(": "));
+      LOG(hora);
+      LOG(F(":"));
+      LOGLN(minuto);
 
       if (i == (quantNuvens))
       {
-        Serial.println();
+        LOGLN();
       }
-#endif
     }
 
     aleatorio = random(0, 100);
@@ -278,22 +265,15 @@ void probabilidadeNuvem()
     if ((aleatorio >= probNuvemRelampago[1]) || (haveraNuvem == false)) // [0]= nuvem, [1] = relâmpago
     {
       haveraRelampago = false;
-#ifdef DEBUG
-      Serial.println(F("Nao havera relampago"));
-#endif
+      LOGLN(F("Nao havera relampago"));
     }
     else
     {
       haveraRelampago = true;
-#ifdef DEBUG
-      Serial.println(F("Havera relampago"));
-#endif
+      LOGLN(F("Havera relampago"));
     }
 
-#ifdef DEBUG
-    Serial.print(F("Duracao Relampago: "));
-    Serial.println(duracaoRelampago);
-#endif
+    LOG(F("Duracao Relampago: "));
+    LOGLN(duracaoRelampago);
   }
 }
-

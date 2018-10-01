@@ -8,45 +8,35 @@ void RF_LED()
   theData_led.channel_violet = uvled_out;
   theData_led.channel_moon = moonled_out;
 
-#ifdef DEBUG
-  Serial.print(F("Sending command to LED ("));
-  Serial.print(sizeof(theData_led));
-  Serial.print(F(" bytes)."));
-#endif
+  LOG(F("Sending command to LED ("));
+  LOG(sizeof(theData_led));
+  LOG(F(" bytes)."));
+
   //requestACK_LED = !requestACK_LED; //request every other time
 
   radio.Send(TARGET_ID_LED, (const void*)(&theData_led), sizeof(theData_led), requestACK_LED);
   if (requestACK_LED)
   {
-#ifdef DEBUG
-    Serial.print(F(" - Waiting for ACK..."));
-#endif
+    LOG(F(" - Waiting for ACK..."));
+
     if (waitForAck(TARGET_ID_LED))
     {
-#ifdef DEBUG
-      Serial.print(F("OK!"));
-#endif
+      LOG(F("OK!"));
     }
     else
     {
-#ifdef DEBUG
-      Serial.print(F(" Nothing."));
-#endif
+      LOG(F(" Nothing."));
       nothing++;
 
       if (nothing == limite_sem_resposta)
       {
-#ifdef DEBUG
-        Serial.println();
-        Serial.print(F("Resetting"));
-#endif
+        LOGLN();
+        LOG(F("Resetting"));
         delay(9000);
       }
     }
   }
-#ifdef DEBUG
-  Serial.println();
-#endif
+  LOGLN();
 }
 #endif
 
@@ -58,9 +48,7 @@ void RF_RELAY()
   for (byte i = 0; i < 16; i++)
   {
     //pins_status[i] = int(PCF8575.digitalRead(i));
-#ifdef DEBUG
-    Serial.println(PCF8575.digitalRead(i) ? "HIGH" : "LOW");
-#endif
+    LOGLN(PCF8575.digitalRead(i) ? "HIGH" : "LOW");
     pins_status[i] *= 255;
   }
 
@@ -81,46 +69,34 @@ void RF_RELAY()
   theData_relay.relay_14 = pins_status[14];
   theData_relay.relay_15 = pins_status[15];
 
-#ifdef DEBUG
-  Serial.print(F("Sending command to relay ("));
-  Serial.print(sizeof(theData_relay));
-  Serial.print(F(" bytes)."));
-#endif
+  LOG(F("Sending command to relay ("));
+  LOG(sizeof(theData_relay));
+  LOG(F(" bytes)."));
   //requestACK_RELAY = !requestACK_RELAY; //request every other time
 
   radio.Send(TARGET_ID_RELAY, (const void*)(&theData_relay), sizeof(theData_relay), requestACK_RELAY);
   if (requestACK_RELAY)
   {
-#ifdef DEBUG
-    Serial.print(F(" - Waiting for ACK..."));
-#endif
+    LOG(F(" - Waiting for ACK..."));
+
     if (waitForAck(TARGET_ID_RELAY))
     {
-#ifdef DEBUG
-      Serial.print(F("OK!"));
-#endif
+      LOG(F("OK!"));
     }
     else
     {
-#ifdef DEBUG
-      Serial.print(F(" Nothing."));
-#endif
-
+      LOG(F(" Nothing."));
       nothing++;
+
       if (nothing == limite_sem_resposta)
       {
-#ifdef DEBUG
-        Serial.println();
-        Serial.print(F("Resetting"));
-#endif
+        LOGLN();
+        LOG(F("Resetting"));
         delay(9000);
       }
     }
   }
-#ifdef DEBUG
-  Serial.println();
-#endif
-
+  LOGLN();
 }
 #endif
 

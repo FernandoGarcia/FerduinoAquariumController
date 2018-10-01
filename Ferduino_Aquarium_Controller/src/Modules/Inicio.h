@@ -1,4 +1,3 @@
-#ifdef USE_TFT
 //---------------------------------------Tela inicial ----------------------------------------------tela =0
 void mainScreen(boolean refreshAll = false)
 {
@@ -13,7 +12,7 @@ void mainScreen(boolean refreshAll = false)
   {
     dia = t.date;
     ano = t.year;
-    
+
     drawFillRect(98, 213, 235, 226, 0, 0, 0);
 
     myGLCD.fillRect(10, 226, 314, 239); // Apaga fase lunar
@@ -21,9 +20,9 @@ void mainScreen(boolean refreshAll = false)
     setFont(SMALL, 255, 255, 0, 0, 0, 0);
     myGLCD.print(rtc.getDOWStr(FORMAT_LONG), 10, 227);
     myGLCD.printNumI(t.date, 75, 227);
-    myGLCD.print("DE", 95, 227);
+    myGLCD.print((char *)"DE", 95, 227);
     myGLCD.print(rtc.getMonthStr(FORMAT_LONG), 125, 227);
-    myGLCD.print("DE", 205, 227);
+    myGLCD.print((char *)"DE", 205, 227);
     myGLCD.printNumI(t.year, 225, 227);
 
     float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
@@ -35,7 +34,7 @@ void mainScreen(boolean refreshAll = false)
 
     if ((lunarCycle * 100) < 0) //Print % of Full to LCD
     {
-      myGLCD.print(" 0.00", 240, 213);
+      myGLCD.print((char *)" 0.00", 240, 213);
     }
     else
     {
@@ -58,7 +57,7 @@ void mainScreen(boolean refreshAll = false)
 
     myGLCD.setColor(192, 236, 255);
 
-    myGLCD.print("100", 24, 20);
+    myGLCD.print((char *)"100", 24, 20);
 
     for (int i = 0; i < 90; i += 10)
     {
@@ -66,7 +65,7 @@ void mainScreen(boolean refreshAll = false)
       offset += 11;
     }
 
-    myGLCD.print("0", 40, 130);
+    myGLCD.print((char *)"0", 40, 130);
 
     myGLCD.setColor(255, 255, 255);
 
@@ -138,28 +137,28 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.drawCircle(369, 11, 2);                  // Unidade t. dissipador
 
 #ifdef USE_FAHRENHEIT
-    myGLCD.print("F", 372, 14);
+    myGLCD.print((char *)"F", 372, 14);
 #else
-    myGLCD.print("C", 372, 14);
+    myGLCD.print((char *)"C", 372, 14);
 #endif
 
     myGLCD.drawCircle(367, 25, 2);                  // Unidade t. água
 
 #ifdef USE_FAHRENHEIT
-    myGLCD.print("F", 370, 28);                     // Unidade t. água
+    myGLCD.print((char *)"F", 370, 28);                     // Unidade t. água
 #else
-    myGLCD.print("C", 370, 28);                     // Unidade t. água
+    myGLCD.print((char *)"C", 370, 28);                     // Unidade t. água
 #endif
 
-    myGLCD.print("G/L", 332, 70);                   // Unidade densidade
-    myGLCD.print("MV", 280, 84);                    // Unidade ORP
+    myGLCD.print((char *)"G/L", 332, 70);                   // Unidade densidade
+    myGLCD.print((char *)"MV", 280, 84);                    // Unidade ORP
 
     myGLCD.drawCircle(369, 192, 2);                  // Unidade t. ambiente
-    
+
 #ifdef USE_FAHRENHEIT
-    myGLCD.print("F", 370, 195);                    // Unidade t. ambiente
+    myGLCD.print((char *)"F", 370, 195);                    // Unidade t. ambiente
 #else
-    myGLCD.print("C", 370, 195);                    // Unidade t. ambiente
+    myGLCD.print((char *)"C", 370, 195);                    // Unidade t. ambiente
 #endif
 
 
@@ -251,10 +250,10 @@ void mainScreen(boolean refreshAll = false)
 
     offset = map(ledLevel, 100, 0, 28, 137);
 
-    myGLCD.print(":", 152, 144);
+    myGLCD.print((char *)":", 152, 144);
     myGLCD.fillRect(59, offset, 79, 137);
     myGLCD.print(String(ledLevel), 160, 144);
-    myGLCD.print("%", 186, 144);
+    myGLCD.print((char *)"%", 186, 144);
 
     drawFillRect(59, offset - 1, 79, 27, 0, 0, 0);
   }
@@ -271,10 +270,10 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 128, 156); // nome_canal[2] = "AZU"
 
     offset = map(ledLevel, 100, 0, 28, 137);
-    myGLCD.print(":", 152, 156);
+    myGLCD.print((char *)":", 152, 156);
     myGLCD.fillRect(85, offset, 105, 137);
     myGLCD.print(String(ledLevel), 160, 156);
-    myGLCD.print("%", 186, 156);
+    myGLCD.print((char *)"%", 186, 156);
 
     drawFillRect(85, offset - 1, 105, 27, 0, 0, 0);
   }
@@ -291,10 +290,10 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 128, 168); // nome_canal[3] = "AZR"
 
     offset = map(ledLevel, 100, 0, 28, 137);
-    myGLCD.print(":", 152, 168);
+    myGLCD.print((char *)":", 152, 168);
     myGLCD.fillRect(111, offset, 131, 137);
     myGLCD.print(String(ledLevel), 160, 168);
-    myGLCD.print("%", 186, 168);
+    myGLCD.print((char *)"%", 186, 168);
 
     drawFillRect(111, offset - 1, 131, 27, 0, 0, 0);
   }
@@ -311,10 +310,10 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 128, 180); // nome_canal[4] = "VER"
 
     offset = map(ledLevel, 100, 0, 28, 137);
-    myGLCD.print(":", 152, 180);
+    myGLCD.print((char *)":", 152, 180);
     myGLCD.fillRect(137, offset, 157, 137);
     myGLCD.print(String(ledLevel), 160, 180);
-    myGLCD.print("%", 186, 180);
+    myGLCD.print((char *)"%", 186, 180);
 
     drawFillRect(137, offset - 1, 157, 27, 0, 0, 0); // Apaga barra anterior
   }
@@ -331,10 +330,10 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 128, 192); // nome_canal[5] = "VIO"
 
     offset = map(ledLevel, 100, 0, 28, 137);
-    myGLCD.print(":", 152, 192);
+    myGLCD.print((char *)":", 152, 192);
     myGLCD.fillRect(163, offset, 183, 137);
     myGLCD.print(String(ledLevel), 160, 192);
-    myGLCD.print("%", 186, 192);
+    myGLCD.print((char *)"%", 186, 192);
 
     drawFillRect(163, offset - 1, 183, 27, 0, 0, 0); // Apaga barra anterior
   }
@@ -397,52 +396,52 @@ void mainScreen(boolean refreshAll = false)
   if (bitRead(status_parametros, 0) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 279, 98);           // Chiller ligado
+    myGLCD.print((char *)"ON", 279, 98);           // Chiller ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 279, 98);          // Chiller desligado
+    myGLCD.print((char *)"OFF", 279, 98);          // Chiller desligado
   }
   if (bitRead(status_parametros, 1) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 294, 112);           // Aquecedor ligado
+    myGLCD.print((char *)"ON", 294, 112);           // Aquecedor ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 294, 112);          // Aquecedor desligado
+    myGLCD.print((char *)"OFF", 294, 112);          // Aquecedor desligado
   }
   if (bitRead(status_parametros, 5) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 270, 126);           // Reator ligado
+    myGLCD.print((char *)"ON", 270, 126);           // Reator ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 270, 126);          // Reator desligado
+    myGLCD.print((char *)"OFF", 270, 126);          // Reator desligado
   }
   if (bitRead(status_parametros, 7) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 270, 140);           // Ozonio ligado
+    myGLCD.print((char *)"ON", 270, 140);           // Ozonio ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 270, 140);          // ozonio desligado
+    myGLCD.print((char *)"OFF", 270, 140);          // ozonio desligado
   }
   if (bitRead(Status, 1) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 294, 154);           // Reposição ligada
+    myGLCD.print((char *)"ON", 294, 154);           // Reposição ligada
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 294, 154);          // Reposição desligada
+    myGLCD.print((char *)"OFF", 294, 154);          // Reposição desligada
   }
   if (nivel_status1 == true)
   {
@@ -459,12 +458,12 @@ void mainScreen(boolean refreshAll = false)
   if ((bitRead(tpa_status, 1) == true) && (bitRead(tpa_status, 2) == false))
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 250, 182);           // TPA em andamento
+    myGLCD.print((char *)"ON", 250, 182);           // TPA em andamento
   }
   else if ((bitRead(tpa_status, 1) == false) && (bitRead(tpa_status, 2) == false))
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 250, 182);           // TPA não esta em andamento
+    myGLCD.print((char *)"OFF", 250, 182);           // TPA não esta em andamento
   }
   if (bitRead(tpa_status, 2) == true)
   {
@@ -475,53 +474,53 @@ void mainScreen(boolean refreshAll = false)
   if (bitRead(temporizador_status, 1) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 80, 144);           // Timer 1 ligado
+    myGLCD.print((char *)"ON", 80, 144);           // Timer 1 ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 80, 144);          // Timer 1 desligado
+    myGLCD.print((char *)"OFF", 80, 144);          // Timer 1 desligado
   }
 
   if (bitRead(temporizador_status, 2) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 80, 156);           // Timer 2 ligado
+    myGLCD.print((char *)"ON", 80, 156);           // Timer 2 ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 80, 156);          // Timer 2 desligado
+    myGLCD.print((char *)"OFF", 80, 156);          // Timer 2 desligado
   }
   if (bitRead(temporizador_status, 3) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 80, 168);           // Timer 3 ligado
+    myGLCD.print((char *)"ON", 80, 168);           // Timer 3 ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 80, 168);          // Timer 3 desligado
+    myGLCD.print((char *)"OFF", 80, 168);          // Timer 3 desligado
   }
   if (bitRead(temporizador_status, 4) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 80, 180);           // Timer 4 ligado
+    myGLCD.print((char *)"ON", 80, 180);           // Timer 4 ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 80, 180);          // Timer 4 desligado
+    myGLCD.print((char *)"OFF", 80, 180);          // Timer 4 desligado
   }
   if (bitRead(temporizador_status, 5) == true)
   {
     myGLCD.setColor(0, 130, 255);
-    myGLCD.print("ON", 80, 192);           // Timer 5 ligado
+    myGLCD.print((char *)"ON", 80, 192);           // Timer 5 ligado
   }
   else
   {
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print("OFF", 80, 192);          // Timer 5 desligado
+    myGLCD.print((char *)"OFF", 80, 192);          // Timer 5 desligado
   }
   if (temperatura_alta == true)
   {
@@ -536,4 +535,3 @@ void mainScreen(boolean refreshAll = false)
     myGLCD.print(buffer, 58, 90);          // Alerta de que a temperatura esteve alta para os LEDS.
   }
 }
-#endif
