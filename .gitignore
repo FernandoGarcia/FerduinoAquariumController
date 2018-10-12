@@ -218,7 +218,6 @@ pip-log.txt
 */.piolibdeps
 */.clang_complete
 */.gcc-flags.json
-*/.travis.yml
 
 
 Bibliotecas/readme.txt
