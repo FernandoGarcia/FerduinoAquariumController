@@ -1,3 +1,4 @@
+#pragma once
 #ifdef ENGLISH
 const char texto0[] PROGMEM = "FEEDER";        // tabela_textos[0]
 const char texto1[] PROGMEM = "MENU 1";  // tabela_textos[1]

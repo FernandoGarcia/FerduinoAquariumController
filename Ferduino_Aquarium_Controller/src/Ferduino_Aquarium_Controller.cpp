@@ -7,7 +7,7 @@
 //****************************** Protótipos de funções ********************************************
 //*************************************************************************************************
 double MyNormalize(double v);
-void setFont(boolean font, byte cr, byte cg, byte cb, byte br, byte bg, byte bb);
+void setFont(bool font, byte cr, byte cg, byte cb, byte br, byte bg, byte bb);
 void drawFillRect(int x1, byte y1, int x2, byte y2, byte r, byte g, byte b);
 void selecionar_SPI(int dispositivo);
 void checkTempoRampa();
@@ -35,7 +35,7 @@ static bool waitForAck(byte theNodeID);
 //****************************** Módulos **********************************************************
 //*************************************************************************************************
 #ifdef USE_TFT
-  #if defined ENGLISH // Do not this lines
+  #if defined ENGLISH   // Do not this lines
     #include "Language/English.h"
   #elif defined FRENCH
     #include "Language/French.h"

@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------ Menu 1 ----------------------------------------------------------- tela =1
 void menuScreen()
 {
@@ -36,7 +37,7 @@ void menuScreen()
 }
 
 // -------------------------Relógio------------------------------------------------------ tela =2
-void setClock(boolean refreshAll = false)
+void setClock(bool refreshAll = false)
 {
   if (refreshAll == true)
   {
@@ -133,7 +134,7 @@ void setClock(boolean refreshAll = false)
   myGLCD.printNumI(t_temp.year, 230, 132);
 }
 
-void testScreen(boolean refreshAll = false) //-------------------------------- Teste do leds ------------------------------------- tela =3
+void testScreen(bool refreshAll = false) //-------------------------------- Teste do leds ------------------------------------- tela =3
 {
   char bufferL[9];
   String led;
@@ -276,7 +277,7 @@ void testScreen(boolean refreshAll = false) //-------------------------------- T
 }
 
 //--------------------------------------------- Temperatura -------------------------------- tela =4
-void tempScreen(boolean refreshAll = false)
+void tempScreen(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -394,7 +395,7 @@ void ledSetScreen()   //-------------------------------- Alterar valores -------
   printButton(buffer, leWB[0], leWB[1], leWB[2], leWB[3], SMALL); // tabela_textos[210] = "MAIS"
 }
 
-void ledChangeScreen(boolean refreshAll = false)  //--------------------------------------- Potência dos leds------------------------------ tela =6
+void ledChangeScreen(bool refreshAll = false)  //--------------------------------------- Potência dos leds------------------------------ tela =6
 {
   if (refreshAll == true)
   {
@@ -476,7 +477,7 @@ void ledChangeScreen(boolean refreshAll = false)  //----------------------------
     drawFillRect(45, 105, 300, 121, 0, 0, 0); // Apaga mensagem.
   }
 }
-void tpaScreen(boolean refreshAll = false) //-------------------------------------------------------- tela =7
+void tpaScreen(bool refreshAll = false) //-------------------------------------------------------- tela =7
 {
   if (refreshAll)
   {
@@ -683,7 +684,7 @@ void graficoScreen()//----------------------------------------------------------
 
 }
 
-void waveScreen(boolean refreshAll = false)///------------------------------------------------------------------tela =10
+void waveScreen(bool refreshAll = false)///------------------------------------------------------------------tela =10
 {
   if (refreshAll == true)
   {
@@ -873,7 +874,7 @@ void parametroScreen()//--------------------------------------------------------
 
 }
 //---------------------------------------------PH do reator--------------------------------tela =15 ----------
-void config_phR_Screen(boolean refreshAll = false)
+void config_phR_Screen(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -924,7 +925,7 @@ void config_phR_Screen(boolean refreshAll = false)
 }
 
 //---------------------------------------------ORP--------------------------------tela =16 ----------
-void config_orp_Screen(boolean refreshAll = false)
+void config_orp_Screen(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -977,7 +978,7 @@ void config_orp_Screen(boolean refreshAll = false)
 }
 //---------------------------------------------PH do aquario--------------------------------tela =18 ----------
 
-void config_phA_Screen(boolean refreshAll = false)
+void config_phA_Screen(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -1026,7 +1027,7 @@ void config_phA_Screen(boolean refreshAll = false)
   myGLCD.printNumF(PHA2beA, 1, 140, 140);
 }
 //---------------------------------------------configurar densidade--------------------------------tela =20 ----------
-void config_dens_Screen(boolean refreshAll = false)
+void config_dens_Screen(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -1260,7 +1261,7 @@ void escolher_teste()
   printButton(buffer, volT[0], volT[1], volT[2], volT[3]);// "VOLTAR
 }
 //---------------------------------------- Calibrar dosadoras ---------------------- tela =26
-void calibrar_dosadoras(boolean refreshAll = false)
+void calibrar_dosadoras(bool refreshAll = false)
 {
   if (refreshAll)
   {
@@ -1348,7 +1349,7 @@ void calibrar_dosadoras(boolean refreshAll = false)
   }
 }
 
-void config_dosagem_manual(boolean refreshAll = false) // ----------tela =27
+void config_dosagem_manual(bool refreshAll = false) // ----------tela =27
 {
   if (refreshAll)
   {
@@ -1456,7 +1457,7 @@ void escolher_canal() //--------------------------------------------------------
   printButton(buffer, denS[0], denS[1], denS[2], denS[3]); // "VIOLETA"
 }
 
-void config_dosagem_personalizada(boolean refreshAll = false) // -------------------tela =29
+void config_dosagem_personalizada(bool refreshAll = false) // -------------------tela =29
 {
   if (refreshAll)
   {
@@ -1675,7 +1676,7 @@ void solicitar_senha()  //---------------tela =30
 }
 #endif
 
-void config_dosagem_personalizada_2(boolean refreshAll = false) // ----------tela =31
+void config_dosagem_personalizada_2(bool refreshAll = false) // ----------tela =31
 {
   if (refreshAll)
   {
@@ -1990,7 +1991,7 @@ void rever_dosagem_personalizada() // ------------------------------------------
 
 
 //--------------------------------------------- Potência mínima e máxima para a luz noturna -------------------------------- tela =36
-void luz_noturna(boolean refreshAll = false)
+void luz_noturna(bool refreshAll = false)
 {
 
   if (refreshAll)
@@ -2209,7 +2210,7 @@ void TimerScreen()
   printButton(buffer, iniC[0], iniC[1], iniC[2], iniC[3]); // Volta ao início.  // "INICIO"
 }
 //--------------------------------------------- Configurar timers -------------------------------- tela =39
-void config_timer(boolean refreshAll = false)
+void config_timer(bool refreshAll = false)
 {
   if ( refreshAll == true)
   {
@@ -2360,10 +2361,10 @@ void config_leds()
 }
 
 //------------------------------- Procurar sensores de temperatura -------------------------------- tela =41
-void procurar_sensores(boolean refreshAll = false)
+void procurar_sensores(bool refreshAll = false)
 {
-  int numberOfDevices; // Número de sensores encontrados
-  float temperatura;
+  int numberOfDevices = 0; // Número de sensores encontrados
+  float temperatura = 0;
 
   if (refreshAll == true)
   {
@@ -2586,7 +2587,7 @@ void procurar_sensores(boolean refreshAll = false)
   }
 }
 //------------------------------- Configurar temperatura para os coolers -------------------------------- tela =42
-void configurar_coolers(boolean refreshAll = false)
+void configurar_coolers(bool refreshAll = false)
 {
   if (refreshAll == true)
   {
@@ -2638,7 +2639,7 @@ void configurar_coolers(boolean refreshAll = false)
 }
 
 //------------------------------- Configurar temperatura para os coolers -------------------------------- tela =43
-void reduzir_potencia(boolean refreshAll = false)
+void reduzir_potencia(bool refreshAll = false)
 {
   if (refreshAll == true)
   {
@@ -2691,7 +2692,7 @@ void reduzir_potencia(boolean refreshAll = false)
 }
 
 //------------------------------- Potência pré-definida para os leds -------------------------------- tela =44
-void pre_definido(boolean refreshAll = false)
+void pre_definido(bool refreshAll = false)
 {
   int j = 0;
   int i = 0;
@@ -3076,7 +3077,7 @@ void pre_definido(boolean refreshAll = false)
 }
 
 //------------------------------- Alimentador automático -------------------------------- tela =45
-void alimentadorScreen(boolean refreshAll = false)
+void alimentadorScreen(bool refreshAll = false)
 {
   if (refreshAll)
   {
@@ -3239,7 +3240,7 @@ void alimentadorScreen(boolean refreshAll = false)
 }
 
 //------------------------------- Alimentador automático -------------------------------- tela =46
-void alimentadorScreen_2(boolean refreshAll = false)
+void alimentadorScreen_2(bool refreshAll = false)
 {
   if (refreshAll)
   {

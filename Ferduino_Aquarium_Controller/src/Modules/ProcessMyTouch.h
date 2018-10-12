@@ -1,3 +1,4 @@
+#pragma once
 //-------------------------------------------Touch screen----------------------------
 void processMyTouch()
 {
@@ -2505,6 +2506,7 @@ void processMyTouch()
           modo_personalizado = true;
           modo_calibrar = false;
 
+          selecionar_SPI(SD_CARD);
           criar_arquivos();
           Salvar_dosadora_EEPROM();
         }
@@ -3693,6 +3695,7 @@ void processMyTouch()
             menuScreen_2();
             config_salvar_valores_alimentador();
             salvar_alimentador_EEPROM();
+            selecionar_SPI(SD_CARD);
             criar_arquivos_alimentador();
           }
         }

@@ -1,3 +1,4 @@
+#pragma once
 byte validateDateForMonth(byte d, byte m, word y)
 {
   byte mArr[12] = {31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};

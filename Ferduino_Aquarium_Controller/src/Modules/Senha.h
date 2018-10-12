@@ -1,3 +1,4 @@
+#pragma once
 //coloca a senha em uma string
 void updateStr(int val)
 {

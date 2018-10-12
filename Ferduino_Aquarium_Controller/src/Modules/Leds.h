@@ -1,4 +1,4 @@
-
+#pragma once
 int LedToPercent (int Led_out)        //returns LED output in %
 {
   int result;

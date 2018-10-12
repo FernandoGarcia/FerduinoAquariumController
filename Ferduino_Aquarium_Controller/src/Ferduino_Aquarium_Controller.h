@@ -1,3 +1,4 @@
+#pragma once
 //*************************************************************************************************
 //************************* Inclusão de configurações *********************************************
 //*************************************************************************************************
@@ -13,17 +14,17 @@ const char lastUpdate[] = "29/09/2018"; // Data da última modificação
 //****************** Variáveis de textos e fontes ****************************************************
 //****************************************************************************************************
 #ifdef USE_TFT // Do not change this line
-#define LARGE true
-#define SMALL false
-extern uint8_t RusFont1[];    // Declara que fontes vamos usar
-extern uint8_t BigFont[];     // Declara que fontes vamos usar
+  #define LARGE true
+  #define SMALL false
+  extern uint8_t RusFont1[];  // Declara que fontes vamos usar
+  extern uint8_t BigFont[];   // Declara que fontes vamos usar
 #endif
+
 char buffer[50];
 
 #ifdef USE_SCREENSAVER //Do not change this line
-extern uint8_t SevenSegNumFontPlus[];
+  extern uint8_t SevenSegNumFontPlus[];
 #endif // Do not change this line
-
 
 //****************************************************************************************************
 //***************** Variáveis dos sensores de temperatura ********************************************
@@ -52,9 +53,9 @@ byte sonda_associada_3_temp = 0;
 //********************** Funções do RTC ********************************************************************
 //*******************************************************************************************************
 #ifdef USE_PINS_18_AND_19_FOR_RTC // Do not change this line
-DS1307 rtc(18, 19);     // (SDA,SCL) Indica em quais pinos o RTC está conectado.
+  DS1307 rtc(18, 19);   // (SDA,SCL) Indica em quais pinos o RTC está conectado.
 #else // Do not change this line
-DS1307 rtc(20, 21);  // (SDA,SCL) Indica em quais pinos o RTC está conectado.
+  DS1307 rtc(20, 21); // (SDA,SCL) Indica em quais pinos o RTC está conectado.
 #endif // Do not change this line
 Time t_temp, t;
 
@@ -62,25 +63,25 @@ Time t_temp, t;
 //********************** Variáveis das fuções do touch screen e tela inicial ****************************
 //*******************************************************************************************************
 #ifdef USE_TFT // Do not change this line
-UTFT        myGLCD(TFT_MODEL, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
-#ifdef USE_TFT_SHIELD // Do not change this line
-URTouch      myTouch(6, 5, 4, 3, 2);          // Pinos usados pelo "touch" no TFT shield
-#else // Do not change this line
-URTouch      myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
-#endif // Do not change this line
+  UTFT myGLCD(TFT_MODEL, 38, 39, 40, 41);      // "ITDB32WD" é o modelo do LCD
+ #ifdef USE_TFT_SHIELD  // Do not change this line
+    URTouch myTouch(6, 5, 4, 3, 2);           // Pinos usados pelo "touch" no TFT shield
+ #else  // Do not change this line
+    URTouch myTouch(7, 6, 5, 4, 3);        // Pinos usados pelo "touch" no Ferduino Mega 2560
+ #endif  // Do not change this line
 
-unsigned int ano = 0;
-byte dia = 0;
-byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;    // Valor anterior de PWM.
+  unsigned int ano = 0;
+  byte dia = 0;
+  byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;  // Valor anterior de PWM.
 #endif //Do not change this line
 
 byte dispScreen = 0;
 unsigned long previousMillis = 0;
 
 #ifdef USE_SCREENSAVER //Do not change this line
-unsigned long previousMillis_2 = 0;
-int interval = 60; // In seconds
-boolean firstTime = true;
+  unsigned long previousMillis_2 = 0;
+  int interval = 60; // In seconds
+  bool firstTime = true;
 #endif //Do not change this line
 //*****************************************************************************************
 //*********************** Parâmetros ******************************************************
@@ -108,7 +109,7 @@ byte outlets[9];
 //outlets[7] = Bomba 3 (TPA) > 0 = auto, 1 = on, 2 = off
 //outlets[8] = Reposição (ATO) > 0 = auto, 1 = on, 2 = off
 byte outlets_changed[9];
-boolean outlets_settings = false;
+bool outlets_settings = false;
 unsigned long outlets_millis = 0;
 //*****************************************************************************************
 //*********************** Variáveis do controle de temperatura da água ********************
@@ -193,11 +194,11 @@ byte DEN2beA;
 //************************ Variáveis de controle de velocidade dos coolers ****************
 //*****************************************************************************************
 #ifdef USE_FAHRENHEIT //Do not change this line
-float HtempMin = 86.9;
-float HtempMax = 104.9;
+  float HtempMin = 86.9;
+  float HtempMax = 104.9;
 #else //Do not change this line
-float HtempMin = 30.5;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
-float HtempMax = 40.5;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
+  float HtempMin = 30.5;  // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
+  float HtempMax = 40.5;  // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
 #endif //Do not change this line
 int fanSpeed = 0;         // PWM dos coolers
 
@@ -220,16 +221,16 @@ byte potR = 30;     // Porcentagem a ser reduzida.
 float temperatura_dissipador_temp = 0; // Temperatura temporária
 byte tempHR_t = 0;                     // Temperatura temporária para reduzir potência dos leds
 byte potR_t = 0;                       // Porcentagem temporária a ser reduzida.
-boolean temperatura_alta = false;      // Sinaliza que a temperatura dos leds está alta.
-boolean temperatura_baixou = false;    // Sinaliza que a temperatura dos leds esteve alta.
+bool temperatura_alta = false;      // Sinaliza que a temperatura dos leds está alta.
+bool temperatura_baixou = false;    // Sinaliza que a temperatura dos leds esteve alta.
 
 //*****************************************************************************************
 //************************ Variáveis de controle da iluminação ****************************
 //*****************************************************************************************
 int LedChangTime = 0;             // Página de alteração do leds, tempo e valores.
-boolean MeanWell = true;          // Se estiver usando drivers cuja potência máxima seja obtida aplicando zero volt e a mínima seja 5 volts altere de "true" para "false".
-boolean LEDtestTick = false;      // Acelerar o tempo durante o teste dos leds.
-int min_cnt ;
+bool MeanWell = true;          // Se estiver usando drivers cuja potência máxima seja obtida aplicando zero volt e a mínima seja 5 volts altere de "true" para "false".
+bool LEDtestTick = false;      // Acelerar o tempo durante o teste dos leds.
+int min_cnt;
 byte bled_out;
 byte wled_out;
 byte rbled_out;
@@ -241,9 +242,9 @@ byte rbled_out_temp;
 byte rled_out_temp;
 byte uvled_out_temp;
 byte moonled_out;
-boolean periodo_selecionado = false;
+bool periodo_selecionado = false;
 byte y_tocado;
-boolean teste_em_andamento = false;
+bool teste_em_andamento = false;
 byte cor_selecionada = 0;
 // bit 1 = led branco
 // bit 2 = led azul
@@ -251,7 +252,7 @@ byte cor_selecionada = 0;
 // bit 4 = led vermelho
 // bit 5 = led violeta
 byte setor_selecionado = 0;
-boolean mensagem = true;
+bool mensagem = true;
 float suavizar = 0.0; // LEDS iniciam suavemente e chega ao valor especificado em 50 segundos.
 byte predefinido = 0;
 byte pre_definido_ativado = 0;
@@ -260,40 +261,40 @@ byte led_on_minuto;
 byte led_on_hora;
 byte led_off_minuto;
 byte led_off_hora;
-boolean horario_alterado = false;
-boolean hora_modificada = false;
+bool horario_alterado = false;
+bool hora_modificada = false;
 byte amanhecer_anoitecer = 60;
-boolean teste_iniciado = false;
+bool teste_iniciado = false;
 
 #define NUMERO_CANAIS 6
 #define TEMPO_RAMPA 50
 byte pinoLED[NUMERO_CANAIS] = {ledPinWhite, ledPinBlue, ledPinRoyBlue, ledPinRed, ledPinUV, ledPinMoon}; // Branco, azul, azul royal, vermelho, violeta, luz noturna
-boolean desativarNuvemCanal[NUMERO_CANAIS] = {false, false, false, false, false, false};
+bool desativarNuvemCanal[NUMERO_CANAIS] = {false, false, false, false, false, false};
 byte probNuvemRelampago[2] = {100, 99}; // [0]= nuvem, [1] = relâmpago
 byte nuvemCadaXdias = 1;
 byte quantDuracaoMinMaxNuvem[4] = {1, 10, 2, 9}; // Quant. mín., quant. máx., duração min., duração máx.
-boolean haveraNuvem = false;
-boolean haveraRelampago = false;
+bool haveraNuvem = false;
+bool haveraRelampago = false;
 unsigned int duracaoNuvem = 0;
 unsigned int duracaoRelampago = 0;
 byte quantNuvens = 0;
 int horaNuvem[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // Em minutos.
-boolean executandoNuvem = false;
-boolean executarAgora = false;
+bool executandoNuvem = false;
+bool executarAgora = false;
 unsigned long millis_nuvem = 0;
 int lastMinute = 0;
 unsigned int espere = 0;
 unsigned long millisRampa = 0;
-boolean pontoBaixo[NUMERO_CANAIS] = {false, false, false, false, false, false};
-boolean aguarde = false;
-boolean inicioNuvem = false;
+bool pontoBaixo[NUMERO_CANAIS] = {false, false, false, false, false, false};
+bool aguarde = false;
+bool inicioNuvem = false;
 byte pwm_nuvem[NUMERO_CANAIS] = {0, 0, 0, 0, 0, 0};
 byte passo[NUMERO_CANAIS] = {0, 0, 0, 0, 0, 0};
 unsigned long LED_millis = 0;
-boolean relampagoNoturno = false;
-boolean temDelay = false;
+bool relampagoNoturno = false;
+bool temDelay = false;
 byte valorAnterior = 0;
-boolean desativarRelampagoCanal[NUMERO_CANAIS] = {true, true, true, true, true, true};
+bool desativarRelampagoCanal[NUMERO_CANAIS] = {true, true, true, true, true, true};
 byte duracaoMinMaxRelampago[2] = {1, 5}; // Duração min., duração máx.
 
 //*****************************************************************************************
@@ -319,12 +320,12 @@ const byte cor_canal[5][3] = {
   {224, 102, 255}
 };
 /*
-  byte cor_canal1[] = {255, 255, 255};  // Branco
-  byte cor_canal2[] = {9, 184, 255};    // Azul
-  byte cor_canal3[] = {58, 95, 205};    // Azul Royal
-  byte cor_canal4[] = {255, 0, 0};      // Vermelho
-  byte cor_canal5[] = {224, 102, 255};  // Violeta
-*/
+   byte cor_canal1[] = {255, 255, 255};  // Branco
+   byte cor_canal2[] = {9, 184, 255};    // Azul
+   byte cor_canal3[] = {58, 95, 205};    // Azul Royal
+   byte cor_canal4[] = {255, 0, 0};      // Vermelho
+   byte cor_canal5[] = {224, 102, 255};  // Violeta
+ */
 
 //*****************************************************************************************
 //************************ Variáveis da fase lunar ****************************************
@@ -370,12 +371,12 @@ void writeCRLF(SdFile& f);
 //*****************************************************************************************
 //*********************** Variável do controle de níveis **********************************
 //*****************************************************************************************
-boolean nivel_status1 = 0;             // Sinaliza nível baixo sensor 1
-boolean nivel_status2 = 0;             // Sinaliza nível baixo sensor 2
-boolean nivel_status3 = 0;             // Sinaliza nível baixo sensor 3
-boolean nivel_status4 = 0;             // Sinaliza nível baixo sensor 4
-boolean nivel_status5 = 0;             // Sinaliza nível baixo sensor 5
-boolean nivel_status6 = 0;             // Sinaliza nível baixo sensor 6
+bool nivel_status1 = 0;             // Sinaliza nível baixo sensor 1
+bool nivel_status2 = 0;             // Sinaliza nível baixo sensor 2
+bool nivel_status3 = 0;             // Sinaliza nível baixo sensor 3
+bool nivel_status4 = 0;             // Sinaliza nível baixo sensor 4
+bool nivel_status5 = 0;             // Sinaliza nível baixo sensor 5
+bool nivel_status6 = 0;             // Sinaliza nível baixo sensor 6
 
 //*****************************************************************************************
 //************************ Variável de controle da reposição de água doce *****************
@@ -389,40 +390,39 @@ byte Status = 0x0;
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
 #ifdef ETHERNET_SHIELD //Do not change this line
-const byte limite_falha = 30;                        // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.
+  const byte limite_falha = 30;                      // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.
 
-#ifndef USE_ESP8266 //Do not change this line
-EthernetClient client;
-PubSubClient MQTT(client);
-#else //Do not change this line
-NeoSWSerial virtualPort (A8, A7);  // RX, TX
-ELClient ESP8266(&virtualPort);
-ELClientMqtt MQTT(&ESP8266);
-boolean MQTT_connected = false;
-#define MQTT_MAX_PACKET_SIZE 550
+ #ifndef USE_ESP8266  //Do not change this line
+    EthernetClient client;
+    PubSubClient MQTT(client);
+ #else  //Do not change this line
+    NeoSWSerial virtualPort (A8, A7); // RX, TX
+    ELClient ESP8266(&virtualPort);
+    ELClientMqtt MQTT(&ESP8266);
+    bool MQTT_connected = false;
+    #define MQTT_MAX_PACKET_SIZE 550
+ #endif  //Do not change this line
+
+  char *inParse[20];
+  unsigned long millis_mqtt = 0;
+  bool web_dosage = false;
+  unsigned long millis_dosagem = 0;
+  unsigned long millis_enviar = 0;
+  bool web_calibracao = false;
+  unsigned long teste_led_millis = 0;
+  byte notconnected = 0;
 #endif //Do not change this line
 
-char *inParse[20];
-unsigned long millis_mqtt = 0;
-boolean web_dosage = false;
-unsigned long millis_dosagem = 0;
-unsigned long millis_enviar = 0;
-boolean web_calibracao = false;
-unsigned long teste_led_millis = 0;
-unsigned long close_millis = 0;
-byte notconnected = 0;
-#endif //Do not change this line
-
-boolean web_teste = false;
+bool web_teste = false;
 //*****************************************************************************************
 //************************** Variáveis de controle do multiplexador ***********************
 //*****************************************************************************************
 #if defined(STAMPS_EZO) || defined(STAMPS_V4X) //Do not change this line
-unsigned long millis_antes = 0;
-const byte ph1 = 0; // Y0
-const byte ph2 = 1; // Y1
-const byte orp = 2; // Y2
-const byte ec = 3;  // Y3
+  unsigned long millis_antes = 0;
+  const byte ph1 = 0; // Y0
+  const byte ph2 = 1; // Y1
+  const byte orp = 2; // Y2
+  const byte ec = 3; // Y3
 #endif //Do not change this line
 
 //*****************************************************************************************
@@ -435,13 +435,13 @@ byte stCurrentLen = 0;
 //*****************************************************************************************
 //************************** Variáveis dosadoras ******************************************
 //*****************************************************************************************
-boolean dosadoras = true; //Altere para "false" caso não tenha as dosadoras.
+bool dosadoras = true; //Altere para "false" caso não tenha as dosadoras.
 const char *arquivo[6] = {"HDP1.TXT", "HDP2.TXT", "HDP3.TXT", "HDP4.TXT", "HDP5.TXT", "HDP6.TXT"};
 unsigned long tempo_dosagem = 0;
 unsigned long dosadoras_millis = 0;
-boolean modo_manual = false;
-boolean modo_personalizado = false;
-boolean modo_calibrar = false;
+bool modo_manual = false;
+bool modo_personalizado = false;
+bool modo_calibrar = false;
 byte dosadora_selecionada = 0; // 0 = false, 1 = true
 byte dosadora[6] = {dosadora1, dosadora2, dosadora3, dosadora4, dosadora5, dosadora6}; // Index 0 = dosadora 1 , 1 = dosadora 2, 2 = dosadora 3, 3 = dosadora 4, 4 = dosadora 5, 5 = dosadora 6
 byte ativar_desativar = 0x0;     // 0 = false, 1 = true
@@ -490,7 +490,7 @@ float fator_calib_dosadora[6];
 byte temporizador = 0;
 byte temporizador_e[5] = {temporizador1, temporizador2, temporizador3, temporizador4, temporizador5};  // Index 0 = timer 1 , 1 = timer 2, 2 = timer 3, 3 = timer 4, 4 = timer 5
 
-boolean web_timer = false;
+bool web_timer = false;
 byte temporizador_status = 0x0; // 1 = true e 0 = false
 //bit 1 = temporizador 1
 //bit 2 = temporizador 2
@@ -523,69 +523,69 @@ byte temporizador_ativado[5];
 //************************** Variáveis do PCF8575 *****************************************
 //*****************************************************************************************
 #ifdef USE_PCF8575 //Do not change this line
-byte endereco_PCF8575TS = 0x20; // Endereço em hexadecimal = 0x20
-PCF8575 PCF8575;
+  byte endereco_PCF8575TS = 0x20; // Endereço em hexadecimal = 0x20
+  PCF8575 PCF8575;
 #endif //Do not change this line
 
 //*****************************************************************************************
 //*********************** Wireless transceiver (RFM12B) ***********************************
 //*****************************************************************************************
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) //Do not change this line
-RFM12B radio;
-#define ACK_TIME    200
-const byte limite_sem_resposta = 4;     // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
-unsigned long lastPeriod_millis = 0;
-boolean requestACK_LED = false;         // true = Solicitar uma resposta do dispositivo que recebe a informação
-boolean requestACK_RELAY = false;       // true = Solicitar uma resposta do dispositivo que recebe a informação
-byte nothing = 0;
+  RFM12B radio;
+  #define ACK_TIME    200
+  const byte limite_sem_resposta = 4;   // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
+  unsigned long lastPeriod_millis = 0;
+  bool requestACK_LED = false;       // true = Solicitar uma resposta do dispositivo que recebe a informação
+  bool requestACK_RELAY = false;     // true = Solicitar uma resposta do dispositivo que recebe a informação
+  byte nothing = 0;
 #endif //Do not change this line
 
 #ifdef RFM12B_LED_CONTROL //Do not change this line
-typedef struct {
-  int  nodeId;
-  byte channel_white;
-  byte channel_blue;
-  byte channel_royalBlue;
-  byte channel_red;
-  byte channel_violet;
-  byte channel_moon;
-  byte channel_6;  // canal extra
-  byte channel_7;  // canal extra
-  byte channel_8;  // canal extra
-  byte channel_9;  // canal extra
-  byte channel_10; // canal extra
-  byte channel_11; // canal extra
-  byte channel_12; // canal extra
-  byte channel_13; // canal extra
-  byte channel_14; // canal extra
-  byte channel_15; // canal extra
-}
-Payload_led;
-Payload_led theData_led  = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+  typedef struct {
+    int nodeId;
+    byte channel_white;
+    byte channel_blue;
+    byte channel_royalBlue;
+    byte channel_red;
+    byte channel_violet;
+    byte channel_moon;
+    byte channel_6; // canal extra
+    byte channel_7; // canal extra
+    byte channel_8; // canal extra
+    byte channel_9; // canal extra
+    byte channel_10; // canal extra
+    byte channel_11; // canal extra
+    byte channel_12; // canal extra
+    byte channel_13; // canal extra
+    byte channel_14; // canal extra
+    byte channel_15; // canal extra
+  }
+  Payload_led;
+  Payload_led theData_led  = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 #endif //Do not change this line
 
 #ifdef RFM12B_RELAY_CONTROL //Do not change this line
-typedef struct {
-  int  nodeId;
-  byte relay_0;
-  byte relay_1;
-  byte relay_2;
-  byte relay_3;
-  byte relay_4;
-  byte relay_5;
-  byte relay_6;
-  byte relay_7;
-  byte relay_8;
-  byte relay_9;
-  byte relay_10;
-  byte relay_11;
-  byte relay_12;
-  byte relay_13;
-  byte relay_14;
-  byte relay_15;
-}
-Payload_relay;
-Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  typedef struct {
+    int nodeId;
+    byte relay_0;
+    byte relay_1;
+    byte relay_2;
+    byte relay_3;
+    byte relay_4;
+    byte relay_5;
+    byte relay_6;
+    byte relay_7;
+    byte relay_8;
+    byte relay_9;
+    byte relay_10;
+    byte relay_11;
+    byte relay_12;
+    byte relay_13;
+    byte relay_14;
+    byte relay_15;
+  }
+  Payload_relay;
+  Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 #endif //Do not change this line
 
 //*****************************************************************************************
@@ -596,17 +596,17 @@ const byte ETHER_CARD = 1;
 const byte RFM = 2;
 
 #if defined USE_PIN_4_FOR_SD_CARD // Do not change this line
-const byte ChipSelect_SD = 4; // Para cartão SD conectado no "ethernet shield".
+  const byte ChipSelect_SD = 4; // Para cartão SD conectado no "ethernet shield".
 #elif defined USE_PIN_53_FOR_SD_CARD // Do not change this line
-const byte ChipSelect_SD = 53; // Para cartão SD conectado no TFT.
+  const byte ChipSelect_SD = 53; // Para cartão SD conectado no TFT.
 #else // Do not change this line
-const byte ChipSelect_SD = 5; // Para o Ferduino Mega 2560
+  const byte ChipSelect_SD = 5; // Para o Ferduino Mega 2560
 #endif // Do not change this line
 
 #ifdef USE_PIN_53_FOR_SD_CARD // Do not change this line
-const byte SelectSlave_ETH = 4;
+  const byte SelectSlave_ETH = 4;
 #else // Do not change this line
-const byte SelectSlave_ETH = 53;
+  const byte SelectSlave_ETH = 53;
 #endif // Do not change this line
 
 const byte ChipSelect_RFM = 69; // A15
@@ -621,8 +621,8 @@ float temperatura_ambiente_temp = 0; // Temperatura temporária
 //************************* Variáveis das bombas de circulação ****************************
 //*****************************************************************************************
 #ifdef NIGHT_MODE //Do not change this line
-const float POWER_PUMP1 = 0.5; // 50%
-const float POWER_PUMP2 = 0.5; // 50%
+  const float POWER_PUMP1 = 0.5; // 50%
+  const float POWER_PUMP2 = 0.5; // 50%
 #endif //Do not change this line
 byte modo_selecionado = 1;
 byte Pump1PWM_temp = 0;
@@ -643,12 +643,12 @@ byte duracao_alimentacao = 1; // Duração em segundos
 byte desligar_wavemaker = 2; // Tempo em minutos
 byte quantidade_alimentacao = 1;
 byte alimentacao_wavemaker_on_off = 0; // bit 0 = alimentação automática ativada  ou desativada bit 1 = desligar wavemaker ativado / desativado
-boolean modo_alimentacao = false;
-boolean wavemaker_on_off = false;
+bool modo_alimentacao = false;
+bool wavemaker_on_off = false;
 unsigned long alimentacao_millis = 0;
 unsigned long wavemaker_on_off_millis = 0;
 unsigned long check_alimentador_millis = 0;
-boolean alimentacao_erro = false;
+bool alimentacao_erro = false;
 
 //*****************************************************************************************
 //********************* Variáveis temporárias do alimentador automático *******************
@@ -742,13 +742,13 @@ byte *cor[5] = {wled, bled, rbled, rled, uvled};
 //************************** Textos *******************************************************
 //*****************************************************************************************
 #ifdef ETHERNET_SHIELD //Do not change this line
-const char string0[] PROGMEM = "{\"response\":\"ok\"}";
-const char string1[] PROGMEM = "{\"response\":\"stop\"}";
+  const char string0[] PROGMEM = "{\"response\":\"ok\"}";
+  const char string1[] PROGMEM = "{\"response\":\"stop\"}";
 
-const char* const tabela_strings[] PROGMEM =
-{
-  string0, string1
-};
+  const char* const tabela_strings[] PROGMEM =
+  {
+    string0, string1
+  };
 #endif //Do not change this line
 
 //*************************************************************************************************

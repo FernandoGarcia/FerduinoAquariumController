@@ -1,3 +1,4 @@
+#pragma once
 void tempgScreen()//------------------------------------------------------------ tela =11
 {
   int x = 0, y  = 0, z = 0, grafico = 0, j = 0, i = 0, k = 0, f = 30;
@@ -12,12 +13,12 @@ void tempgScreen()//------------------------------------------------------------
 
   for (float i = 27.5; i > 22.0; i -= 0.5)
   {
-#ifdef USE_FAHRENHEIT
-    float F = ((i * 1.8) + 32);
-    myGLCD.printNumF(F, 1, 5, 3 + f);
-#else
-    myGLCD.printNumF(i, 1, 5, 3 + f);
-#endif
+    #ifdef USE_FAHRENHEIT
+      float F = ((i * 1.8) + 32);
+      myGLCD.printNumF(F, 1, 5, 3 + f);
+    #else
+      myGLCD.printNumF(i, 1, 5, 3 + f);
+    #endif
 
     f += 15;
   }
@@ -32,11 +33,11 @@ void tempgScreen()//------------------------------------------------------------
   myGLCD.print((char *)"0", 275, 193);
   myGLCD.drawCircle(15, 21, 2);
 
-#ifdef USE_FAHRENHEIT
-  myGLCD.print((char *)"F", 20, 18);
-#else
-  myGLCD.print((char *)"C", 20, 18);
-#endif
+  #ifdef USE_FAHRENHEIT
+    myGLCD.print((char *)"F", 20, 18);
+  #else
+    myGLCD.print((char *)"C", 20, 18);
+  #endif
 
   myGLCD.print((char *)"H", 290, 193);
 
@@ -60,85 +61,85 @@ void tempgScreen()//------------------------------------------------------------
   linhaR = setTempC;  //  Linhas de comparação
   linhaG = (setTempC + offTempC);
   linhaB = (setTempC - offTempC);
-#ifdef USE_FAHRENHEIT
-  if ((linhaR >= 72.5) && (linhaR <= 81.5))
-  {
-    x = (190 - ((linhaR - 72.5) * 16.6667));
-  }
-  else if (linhaR > 81.5)
-  {
-    x = 30;
-  }
-  else if (linhaR < 72.5)
-  {
-    x = 190;
-  }
+  #ifdef USE_FAHRENHEIT
+    if ((linhaR >= 72.5) && (linhaR <= 81.5))
+    {
+      x = (190 - ((linhaR - 72.5) * 16.6667));
+    }
+    else if (linhaR > 81.5)
+    {
+      x = 30;
+    }
+    else if (linhaR < 72.5)
+    {
+      x = 190;
+    }
 
-  if ((linhaG >= 72.5) && (linhaG <= 81.5))
-  {
-    y = (190 - ((linhaG - 72.5) * 16.6667));
-  }
-  else if (linhaG > 81.5)
-  {
-    y = 30;
-  }
-  else if (linhaG < 72.5)
-  {
-    y = 190;
-  }
+    if ((linhaG >= 72.5) && (linhaG <= 81.5))
+    {
+      y = (190 - ((linhaG - 72.5) * 16.6667));
+    }
+    else if (linhaG > 81.5)
+    {
+      y = 30;
+    }
+    else if (linhaG < 72.5)
+    {
+      y = 190;
+    }
 
-  if ((linhaB >= 72.5) && (linhaB <= 81.5))
-  {
-    z = (190 - ((linhaB - 72.5) * 16.6667));
-  }
-  else if (linhaB > 81.5)
-  {
-    z = 30;
-  }
-  else if (linhaB < 72.5)
-  {
-    z = 190;
-  }
-#else
-  if ((linhaR >= 22.5) && (linhaR <= 27.5))
-  {
-    x = (190 - ((linhaR - 22.5) * 30));
-  }
-  else if (linhaR > 27.5)
-  {
-    x = 30;
-  }
-  else if (linhaR < 22.5)
-  {
-    x = 190;
-  }
+    if ((linhaB >= 72.5) && (linhaB <= 81.5))
+    {
+      z = (190 - ((linhaB - 72.5) * 16.6667));
+    }
+    else if (linhaB > 81.5)
+    {
+      z = 30;
+    }
+    else if (linhaB < 72.5)
+    {
+      z = 190;
+    }
+  #else
+    if ((linhaR >= 22.5) && (linhaR <= 27.5))
+    {
+      x = (190 - ((linhaR - 22.5) * 30));
+    }
+    else if (linhaR > 27.5)
+    {
+      x = 30;
+    }
+    else if (linhaR < 22.5)
+    {
+      x = 190;
+    }
 
-  if ((linhaG >= 22.5) && (linhaG <= 27.5))
-  {
-    y = (190 - ((linhaG - 22.5) * 30));
-  }
-  else if (linhaG > 27.5)
-  {
-    y = 30;
-  }
-  else if (linhaG < 22.5)
-  {
-    y = 190;
-  }
+    if ((linhaG >= 22.5) && (linhaG <= 27.5))
+    {
+      y = (190 - ((linhaG - 22.5) * 30));
+    }
+    else if (linhaG > 27.5)
+    {
+      y = 30;
+    }
+    else if (linhaG < 22.5)
+    {
+      y = 190;
+    }
 
-  if ((linhaB >= 22.5) && (linhaB <= 27.5))
-  {
-    z = (190 - ((linhaB - 22.5) * 30));
-  }
-  else if (linhaB > 27.5)
-  {
-    z = 30;
-  }
-  else if (linhaB < 22.5)
-  {
-    z = 190;
-  }
-#endif
+    if ((linhaB >= 22.5) && (linhaB <= 27.5))
+    {
+      z = (190 - ((linhaB - 22.5) * 30));
+    }
+    else if (linhaB > 27.5)
+    {
+      z = 30;
+    }
+    else if (linhaB < 22.5)
+    {
+      z = 190;
+    }
+  #endif
   myGLCD.setColor(255, 0, 0);
   myGLCD.drawLine(40, x, 290, x);// Temperatura desejada
   myGLCD.setColor(10, 10, 255);        // Variação permitida
@@ -183,38 +184,37 @@ void tempgScreen()//------------------------------------------------------------
 
       if (i == 6)
       {
-        media = soma / k;
         i = 0;
         j++;
         soma = 0;
         k = 0;
-#ifdef USE_FAHRENHEIT
-        if ((media) > 81.5)
-        {
-          grafico = 30;
-        }
-        else if ((media >= 72.5) && (media <= 81.5))
-        {
-          grafico = (190 - ((media - 72.5) * (16.66667)));
-        }
-        else
-        {
-          grafico = 190;
-        }
-#else
-        if ((media) > 27.5)
-        {
-          grafico = 30;
-        }
-        else if ((media >= 22.5) && (media <= 27.5))
-        {
-          grafico = (190 - ((media - 22.5) * 30));
-        }
-        else
-        {
-          grafico = 190;
-        }
-#endif
+        #ifdef USE_FAHRENHEIT
+          if ((media) > 81.5)
+          {
+            grafico = 30;
+          }
+          else if ((media >= 72.5) && (media <= 81.5))
+          {
+            grafico = (190 - ((media - 72.5) * (16.66667)));
+          }
+          else
+          {
+            grafico = 190;
+          }
+        #else
+          if ((media) > 27.5)
+          {
+            grafico = 30;
+          }
+          else if ((media >= 22.5) && (media <= 27.5))
+          {
+            grafico = (190 - ((media - 22.5) * 30));
+          }
+          else
+          {
+            grafico = 190;
+          }
+        #endif
         setFont(SMALL, 255, 0, 255, 0, 0, 0);
 
         if (j < 250)
@@ -366,17 +366,17 @@ void orpScreen()//------------------------------------------------------------te
         soma = 0;
         k = 0;
 
-        if ((media) < 180)
-        {
-          grafico = 190;
-        }
-        else if ((media) > 480)
+        if ((media) > 480)
         {
           grafico = 30;
         }
         else if ((media >= 180) && (media <= 480))
         {
           grafico = (190 - ((media - 180) * 0.5));
+        }
+        else
+        {
+          grafico = 190;
         }
         setFont(SMALL, 255, 0, 255, 0, 0, 0);
 
@@ -846,23 +846,22 @@ void densidadeScreen()//----------------grafico de densidade -------------------
 
       if (i == 6)
       {
-        media = soma / k;
         i = 0;
         j++;
         soma = 0;
         k = 0;
 
-        if ((media) < 1010)
-        {
-          grafico = 190;
-        }
-        else if ((media) > 1030)
+        if ((media) > 1030)
         {
           grafico = 30;
         }
         else if ((media >= 1010) && (media <= 1030))
         {
           grafico = (190 - ((media - 1010) * 7.5));
+        }
+        else
+        {
+          grafico = 190;
         }
         setFont(SMALL, 255, 0, 255, 0, 0, 0);
 

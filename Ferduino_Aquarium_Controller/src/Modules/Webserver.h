@@ -1,21 +1,23 @@
+#pragma once // Do not change this line
 #ifndef USE_ESP8266 // Do not change this line
   void requestAction(char* topic, byte* payload, unsigned int length)
 #else // Do not change this line
   void mqttData(void* response)
 #endif // Do not change this line
 {
-  StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
+  DynamicJsonBuffer jsonBuffer;
   JsonObject& Json = jsonBuffer.createObject();
   char pub_message[MQTT_MAX_PACKET_SIZE] = "";
+  char message[50] = "";
   byte cont = 0;
   byte dia;
-#define COMMAND_SIZE  60
+  #define COMMAND_SIZE  60
   char clientline[COMMAND_SIZE];
   char inData[COMMAND_SIZE];
   byte index = 0;
   char *str;
   char *p;
-  boolean terminador = false;
+  bool terminador = false;
   float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
   int16_t n;
   char buf[7];
@@ -26,39 +28,38 @@
   strcat(PUB_TOPIC, APIKEY);
   strcat(PUB_TOPIC, "/topic/response");
 
-  LOGLN();
-  LOG(F("Response: ")); // Responde aos comandos
+  LOG(F("\nResponse: ")); // Responde aos comandos
   LOGLN(PUB_TOPIC);
-  LOG(F("New request: "));
+  LOG(F("\nNew request: "));
 
-#ifndef USE_ESP8266 // Do not change this line
-  for (unsigned int i = 0; i < length; i++)
-  {
-    char c = (char)payload[i];
-    LOG(c);
-
-    if (c != '\n' && c != '\r')
+  #ifndef USE_ESP8266 // Do not change this line
+    for (unsigned int i = 0; i < length; i++)
     {
-      if (index < COMMAND_SIZE)
+      char c = (char)payload[i];
+      LOG(c);
+
+      if (c != '\n' && c != '\r')
       {
-        clientline[index] = c;
-        index++;
+        if (index < COMMAND_SIZE)
+        {
+          clientline[index] = c;
+          index++;
+        }
+        continue;
       }
-      continue;
     }
-  }
 
-  index = 0;
+    index = 0;
 
-#else // Do not change this line
-  ELClientResponse *res = (ELClientResponse *)response;
-  String topic = res->popString();
-  String message = res->popString();
-  message.toCharArray(clientline, sizeof(clientline));
+  #else // Do not change this line
+    ELClientResponse *res = (ELClientResponse *)response;
+    String topic = res->popString();
+    String message = res->popString();
+    message.toCharArray(clientline, sizeof(clientline));
 
-  LOG(F("Message: "));
-  LOGLN(message);
-#endif // Do not change this line
+    LOG(F("\nMessage: "));
+    LOGLN(message);
+  #endif // Do not change this line
 
   LOGLN();
 
@@ -112,9 +113,28 @@
       Json[F("speed")] = LedToPercent(fanSpeed);
       Json[F("moonPhase")] = fase;
       Json[F("iluminated")] = lunarCycle * 100;
-      Json[F("date")] = String(t.year) + "-" + String (t.mon) + "-" + String (t.date);
-      Json[F("time")] = String (t.hour) + ":" + String (t.min) + ":" + String (t.sec);
+			Json[F("date")] = rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '-');
+			Json[F("time")] = rtc.getTimeStr();
       Json[F("update")] = lastUpdate;
+
+      strcpy(message, "[");
+
+      for (byte i = 0; i < 10; i++)
+      {
+        itoa(horaNuvem[i], buf, 10);
+        strcat(message, buf);
+
+        if (i < 9)
+        {
+          strcat(message, ",");
+        }
+      }
+
+      strcat(message, "]");
+
+      Json[F("horaNuvem")] = message;
+      Json[F("haveraNuvem")] = haveraNuvem;
+      Json[F("haveraRelampago")] = haveraRelampago;
 
       Json.printTo(pub_message, Json.measureLength() + 1);
       MQTT.publish(PUB_TOPIC, pub_message, false);
@@ -139,11 +159,11 @@
           {
             if (k == 0)
             {
-#ifdef USE_FAHRENHEIT
-              temperatura1 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura1 = sensors.getTempC(tempDeviceAddress);
-#endif
+              #ifdef USE_FAHRENHEIT
+                temperatura1 = sensors.getTempF(tempDeviceAddress);
+              #else
+                temperatura1 = sensors.getTempC(tempDeviceAddress);
+              #endif
 
               for (byte i = 0; i < 8; i++)
               {
@@ -152,11 +172,11 @@
             }
             if (k == 1)
             {
-#ifdef USE_FAHRENHEIT
-              temperatura2 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura2 = sensors.getTempC(tempDeviceAddress);
-#endif
+              #ifdef USE_FAHRENHEIT
+                temperatura2 = sensors.getTempF(tempDeviceAddress);
+              #else
+                temperatura2 = sensors.getTempC(tempDeviceAddress);
+              #endif
               for (byte i = 0; i < 8; i++)
               {
                 sonda2[i] = tempDeviceAddress[i];
@@ -164,11 +184,11 @@
             }
             if (k == 2)
             {
-#ifdef USE_FAHRENHEIT
-              temperatura3 = sensors.getTempF(tempDeviceAddress);
-#else
-              temperatura3 = sensors.getTempC(tempDeviceAddress);
-#endif
+              #ifdef USE_FAHRENHEIT
+                temperatura3 = sensors.getTempF(tempDeviceAddress);
+              #else
+                temperatura3 = sensors.getTempC(tempDeviceAddress);
+              #endif
               for (byte i = 0; i < 8; i++)
               {
                 sonda3[i] = tempDeviceAddress[i];
@@ -259,15 +279,15 @@
         temperatura_dissipador_temp = 0;
         temperatura_ambiente_temp = 0;
         sensors.requestTemperatures();     // Chamada para todos os sensores.
-#ifdef USE_FAHRENHEIT
-        tempC = (sensors.getTempF(sensor_agua));    // Lê a temperatura da água
-        tempH = (sensors.getTempF(sensor_dissipador));   // Lê a temperatura do dissipador.
-        tempA = (sensors.getTempF(sensor_ambiente));   // Lê a temperatura do ambiente.
-#else
-        tempC = (sensors.getTempC(sensor_agua));    // Lê a temperatura da água
-        tempH = (sensors.getTempC(sensor_dissipador));   // Lê a temperatura do dissipador.
-        tempA = (sensors.getTempC(sensor_ambiente));   // Lê a temperatura do ambiente.
-#endif
+        #ifdef USE_FAHRENHEIT
+          tempC = (sensors.getTempF(sensor_agua));  // Lê a temperatura da água
+          tempH = (sensors.getTempF(sensor_dissipador)); // Lê a temperatura do dissipador.
+          tempA = (sensors.getTempF(sensor_ambiente)); // Lê a temperatura do ambiente.
+        #else
+          tempC = (sensors.getTempC(sensor_agua));  // Lê a temperatura da água
+          tempH = (sensors.getTempC(sensor_dissipador)); // Lê a temperatura do dissipador.
+          tempA = (sensors.getTempC(sensor_ambiente)); // Lê a temperatura do ambiente.
+        #endif
 
         SaveDallasAddress();
 
@@ -279,8 +299,8 @@
     case 2:   //config date & time //Send (case, mode, date, month, year, hour, minute, second, day of week)
       if (atoi(inParse[1]) == 0)   // To save time and date send inParse[1] = 1
       {
-        Json[F("date")] = String(t.year) + "-" + String(t.mon) + "-" + String(t.date);
-        Json[F("time")] = String(t.hour) + ":" + String(t.min) + ":" + String(t.sec);
+        Json[F("date")] = rtc.getDateStr(FORMAT_LONG, FORMAT_BIGENDIAN, '-');
+        Json[F("time")] = rtc.getTimeStr();
 
         Json.printTo(pub_message, Json.measureLength() + 1);
         MQTT.publish(PUB_TOPIC, pub_message, false);
@@ -608,6 +628,7 @@
         dose_dosadora_personalizada[dosadora_selecionada] = atof(inParse[15]);
         modo_personalizado_on[dosadora_selecionada] = atoi(inParse[16]);
         config_valores_salvar_dosadoras();
+        selecionar_SPI(SD_CARD);
         criar_arquivos();
         Salvar_dosadora_EEPROM();
 
@@ -717,6 +738,8 @@
       itoa(atoi(inParse[2]), buf, 10);
       strcat(pub_message, buf);
       strcat(pub_message, "\":");
+      selecionar_SPI(SD_CARD);
+
       if (file.open(arquivo[atoi(inParse[2])], O_READ))
       {
         strcat(pub_message, "\"");
@@ -730,8 +753,10 @@
       }
       else
       {
-        strcat(pub_message, "0000}");
+        strcat(pub_message, "\"0000\"}");
       }
+
+			selecionar_SPI(ETHER_CARD);
       MQTT.publish(PUB_TOPIC, pub_message, false);
       break;
 
@@ -851,6 +876,7 @@
         bitWrite(alimentacao_wavemaker_on_off, 0, atoi(inParse[16]));
         bitWrite(alimentacao_wavemaker_on_off, 1, atoi(inParse[17]));
         salvar_alimentador_EEPROM();
+        selecionar_SPI(SD_CARD);
         criar_arquivos_alimentador();
 
         strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0])));   // "{\"response\":\"ok\"}"
@@ -874,6 +900,7 @@
 
     case 21:
       strcpy(pub_message, "{\"filefeeder\":");
+      selecionar_SPI(SD_CARD);
 
       if (file.open("FEEDER.TXT", O_READ))
       {
@@ -883,16 +910,15 @@
           strcat(pub_message, buf);
           strcat(pub_message, ",");
         }
-        strcat(pub_message, "0000\"");
-        strcat(pub_message, "}");
+        strcat(pub_message, "0000\"}");
         file.close();
       }
       else
       {
-        strcat(pub_message, "\"0000\"");
-        strcat(pub_message, "}");
+        strcat(pub_message, "\"0000\"}");
       }
 
+			selecionar_SPI(ETHER_CARD);
       MQTT.publish(PUB_TOPIC, pub_message, false);
       break;
 
@@ -1093,45 +1119,17 @@
       break;
 
     case 25:
-      if (atoi(inParse[1]) == 0)
-      {
-        strcpy(pub_message, "{\"horaNuvem\":[");
 
-        for (byte i = 0; i < 10; i++)
-        {
-          itoa(horaNuvem[i], buf, 10);
-          strcat(pub_message, buf);
-
-          if (i < 15)
-          {
-            strcat(pub_message, ",");
-          }
-        }
-
-        strcat(pub_message, "], \"haveraNuvem\":");
-
-        itoa(haveraNuvem, buf, 10);
-        strcat(pub_message, buf);
-
-        strcat(pub_message, ", \"haveraRelampago\":");
-
-        itoa(haveraRelampago, buf, 10);
-        strcat(pub_message, buf);
-
-        strcat(pub_message, "}");
-
-        MQTT.publish(PUB_TOPIC, pub_message, false);
-      }
       break;
 
     case 26:
       if (atoi(inParse[1]) == 0)
       {
-#ifdef TILT_HYDROMETER
-        DEN = atof(inParse[2]);
-#else
-        DEN_AUX = atof(inParse[2]);
-#endif
+        #ifdef TILT_HYDROMETER
+          DEN = atof(inParse[2]);
+        #else
+          DEN_AUX = atof(inParse[2]);
+        #endif
         temp_AUX = atof(inParse[3]);
 
         LOG(F("Density: "));
@@ -1149,22 +1147,24 @@
 
     if (Json.measureLength() > 2)
     {
-      LOG(F("JSON size: "));
+      LOG(F("\nJSON size: "));
       LOGLN(Json.measureLength());
       LOGLN(F("JSON:"));
-      Json.prettyPrintTo(Serial);
+      #ifdef DEBUG
+        Json.prettyPrintTo(Serial);
+      #endif
       LOGLN();
     }
     if ((strlen(pub_message) > 0) && (Json.measureLength() <= 2))
     {
-      LOG(F("Message size: "));
+      LOG(F("\nMessage size: "));
       LOGLN(strlen(pub_message));
       LOGLN(F("Message:"));
       LOGLN(pub_message);
     }
     if ((strlen(buffer) > 0) && (strlen(pub_message) == 0) && (Json.measureLength() <= 2))
     {
-      LOG(F("Buffer size: "));
+      LOG(F("\nBuffer size: "));
       LOGLN(strlen(buffer));
       LOGLN(F("Buffer:"));
       LOGLN(buffer);
@@ -1175,7 +1175,7 @@
 
 void enviar_dados()
 {
-  StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
+  DynamicJsonBuffer jsonBuffer;
   JsonObject& Json = jsonBuffer.createObject();
   char pub_message[MQTT_MAX_PACKET_SIZE];
   char LOG_TOPIC[50];
@@ -1185,15 +1185,14 @@ void enviar_dados()
   strcat(LOG_TOPIC, "/");
   strcat(LOG_TOPIC, APIKEY);
 
-  LOGLN();
-  LOG(F("Log: ")); // Envia dados
+  LOG(F("\nLog: ")); // Envia dados
   LOGLN(LOG_TOPIC);
 
-#ifndef USE_ESP8266 // Do not change this line
-  if (MQTT.connected())
-#else // Do not change this line
-  if (MQTT_connected == true)
-#endif // Do not change this line
+  #ifndef USE_ESP8266 // Do not change this line
+    if (MQTT.connected())
+  #else // Do not change this line
+    if (MQTT_connected == true)
+  #endif // Do not change this line
   {
     Json[F("userName")] = Username;
     Json[F("minute")] = rtc.getTimeStamp();
@@ -1245,133 +1244,114 @@ void enviar_dados()
     }
     notconnected = 0;
 
-    LOG(F("JSON size: "));
+    LOG(F("\nJSON size: "));
     LOGLN(Json.measureLength());
     LOGLN(F("JSON:"));
-    Json.prettyPrintTo(Serial);
+    #ifdef DEBUG
+      Json.prettyPrintTo(Serial);
+    #endif
     LOGLN("");
   }
   else
   {
-    LOGLN(F("Not connected!"));
-    LOGLN();
+    LOGLN(F("\nNot connected!"));
 
     notconnected++;
     if ((notconnected >= (limite_falha - 2)) && (notconnected < limite_falha))
     {
-#ifndef USE_ESP8266 // Do not change this line!
-      start_ethernet();
-#else  // Do not change this line!
-      sincronizar();
-#endif  // Do not change this line!
+      #ifndef USE_ESP8266 // Do not change this line!
+        start_ethernet();
+      #else // Do not change this line!
+        sincronizar();
+      #endif // Do not change this line!
 
-#ifndef WATCHDOG
-      notconnected = 0;
-#endif
+      #ifndef WATCHDOG
+        notconnected = 0;
+      #endif
     }
 
-#ifdef WATCHDOG
-    if (notconnected == limite_falha)
-    {
-      LOGLN();
-      LOG(F("Resetting"));
-      delay(9000);
-    }
-#endif
+    #ifdef WATCHDOG
+      if (notconnected == limite_falha)
+      {
+        LOG(F("\nResetting"));
+        delay(9000);
+      }
+    #endif
   }
 }
 
 #ifndef USE_ESP8266 //Do not change this line
-
-#include "../Ethernet/src/utility/w5100.h"
-#include "../Ethernet/src/utility/socket.h"
-
-void checkSockStatus()
-{
-  for (byte i = 0; i < MAX_SOCK_NUM; i++)
+  void reconnect()
   {
-    uint8_t s = W5100.readSnSR(i);
+    byte i = 0;
+    char SUB_TOPIC[50];
+    char CLIENT_ID[20];
 
-    if ((s == 0x13))
+    strcpy(SUB_TOPIC, Username);
+    strcat(SUB_TOPIC, "/");
+    strcat(SUB_TOPIC, APIKEY);
+    strcat(SUB_TOPIC, "/topic/command");
+
+    strcpy(CLIENT_ID, "ID: ");
+    strcat(CLIENT_ID, Username);
+
+    selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
+
+    while ((!MQTT.connected()) && (i < 3))
     {
-      close(i);
-      LOG(F("Socket:"));
-      LOGLN(i);
-    }
-  }
-}
-
-void reconnect()
-{
-  byte i = 0;
-  char SUB_TOPIC[50];
-  char CLIENT_ID[20];
-
-  strcpy(SUB_TOPIC, Username);
-  strcat(SUB_TOPIC, "/");
-  strcat(SUB_TOPIC, APIKEY);
-  strcat(SUB_TOPIC, "/topic/command");
-
-  strcpy(CLIENT_ID, "ID: ");
-  strcat(CLIENT_ID, Username);
-
-  selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-
-  while ((!MQTT.connected()) && (i < 3))
-  {
-    LOGLN(F("Attempting MQTT connection..."));
-    if (MQTT.connect(CLIENT_ID, Username, APIKEY))
-    {
-      LOGLN(F("Connected!"));
-      LOG(F("Command: ")); // Recebe os commandos
-      LOGLN(SUB_TOPIC);
-      MQTT.subscribe(SUB_TOPIC);
-    }
-    else
-    {
-      int Status = MQTT.state();
-
-      switch (Status)
+      LOG(F("\nAttempting MQTT connection... "));
+      if (MQTT.connect(CLIENT_ID, Username, APIKEY))
       {
-      case -4:
-        LOGLN(F("Connection timeout"));
-        break;
-
-      case -3:
-        LOGLN(F("Connection lost"));
-        break;
-
-      case -2:
-        LOGLN(F("Connect failed"));
-        break;
-
-      case -1:
-        LOGLN(F("Disconnected"));
-        break;
-
-      case 1:
-        LOGLN(F("Bad protocol"));
-        break;
-
-      case 2:
-        LOGLN(F("Bad client ID"));
-        break;
-
-      case 3:
-        LOGLN(F("Unavailable"));
-        break;
-
-      case 4:
-        LOGLN(F("Bad credentials"));
-        break;
-
-      case 5:
-        LOGLN(F("Unauthorized"));
-        break;
+        LOGLN(F("Connected!"));
+        LOG(F("\nCommand: ")); // Recebe os commandos
+        LOGLN(SUB_TOPIC);
+        MQTT.subscribe(SUB_TOPIC);
       }
+      else
+      {
+        int Status = MQTT.state();
+
+        switch (Status)
+        {
+        case -4:
+          LOGLN(F("Connection timeout"));
+          break;
+
+        case -3:
+          LOGLN(F("Connection lost"));
+          break;
+
+        case -2:
+          LOGLN(F("Connect failed"));
+          break;
+
+        case -1:
+          LOGLN(F("Disconnected"));
+          break;
+
+        case 1:
+          LOGLN(F("Bad protocol"));
+          break;
+
+        case 2:
+          LOGLN(F("Bad client ID"));
+          break;
+
+        case 3:
+          LOGLN(F("Unavailable"));
+          break;
+
+        case 4:
+          LOGLN(F("Bad credentials"));
+          break;
+
+        case 5:
+          LOGLN(F("Unauthorized"));
+          break;
+        }
+      }
+      i++;
+      delay(200);
     }
-    i++;
-    delay(200);
   }
-}
-#endif //Do not change this line
+#endif // Do not change this line

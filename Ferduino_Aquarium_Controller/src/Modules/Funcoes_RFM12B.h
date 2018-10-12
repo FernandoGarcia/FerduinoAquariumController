@@ -1,3 +1,4 @@
+#pragma once
 #ifdef RFM12B_LED_CONTROL
 void RF_LED()
 {

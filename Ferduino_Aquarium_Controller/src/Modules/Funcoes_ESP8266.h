@@ -1,3 +1,4 @@
+#pragma once
 void wifiCb(void* response)
 {
   ELClientResponse *res = (ELClientResponse*)response;
@@ -42,7 +43,7 @@ void mqttDisconnected(void* response)
 
 void sincronizar()
 {
-  boolean ok = false;
+  bool ok = false;
   byte i = 0;
 
   LOGLN(F("Syncing Arduino and ESP8266..."));

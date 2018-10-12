@@ -1,11 +1,10 @@
-//Write CR LF to a file
-
-void writeCRLF(SdFile& f)
+#pragma once
+void writeCRLF(SdFile& f) // Write CR LF to a file
 {
   f.write((uint8_t*)"\r\n", 2);
 }
 
-void logtempgraf() //Grava dados no SD CARD para gerar  grafico de temperatura.
+void logtempgraf() // Grava dados no SD CARD para gerar  grafico de temperatura.
 {
   if(NumMins(t.hour,t.min) == 1)
   {

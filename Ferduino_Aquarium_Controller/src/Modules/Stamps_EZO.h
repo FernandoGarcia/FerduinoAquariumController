@@ -1,8 +1,9 @@
+#pragma once
 #ifdef STAMPS_EZO
 //------------------------------------- Leitura dos stamps
 void check_parametro_ph_aquario()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -55,7 +56,7 @@ void check_parametro_ph_aquario()
 
 void check_parametro_ph_reator()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -108,7 +109,7 @@ void check_parametro_ph_reator()
 
 void check_parametro_orp()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -149,7 +150,7 @@ void check_parametro_orp()
 
 void check_parametro_densidade()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -296,7 +297,7 @@ void iniciar_stamp_densidade()
   Serial3.print("O,SG,1"); // Enable specific gravity reading
   Serial3.print('\r');
   delay(1000);
-  
+
   check_parametro_densidade();
 }
 

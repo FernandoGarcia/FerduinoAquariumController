@@ -1,8 +1,9 @@
+#pragma once
 #ifdef STAMPS_V4X
 //------------------------------------- Leitura dos stamps
 void check_parametro_ph_aquario()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -44,7 +45,7 @@ void check_parametro_ph_aquario()
 
 void check_parametro_ph_reator()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -85,7 +86,7 @@ void check_parametro_ph_reator()
 
 void check_parametro_orp()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[15];
 
@@ -120,7 +121,7 @@ void check_parametro_orp()
 
 void check_parametro_densidade()
 {
-  boolean done = false;
+  bool done = false;
   byte holding;
   char sensorstring[16];
 

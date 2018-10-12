@@ -1,5 +1,6 @@
+#pragma once
 //---------------------------------------Tela inicial ----------------------------------------------tela =0
-void mainScreen(boolean refreshAll = false)
+void mainScreen(bool refreshAll = false)
 {
   int ledLevel;
   int offset = 0;

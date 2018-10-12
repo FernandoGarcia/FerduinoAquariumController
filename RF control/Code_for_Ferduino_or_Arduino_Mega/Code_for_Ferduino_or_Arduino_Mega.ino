@@ -19,8 +19,10 @@ RFM12B radio;
 #define ACK_TIME    200
 const byte limite_sem_resposta = 4;     // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
 unsigned long lastPeriod_millis = 0;
-boolean requestACK_LED = false;         // true = Solicitar uma resposta do dispositivo que recebe a informação
+bool requestACK_LED = false;         // true = Solicitar uma resposta do dispositivo que recebe a informação
 byte nothing = 0;
+
+#define SERIAL_BAUD 38400
 
 // Values for test purpose
 byte bled_out = 255;
@@ -30,7 +32,7 @@ byte rled_out = 255;
 byte uvled_out = 255;
 byte moonled_out = 255;
 
-boolean value;
+bool value;
 
 typedef struct {
   int  nodeId;
@@ -145,23 +147,23 @@ void selecionar_SPI(int dispositivo)
   switch (dispositivo)
   {
     case 0: // Utilizar cartão sd.
-      digitalWrite(ChipSelect_SD, LOW);
       digitalWrite(SelectSlave_ETH, HIGH);
       digitalWrite(ChipSelect_RFM, HIGH);
+      digitalWrite(ChipSelect_SD, LOW);
       delay(10);
       break;
 
     case 1: // Utilizar ethercard
-      digitalWrite(SelectSlave_ETH, LOW);
       digitalWrite(ChipSelect_SD, HIGH);
       digitalWrite(ChipSelect_RFM, HIGH);
+      digitalWrite(SelectSlave_ETH, LOW);
       delay(10);
       break;
 
     case 2: // Utilizar RFM12B
-      digitalWrite(ChipSelect_RFM, LOW);
       digitalWrite(SelectSlave_ETH, HIGH);
       digitalWrite(ChipSelect_SD, HIGH);
+      digitalWrite(ChipSelect_RFM, LOW);
       delay(10);
       break;
   }
@@ -171,7 +173,7 @@ void selecionar_SPI(int dispositivo)
 void setup()
 {
 #ifdef DEBUG //Do not change this line
-  Serial.begin(38400); // Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
+  Serial.begin(SERIAL_BAUD); // Inicia a comunicação com a  porta serial 0 para obter mensagens de depuração.
   Serial.flush();
   Serial.println();
 #endif

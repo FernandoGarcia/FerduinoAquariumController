@@ -1,3 +1,4 @@
+#pragma once
 void check_temporizadores()
 {
   for (byte i = 0; i < 5; i++)

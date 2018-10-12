@@ -1,3 +1,4 @@
+#pragma once
 void checktpa()
 {
   if (outlets_changed[5] == true)
@@ -32,7 +33,7 @@ void checktpa()
 
   if ((outlets[5] == 0) && (outlets[6] == 0) && (outlets[7] == 0))
   {
-    tempo = (duracaomaximatpa * 60000ul);
+    tempo = (duracaomaximatpa * 60000UL);
 
     if ((semana[0] == t.dow) || (semana[1] == t.dow) || (semana[2] == t.dow) || (semana[3] == t.dow) || (semana[4] == t.dow) || (semana[5] == t.dow) || (semana[6] == t.dow))
     {
@@ -215,4 +216,3 @@ void checktpa()
 #endif
   }
 }
-

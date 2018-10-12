@@ -1,3 +1,4 @@
+#pragma once
 #ifdef USE_TFT
 //**********************************************************************************************
 //*********************** Botões dos menus *****************************************************
@@ -328,7 +329,7 @@ void clearScreen()
   myGLCD.clrScr();
 }
 
-void printButton(const char* text, int x1, int y1, int x2, int y2, boolean setFont = false, byte cor = 0)
+void printButton(const char* text, int x1, int y1, int x2, int y2, bool setFont = false, byte cor = 0)
 {
   int stl = strlen(text);
   int fx, fy;
@@ -364,7 +365,7 @@ void printHeader(char* headline)
   myGLCD.print(headline, 5, 4);
 }
 
-void setFont(boolean font, byte cr, byte cg, byte cb, byte br, byte bg, byte bb)
+void setFont(bool font, byte cr, byte cg, byte cb, byte br, byte bg, byte bb)
 {
   myGLCD.setBackColor(br, bg, bb);    //font background black
   myGLCD.setColor(cr, cg, cb);      //font colour white
@@ -404,9 +405,9 @@ void desenhar_barras_periodo ()
   desenhar_barras(cor_canal [cor_selecionada][0], cor_canal [cor_selecionada][1], cor_canal [cor_selecionada][2], (setor_selecionado * 38) + 5, 80, (setor_selecionado * 38) + 39, 195);
 }
 
-boolean checkButtons(int x1, int y1, int x2, int y2)
+bool checkButtons(int x1, int y1, int x2, int y2)
 {
-  boolean match = false;
+  bool match = false;
   int touch_x = myTouch.getX();
   int touch_y = myTouch.getY();
 
@@ -461,7 +462,7 @@ int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
   return (ScheduleHour * 60) + ScheduleMinute;
 }
 
-void myPinMode(int pin, boolean mode)
+void myPinMode(int pin, bool mode)
 {
   if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
   {
@@ -473,7 +474,7 @@ void myPinMode(int pin, boolean mode)
   }
 }
 
-void myDigitalWrite(int pin, boolean level)
+void myDigitalWrite(int pin, bool level)
 {
   if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
   {
@@ -512,3 +513,15 @@ int myAnalogRead(int pin)
   return value;
 }
 
+int sort_asc(const void *cmp1, const void *cmp2)
+{
+  // Need to cast the void * to int *
+  int a = *((int *)cmp1);
+  int b = *((int *)cmp2);
+  // The comparison
+	if(a == b)
+	{
+		return 0;
+	}
+  return (a < b) ? -1 : 1;
+}

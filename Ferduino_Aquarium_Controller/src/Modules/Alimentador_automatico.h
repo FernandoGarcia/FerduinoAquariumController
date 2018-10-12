@@ -1,3 +1,4 @@
+#pragma once
 void alimentador_automatico()
 {
   if ((modo_alimentacao == true) && (millis() >= alimentacao_millis))
@@ -161,7 +162,7 @@ void inicia_alimentacao()
   {
     if (bitRead(alimentacao_wavemaker_on_off, 1)  == true)
     {
-      alimentacao_millis = millis() + ((desligar_wavemaker / 2) * 60000);
+      alimentacao_millis = millis() + ((desligar_wavemaker / 2) * 60000UL);
       modo_alimentacao = wavemaker_on_off = true;
       wavemaker_on_off_millis = millis();
     }

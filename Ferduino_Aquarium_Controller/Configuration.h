@@ -1,3 +1,4 @@
+#pragma once // Do not change this line!
 //*************************************************************************************************
 //*************** Selecionar idioma ***************************************************************
 //*************************************************************************************************
@@ -165,8 +166,8 @@ const byte wavemaker2 = 46;     // Pino que controla o wavemaker 2
 // when using a PCF8575 the pins 47 and 48 will be free to be used in others functions.
 //***************************************************************************************************
 #ifndef USE_PCF8575 // Do not change this line!
-const byte ozonizadorPin = 47;  // Pino que liga o ozonizador
-const byte reatorPin = 48;      // Pino que liga o CO2 do reator.
+  const byte ozonizadorPin = 47; // Pino que liga o ozonizador
+  const byte reatorPin = 48;    // Pino que liga o CO2 do reator.
 #endif // Do not change this line!
 //***************************************************************************************************
 //***************************************************************************************************
@@ -192,16 +193,16 @@ const byte sensor6 = 59;   // A5;      // Pino analógico que verifica o nível 
 // when using a PCF8575 the pins 60, 61 and 62 will be free to be used in others functions.
 //***************************************************************************************************
 #ifndef USE_PCF8575 // Do not change this line!
-const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
-#ifndef USE_ESP8266 // Do not change this line!
-const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
-const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
-#else // Do not change this line!
+  const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
+  #ifndef USE_ESP8266 // Do not change this line!
+    const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
+    const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
+  #else // Do not change this line!
 // When using an ESP8266 as WiFi module is needed move this pins to any free pins.
 // Quando usar um ESP8266 como módulo WiFi é necessário mudar estes pinos para outros livres.
-const byte bomba2Pin = 88; // Move to free pin.
-const byte bomba3Pin = 89; // Move to free pin.
-#endif // Do not change this line!
+    const byte bomba2Pin = 88; // Move to free pin.
+    const byte bomba3Pin = 89; // Move to free pin.
+  #endif // Do not change this line!
 #endif // Do not change this line!
 
 //***************************************************************************************************
@@ -223,14 +224,14 @@ const byte dosadora6 = 68; // A14;     // Bomba dosadora 6
 // Notice that this pins also are declared in PCF8575 section.
 //***************************************************************************************************
 #ifndef USE_PCF8575 // Do not change this line!
-const byte temporizador1 = 80;           // Pino que liga o timer 1.
-const byte temporizador2 = 81;           // Pino que liga o timer 2.
-const byte temporizador3 = 82;           // Pino que liga o timer 3.
-const byte temporizador4 = 83;           // Pino que liga o timer 4.
-const byte temporizador5 = 84;           // Pino que liga o timer 5.
-const byte solenoide1Pin = 85;           // Liga a reposição de água doce.
-const byte alimentadorPin = 86;          // Pino que controla o alimentador automático.
-const byte skimmerPin = 87;              // Pino que controla o skimmer
+  const byte temporizador1 = 80;         // Pino que liga o timer 1.
+  const byte temporizador2 = 81;         // Pino que liga o timer 2.
+  const byte temporizador3 = 82;         // Pino que liga o timer 3.
+  const byte temporizador4 = 83;         // Pino que liga o timer 4.
+  const byte temporizador5 = 84;         // Pino que liga o timer 5.
+  const byte solenoide1Pin = 85;         // Liga a reposição de água doce.
+  const byte alimentadorPin = 86;        // Pino que controla o alimentador automático.
+  const byte skimmerPin = 87;            // Pino que controla o skimmer
 #endif // Do not change this line!
 
 //****************************************************************************************************
@@ -239,19 +240,19 @@ const byte skimmerPin = 87;              // Pino que controla o skimmer
 // Do not change this part if you have not a PCF8575 installed.
 // Não altere esta parte se você não tem um PCF8575 instalado.
 #ifdef USE_PCF8575 // Do not change this line!
-const byte ozonizadorPin = 0;       // P0       // Pino que liga o ozonizador
-const byte reatorPin = 1;           // P1       // Pino que liga o CO2 do reator.
-const byte bomba1Pin = 2;           // P2       // Bomba que tira água da quarentena.
-const byte bomba2Pin = 3;           // P3       // Bomba que tira água do sump.
-const byte bomba3Pin = 4;           // P4       // Bomba que coloca água no sump.
-const byte temporizador1 = 5;       // P5       // Pino que liga o timer 1.
-const byte temporizador2 = 6;       // P6       // Pino que liga o timer 2.
-const byte temporizador3 = 7;       // P7       // Pino que liga o timer 3.
-const byte temporizador4 = 8;       // P8       // Pino que liga o timer 4.
-const byte temporizador5 = 9;       // P9       // Pino que liga o timer 5.
-const byte solenoide1Pin = 10;      // P10      // Liga a reposição de água doce.
-const byte alimentadorPin = 11;     // P11      // Pino que controla o alimentador automático.
-const byte skimmerPin = 12;         // P12      // Pino que controla o skimmer
+  const byte ozonizadorPin = 0;     // P0       // Pino que liga o ozonizador
+  const byte reatorPin = 1;         // P1       // Pino que liga o CO2 do reator.
+  const byte bomba1Pin = 2;         // P2       // Bomba que tira água da quarentena.
+  const byte bomba2Pin = 3;         // P3       // Bomba que tira água do sump.
+  const byte bomba3Pin = 4;         // P4       // Bomba que coloca água no sump.
+  const byte temporizador1 = 5;     // P5       // Pino que liga o timer 1.
+  const byte temporizador2 = 6;     // P6       // Pino que liga o timer 2.
+  const byte temporizador3 = 7;     // P7       // Pino que liga o timer 3.
+  const byte temporizador4 = 8;     // P8       // Pino que liga o timer 4.
+  const byte temporizador5 = 9;     // P9       // Pino que liga o timer 5.
+  const byte solenoide1Pin = 10;    // P10      // Liga a reposição de água doce.
+  const byte alimentadorPin = 11;   // P11      // Pino que controla o alimentador automático.
+  const byte skimmerPin = 12;       // P12      // Pino que controla o skimmer
 #endif // Do not change this line!
 
 //*****************************************************************************************
@@ -262,27 +263,27 @@ const char senha [7] = {'1', '2', '3', '4', '5', '6', '\0'}; // Insira sua senha
 //*****************************************************************************************
 //************************* Funções do ethernet shield ************************************
 //*****************************************************************************************
-#ifdef ETHERNET_SHIELD //Do not change this line
-const char *Username  = "FernandoGarcia";           // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
-const char *APIKEY = "2e4e116a";                     // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
+#ifdef ETHERNET_SHIELD // Do not change this line
+  const char *Username  = "FernandoGarcia";         // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
+  const char *APIKEY = "2e4e116a";                   // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
 
-#ifndef USE_ESP8266 //Do not change this line
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
-byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
-IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
-IPAddress gateway(192, 168, 0, 1);                  // Configure o "Gateway" conforme a sua rede local.
-IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de rede conforme a sua rede local.
-#endif //Do not change this line
+  #ifndef USE_ESP8266 //Do not change this line
+    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
+    byte ip[] = {192, 168, 0, 177};                 // Configure o IP conforme a sua rede local.
+    IPAddress dnsServer(8, 8, 8, 8);                // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
+    IPAddress gateway(192, 168, 0, 1);              // Configure o "Gateway" conforme a sua rede local.
+    IPAddress subnet(255, 255, 255, 0);             // Configure a máscara de rede conforme a sua rede local.
+  #endif //Do not change this line
 #endif //Do not change this line
 
 //*****************************************************************************************
 //*********************** Wireless transceiver (RFM12B) ***********************************
 //*****************************************************************************************
-#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) //Do not change this line
-#define MY_ID      99                   // ID deste dispositivo
-#define NETWORK_ID   100                // Todos os dispositivos devem estar na mesma rede.
-#define TARGET_ID_LED   1               // 1 = ID do dispositivos que receberá a informação
-#define TARGET_ID_RELAY   2             // 2 = ID do dispositivos que receberá a informação
-#define KEY         "thisIsEncryptKey"  // Esta senha deve ter exatamente 16 caracteres.
-#define FREQUENCY   RF12_915MHZ         // Frequência de operação do rádio.
-#endif //Do not change this line
+#if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line
+  #define MY_ID      99                 // ID deste dispositivo
+  #define NETWORK_ID   100              // Todos os dispositivos devem estar na mesma rede.
+  #define TARGET_ID_LED   1             // 1 = ID do dispositivos que receberá a informação
+  #define TARGET_ID_RELAY   2           // 2 = ID do dispositivos que receberá a informação
+  #define KEY         "thisIsEncryptKey"// Esta senha deve ter exatamente 16 caracteres.
+  #define FREQUENCY   RF12_915MHZ       // Frequência de operação do rádio.
+#endif // Do not change this line
