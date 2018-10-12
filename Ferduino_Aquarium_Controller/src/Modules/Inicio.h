@@ -1,5 +1,5 @@
 #pragma once // Do not change this line!
-//---------------------------------------Tela inicial ----------------------------------------------tela =0
+// ---------------------------------------Tela inicial ----------------------------------------------tela =0
 void mainScreen(bool refreshAll = false)
 {
   int ledLevel;
@@ -26,14 +26,14 @@ void mainScreen(bool refreshAll = false)
     myGLCD.print((char *)"DE", 205, 227);
     myGLCD.printNumI(t.year, 225, 227);
 
-    float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
+    float lunarCycle = moonPhase(t.year, t.mon, t.date); // get a value for the lunar cycle
 
     LP.toCharArray(bufferLP, 16);
 
     myGLCD.setColor(255, 255, 255);
-    myGLCD.print(bufferLP, 98, 213); //Escreve descrição da fase lunar
+    myGLCD.print(bufferLP, 98, 213); // Escreve descrição da fase lunar
 
-    if ((lunarCycle * 100) < 0) //Print % of Full to LCD
+    if ((lunarCycle * 100) < 0)      // Print % of Full to LCD
     {
       myGLCD.print((char *)" 0.00", 240, 213);
     }
@@ -49,7 +49,7 @@ void mainScreen(bool refreshAll = false)
     myGLCD.print(buffer, 10, 213); // tabela_textos[182] = "FASE LUNAR:"
   }
 
-  if ( refreshAll == true)                                  //Desenha elementos fixos
+  if (refreshAll == true)                                   // Desenha elementos fixos
   {
     myGLCD.setColor(196, 136, 17);
 
@@ -137,30 +137,30 @@ void mainScreen(bool refreshAll = false)
 
     myGLCD.drawCircle(369, 11, 2);                  // Unidade t. dissipador
 
-#ifdef USE_FAHRENHEIT
-    myGLCD.print((char *)"F", 372, 14);
-#else
-    myGLCD.print((char *)"C", 372, 14);
-#endif
+    #ifdef USE_FAHRENHEIT
+      myGLCD.print((char *)"F", 372, 14);
+    #else
+      myGLCD.print((char *)"C", 372, 14);
+    #endif
 
     myGLCD.drawCircle(367, 25, 2);                  // Unidade t. água
 
-#ifdef USE_FAHRENHEIT
-    myGLCD.print((char *)"F", 370, 28);                     // Unidade t. água
-#else
-    myGLCD.print((char *)"C", 370, 28);                     // Unidade t. água
-#endif
+    #ifdef USE_FAHRENHEIT
+      myGLCD.print((char *)"F", 370, 28);                   // Unidade t. água
+    #else
+      myGLCD.print((char *)"C", 370, 28);                   // Unidade t. água
+    #endif
 
-    myGLCD.print((char *)"G/L", 332, 70);                   // Unidade densidade
-    myGLCD.print((char *)"MV", 280, 84);                    // Unidade ORP
+    myGLCD.print((char *)"G/L", 332, 70);            // Unidade densidade
+    myGLCD.print((char *)"MV", 280, 84);             // Unidade ORP
 
     myGLCD.drawCircle(369, 192, 2);                  // Unidade t. ambiente
 
-#ifdef USE_FAHRENHEIT
-    myGLCD.print((char *)"F", 370, 195);                    // Unidade t. ambiente
-#else
-    myGLCD.print((char *)"C", 370, 195);                    // Unidade t. ambiente
-#endif
+    #ifdef USE_FAHRENHEIT
+      myGLCD.print((char *)"F", 370, 195);                  // Unidade t. ambiente
+    #else
+      myGLCD.print((char *)"C", 370, 195);                  // Unidade t. ambiente
+    #endif
 
 
     myGLCD.setColor(161, 127, 73);
@@ -318,7 +318,7 @@ void mainScreen(bool refreshAll = false)
 
     drawFillRect(137, offset - 1, 157, 27, 0, 0, 0); // Apaga barra anterior
   }
-  if ((violetaLed != uvled_out) || refreshAll)      // Atualiza gráfico led violeta
+  if ((violetaLed != uvled_out) || refreshAll)       // Atualiza gráfico led violeta
   {
     violetaLed = uvled_out;
     ledLevel = LedToPercent(uvled_out);
@@ -340,21 +340,21 @@ void mainScreen(bool refreshAll = false)
   }
 
   myGLCD.setColor(0, 0, 0);
-  myGLCD.fillRect(313, 14, 353, 26);                // Apagar temperatura dissipador
-  myGLCD.fillRect(303, 32, 320, 40);                // Apagar temperatura agua
-  myGLCD.fillRect(324, 42, 390, 54);                // Apagar PH do aquario
-  myGLCD.fillRect(318, 56, 390, 68);                // Apagar PH do reator
-  myGLCD.fillRect(288, 70, 330, 82);                // Apagar densidade
-  myGLCD.fillRect(245, 84, 277, 96);                // Apagar ORP
+  myGLCD.fillRect(313, 14, 353, 26);               // Apagar temperatura dissipador
+  myGLCD.fillRect(303, 32, 320, 40);               // Apagar temperatura agua
+  myGLCD.fillRect(324, 42, 390, 54);               // Apagar PH do aquario
+  myGLCD.fillRect(318, 56, 390, 68);               // Apagar PH do reator
+  myGLCD.fillRect(288, 70, 330, 82);               // Apagar densidade
+  myGLCD.fillRect(245, 84, 277, 96);               // Apagar ORP
 
-  myGLCD.fillRect(279, 98, 330, 110);               // Apagar noticia de chiller ligado/desligado
-  myGLCD.fillRect(289, 112, 330, 124);              // Apagar noticia de aquecedor ligado/desligado
-  myGLCD.fillRect(270, 126, 320, 138);              // Apagar noticia de reator ligado/desligado
-  myGLCD.fillRect(270, 140, 320, 152);              // Apagar noticia de ozonio ligado/desligado
-  myGLCD.fillRect(289, 154, 330, 166);              // Apagar noticia de reposicao ligado/desligado
-  myGLCD.fillRect(266, 168, 330, 180);              // Apagar noticia de nivel normal/anormal
-  myGLCD.fillRect(250, 182, 330, 193);              // Apagar noticia de TPA ligado/desligado
-  myGLCD.fillRect(312, 195, 360, 207);              // Apaga consumo de energia
+  myGLCD.fillRect(279, 98, 330, 110);              // Apagar noticia de chiller ligado/desligado
+  myGLCD.fillRect(289, 112, 330, 124);             // Apagar noticia de aquecedor ligado/desligado
+  myGLCD.fillRect(270, 126, 320, 138);             // Apagar noticia de reator ligado/desligado
+  myGLCD.fillRect(270, 140, 320, 152);             // Apagar noticia de ozonio ligado/desligado
+  myGLCD.fillRect(289, 154, 330, 166);             // Apagar noticia de reposicao ligado/desligado
+  myGLCD.fillRect(266, 168, 330, 180);             // Apagar noticia de nivel normal/anormal
+  myGLCD.fillRect(250, 182, 330, 193);             // Apagar noticia de TPA ligado/desligado
+  myGLCD.fillRect(312, 195, 360, 207);             // Apaga consumo de energia
 
   myGLCD.fillRect(80, 144, 110, 156);              // Apagar noticia de Timers 1 ligado/desligado
   myGLCD.fillRect(80, 156, 110, 168);              // Apagar noticia de Timers 2 ligado/desligado
@@ -364,13 +364,13 @@ void mainScreen(bool refreshAll = false)
 
 
   myGLCD.setColor(0, 255, 0);
-  myGLCD.printNumF(tempH, 2, 316, 14);   // Temperatura dissipador
-  myGLCD.printNumF(tempC, 2, 302, 28);   // Temperatura da agua
-  myGLCD.printNumF(PHA, 2, 327, 42);     // PH aqua
+  myGLCD.printNumF(tempH, 2, 316, 14);  // Temperatura dissipador
+  myGLCD.printNumF(tempC, 2, 302, 28);  // Temperatura da agua
+  myGLCD.printNumF(PHA, 2, 327, 42);    // PH aqua
   myGLCD.printNumF(PHR, 2, 316, 56);    // PH reator
-  myGLCD.printNumI(DEN, 293, 70);        // Densidade
+  myGLCD.printNumI(DEN, 293, 70);       // Densidade
   myGLCD.printNumI(ORP, 245, 84);       // ORP
-  myGLCD.printNumF(tempA, 2, 312, 195);  // Temperatura ambiente
+  myGLCD.printNumF(tempA, 2, 312, 195); // Temperatura ambiente
 
   myGLCD.setColor(255, 0, 0);
 
@@ -526,13 +526,13 @@ void mainScreen(bool refreshAll = false)
   if (temperatura_alta == true)
   {
     myGLCD.setColor(255, 0, 0);
-    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[236])));// "TEMPERATURA ALTA!"
-    myGLCD.print(buffer, 58, 90);          // Alerta de temperatura alta para os LEDS.
+    strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[236]))); // "TEMPERATURA ALTA!"
+    myGLCD.print(buffer, 58, 90);                                       // Alerta de temperatura alta para os LEDS.
   }
   if (temperatura_baixou == true)
   {
     strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[237]))); // "TEMP. BAIXOU!"
     myGLCD.setColor(0, 255, 0);
-    myGLCD.print(buffer, 58, 90);          // Alerta de que a temperatura esteve alta para os LEDS.
+    myGLCD.print(buffer, 58, 90);                                       // Alerta de que a temperatura esteve alta para os LEDS.
   }
 }

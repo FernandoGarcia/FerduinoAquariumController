@@ -9,52 +9,52 @@ void check_temporizadores()
       {
         if ((NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i])) && (NumMins(t.hour, t.min) <= NumMins(off_hora_e[i], off_minuto_e[i])))
         {
-#ifdef USE_PCF8575
-          PCF8575.digitalWrite(temporizador_e[i], HIGH);
-#else
-          myDigitalWrite(temporizador_e[i], HIGH);
-#endif
+          #ifdef USE_PCF8575
+            PCF8575.digitalWrite(temporizador_e[i], HIGH);
+          #else
+            myDigitalWrite(temporizador_e[i], HIGH);
+          #endif
           bitWrite(temporizador_status, (i + 1), 1);
         }
         else
         {
-#ifdef USE_PCF8575
-          PCF8575.digitalWrite(temporizador_e[i], LOW);
-#else
-          myDigitalWrite(temporizador_e[i], LOW);
-#endif
+          #ifdef USE_PCF8575
+            PCF8575.digitalWrite(temporizador_e[i], LOW);
+          #else
+            myDigitalWrite(temporizador_e[i], LOW);
+          #endif
           bitWrite(temporizador_status, (i + 1), 0);
         }
       }
       else if (NumMins(off_hora_e[i], off_minuto_e[i]) < NumMins(on_hora_e[i], on_minuto_e[i]))
       {
-        if (NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i]) || (NumMins(t.hour, t.min) <= NumMins(off_hora_e[i], off_minuto_e[i])))
+        if ((NumMins(t.hour, t.min) >= NumMins(on_hora_e[i], on_minuto_e[i])) || (NumMins(t.hour, t.min) <= NumMins(off_hora_e[i], off_minuto_e[i])))
         {
-#ifdef USE_PCF8575
-          PCF8575.digitalWrite(temporizador_e[i], HIGH);
-#else
-          myDigitalWrite(temporizador_e[i], HIGH);
-#endif
+          #ifdef USE_PCF8575
+            PCF8575.digitalWrite(temporizador_e[i], HIGH);
+          #else
+            myDigitalWrite(temporizador_e[i], HIGH);
+          #endif
           bitWrite(temporizador_status, (i + 1), 1);
         }
         else
         {
-#ifdef USE_PCF8575
-          PCF8575.digitalWrite(temporizador_e[i], LOW);
-#else
-          myDigitalWrite(temporizador_e[i], LOW);
-#endif
+          #ifdef USE_PCF8575
+            PCF8575.digitalWrite(temporizador_e[i], LOW);
+          #else
+            myDigitalWrite(temporizador_e[i], LOW);
+          #endif
           bitWrite(temporizador_status, (i + 1), 0);
         }
       }
     }
     else
     {
-#ifdef USE_PCF8575
-      PCF8575.digitalWrite(temporizador_e[i], LOW);
-#else
-      myDigitalWrite(temporizador_e[i], LOW);
-#endif
+      #ifdef USE_PCF8575
+        PCF8575.digitalWrite(temporizador_e[i], LOW);
+      #else
+        myDigitalWrite(temporizador_e[i], LOW);
+      #endif
       bitWrite(temporizador_status, (i + 1), 0);
       bitWrite(temporizador_modificado, (i + 1), 0);
     }

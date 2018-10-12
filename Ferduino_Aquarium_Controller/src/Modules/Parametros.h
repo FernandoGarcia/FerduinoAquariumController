@@ -26,7 +26,7 @@ void checkTempC()
     temperatura_ambiente_temp = 0;
   }
 
-  if ((tempC < (setTempC + offTempC + alarmTempC))&&(tempC > (setTempC - offTempC - alarmTempC)))
+  if ((tempC < (setTempC + offTempC + alarmTempC)) && (tempC > (setTempC - offTempC - alarmTempC)))
   {
     bitWrite(status_parametros, 2, 0);
   }
@@ -210,7 +210,7 @@ void check_nivel() // Verifica o nível do reef e fish only.
 
 void check_PH_reator()
 {
-  if ((PHR < (setPHR + offPHR + alarmPHR))&&(PHR > (setPHR - offPHR - alarmPHR)))
+  if ((PHR < (setPHR + offPHR + alarmPHR)) && (PHR > (setPHR - offPHR - alarmPHR)))
   {
     bitWrite(status_parametros, 6, 0);
   }
@@ -292,7 +292,7 @@ void check_PH_reator()
 
 void check_PH_aquario()
 {
-  if ((PHA < (setPHA + offPHA + alarmPHA))&&(PHA > (setPHA - offPHA - alarmPHA)))
+  if ((PHA < (setPHA + offPHA + alarmPHA)) && (PHA > (setPHA - offPHA - alarmPHA)))
   {
     bitWrite(status_parametros, 3, 0);
   }
@@ -319,7 +319,7 @@ void check_PH_aquario()
 
 void check_densidade()
 {
-  if ((DEN < (setDEN + offDEN + alarmDEN))&&(DEN > (setDEN - offDEN - alarmDEN)))
+  if ((DEN < (setDEN + offDEN + alarmDEN)) && (DEN > (setDEN - offDEN - alarmDEN)))
   {
     bitWrite(status_parametros, 4, 0);
   }
@@ -334,7 +334,7 @@ void check_densidade()
 
 void check_ORP()
 {
-  if ((ORP < (setORP + offORP + alarmORP))&&(ORP > (setORP - offORP - alarmORP)))
+  if ((ORP < (setORP + offORP + alarmORP)) && (ORP > (setORP - offORP - alarmORP)))
   {
     bitWrite(status_parametros_1, 0, 0);
   }

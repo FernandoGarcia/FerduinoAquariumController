@@ -27,7 +27,7 @@ float moonPhase(int moonYear, int moonMonth, int moonDay)
   AG = IP * LC;
   phase = 0;
 
-                                   // Determine the Moon Illumination %
+  // Determine the Moon Illumination %
   if ((AG >= 0) && (AG <= LC / 2)) // FROM New Moon 0% TO Full Moon 100%
   {
     phase = (2 * AG) / LC;
@@ -36,7 +36,7 @@ float moonPhase(int moonYear, int moonMonth, int moonDay)
   {
     phase = 2 * (LC - AG) / LC;
   }
-                                 // Determine the Lunar Phase
+  // Determine the Lunar Phase
   if ((AG >= 0) && (AG <= 5.54)) // 0 a 35%
   {
     #ifdef USE_TFT

@@ -1,5 +1,5 @@
-#pragma once // Do not change this line!
-void tempgScreen()//------------------------------------------------------------ tela =11
+#pragma once       // Do not change this line!
+void tempgScreen() // ------------------------------------------------------------ tela =11
 {
   int x = 0, y  = 0, z = 0, grafico = 0, j = 0, i = 0, k = 0, f = 30;
   int16_t n;
@@ -41,18 +41,18 @@ void tempgScreen()//------------------------------------------------------------
 
   myGLCD.print((char *)"H", 290, 193);
 
-  myGLCD.drawLine(40, 30, 40, 190); // Eixo y
-  myGLCD.drawLine(40, 190, 290, 190);  // Eixo x
+  myGLCD.drawLine(40, 30, 40, 190);   // Eixo y
+  myGLCD.drawLine(40, 190, 290, 190); // Eixo x
 
-  myGLCD.setColor(64, 64, 64);  // Malha
+  myGLCD.setColor(64, 64, 64);        // Malha
 
-  //EIXO X
+  // EIXO X
   for (int k = 40; k < 180; k += 15)
   {
     myGLCD.drawLine(40, k, 290, k);
   }
 
-  //EIXO Y
+  // EIXO Y
   for (int l = 60; l < 300; l += 20)
   {
     myGLCD.drawLine(l, 30, l, 190);
@@ -141,8 +141,8 @@ void tempgScreen()//------------------------------------------------------------
     }
   #endif
   myGLCD.setColor(255, 0, 0);
-  myGLCD.drawLine(40, x, 290, x);// Temperatura desejada
-  myGLCD.setColor(10, 10, 255);        // Variação permitida
+  myGLCD.drawLine(40, x, 290, x); // Temperatura desejada
+  myGLCD.setColor(10, 10, 255);   // Variação permitida
   myGLCD.drawLine(40, y, 290, y); // Variação mais
   myGLCD.drawLine(40, z, 290, z); // Variação menos
 
@@ -177,7 +177,7 @@ void tempgScreen()//------------------------------------------------------------
         k++;
       }
 
-      if (temperatura <= 2 )
+      if (temperatura <= 2)
       {
         k -= 1;
       }
@@ -227,7 +227,7 @@ void tempgScreen()//------------------------------------------------------------
   }
 }
 
-void orpScreen()//------------------------------------------------------------tela =12
+void orpScreen()// ------------------------------------------------------------tela =12
 {
   int x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, soma = 0, media = 0, grafico = 0, redox = 0, f = 30;
   int orp = setORP, orpmais = offORP, orpmenos = offORP;
@@ -255,18 +255,18 @@ void orpScreen()//------------------------------------------------------------te
   myGLCD.print((char *)"0", 275, 193);
   myGLCD.print((char *)"MV", 18, 18);
   myGLCD.print((char *)"H", 290, 193);
-  myGLCD.drawLine(40, 190, 290, 190);  //eixo x
-  myGLCD.drawLine(40, 30, 40, 190); //eixo y
+  myGLCD.drawLine(40, 190, 290, 190); // eixo x
+  myGLCD.drawLine(40, 30, 40, 190);   // eixo y
 
-  myGLCD.setColor(64, 64, 64);                    //malha
+  myGLCD.setColor(64, 64, 64);        // malha
 
-  //EIXO X
+  // EIXO X
   for (int k = 40; k < 180; k += 15)
   {
     myGLCD.drawLine(40, k, 290, k);
   }
 
-  //EIXOY
+  // EIXOY
   for (int l = 60; l < 300; l += 20)
   {
     myGLCD.drawLine(l, 30, l, 190);
@@ -316,10 +316,10 @@ void orpScreen()//------------------------------------------------------------te
   }
 
   myGLCD.setColor(255, 0, 0);
-  myGLCD.drawLine(40, x, 290, x);//Temperatura desejada
-  myGLCD.setColor(10, 10, 255);        //Variacao permitida
-  myGLCD.drawLine(40, y, 290, y); //variacao mais
-  myGLCD.drawLine(40, z, 290, z); //variacao menos
+  myGLCD.drawLine(40, x, 290, x); // Temperatura desejada
+  myGLCD.setColor(10, 10, 255);   // Variacao permitida
+  myGLCD.drawLine(40, y, 290, y); // variacao mais
+  myGLCD.drawLine(40, z, 290, z); // variacao menos
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[11])));
   printButton(buffer, iniC[0], iniC[1], iniC[2], iniC[3]);
@@ -353,7 +353,7 @@ void orpScreen()//------------------------------------------------------------te
         k++;
       }
 
-      if (redox <= 2 )
+      if (redox <= 2)
       {
         k -= 1;
       }
@@ -390,7 +390,7 @@ void orpScreen()//------------------------------------------------------------te
   }
 }
 
-void PHAScreen()//-------------------------------ph do aqua-----------------------------tela =13
+void PHAScreen()// -------------------------------ph do aqua-----------------------------tela =13
 {
   float x = 0, y = 0, z = 0, f = 30, j = 0, i = 0, grafico = 0, k = 0;
   float ph = setPHA, phmais = offPHA, phmenos = offPHA;
@@ -399,7 +399,7 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
   char buf[7];
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[27])));
-  printHeader(buffer); //tabela_textos[27] = "GRAFICO DE PH DO AQUARIO"
+  printHeader(buffer); // tabela_textos[27] = "GRAFICO DE PH DO AQUARIO"
   setFont(SMALL, 255, 255, 255, 0, 0, 0);
 
   for (float i = 9; i > 6.9; i -= 0.2)
@@ -418,17 +418,17 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
   myGLCD.print((char *)"PH", 17, 18);
   myGLCD.print((char *)"H", 290, 193);
 
-  myGLCD.drawLine(40, 30, 40, 190); //eixo y
-  myGLCD.drawLine(40, 190, 290, 190);  //eixo x
+  myGLCD.drawLine(40, 30, 40, 190);   // eixo y
+  myGLCD.drawLine(40, 190, 290, 190); // eixo x
 
-  myGLCD.setColor(64, 64, 64);            //malha
-  //EIXO X
+  myGLCD.setColor(64, 64, 64);        // malha
+  // EIXO X
   for (int k = 40; k < 180; k += 15)
   {
     myGLCD.drawLine(40, k, 290, k);
   }
 
-  //EIXOY
+  // EIXOY
   for (int l = 60; l < 300; l += 20)
   {
     myGLCD.drawLine(l, 30, l, 190);
@@ -478,10 +478,10 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
   }
 
   myGLCD.setColor(255, 0, 0);
-  myGLCD.drawLine(40, x, 290, x);//PH desejado
-  myGLCD.setColor(10, 10, 255);  //Variacao permitida
-  myGLCD.drawLine(40, y, 290, y); //variacao mais
-  myGLCD.drawLine(40, z, 290, z); //variacao menos
+  myGLCD.drawLine(40, x, 290, x); // PH desejado
+  myGLCD.setColor(10, 10, 255);   // Variacao permitida
+  myGLCD.drawLine(40, y, 290, y); // variacao mais
+  myGLCD.drawLine(40, z, 290, z); // variacao menos
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[11])));
   printButton(buffer, iniC[0], iniC[1], iniC[2], iniC[3], false);
@@ -514,7 +514,7 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
         k++;
       }
 
-      if (pht <= 2 )
+      if (pht <= 2)
       {
         k -= 1;
       }
@@ -551,7 +551,7 @@ void PHAScreen()//-------------------------------ph do aqua---------------------
   }
 }
 
-void PHRScreen()//----------------PH do reator --------------------------------------------tela =17
+void PHRScreen()// ----------------PH do reator --------------------------------------------tela =17
 {
   float x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, grafico = 0;
   float ph = setPHR, phmais = offPHR, phmenos = offPHR;
@@ -561,7 +561,7 @@ void PHRScreen()//----------------PH do reator ---------------------------------
   char buf[7];
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[28])));
-  printHeader(buffer); //tabela_textos[28] = "GRAFICO DE PH DO REATOR DE CALCIO"
+  printHeader(buffer); // tabela_textos[28] = "GRAFICO DE PH DO REATOR DE CALCIO"
 
   setFont(SMALL, 255, 255, 255, 0, 0, 0);
 
@@ -581,18 +581,18 @@ void PHRScreen()//----------------PH do reator ---------------------------------
   myGLCD.print((char *)"PH", 17, 18);
   myGLCD.print((char *)"H", 290, 193);
 
-  myGLCD.drawLine(40, 30, 40, 190); //eixo y
-  myGLCD.drawLine(40, 190, 290, 190);  //eixo x
+  myGLCD.drawLine(40, 30, 40, 190);   // eixo y
+  myGLCD.drawLine(40, 190, 290, 190); // eixo x
 
-  myGLCD.setColor(64, 64, 64);            //malha
+  myGLCD.setColor(64, 64, 64);        // malha
 
-  //EIXO X
+  // EIXO X
   for (int k = 40; k < 180; k += 15)
   {
     myGLCD.drawLine(40, k, 290, k);
   }
 
-  //EIXOY
+  // EIXOY
   for (int l = 60; l < 300; l += 20)
   {
     myGLCD.drawLine(l, 30, l, 190);
@@ -641,10 +641,10 @@ void PHRScreen()//----------------PH do reator ---------------------------------
     z = 190;
   }
   myGLCD.setColor(255, 0, 0);
-  myGLCD.drawLine(40, x, 290, x);//PH desejado
-  myGLCD.setColor(10, 10, 255);  //Variacao permitida
-  myGLCD.drawLine(40, y, 290, y); //variacao mais
-  myGLCD.drawLine(40, z, 290, z); //variacao menos
+  myGLCD.drawLine(40, x, 290, x); // PH desejado
+  myGLCD.setColor(10, 10, 255);   // Variacao permitida
+  myGLCD.drawLine(40, y, 290, y); // variacao mais
+  myGLCD.drawLine(40, z, 290, z); // variacao menos
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[11])));
   printButton(buffer, iniC[0], iniC[1], iniC[2], iniC[3], false);
@@ -676,7 +676,7 @@ void PHRScreen()//----------------PH do reator ---------------------------------
         i++;
         k++;
       }
-      if (pht <= 2 )
+      if (pht <= 2)
       {
         k -= 1;
       }
@@ -712,7 +712,7 @@ void PHRScreen()//----------------PH do reator ---------------------------------
   }
 }
 
-void densidadeScreen()//----------------grafico de densidade --------------------------------------------tela =19
+void densidadeScreen()// ----------------grafico de densidade --------------------------------------------tela =19
 {
   float x = 0, y = 0, z = 0, j = 0, i = 0, k = 0, soma = 0, media = 0, grafico = 0, densidade = 0, f = 30;
   float dens = setDEN, densmais = offDEN, densmenos = offDEN;
@@ -721,7 +721,7 @@ void densidadeScreen()//----------------grafico de densidade -------------------
   char buf[7];
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[29])));
-  printHeader(buffer); //tabela_textos[29] = "GRAFICO DE DENSIDADE"
+  printHeader(buffer); // tabela_textos[29] = "GRAFICO DE DENSIDADE"
 
   setFont(SMALL, 255, 255, 255, 0, 0, 0);
 
@@ -742,18 +742,18 @@ void densidadeScreen()//----------------grafico de densidade -------------------
   myGLCD.print((char *)"DENS.", 12, 18);
   myGLCD.print((char *)"H", 300, 193);
 
-  myGLCD.drawLine(50, 30, 50, 190); //eixo y
-  myGLCD.drawLine(50, 190, 300, 190);  //eixo x
-  //EIXO X
-  myGLCD.setColor(64, 64, 64);            //malha
+  myGLCD.drawLine(50, 30, 50, 190);   // eixo y
+  myGLCD.drawLine(50, 190, 300, 190); // eixo x
+  // EIXO X
+  myGLCD.setColor(64, 64, 64);        // malha
 
-  //EIXO X
+  // EIXO X
   for (int k = 40; k < 180; k += 15)
   {
     myGLCD.drawLine(50, k, 300, k);
   }
 
-  //EIXOY
+  // EIXOY
   for (int l = 70; l < 300; l += 20)
   {
     myGLCD.drawLine(l, 30, l, 190);
@@ -803,10 +803,10 @@ void densidadeScreen()//----------------grafico de densidade -------------------
     z = 190;
   }
   myGLCD.setColor(255, 0, 0);
-  myGLCD.drawLine(50, x, 300, x);//PH desejado
-  myGLCD.setColor(10, 10, 255);  //Variacao permitida
-  myGLCD.drawLine(50, y, 300, y); //variacao mais
-  myGLCD.drawLine(50, z, 300, z); //variacao menos
+  myGLCD.drawLine(50, x, 300, x); // PH desejado
+  myGLCD.setColor(10, 10, 255);   // Variacao permitida
+  myGLCD.drawLine(50, y, 300, y); // variacao mais
+  myGLCD.drawLine(50, z, 300, z); // variacao menos
 
   strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[11])));
   printButton(buffer, iniC[0], iniC[1], iniC[2], iniC[3], false);
@@ -839,7 +839,7 @@ void densidadeScreen()//----------------grafico de densidade -------------------
         k++;
       }
 
-      if (densidade <= 2 )
+      if (densidade <= 2)
       {
         k -= 1;
       }

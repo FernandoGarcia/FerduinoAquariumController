@@ -3,19 +3,19 @@ void alimentador_automatico()
 {
   if ((modo_alimentacao == true) && (millis() >= alimentacao_millis))
   {
-#ifdef USE_PCF8575
-    PCF8575.digitalWrite(alimentadorPin, HIGH);
-#else
-    myDigitalWrite(alimentadorPin, HIGH);
-#endif
+    #ifdef USE_PCF8575
+      PCF8575.digitalWrite(alimentadorPin, HIGH);
+    #else
+      myDigitalWrite(alimentadorPin, HIGH);
+    #endif
   }
   else
   {
-#ifdef USE_PCF8575
-    PCF8575.digitalWrite(alimentadorPin, LOW);
-#else
-    myDigitalWrite(alimentadorPin, LOW);
-#endif
+    #ifdef USE_PCF8575
+      PCF8575.digitalWrite(alimentadorPin, LOW);
+    #else
+      myDigitalWrite(alimentadorPin, LOW);
+    #endif
   }
 }
 

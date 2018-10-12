@@ -40,9 +40,13 @@ byte calcDOW(byte d, byte m, int y)
   dow += d;
   dow += mArr[m - 1];
   if (((y % 4) == 0) && (m < 3))
+  {
     dow -= 1;
+  }
   while (dow > 7)
+  {
     dow -= 7;
+  }
 
   return dow;
 }
@@ -57,30 +61,48 @@ byte validateDate(byte d, byte m, word y)
     if ((y % 4) == 0)
     {
       if (d == 30)
+      {
         od = 1;
+      }
       else if (d == 0)
+      {
         od = 29;
+      }
       else
+      {
         od = d;
+      }
     }
     else
     {
       if (d == 29)
+      {
         od = 1;
+      }
       else if (d == 0)
+      {
         od = 28;
+      }
       else
+      {
         od = d;
+      }
     }
   }
   else
   {
     if (d == 0)
+    {
       od = mArr[m - 1];
+    }
     else if (d == (mArr[m - 1] + 1))
+    {
       od = 1;
+    }
     else
+    {
       od = d;
+    }
   }
 
   return od;

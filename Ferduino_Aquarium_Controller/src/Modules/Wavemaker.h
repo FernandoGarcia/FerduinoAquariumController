@@ -1,87 +1,87 @@
 #pragma once // Do not change this line!
 #ifdef USE_TFT
-void Grafico_WaveMaker()
-{
-  int Pump1PWM_t;
-  int Pump2PWM_t;
-
-  int bar = map(Pump1PWM, 0, 255, 225, 97);
-
-  if (bar < 97 )
+  void Grafico_WaveMaker()
   {
-    bar = 97;
-  }
-  if (bar > 225)
-  {
-    bar = 225;
-  }
+    int Pump1PWM_t;
+    int Pump2PWM_t;
 
-  int bar2 = map(Pump2PWM, 0, 255, 225, 97);
+    int bar = map(Pump1PWM, 0, 255, 225, 97);
 
-  if (bar2 < 97)
-  {
-    bar2 = 97;
-  }
-  if (bar2 > 225)
-  {
-    bar2 = 225;
-  }
+    if (bar < 97)
+    {
+      bar = 97;
+    }
+    if (bar > 225)
+    {
+      bar = 225;
+    }
 
-  Pump1PWM_t = map(Pump1PWM, 0, 255, 0, 100);
-  Pump2PWM_t = map(Pump2PWM, 0, 255, 0, 100);
+    int bar2 = map(Pump2PWM, 0, 255, 225, 97);
 
-  myGLCD.setBackColor(0, 0, 0);
-  myGLCD.setColor(0, 0, 0);
+    if (bar2 < 97)
+    {
+      bar2 = 97;
+    }
+    if (bar2 > 225)
+    {
+      bar2 = 225;
+    }
 
-  myGLCD.fillRect(251, bar - 1, 272, 91);
-  myGLCD.fillRect(280, bar2 - 1, 301, 91);
+    Pump1PWM_t = map(Pump1PWM, 0, 255, 0, 100);
+    Pump2PWM_t = map(Pump2PWM, 0, 255, 0, 100);
 
-  myGLCD.setColor(0, 0, 255);
-
-  myGLCD.fillRect(251, 225, 272, bar);
-  myGLCD.fillRect(280, 225, 301, bar2);
-
-  myGLCD.setFont(RusFont1);
-
-  if (Pump1PWM_t < 10)
-  {
-    myGLCD.setColor(255, 255, 0);
-    myGLCD.printNumI(Pump1PWM_t, 256, 80);
+    myGLCD.setBackColor(0, 0, 0);
     myGLCD.setColor(0, 0, 0);
-    myGLCD.print((char *)"  ", 264, 80);
-  }
-  else if ((Pump1PWM_t >= 10) && (Pump1PWM_t <= 99))
-  {
-    myGLCD.setColor(255, 255, 0);
-    myGLCD.printNumI(Pump1PWM_t, 256, 80);
-    myGLCD.setColor(0, 0, 0);
-    myGLCD.print((char *)" ", 272, 80);
-  }
-  else
-  {
-    myGLCD.setColor(255, 255, 0);
-    myGLCD.printNumI(Pump1PWM_t, 256, 80);
-  }
 
-  if (Pump2PWM_t < 10)
-  {
-    myGLCD.setColor(255, 255, 0);
-    myGLCD.printNumI(Pump2PWM_t, 285, 80);
-    myGLCD.setColor(0, 0, 0);
-    myGLCD.print((char *)"   ", 293, 80);
+    myGLCD.fillRect(251, bar - 1, 272, 91);
+    myGLCD.fillRect(280, bar2 - 1, 301, 91);
+
+    myGLCD.setColor(0, 0, 255);
+
+    myGLCD.fillRect(251, 225, 272, bar);
+    myGLCD.fillRect(280, 225, 301, bar2);
+
+    myGLCD.setFont(RusFont1);
+
+    if (Pump1PWM_t < 10)
+    {
+      myGLCD.setColor(255, 255, 0);
+      myGLCD.printNumI(Pump1PWM_t, 256, 80);
+      myGLCD.setColor(0, 0, 0);
+      myGLCD.print((char *)"  ", 264, 80);
+    }
+    else if ((Pump1PWM_t >= 10) && (Pump1PWM_t <= 99))
+    {
+      myGLCD.setColor(255, 255, 0);
+      myGLCD.printNumI(Pump1PWM_t, 256, 80);
+      myGLCD.setColor(0, 0, 0);
+      myGLCD.print((char *)" ", 272, 80);
+    }
+    else
+    {
+      myGLCD.setColor(255, 255, 0);
+      myGLCD.printNumI(Pump1PWM_t, 256, 80);
+    }
+
+    if (Pump2PWM_t < 10)
+    {
+      myGLCD.setColor(255, 255, 0);
+      myGLCD.printNumI(Pump2PWM_t, 285, 80);
+      myGLCD.setColor(0, 0, 0);
+      myGLCD.print((char *)"   ", 293, 80);
+    }
+    else if ((Pump2PWM_t >= 10) && (Pump2PWM_t <= 99))
+    {
+      myGLCD.setColor(255, 255, 0);
+      myGLCD.printNumI(Pump2PWM_t, 285, 80);
+      myGLCD.setColor(0, 0, 0);
+      myGLCD.print((char *)" ", 301, 80);
+    }
+    else
+    {
+      myGLCD.printNumI(Pump2PWM_t, 285, 80);
+    }
   }
-  else if ((Pump2PWM_t >= 10) && (Pump2PWM_t <= 99))
-  {
-    myGLCD.setColor(255, 255, 0);
-    myGLCD.printNumI(Pump2PWM_t, 285, 80);
-    myGLCD.setColor(0, 0, 0);
-    myGLCD.print((char *)" ", 301, 80);
-  }
-  else
-  {
-    myGLCD.printNumI(Pump2PWM_t, 285, 80);
-  }
-}
 #endif
 
 void Wavemaker()
@@ -122,7 +122,7 @@ void Wavemaker()
       conta++;
     }
 
-    if ( conta >= 29) // Opposite and same
+    if (conta >= 29)  // Opposite and same
     {
       conta = 0;
     }
@@ -176,13 +176,13 @@ void Wavemaker()
     Pump1PWM = Pump2PWM = 0;
   }
 
-#ifdef NIGHT_MODE
-  if ((bled_out == 0) && (wled_out == 0) && (rbled_out  == 0) && (rled_out == 0) && (uvled_out == 0))
-  {
-    Pump1PWM *= POWER_PUMP1;
-    Pump2PWM *= POWER_PUMP2;
-  }
-#endif
+  #ifdef NIGHT_MODE
+    if ((bled_out == 0) && (wled_out == 0) && (rbled_out  == 0) && (rled_out == 0) && (uvled_out == 0))
+    {
+      Pump1PWM *= POWER_PUMP1;
+      Pump2PWM *= POWER_PUMP2;
+    }
+  #endif
   myAnalogWrite(wavemaker1, Pump1PWM);
   myAnalogWrite(wavemaker2, Pump2PWM);
 }

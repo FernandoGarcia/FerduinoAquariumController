@@ -13,7 +13,7 @@ void checkNuvemRelampago()
     if (aguarde == false)
     {
       checkTempoRampa(); // Verifica se é tempo de aumentar ou diminuir o PWM
-      checkNuvens(); // Executa o analogWrite para nuvens
+      checkNuvens();     // Executa o analogWrite para nuvens
     }
     else
     {
@@ -25,8 +25,8 @@ void checkNuvemRelampago()
     if (aguarde == false)
     {
       checkTempoRampa(); // Verifica se é tempo de aumentar ou diminuir o PWM
-      checkNuvens(); // Executa o analogWrite para nuvens
-      checkRelampago();// Executa o relâmpago
+      checkNuvens();     // Executa o analogWrite para nuvens
+      checkRelampago();  // Executa o relâmpago
     }
     else
     {
@@ -95,15 +95,15 @@ void executeRelampago(byte i)
 {
   myAnalogWrite(pinoLED[i], random(pwm_nuvem[i], 126)); // Pequena oscilação
   delay(random(25, 75));
-  myAnalogWrite(pinoLED[i], random(126, 175)); // Pequena oscilação
+  myAnalogWrite(pinoLED[i], random(126, 175));          // Pequena oscilação
   delay(random(25, 50));
-  myAnalogWrite(pinoLED[i], 126); // Luz media
+  myAnalogWrite(pinoLED[i], 126);                       // Luz media
   delay(random(50, 100));
-  myAnalogWrite(pinoLED[i], 255); // Luz alta
+  myAnalogWrite(pinoLED[i], 255);                       // Luz alta
   delay(random(100, 200));
-  myAnalogWrite(pinoLED[i], 126); // Luz media
+  myAnalogWrite(pinoLED[i], 126);                       // Luz media
   delay(random(50, 100));
-  myAnalogWrite(pinoLED[i], pwm_nuvem[i]); // Luz normal
+  myAnalogWrite(pinoLED[i], pwm_nuvem[i]);              // Luz normal
 
   #ifdef USE_EXTRA_CHANNEL_FOR_LIGHTNING_DURING_NIGHT
 
@@ -193,7 +193,7 @@ void checkRampaNuvem()
         {
           pwm_nuvem[i]++;
         }
-        if (pwm_nuvem[i] >= pwmAtualLED[i] )
+        if (pwm_nuvem[i] >= pwmAtualLED[i])
         {
           passo[i] = 0;
           aguarde = true;

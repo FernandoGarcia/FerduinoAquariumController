@@ -1,4 +1,4 @@
-#pragma once // Do not change this line!
+#pragma once              // Do not change this line!
 void writeCRLF(SdFile& f) // Write CR LF to a file
 {
   f.write((uint8_t*)"\r\n", 2);
@@ -13,7 +13,7 @@ void logtempgraf() // Grava dados no SD CARD para gerar  grafico de temperatura.
 
   if(file.open("LOGTDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
-    if ((tempC<=1.0) || (tempC>99.9))
+    if ((tempC <= 1.0) || (tempC > 99.9))
     {
       file.print("00.00");
       file.write((uint8_t*)"\0", 1);
@@ -37,7 +37,7 @@ void logtempgraf() // Grava dados no SD CARD para gerar  grafico de temperatura.
   }
 }
 
-void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquário.
+void logphagraf() // Grava dados no SD CARD para gerar  gráfico de PH do aquário.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
@@ -69,7 +69,7 @@ void logphagraf() //Grava dados no SD CARD para gerar  gráfico de PH do aquári
   }
 }
 
-void logphrgraf() //Grava dados no SD CARD para gerar  gráfico de PH do reator de calcio.
+void logphrgraf() // Grava dados no SD CARD para gerar  gráfico de PH do reator de calcio.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
@@ -102,7 +102,7 @@ void logphrgraf() //Grava dados no SD CARD para gerar  gráfico de PH do reator 
   }
 }
 
-void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
+void logorpgraf() // Grava dados no SD CARD para gerar  grafico de ORP.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
@@ -111,7 +111,7 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
 
   if(file.open("LOGODIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
-    if ((ORP<=100) || (tempC>999))
+    if ((ORP <= 100) || (tempC > 999))
     {
       file.print("000");
       file.write((uint8_t*)"\0", 1);
@@ -135,7 +135,7 @@ void logorpgraf() //Grava dados no SD CARD para gerar  grafico de ORP.
   }
 }
 
-void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
+void logdengraf() // Grava dados no SD CARD para gerar  grafico de PH do aquario.
 {
   if(NumMins(t.hour,t.min) == 1)
   {
@@ -144,7 +144,7 @@ void logdengraf() //Grava dados no SD CARD para gerar  grafico de PH do aquario.
 
   if(file.open("LOGDDIA.TXT", O_CREAT | O_APPEND | O_WRITE))
   {
-    if( (DEN<1000) || (DEN>9999))
+    if( (DEN < 1000) || (DEN > 9999))
     {
       file.print("0000");
       file.write((uint8_t*)"\0", 1);

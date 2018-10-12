@@ -1,21 +1,23 @@
-#pragma once // Do not change this line!
-int LedToPercent (int Led_out)        //returns LED output in %
+#pragma once                   // Do not change this line!
+int LedToPercent (int Led_out) // returns LED output in %
 {
   int result;
 
-  if (Led_out == 0) {
+  if (Led_out == 0)
+  {
     result = 0;
   }
-  else {
+  else
+  {
     result = map(Led_out, 1, 255, 1, 100);
   }
 
   return result;
 }
-//---------------------------LED levels---------------------------
+// ---------------------------LED levels---------------------------
 void LED_levels_output()
 {
-  int sector, sstep, t1, t2 ;
+  int sector, sstep, t1, t2;
   float reduzir = 1.00;
 
   if (tempH >= tempHR)
@@ -180,7 +182,7 @@ void LED_levels_output()
           }
         }
       }
-    }// se hora alterada == false
+    }    // se hora alterada == false
     else // Se hora alterada == true.
     {
       hora_modificada = false;
@@ -192,9 +194,9 @@ void LED_levels_output()
     if (min_cnt > 1439)
     {
       min_cnt = 0;
-    }   // 24 hours of minutes
-    sector = min_cnt / 15;            // divided by gives sector -- 15 minute
-    sstep = min_cnt % 15;             // remainder gives add on to sector value
+    }                      // 24 hours of minutes
+    sector = min_cnt / 15; // divided by gives sector -- 15 minute
+    sstep = min_cnt % 15;  // remainder gives add on to sector value
 
     t1 = sector;
     if (t1 == 95)
@@ -223,7 +225,7 @@ void LED_levels_output()
     }
   }
 
-  float lunarCycle = moonPhase(t.year, t.mon, t.date); //get a value for the lunar cycle
+  float lunarCycle = moonPhase(t.year, t.mon, t.date); // get a value for the lunar cycle
   moonled_out = ((MinI * (1 - lunarCycle)) + (MaxI * lunarCycle) + 0.5) * reduzir;
 
   if (MeanWell == false)
@@ -258,16 +260,18 @@ int check( byte *pt1, byte *pt2, int lstep)
   int result;
   float fresult;
 
-  if (*pt1 == *pt2) {
+  if (*pt1 == *pt2)
+  {
     result = *pt1;
-  }   // No change
-  else if (*pt1 < *pt2)              //Increasing brightness
+  }                     // No change
+  else if (*pt1 < *pt2) // Increasing brightness
   {
     fresult = ((float(*pt2 - *pt1) / 15.0) * float(lstep)) + float(*pt1);
     result = int(fresult);
   }
-  //Decreasing brightness
-  else {
+  // Decreasing brightness
+  else
+  {
     fresult = -((float(*pt1 - *pt2) / 15.0) * float(lstep)) + float(*pt1);
     result = int(fresult);
   }
