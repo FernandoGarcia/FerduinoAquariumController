@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 #ifdef STAMPS_V4X
 //------------------------------------- Leitura dos stamps
 void check_parametro_ph_aquario()

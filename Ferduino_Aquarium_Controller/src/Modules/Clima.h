@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 void checkNuvemRelampago()
 {
   if ((millis() - millis_nuvem) > (duracaoNuvem + duracaoRelampago) * 60000UL) // Finaliza nuvem e relâmpago

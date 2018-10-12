@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 #ifdef USE_TFT
 void Grafico_WaveMaker()
 {

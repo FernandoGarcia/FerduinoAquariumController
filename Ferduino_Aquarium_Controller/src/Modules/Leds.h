@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 int LedToPercent (int Led_out)        //returns LED output in %
 {
   int result;

@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 #ifdef GERMAN
 const char texto0[] PROGMEM = "ZUBRINGER"; // tabela_textos[0]
 const char texto1[] PROGMEM = "MENU 1";  // tabela_textos[1]

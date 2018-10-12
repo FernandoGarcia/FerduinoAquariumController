@@ -1,7 +1,7 @@
-#pragma once
-//**********************************************************************************************
-//********************** Funcoes fase da lua* **************************************************
-//**********************************************************************************************
+#pragma once // Do not change this line!
+// **********************************************************************************************
+// ********************** Funções de fase da lunar **********************************************
+// **********************************************************************************************
 float moonPhase(int moonYear, int moonMonth, int moonDay)
 {
   float LC = 29.53059;  // 1 ciclo lunar = 29.53059 dias.
@@ -24,52 +24,52 @@ float moonPhase(int moonYear, int moonMonth, int moonDay)
     JulianDay = JulianDay - K3;
   }
   IP = MyNormalize((JulianDay - 2451550.1) / LC);
-  AG = IP*LC;
+  AG = IP * LC;
   phase = 0;
 
-  //Determine the Moon Illumination %
-  if ((AG >= 0) && (AG <= LC/2))            //FROM New Moon 0% TO Full Moon 100%
+                                   // Determine the Moon Illumination %
+  if ((AG >= 0) && (AG <= LC / 2)) // FROM New Moon 0% TO Full Moon 100%
   {
-    phase = (2*AG)/LC;
+    phase = (2 * AG) / LC;
   }
-  if ((AG > LC/2) && (AG <= LC))            //FROM Full Moon 100% TO New Moon 0%
+  if ((AG > LC / 2) && (AG <= LC)) // FROM Full Moon 100% TO New Moon 0%
   {
-    phase = 2*(LC-AG)/LC;
+    phase = 2 * (LC - AG) / LC;
   }
-  //Determine the Lunar Phase
-  if ((AG >= 0) && (AG <= 5.54))         // 0 a 35%
+                                 // Determine the Lunar Phase
+  if ((AG >= 0) && (AG <= 5.54)) // 0 a 35%
   {
-#ifdef USE_TFT
-    LP = tabela_textos_fase[1];  // "LUA NOVA"
-#endif
+    #ifdef USE_TFT
+      LP = tabela_textos_fase[1]; // "LUA NOVA"
+    #endif
     fase = 1;
   }
-  if ((AG > 5.17) && (AG <= 14.32))       //35 a 97%
+  if ((AG > 5.17) && (AG <= 14.32)) // 35 a 97%
   {
-#ifdef USE_TFT
-    LP = tabela_textos_fase[2];  // "LUA CRESCENTE"
-#endif
+    #ifdef USE_TFT
+      LP = tabela_textos_fase[2]; // "LUA CRESCENTE"
+    #endif
     fase = 2;
   }
-  if ((AG > 14.32) && (AG <= 15.21))      // 97 a 100 e de 100 a 97%
+  if ((AG > 14.32) && (AG <= 15.21)) // 97 a 100 e de 100 a 97%
   {
-#ifdef USE_TFT
-    LP = tabela_textos_fase[3]; // "LUA CHEIA"
-#endif
+    #ifdef USE_TFT
+      LP = tabela_textos_fase[3]; // "LUA CHEIA"
+    #endif
     fase = 3;
   }
-  if ((AG > 15.21) && (AG <= 24.36))     //97 a 35%
+  if ((AG > 15.21) && (AG <= 24.36)) // 97 a 35%
   {
-#ifdef USE_TFT
-    LP = tabela_textos_fase[4]; // "LUA MINGUANTE"
-#endif
+    #ifdef USE_TFT
+      LP = tabela_textos_fase[4]; // "LUA MINGUANTE"
+    #endif
     fase = 4;
   }
-  if ((AG >= 24.36) && (AG <= LC))       //35 a 0%
+  if ((AG >= 24.36) && (AG <= LC)) // 35 a 0%
   {
-#ifdef USE_TFT
-    LP = tabela_textos_fase[1];  // "LUA NOVA"
-#endif
+    #ifdef USE_TFT
+      LP = tabela_textos_fase[1]; // "LUA NOVA"
+    #endif
     fase = 1;
   }
 
@@ -81,6 +81,8 @@ double MyNormalize(double v)
 {
   v = v - floor(v);
   if (v < 0)
+  {
     v = v + 1;
+  }
   return v;
 }

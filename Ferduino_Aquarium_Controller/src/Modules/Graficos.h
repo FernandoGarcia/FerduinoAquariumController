@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 void tempgScreen()//------------------------------------------------------------ tela =11
 {
   int x = 0, y  = 0, z = 0, grafico = 0, j = 0, i = 0, k = 0, f = 30;

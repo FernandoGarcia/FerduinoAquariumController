@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // Do not change this line!
 void writeCRLF(SdFile& f) // Write CR LF to a file
 {
   f.write((uint8_t*)"\r\n", 2);
