@@ -1,3 +1,4 @@
+# Ferduino Aquarium controller [![Build Status](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController.svg?branch=master)](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController)
 
 ## About
 

@@ -17,7 +17,7 @@ const byte ledPinRed = 10;       // Pin for red LED
 const byte ledPinMoon = 11;      // Pin moonlight
 
 #define LED         13 // LED for debug
-#define SERIAL_BAUD 115200
+#define SERIAL_BAUD 38400
 #define ACK_TIME    30  // # of ms to wait for an ack
 
 unsigned long lastPeriod_millis = 0;
@@ -188,4 +188,3 @@ static bool waitForAck(byte theNodeID)
   }
   return false;
 }
-
