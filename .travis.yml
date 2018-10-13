@@ -12,7 +12,7 @@ install:
     - pip install -U platformio
 
 script:
-    - platformio run --project-dir Ferduino_Aquarium_Controller
+    - platformio run
 
 notifications:
   email:
