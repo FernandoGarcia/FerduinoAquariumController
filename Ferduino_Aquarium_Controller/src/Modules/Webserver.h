@@ -8,7 +8,7 @@
   DynamicJsonBuffer jsonBuffer;
   JsonObject& Json = jsonBuffer.createObject();
   char pub_message[MQTT_MAX_PACKET_SIZE] = "";
-  char message[50] = "";
+  char _message_[50] = "";
   byte cont = 0;
   byte dia;
   #define COMMAND_SIZE  60
@@ -117,22 +117,22 @@
         Json[F("time")] = rtc.getTimeStr();
         Json[F("update")] = lastUpdate;
 
-        strcpy(message, "[");
+        strcpy(_message_, "[");
 
         for (byte i = 0; i < 10; i++)
         {
           itoa(horaNuvem[i], buf, 10);
-          strcat(message, buf);
+          strcat(_message_, buf);
 
           if (i < 9)
           {
-            strcat(message, ",");
+            strcat(_message_, ",");
           }
         }
 
-        strcat(message, "]");
+        strcat(_message_, "]");
 
-        Json[F("horaNuvem")] = message;
+        Json[F("horaNuvem")] = _message_;
         Json[F("haveraNuvem")] = haveraNuvem;
         Json[F("haveraRelampago")] = haveraRelampago;
 
