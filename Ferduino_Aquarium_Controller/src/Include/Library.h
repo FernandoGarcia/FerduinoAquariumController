@@ -9,7 +9,7 @@
 #include <Wire.h>
 #include <EEPROM.h>
 #include <writeAnything.h>
-#include <DS1307_HENNING.h>
+#include <rtc_ds.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <SdFat.h>
@@ -32,7 +32,6 @@
  #else  // Do not change this line!
   #include <ELClient.h>
   #include <ELClientMqtt.h>
-  #include <NeoSWSerial.h>
  #endif // Do not change this line!
  #include <ArduinoJson.h>
 #endif  // Do not change this line!

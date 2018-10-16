@@ -155,7 +155,7 @@ void setup()
         reconnect();
       }
     #else
-      virtualPort.begin(9600);
+      Serial1.begin(38400);
 
       ESP8266.wifiCb.attach(wifiCb);
       sincronizar();

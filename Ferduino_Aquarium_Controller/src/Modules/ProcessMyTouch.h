@@ -152,7 +152,7 @@ void processMyTouch()
           {
             t_temp.date = 1;
           }
-          t_temp.date = validateDate(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDate(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(monU[0], monU[1], monU[2], monU[3]) == true)
@@ -162,13 +162,13 @@ void processMyTouch()
           {
             t_temp.mon = 1;
           }
-          t_temp.date = validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(yeaU[0], yeaU[1], yeaU[2], yeaU[3]) == true)
         {
           t_temp.year += 1;
-          t_temp.date = validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(dayD[0], dayD[1], dayD[2], dayD[3]) == true)
@@ -178,7 +178,7 @@ void processMyTouch()
           {
             t_temp.date = 31;
           }
-          t_temp.date = validateDate(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDate(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(monD[0], monD[1], monD[2], monD[3]) == true)
@@ -188,13 +188,13 @@ void processMyTouch()
           {
             t_temp.mon = 12;
           }
-          t_temp.date = validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(yeaD[0], yeaD[1], yeaD[2], yeaD[3]) == true)
         {
           t_temp.year -= 1;
-          t_temp.date = validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
+          t_temp.date = rtc.validateDateForMonth(t_temp.date, t_temp.mon, t_temp.year);
           setClock();
         }
         else if (checkButtons(prOK[0], prOK[1], prOK[2], prOK[3]) == true)
@@ -202,8 +202,6 @@ void processMyTouch()
           rtc.halt(true);
           rtc.setTime(t_temp.hour, t_temp.min, t_temp.sec);
           rtc.setDate(t_temp.date, t_temp.mon, t_temp.year);
-          t_temp.dow = calcDOW(t_temp.date, t_temp.mon, t_temp.year);
-          rtc.setDOW(t_temp.dow);
           rtc.halt(false);
           dispScreen = 1;
           clearScreen();

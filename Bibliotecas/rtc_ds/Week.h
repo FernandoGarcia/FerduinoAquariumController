@@ -1,0 +1,50 @@
+#pragma once
+#if defined ENGLISH_L
+  #define SUNDAY       1
+  #define MONDAY       2
+  #define TUESDAY      3
+  #define WEDNESDAY    4
+  #define THURSDAY     5
+  #define FRIDAY       6
+  #define SATURDAY     7
+#elif defined FRENCH_L
+  #define DIMANCHE     1
+  #define LUNDI        2
+  #define MARDI        3
+  #define MERCREDI     4
+  #define JEUDI        5
+  #define VENDREDI     6
+  #define SAMEDI       7
+#elif defined GERMAN_L
+  #define SONNTAG      1
+  #define MONTAG       2
+  #define DIENSTAG     3
+  #define MITTWOCH  	 4
+  #define DONNERSTAG   5
+  #define FREITAG      6
+  #define SAMSTAG      7
+#elif defined ITALIAN_L
+  #define DOMENICA     1
+  #define LUNEDI       2
+  #define MARTEDI      3
+  #define MERCOLEDI    4
+  #define GIOVEDI      5
+  #define VENERDI      6
+  #define SABATO       7
+#elif defined PORTUGUESE_L
+  #define DOMINGO      1
+  #define SEGUNDA      2
+  #define TERCA        3
+  #define QUARTA       4
+  #define QUINTA       5
+  #define SEXTA        6
+  #define SABADO       7
+#elif defined SPANISH_L
+  #define DOMINGO      1
+  #define LUNES        2
+  #define MARTES       3
+  #define MIERCOLES    4
+  #define JUEVES       5
+  #define VIERNES      6
+  #define SABADO       7
+#endif

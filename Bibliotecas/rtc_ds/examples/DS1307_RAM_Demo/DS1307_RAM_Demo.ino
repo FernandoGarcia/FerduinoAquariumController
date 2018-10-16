@@ -6,15 +6,13 @@
 // Both burst (all 56 bytes at once) and single byte
 // reads and write is demonstrated.
 // All output is sent to the serial-port at 9600 baud.
-//
-// I assume you know how to connect the DS1307.
-// DS1307:  SDA pin   -> Arduino Digital 20
-//          SCL pin   -> Arduino Digital 21
 
-#include <DS1307_HENNING.h>
+// Modified by Fernando Garcia to support Wire library only.
 
-DS1307_RAM ramBuffer;
-DS1307 rtc(20, 21); 
+#include <rtc_ds.h>
+
+RTC_DS_RAM ramBuffer;
+RTC_DS rtc; 
 
 void setup()
 {

@@ -307,12 +307,11 @@
         }
         else
         {
-          dia = validateDate(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
-          dia = validateDateForMonth(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
+          dia = rtc.validateDate(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
+          dia = rtc.validateDateForMonth(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2]));
           rtc.halt(true);
           rtc.setDate(dia, atoi(inParse[3]), atoi(inParse[2]));
           rtc.setTime(atoi(inParse[5]), atoi(inParse[6]), atoi(inParse[7]));
-          rtc.setDOW(calcDOW(atoi(inParse[4]), atoi(inParse[3]), atoi(inParse[2])));
           rtc.halt(false);
 
           strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"

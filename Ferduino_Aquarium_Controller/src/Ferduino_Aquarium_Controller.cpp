@@ -84,7 +84,6 @@ static bool waitForAck(byte theNodeID);
 
 #include "Modules/Stamps_EZO.h"
 #include "Modules/Stamps_V4.h"
-#include "Modules/Tempo_e_data.h"
 #include "Modules/Temporizadores.h"
 #include "Modules/Troca_de_agua.h"
 #include "Modules/Wavemaker.h"

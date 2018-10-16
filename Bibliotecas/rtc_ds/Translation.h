@@ -1,5 +1,6 @@
+#pragma once // Do not change this line!
 #if defined ENGLISH_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "JANUARY";
   const char month2[] PROGMEM = "FEBRUARY";
   const char month3[] PROGMEM = "MARCH";
@@ -13,16 +14,16 @@
   const char month11[] PROGMEM = "NOVEMBER";
   const char month12[] PROGMEM = "DECEMBER";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "MONDAY";
-  const char dayOfWeek2[] PROGMEM = "TUESDAY";
-  const char dayOfWeek3[] PROGMEM = "WEDNESDAY";
-  const char dayOfWeek4[] PROGMEM = "THURSDAY";
-  const char dayOfWeek5[] PROGMEM = "FRIDAY";
-  const char dayOfWeek6[] PROGMEM = "SATURDAY";
-  const char dayOfWeek7[] PROGMEM = "SUNDAY";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "SUNDAY";
+  const char dayOfWeek2[] PROGMEM = "MONDAY";
+  const char dayOfWeek3[] PROGMEM = "TUESDAY";
+  const char dayOfWeek4[] PROGMEM = "WEDNESDAY";
+  const char dayOfWeek5[] PROGMEM = "THURSDAY";
+  const char dayOfWeek6[] PROGMEM = "FRIDAY";
+  const char dayOfWeek7[] PROGMEM = "SATURDAY";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "JAN";
   const char monthShort2[] PROGMEM = "FEB";
   const char monthShort3[] PROGMEM = "MAR";
@@ -36,17 +37,17 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DEC";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "MON";
-  const char dayOfWeekShort2[] PROGMEM = "TUE";
-  const char dayOfWeekShort3[] PROGMEM = "WED";
-  const char dayOfWeekShort4[] PROGMEM = "THU";
-  const char dayOfWeekShort5[] PROGMEM = "FRI";
-  const char dayOfWeekShort6[] PROGMEM = "SAT";
-  const char dayOfWeekShort7[] PROGMEM = "SUN";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "SUN";
+  const char dayOfWeekShort2[] PROGMEM = "MON";
+  const char dayOfWeekShort3[] PROGMEM = "TUE";
+  const char dayOfWeekShort4[] PROGMEM = "WED";
+  const char dayOfWeekShort5[] PROGMEM = "THU";
+  const char dayOfWeekShort6[] PROGMEM = "FRI";
+  const char dayOfWeekShort7[] PROGMEM = "SAT";
 
 #elif defined FRENCH_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "JANVIER";
   const char month2[] PROGMEM = "FEVRIER";
   const char month3[] PROGMEM = "MARS";
@@ -60,16 +61,16 @@
   const char month11[] PROGMEM = "NOVEMBRE";
   const char month12[] PROGMEM = "DECEMBRE";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "LUNDI";
-  const char dayOfWeek2[] PROGMEM = "MARDI";
-  const char dayOfWeek3[] PROGMEM = "MERCREDI";
-  const char dayOfWeek4[] PROGMEM = "JEUDI";
-  const char dayOfWeek5[] PROGMEM = "VENDREDI";
-  const char dayOfWeek6[] PROGMEM = "SAMEDI";
-  const char dayOfWeek7[] PROGMEM = "DIMANCHE";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "DIMANCHE";
+  const char dayOfWeek2[] PROGMEM = "LUNDI";
+  const char dayOfWeek3[] PROGMEM = "MARDI";
+  const char dayOfWeek4[] PROGMEM = "MERCREDI";
+  const char dayOfWeek5[] PROGMEM = "JEUDI";
+  const char dayOfWeek6[] PROGMEM = "VENDREDI";
+  const char dayOfWeek7[] PROGMEM = "SAMEDI";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "JAN";
   const char monthShort2[] PROGMEM = "FEV";
   const char monthShort3[] PROGMEM = "MAR";
@@ -83,17 +84,17 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DEC";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "LUN";
-  const char dayOfWeekShort2[] PROGMEM = "MAR";
-  const char dayOfWeekShort3[] PROGMEM = "MER";
-  const char dayOfWeekShort4[] PROGMEM = "JEU";
-  const char dayOfWeekShort5[] PROGMEM = "VEN";
-  const char dayOfWeekShort6[] PROGMEM = "SAM";
-  const char dayOfWeekShort7[] PROGMEM = "DIM";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "DIM";
+  const char dayOfWeekShort2[] PROGMEM = "LUN";
+  const char dayOfWeekShort3[] PROGMEM = "MAR";
+  const char dayOfWeekShort4[] PROGMEM = "MER";
+  const char dayOfWeekShort5[] PROGMEM = "JEU";
+  const char dayOfWeekShort6[] PROGMEM = "VEN";
+  const char dayOfWeekShort7[] PROGMEM = "SAM";
 
 #elif defined GERMAN_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "JANUAR";
   const char month2[] PROGMEM = "FEBRUAR";
   const char month3[] PROGMEM = "MARZ";
@@ -107,16 +108,16 @@
   const char month11[] PROGMEM = "NOVEMBER";
   const char month12[] PROGMEM = "DEZEMBER";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "MONTAG";
-  const char dayOfWeek2[] PROGMEM = "DIENSTAG";
-  const char dayOfWeek3[] PROGMEM = "MITTWOCH";
-  const char dayOfWeek4[] PROGMEM = "DONNERSTAG";
-  const char dayOfWeek5[] PROGMEM = "FREITAG";
-  const char dayOfWeek6[] PROGMEM = "SAMSTAG";
-  const char dayOfWeek7[] PROGMEM = "SONNTAG";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "SONNTAG";
+  const char dayOfWeek2[] PROGMEM = "MONTAG";
+  const char dayOfWeek3[] PROGMEM = "DIENSTAG";
+  const char dayOfWeek4[] PROGMEM = "MITTWOCH";
+  const char dayOfWeek5[] PROGMEM = "DONNERSTAG";
+  const char dayOfWeek6[] PROGMEM = "FREITAG";
+  const char dayOfWeek7[] PROGMEM = "SAMSTAG";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "JAN";
   const char monthShort2[] PROGMEM = "FEB";
   const char monthShort3[] PROGMEM = "MAR";
@@ -130,17 +131,17 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DEZ";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "MON";
-  const char dayOfWeekShort2[] PROGMEM = "DIE";
-  const char dayOfWeekShort3[] PROGMEM = "MIT";
-  const char dayOfWeekShort4[] PROGMEM = "DON";
-  const char dayOfWeekShort5[] PROGMEM = "FRE";
-  const char dayOfWeekShort6[] PROGMEM = "SAM";
-  const char dayOfWeekShort7[] PROGMEM = "SON";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "SON";
+  const char dayOfWeekShort2[] PROGMEM = "MON";
+  const char dayOfWeekShort3[] PROGMEM = "DIE";
+  const char dayOfWeekShort4[] PROGMEM = "MIT";
+  const char dayOfWeekShort5[] PROGMEM = "DON";
+  const char dayOfWeekShort6[] PROGMEM = "FRE";
+  const char dayOfWeekShort7[] PROGMEM = "SAM";
 
 #elif defined ITALIAN_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "GENNAIO";
   const char month2[] PROGMEM = "FEBBRAIO";
   const char month3[] PROGMEM = "MARZO";
@@ -154,16 +155,16 @@
   const char month11[] PROGMEM = "NOVEMBRE";
   const char month12[] PROGMEM = "DICEMBRE";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "LUNEDI";
-  const char dayOfWeek2[] PROGMEM = "MARTEDI";
-  const char dayOfWeek3[] PROGMEM = "MERCOLEDI";
-  const char dayOfWeek4[] PROGMEM = "GIOVEDI";
-  const char dayOfWeek5[] PROGMEM = "VENERDI";
-  const char dayOfWeek6[] PROGMEM = "SABATO";
-  const char dayOfWeek7[] PROGMEM = "DOMENICA";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "DOMENICA";
+  const char dayOfWeek2[] PROGMEM = "LUNEDI";
+  const char dayOfWeek3[] PROGMEM = "MARTEDI";
+  const char dayOfWeek4[] PROGMEM = "MERCOLEDI";
+  const char dayOfWeek5[] PROGMEM = "GIOVEDI";
+  const char dayOfWeek6[] PROGMEM = "VENERDI";
+  const char dayOfWeek7[] PROGMEM = "SABATO";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "GEN";
   const char monthShort2[] PROGMEM = "FEB";
   const char monthShort3[] PROGMEM = "MAR";
@@ -177,17 +178,17 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DIC";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "LUN";
-  const char dayOfWeekShort2[] PROGMEM = "MAR";
-  const char dayOfWeekShort3[] PROGMEM = "MER";
-  const char dayOfWeekShort4[] PROGMEM = "GIO";
-  const char dayOfWeekShort5[] PROGMEM = "VEN";
-  const char dayOfWeekShort6[] PROGMEM = "SAB";
-  const char dayOfWeekShort7[] PROGMEM = "DOM";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "DOM";
+  const char dayOfWeekShort2[] PROGMEM = "LUN";
+  const char dayOfWeekShort3[] PROGMEM = "MAR";
+  const char dayOfWeekShort4[] PROGMEM = "MER";
+  const char dayOfWeekShort5[] PROGMEM = "GIO";
+  const char dayOfWeekShort6[] PROGMEM = "VEN";
+  const char dayOfWeekShort7[] PROGMEM = "SAB";
 
 #elif defined PORTUGUESE_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "JANEIRO";
   const char month2[] PROGMEM = "FEVEREIRO";
   const char month3[] PROGMEM = "MARCO";
@@ -201,16 +202,16 @@
   const char month11[] PROGMEM = "NOVEMBRO";
   const char month12[] PROGMEM = "DEZEMBRO";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "SEGUNDA";
-  const char dayOfWeek2[] PROGMEM = "TERCA";
-  const char dayOfWeek3[] PROGMEM = "QUARTA";
-  const char dayOfWeek4[] PROGMEM = "QUINTA";
-  const char dayOfWeek5[] PROGMEM = "SEXTA";
-  const char dayOfWeek6[] PROGMEM = "SABADO";
-  const char dayOfWeek7[] PROGMEM = "DOMINGO";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "DOMINGO";
+  const char dayOfWeek2[] PROGMEM = "SEGUNDA";
+  const char dayOfWeek3[] PROGMEM = "TERCA";
+  const char dayOfWeek4[] PROGMEM = "QUARTA";
+  const char dayOfWeek5[] PROGMEM = "QUINTA";
+  const char dayOfWeek6[] PROGMEM = "SEXTA";
+  const char dayOfWeek7[] PROGMEM = "SABADO";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "JAN";
   const char monthShort2[] PROGMEM = "FEV";
   const char monthShort3[] PROGMEM = "MAR";
@@ -224,17 +225,17 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DEZ";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "SEG";
-  const char dayOfWeekShort2[] PROGMEM = "TER";
-  const char dayOfWeekShort3[] PROGMEM = "QUA";
-  const char dayOfWeekShort4[] PROGMEM = "QUI";
-  const char dayOfWeekShort5[] PROGMEM = "SEX";
-  const char dayOfWeekShort6[] PROGMEM = "SAB";
-  const char dayOfWeekShort7[] PROGMEM = "DOM";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "DOM";
+  const char dayOfWeekShort2[] PROGMEM = "SEG";
+  const char dayOfWeekShort3[] PROGMEM = "TER";
+  const char dayOfWeekShort4[] PROGMEM = "QUA";
+  const char dayOfWeekShort5[] PROGMEM = "QUI";
+  const char dayOfWeekShort6[] PROGMEM = "SEX";
+  const char dayOfWeekShort7[] PROGMEM = "SAB";
 
 #elif defined SPANISH_L
-  const char month0[] PROGMEM = "";
+  const char month0[] PROGMEM = "ERR";
   const char month1[] PROGMEM = "ENERO";
   const char month2[] PROGMEM = "FEBRERO";
   const char month3[] PROGMEM = "MARZO";
@@ -248,16 +249,16 @@
   const char month11[] PROGMEM = "NOVIEMBRE";
   const char month12[] PROGMEM = "DECIEMBRE";
 
-  const char dayOfWeek0[] PROGMEM = "";
-  const char dayOfWeek1[] PROGMEM = "LUNES";
-  const char dayOfWeek2[] PROGMEM = "MARTES";
-  const char dayOfWeek3[] PROGMEM = "MIERCOLES";
-  const char dayOfWeek4[] PROGMEM = "JUEVES";
-  const char dayOfWeek5[] PROGMEM = "VIERNES";
-  const char dayOfWeek6[] PROGMEM = "SABADO";
-  const char dayOfWeek7[] PROGMEM = "DOMINGO";
+  const char dayOfWeek0[] PROGMEM = "ERR";
+  const char dayOfWeek1[] PROGMEM = "DOMINGO";
+  const char dayOfWeek2[] PROGMEM = "LUNES";
+  const char dayOfWeek3[] PROGMEM = "MARTES";
+  const char dayOfWeek4[] PROGMEM = "MIERCOLES";
+  const char dayOfWeek5[] PROGMEM = "JUEVES";
+  const char dayOfWeek7[] PROGMEM = "VIERNES";
+  const char dayOfWeek7[] PROGMEM = "SABADO";
 
-  const char monthShort0[] PROGMEM = "";
+  const char monthShort0[] PROGMEM = "ERR";
   const char monthShort1[] PROGMEM = "ENE";
   const char monthShort2[] PROGMEM = "FEB";
   const char monthShort3[] PROGMEM = "MAR";
@@ -271,14 +272,14 @@
   const char monthShort11[] PROGMEM = "NOV";
   const char monthShort12[] PROGMEM = "DEC";
 
-  const char dayOfWeekShort0[] PROGMEM = "";
-  const char dayOfWeekShort1[] PROGMEM = "LUN";
-  const char dayOfWeekShort2[] PROGMEM = "MAR";
-  const char dayOfWeekShort3[] PROGMEM = "MIE";
-  const char dayOfWeekShort4[] PROGMEM = "JUE";
-  const char dayOfWeekShort5[] PROGMEM = "VIE";
-  const char dayOfWeekShort6[] PROGMEM = "SAB";
-  const char dayOfWeekShort7[] PROGMEM = "DOM";
+  const char dayOfWeekShort0[] PROGMEM = "ERR";
+  const char dayOfWeekShort1[] PROGMEM = "DOM";
+  const char dayOfWeekShort2[] PROGMEM = "LUN";
+  const char dayOfWeekShort3[] PROGMEM = "MAR";
+  const char dayOfWeekShort4[] PROGMEM = "MIE";
+  const char dayOfWeekShort5[] PROGMEM = "JUE";
+  const char dayOfWeekShort6[] PROGMEM = "VIE";
+  const char dayOfWeekShort7[] PROGMEM = "SAB";
 #endif
 
 const char* const monthTable[] PROGMEM =

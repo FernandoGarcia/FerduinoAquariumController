@@ -1,15 +1,12 @@
 #include <ELClient.h>
 #include <ELClientMqtt.h>
-#include <NeoSWSerial.h>
-
-NeoSWSerial virtualPort (A8, A7);  // RX, TX
 
 const char *Username  = "FernandoGarcia";
 const char *APIKEY = "2e4e116a";
 
 // Initialize a connection to esp-link using the normal hardware serial port both for
 // SLIP and for debug messages.
-ELClient ESP8266(&virtualPort);
+ELClient ESP8266(&Serial1);
 ELClientMqtt MQTT(&ESP8266);
 
 unsigned long last_millis;
@@ -115,7 +112,7 @@ void resetCb()
 void setup()
 {
   Serial.begin(38400);
-  virtualPort.begin(9600);
+  Serial1.begin(38400);
 
   while (!Serial)
   {

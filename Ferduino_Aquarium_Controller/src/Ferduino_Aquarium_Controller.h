@@ -52,11 +52,7 @@ byte sonda_associada_3_temp = 0;
 // *******************************************************************************************************
 // ********************** Funções do RTC ********************************************************************
 // *******************************************************************************************************
-#ifdef USE_PINS_18_AND_19_FOR_RTC // Do not change this line
-  DS1307 rtc(18, 19);             // (SDA,SCL) Indica em quais pinos o RTC está conectado.
-#else // Do not change this line
-  DS1307 rtc(20, 21);             // (SDA,SCL) Indica em quais pinos o RTC está conectado.
-#endif // Do not change this line
+RTC_DS rtc;
 Time t_temp, t;
 
 // *******************************************************************************************************
@@ -389,8 +385,7 @@ byte Status = 0x0;
     EthernetClient client;
     PubSubClient MQTT(client);
  #else  // Do not change this line
-    NeoSWSerial virtualPort (A8, A7); // RX, TX
-    ELClient ESP8266(&virtualPort);
+    ELClient ESP8266(&Serial1);
     ELClientMqtt MQTT(&ESP8266);
     bool MQTT_connected = false;
     #define MQTT_MAX_PACKET_SIZE 550
