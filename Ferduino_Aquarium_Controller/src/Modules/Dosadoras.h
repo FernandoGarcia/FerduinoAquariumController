@@ -89,9 +89,9 @@ void check_dosagem_personalizada()
               {
                 tempo_dosagem = map (((dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]) * 2), 0, fator_calib_dosadora_e[i], 0, 60000);
                 tempo_dosagem /= 2;
-                myDigitalWrite(dosadora[i], HIGH);
+                digitalWrite(dosadora[i], HIGH);
                 delay(tempo_dosagem);
-                myDigitalWrite(dosadora[i], LOW);
+                digitalWrite(dosadora[i], LOW);
                 volume_dosado[i] += (dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]);
                 bitWrite(erro_dosagem, i, 0);
               }
@@ -168,14 +168,14 @@ void config_valores_salvar_dosadoras()
 
 void dosagem_manual()
 {
-  myDigitalWrite(dosadora[dosadora_selecionada], HIGH);
+  digitalWrite(dosadora[dosadora_selecionada], HIGH);
   delay(tempo_dosagem);
-  myDigitalWrite(dosadora[dosadora_selecionada], LOW);
+  digitalWrite(dosadora[dosadora_selecionada], LOW);
 }
 
 void calibrar()
 {
-  myDigitalWrite(dosadora[dosadora_selecionada], HIGH);
+  digitalWrite(dosadora[dosadora_selecionada], HIGH);
   delay(60000);
-  myDigitalWrite(dosadora[dosadora_selecionada], LOW);
+  digitalWrite(dosadora[dosadora_selecionada], LOW);
 }

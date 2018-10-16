@@ -213,10 +213,12 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-*.ffs_db 
+*.ffs_db
 .pioenvs/*
 .piolibdeps/*
 .clang_complete
 .gcc-flags.json
 Bibliotecas/readme.txt
 
+.pioenvs
+.piolibdeps

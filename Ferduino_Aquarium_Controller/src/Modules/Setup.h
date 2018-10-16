@@ -163,7 +163,7 @@ void setup()
   #endif   // Do not change this line!
 
   #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line!
-    selecionar_SPI(RFM);    // Seleciona disposito SPI que será utilizado.
+    selecionar_SPI(RFM);                                           // Seleciona disposito SPI que será utilizado.
     radio.Initialize(MY_ID, FREQUENCY, NETWORK_ID);
     radio.Encrypt((byte*)KEY);
 
@@ -174,7 +174,7 @@ void setup()
     #endif // Do not change this line!
   #endif   // Do not change this line!
 
-  #ifdef USE_TFT // Do not change this line
+  #ifdef USE_TFT      // Do not change this line
     clearScreen();    // Limpa o LCD.
     mainScreen(true); // Exibe a tela inicial no LCD.
   #endif // Do not change this line
@@ -232,65 +232,47 @@ void setup()
 void configPins()
 {
 // Define a função dos pinos.
-  myPinMode(alarmPin, OUTPUT);           // Pino 0;
-  myPinMode(desativarFanPin, OUTPUT);    // Pino 1;
+  pinMode(alarmPin, OUTPUT);           // Pino 0;
+  pinMode(desativarFanPin, OUTPUT);    // Pino 1;
 
-  myPinMode (ChipSelect_SD, OUTPUT);     // Pino 4, 5 ou 53;
+  pinMode (ChipSelect_SD, OUTPUT);     // Pino 4, 5 ou 53;
 
-  myPinMode(ledPinUV, OUTPUT);           // Pino 8;
-  myPinMode(ledPinBlue, OUTPUT);         // Pino 9;
-  myPinMode(ledPinWhite, OUTPUT);        // Pino 10;
-  myPinMode(ledPinRoyBlue, OUTPUT);      // Pino 11;
-  myPinMode(ledPinRed, OUTPUT);          // Pino 12;
-  myPinMode(fanPin, OUTPUT);             // Pino 13;
-  myPinMode(multiplexadorS0Pin, OUTPUT); // Pino 16;
-  myPinMode(multiplexadorS1Pin, OUTPUT); // Pino 17;
+  pinMode(ledPinUV, OUTPUT);           // Pino 8;
+  pinMode(ledPinBlue, OUTPUT);         // Pino 9;
+  pinMode(ledPinWhite, OUTPUT);        // Pino 10;
+  pinMode(ledPinRoyBlue, OUTPUT);      // Pino 11;
+  pinMode(ledPinRed, OUTPUT);          // Pino 12;
+  pinMode(fanPin, OUTPUT);             // Pino 13;
+  pinMode(multiplexadorS0Pin, OUTPUT); // Pino 16;
+  pinMode(multiplexadorS1Pin, OUTPUT); // Pino 17;
 
-  myPinMode(aquecedorPin, OUTPUT);       // Pino 42;
-  myPinMode(chillerPin, OUTPUT);         // Pino 43;
-  myPinMode(ledPinMoon, OUTPUT);         // Pino 44;
-  myPinMode(wavemaker1, OUTPUT);         // Pino 45;
-  myPinMode(wavemaker2, OUTPUT);         // Pino 46;
+  pinMode(aquecedorPin, OUTPUT);       // Pino 42;
+  pinMode(chillerPin, OUTPUT);         // Pino 43;
+  pinMode(ledPinMoon, OUTPUT);         // Pino 44;
+  pinMode(wavemaker1, OUTPUT);         // Pino 45;
+  pinMode(wavemaker2, OUTPUT);         // Pino 46;
 
-  myPinMode(SelectSlave_ETH, OUTPUT);    // Pino 53;
+  pinMode(SelectSlave_ETH, OUTPUT);    // Pino 53;
 
-  myPinMode(sensor1, INPUT);             // Pino A0;
-  myPinMode(sensor2, INPUT);             // Pino A1;
-  myPinMode(sensor3, INPUT);             // Pino A2;
-  myPinMode(sensor4, INPUT);             // Pino A3;
-  myPinMode(sensor5, INPUT);             // Pino A4;
-  myPinMode(sensor6, INPUT);             // Pino A5;
+  pinMode(sensor1, INPUT);             // Pino A0;
+  pinMode(sensor2, INPUT);             // Pino A1;
+  pinMode(sensor3, INPUT);             // Pino A2;
+  pinMode(sensor4, INPUT);             // Pino A3;
+  pinMode(sensor5, INPUT);             // Pino A4;
+  pinMode(sensor6, INPUT);             // Pino A5;
 
-  myPinMode(dosadora1, OUTPUT);          // Pino A9;
-  myPinMode(dosadora2, OUTPUT);          // Pino A10;
-  myPinMode(dosadora3, OUTPUT);          // Pino A11;
-  myPinMode(dosadora4, OUTPUT);          // Pino A12;
-  myPinMode(dosadora5, OUTPUT);          // Pino A13;
-  myPinMode(dosadora6, OUTPUT);          // Pino A14;
-  myPinMode(ChipSelect_RFM, OUTPUT);     // Pino A15;
+  pinMode(dosadora1, OUTPUT);          // Pino A9;
+  pinMode(dosadora2, OUTPUT);          // Pino A10;
+  pinMode(dosadora3, OUTPUT);          // Pino A11;
+  pinMode(dosadora4, OUTPUT);          // Pino A12;
+  pinMode(dosadora5, OUTPUT);          // Pino A13;
+  pinMode(dosadora6, OUTPUT);          // Pino A14;
+  pinMode(ChipSelect_RFM, OUTPUT);     // Pino A15;
 
-  #ifdef USE_PCF8575                     // Do not change this line!
-    PCF8575.begin(endereco_PCF8575TS);   // Inicia a comunicação com o PCF8575TS
-    for (int i = 0; i < 16; i++)
-    {
-      PCF8575.pinMode(i, OUTPUT);
-      PCF8575.digitalWrite(i, LOW);
-    }
-  #else // Do not change this line!
-    myPinMode(ozonizadorPin, OUTPUT); // Pino 47;
-    myPinMode(reatorPin, OUTPUT); // Pino 48;
-
-    myPinMode(bomba1Pin, OUTPUT);      // Pino A6;
-    myPinMode(bomba2Pin, OUTPUT);      // Pino A7;
-    myPinMode(bomba3Pin, OUTPUT);      // Pino A8;
-
-    myPinMode(temporizador1, OUTPUT);  // Pino 80;
-    myPinMode(temporizador2, OUTPUT);  // Pino 81;
-    myPinMode(temporizador3, OUTPUT);  // Pino 82;
-    myPinMode(temporizador4, OUTPUT);  // Pino 83;
-    myPinMode(temporizador5, OUTPUT);  // Pino 84;
-    myPinMode(solenoide1Pin, OUTPUT);  // Pino 85;
-    myPinMode(alimentadorPin, OUTPUT); // Pino 86;
-    myPinMode(skimmerPin, OUTPUT);     // Pino 87;
-  #endif // Do not change this line!
+  PCF8575.begin(endereco_PCF8575TS);     // Inicia a comunicação com o PCF8575TS
+  for (int i = 0; i < 16; i++)
+  {
+    PCF8575.pinMode(i, OUTPUT);
+    PCF8575.digitalWrite(i, LOW);
+  }
 }

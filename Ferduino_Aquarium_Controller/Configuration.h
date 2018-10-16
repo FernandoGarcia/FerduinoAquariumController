@@ -24,7 +24,7 @@
 #define ETHERNET_SHIELD // Comente esta linha para desativar as funções do ethernet shield.
 
 // Uncomment the line bellow to use an ESP8266 as WIFI module
-#define USE_ESP8266 // Descomente esta linha para usar um ESP8266 como módulo WIFI.
+// #define USE_ESP8266 // Descomente esta linha para usar um ESP8266 como módulo WIFI.
 
 // Comment this two lines below if have not stamps
 // Comente as duas linhas abaixo se não tiver stamps
@@ -50,10 +50,6 @@
 // Comment this two lines below if have not RFM12B wireless transceiver
 // #define RFM12B_LED_CONTROL   // Descomente esta linha para controlar os LEDs via RF
 // #define RFM12B_RELAY_CONTROL // Descomente esta linha  para controlar os relês via RF
-
-
-// Comment the line below if have not a PCF8575
-#define USE_PCF8575 // Descomente essa linha para usar um PCF8575
 
 // Comente esta linha para desativar as mensagens no monitor serial ou para usar os pinos 0 e 1 (RX e TX) como OUTPUT
 // Comment this line to disable the messages on serial monitor or to use pins 0 and 1 (RX e TX) as OUTPUT
@@ -134,6 +130,7 @@ const byte desativarFanPin = 1;   // Pino que desativa os coolers.
 // Pino 2 reservado para INT do RFM12B.
 // Pinos 3, 4, 5, 6 e 7 reservados para o touch.
 // Pino 5 também é o chip select do cartão SD.
+// Pin 7 is free in DIY controller. Used only in Ferduino M.
 const byte ledPinUV = 8;            // Pino que liga os leds violeta
 const byte ledPinBlue = 9;          // Pino que liga os leds azuis
 const byte ledPinWhite = 10;        // Pino que liga os leds brancos
@@ -151,24 +148,7 @@ const byte chillerPin = 43;     // Pino que liga o chiller
 const byte ledPinMoon = 44;     // Pino que liga os leds da luz noturna
 const byte wavemaker1 = 45;     // Pino que controla o wavemaker 1
 const byte wavemaker2 = 46;     // Pino que controla o wavemaker 2
-
-// ***************************************************************************************************
-// ***************************************************************************************************
-// Os 2 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
-// Observe que estes pinos também estão declarados na seção PCF8575.
-// Caso esteja usando um PCF8575 os pinos 47 e 48 estarão livres para ser usados em outras funções
-
-// The 2 pins below will be controlled for PCF8575 if you have an installed.
-// Notice that this pins also are declared in PCF8575 section.
-// when using a PCF8575 the pins 47 and 48 will be free to be used in others functions.
-// ***************************************************************************************************
-#ifndef USE_PCF8575              // Do not change this line!
-  const byte ozonizadorPin = 47; // Pino que liga o ozonizador
-  const byte reatorPin = 48;     // Pino que liga o CO2 do reator.
-#endif // Do not change this line!
-// ***************************************************************************************************
-// ***************************************************************************************************
-
+// 47 and 48 are free
 const byte sensoresPin = 49;    // Pino que lê os sensores de temperatura
 // Pinos 50, 51 e 52 reservados para comunicação SPI
 // Pino 53 reservado para "select slave do ethernet shield.
@@ -178,25 +158,7 @@ const byte sensor3 = 56;   // A2;      // Pino analógico que verifica se há te
 const byte sensor4 = 57;   // A3;      // Pino analógico que verifica se há tensão na bóia inferior do reservatório.
 const byte sensor5 = 58;   // A4;      // Pino analógico que verifica o nível do reef.
 const byte sensor6 = 59;   // A5;      // Pino analógico que verifica o nível do fish only.
-
-// ***************************************************************************************************
-// ***************************************************************************************************
-// Os 3 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
-// Observe que estes pinos também estão declarados na seção PCF8575.
-// Caso esteja usando um PCF8575 os pinos 60, 61 e 62 estarão livres para ser usados em outras funções
-
-// The 3 pins below will be controlled for PCF8575 if you have an installed.
-// Notice that this pins also are declared in PCF8575 section.
-// when using a PCF8575 the pins 60, 61 and 62 will be free to be used in others functions.
-// ***************************************************************************************************
-#ifndef USE_PCF8575          // Do not change this line!
-  const byte bomba1Pin = 60; // A6       // Bomba que tira água da quarentena.
-  const byte bomba2Pin = 61; // A7       // Bomba que tira água do sump.
-  const byte bomba3Pin = 62; // A8       // Bomba que coloca água no sump.
-#endif // Do not change this line!
-
-// ***************************************************************************************************
-// ***************************************************************************************************
+// Pins 60 (A6), 61 (A7) and 62 (A8) are free
 const byte dosadora1 = 63; // A9;      // Bomba dosadora 1
 const byte dosadora2 = 64; // A10;     // Bomba dosadora 2
 const byte dosadora3 = 65; // A11;     // Bomba dosadora 3
@@ -205,45 +167,22 @@ const byte dosadora5 = 67; // A13;     // Bomba dosadora 5
 const byte dosadora6 = 68; // A14;     // Bomba dosadora 6
 // Pino 69 (A15) reservado para SS do RFM12B
 
-// ***************************************************************************************************
-// ***************************************************************************************************
-// Os 7 pinos abaixo serão controlados pelo PCF8575 caso esteja usando um.
-// Observe que estes pinos também estão declarados na seção PCF8575.
-
-// The 7 pins below will be controlled for PCF8575 if you have an installed.
-// Notice that this pins also are declared in PCF8575 section.
-// ***************************************************************************************************
-#ifndef USE_PCF8575               // Do not change this line!
-  const byte temporizador1 = 80;  // Pino que liga o timer 1.
-  const byte temporizador2 = 81;  // Pino que liga o timer 2.
-  const byte temporizador3 = 82;  // Pino que liga o timer 3.
-  const byte temporizador4 = 83;  // Pino que liga o timer 4.
-  const byte temporizador5 = 84;  // Pino que liga o timer 5.
-  const byte solenoide1Pin = 85;  // Liga a reposição de água doce.
-  const byte alimentadorPin = 86; // Pino que controla o alimentador automático.
-  const byte skimmerPin = 87;     // Pino que controla o skimmer
-#endif // Do not change this line!
-
 // ****************************************************************************************************
 ///************************************** PCF8575 ****************************************************
 // ****************************************************************************************************
-// Do not change this part if you have not a PCF8575 installed.
-// Não altere esta parte se você não tem um PCF8575 instalado.
-#ifdef USE_PCF8575                // Do not change this line!
-  const byte ozonizadorPin = 0;   // P0       // Pino que liga o ozonizador
-  const byte reatorPin = 1;       // P1       // Pino que liga o CO2 do reator.
-  const byte bomba1Pin = 2;       // P2       // Bomba que tira água da quarentena.
-  const byte bomba2Pin = 3;       // P3       // Bomba que tira água do sump.
-  const byte bomba3Pin = 4;       // P4       // Bomba que coloca água no sump.
-  const byte temporizador1 = 5;   // P5       // Pino que liga o timer 1.
-  const byte temporizador2 = 6;   // P6       // Pino que liga o timer 2.
-  const byte temporizador3 = 7;   // P7       // Pino que liga o timer 3.
-  const byte temporizador4 = 8;   // P8       // Pino que liga o timer 4.
-  const byte temporizador5 = 9;   // P9       // Pino que liga o timer 5.
-  const byte solenoide1Pin = 10;  // P10      // Liga a reposição de água doce.
-  const byte alimentadorPin = 11; // P11      // Pino que controla o alimentador automático.
-  const byte skimmerPin = 12;     // P12      // Pino que controla o skimmer
-#endif // Do not change this line!
+const byte ozonizadorPin = 0;     // P0       // Pino que liga o ozonizador
+const byte reatorPin = 1;         // P1       // Pino que liga o CO2 do reator.
+const byte bomba1Pin = 2;         // P2       // Bomba que tira água da quarentena.
+const byte bomba2Pin = 3;         // P3       // Bomba que tira água do sump.
+const byte bomba3Pin = 4;         // P4       // Bomba que coloca água no sump.
+const byte temporizador1 = 5;     // P5       // Pino que liga o timer 1.
+const byte temporizador2 = 6;     // P6       // Pino que liga o timer 2.
+const byte temporizador3 = 7;     // P7       // Pino que liga o timer 3.
+const byte temporizador4 = 8;     // P8       // Pino que liga o timer 4.
+const byte temporizador5 = 9;     // P9       // Pino que liga o timer 5.
+const byte solenoide1Pin = 10;    // P10      // Liga a reposição de água doce.
+const byte alimentadorPin = 11;   // P11      // Pino que controla o alimentador automático.
+const byte skimmerPin = 12;       // P12      // Pino que controla o skimmer
 
 // *****************************************************************************************
 // ************************** Senha para acessar os menus **********************************

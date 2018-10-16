@@ -47,7 +47,7 @@ void checkNuvens()
       }
       else
       {
-        myAnalogWrite(pinoLED[i], pwm_nuvem[i]);
+        analogWrite(pinoLED[i], pwm_nuvem[i]);
       }
     }
   }
@@ -93,24 +93,24 @@ void checkRelampago()
 
 void executeRelampago(byte i)
 {
-  myAnalogWrite(pinoLED[i], random(pwm_nuvem[i], 126)); // Pequena oscilação
+  analogWrite(pinoLED[i], random(pwm_nuvem[i], 126)); // Pequena oscilação
   delay(random(25, 75));
-  myAnalogWrite(pinoLED[i], random(126, 175));          // Pequena oscilação
+  analogWrite(pinoLED[i], random(126, 175));          // Pequena oscilação
   delay(random(25, 50));
-  myAnalogWrite(pinoLED[i], 126);                       // Luz media
+  analogWrite(pinoLED[i], 126);                       // Luz media
   delay(random(50, 100));
-  myAnalogWrite(pinoLED[i], 255);                       // Luz alta
+  analogWrite(pinoLED[i], 255);                       // Luz alta
   delay(random(100, 200));
-  myAnalogWrite(pinoLED[i], 126);                       // Luz media
+  analogWrite(pinoLED[i], 126);                       // Luz media
   delay(random(50, 100));
-  myAnalogWrite(pinoLED[i], pwm_nuvem[i]);              // Luz normal
+  analogWrite(pinoLED[i], pwm_nuvem[i]);              // Luz normal
 
   #ifdef USE_EXTRA_CHANNEL_FOR_LIGHTNING_DURING_NIGHT
 
     if ((relampagoNoturno == true) && (i == EXTRA_CHANNEL_FOR_LIGHTNING))
     {
       delay(random(50, 100));
-      myAnalogWrite(pinoLED[i], valorAnterior);
+      analogWrite(pinoLED[i], valorAnterior);
     }
 
   #endif

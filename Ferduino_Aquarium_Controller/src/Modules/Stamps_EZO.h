@@ -313,32 +313,32 @@
         // open channel Y0
         // S0=0
         // S1=0
-        myDigitalWrite(multiplexadorS0Pin, LOW);
-        myDigitalWrite(multiplexadorS1Pin, LOW);
+        digitalWrite(multiplexadorS0Pin, LOW);
+        digitalWrite(multiplexadorS1Pin, LOW);
         break;
 
       case 1:
         // open channel Y1
         // S0=1
         // S1=0
-        myDigitalWrite(multiplexadorS0Pin, HIGH);
-        myDigitalWrite(multiplexadorS1Pin, LOW);
+        digitalWrite(multiplexadorS0Pin, HIGH);
+        digitalWrite(multiplexadorS1Pin, LOW);
         break;
 
       case 2:
         // open channel Y2
         // S0=0
         // S1=1
-        myDigitalWrite(multiplexadorS0Pin, LOW);
-        myDigitalWrite(multiplexadorS1Pin, HIGH);
+        digitalWrite(multiplexadorS0Pin, LOW);
+        digitalWrite(multiplexadorS1Pin, HIGH);
         break;
 
       case 3:
         // open channel Y3
         // S0=1
         // S1=1
-        myDigitalWrite(multiplexadorS0Pin, HIGH);
-        myDigitalWrite(multiplexadorS1Pin, HIGH);
+        digitalWrite(multiplexadorS0Pin, HIGH);
+        digitalWrite(multiplexadorS1Pin, HIGH);
         break;
     }
     Serial3.print('\r');

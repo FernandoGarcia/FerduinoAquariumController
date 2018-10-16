@@ -466,57 +466,6 @@ int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
   return (ScheduleHour * 60) + ScheduleMinute;
 }
 
-void myPinMode(int pin, bool mode)
-{
-  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
-  {
-    pinMode(pin, mode);
-  }
-  else
-  {
-
-  }
-}
-
-void myDigitalWrite(int pin, bool level)
-{
-  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
-  {
-    digitalWrite(pin, level);
-  }
-  else
-  {
-
-  }
-}
-
-void myAnalogWrite(int pin, byte pwm)
-{
-  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
-  {
-    analogWrite(pin, pwm);
-  }
-  else
-  {
-
-  }
-}
-
-int myAnalogRead(int pin)
-{
-  int value = 6666;
-
-  if ((pin >= 0) && (pin <= MAX_PIN_NUMBER))
-  {
-    value = analogRead(pin);
-  }
-  else
-  {
-
-  }
-  return value;
-}
-
 int sort_asc(const void *cmp1, const void *cmp2)
 {
   // Need to cast the void * to int *

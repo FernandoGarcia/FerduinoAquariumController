@@ -247,12 +247,12 @@ void LED_levels_output()
     moonled_out *= suavizar;
   }
 
-  myAnalogWrite(ledPinBlue, bled_out);
-  myAnalogWrite(ledPinWhite, wled_out);
-  myAnalogWrite(ledPinRoyBlue, rbled_out);
-  myAnalogWrite(ledPinRed, rled_out);
-  myAnalogWrite(ledPinUV, uvled_out);
-  myAnalogWrite(ledPinMoon, moonled_out);
+  analogWrite(ledPinBlue, bled_out);
+  analogWrite(ledPinWhite, wled_out);
+  analogWrite(ledPinRoyBlue, rbled_out);
+  analogWrite(ledPinRed, rled_out);
+  analogWrite(ledPinUV, uvled_out);
+  analogWrite(ledPinMoon, moonled_out);
 }
 
 int check( byte *pt1, byte *pt2, int lstep)
