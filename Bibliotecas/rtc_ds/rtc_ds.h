@@ -50,8 +50,6 @@
 #define PORTUGUESE_L
 // #define SPANISH_L
 
-#include "Week.h"
-
 #define DS_ADDR_W 0x68
 
 #define FORMAT_SHORT  1

@@ -82,7 +82,7 @@
 // Comment the line bellow if you don't want use a TFT. This function works only with IDE 1.6.7 or higher.
 #define USE_TFT // Comente esta linha se você não quer usar um TFT. Estão função funciona apenas com a IDE 1.6.7 or higher.
 
-// Change the TFT model below if needed. Normaly it should work for all models with HX8352-A controller
+// Change the TFT model below if needed. Normally it should work for all models with HX8352-A controller
 // Altere o modelo do TFT abaixo se necessário. Nomalmente este dever funcionar para todos os modelos com controlador HX8352-A.
 #define TFT_MODEL ITDB32WD
 

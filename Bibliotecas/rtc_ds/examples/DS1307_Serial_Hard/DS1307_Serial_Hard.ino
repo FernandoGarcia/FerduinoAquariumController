@@ -12,7 +12,7 @@
 RTC_DS rtc;
 
 // Init a Time-data structure
-Time  t;
+Time t;
 
 void setup()
 {
@@ -22,9 +22,27 @@ void setup()
   // Setup Serial connection
   Serial.begin(38400);
 
+  if (rtc.isPresent())
+  {
+    Serial.println("RTC found");
+  }
+  else
+  {
+    Serial.println("RTC not found");
+  }
+
+  if (rtc.isRunning())
+  {
+    Serial.println("RTC is running");
+  }
+  else
+  {
+    Serial.println("RTC is not running");
+  }
+
   // The following lines can be commented out to use the values already stored in the DS1307
   rtc.setTime(12, 0, 0);     // Set the time to 12:00:00 (24hr format)
-  rtc.setDate(3, 10, 2010);   // Set the date to October 3th, 2010
+  rtc.setDate(3, 10, 2010);  // Set the date to October 3th, 2010
 }
 
 void loop()

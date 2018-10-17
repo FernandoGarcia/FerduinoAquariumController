@@ -60,7 +60,6 @@ RTC_DS::RTC_DS()
 
 uint8_t RTC_DS::isPresent(void)
 {
-  Wire.begin();
   Wire.beginTransmission(DS_ADDR_W);
   Wire.write(0);
 
