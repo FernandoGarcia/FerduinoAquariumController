@@ -4,18 +4,21 @@ void checktpa()
   if (outlets_changed[5] == true)
   {
     outlets_changed[5] = false;
+    bitWrite(Status, 3, 0);
     PCF8575.digitalWrite(bomba1Pin, LOW);
   }
 
   if (outlets_changed[6] == true)
   {
     outlets_changed[6] = false;
+    bitWrite(Status, 4, 0);
     PCF8575.digitalWrite(bomba2Pin, LOW);
   }
 
   if (outlets_changed[7] == true)
   {
     outlets_changed[7] = false;
+    bitWrite(Status, 5, 0);
     PCF8575.digitalWrite(bomba3Pin, LOW);
   }
 
@@ -51,6 +54,9 @@ void checktpa()
     if ((analogRead(sensor1) < 400) && (analogRead(sensor2) > 400) && (analogRead(sensor3) < 400) && (tpa == 1)
         && (bitRead(tpa_status, 2) == false) && (analogRead(sensor4) > 400) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
+      bitWrite(Status, 3, 1);
+      bitWrite(Status, 4, 0);
+      bitWrite(Status, 5, 0);
       PCF8575.digitalWrite(bomba1Pin, HIGH);   // estagio 1
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
@@ -68,6 +74,9 @@ void checktpa()
     }
     else if ((analogRead(sensor1) > 400) && (analogRead(sensor2) > 400) && (tpa == 2) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
+      bitWrite(Status, 3, 0);
+      bitWrite(Status, 4, 1);
+      bitWrite(Status, 5, 0);
       PCF8575.digitalWrite(bomba1Pin, LOW);   // estagio 2
       PCF8575.digitalWrite(bomba2Pin, HIGH);
       PCF8575.digitalWrite(bomba3Pin, LOW);
@@ -85,6 +94,9 @@ void checktpa()
     }
     else if ((analogRead(sensor2) < 400) && (analogRead(sensor1) == 0) && (analogRead(sensor3) > 400) && (tpa == 3) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
+      bitWrite(Status, 3, 0);
+      bitWrite(Status, 4, 0);
+      bitWrite(Status, 5, 1);
       PCF8575.digitalWrite(bomba1Pin, LOW);   // estagio 3
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, HIGH);
@@ -102,6 +114,9 @@ void checktpa()
     }
     else if ((analogRead(sensor3) < 400) && (analogRead(sensor2) > 400) && (analogRead(sensor1) < 400) && (tpa == 4) && ((shiftedmillis - marcadoriniciotpa) < tempo))
     {
+      bitWrite(Status, 3, 0);
+      bitWrite(Status, 4, 0);
+      bitWrite(Status, 5, 0);
       PCF8575.digitalWrite(bomba1Pin, LOW);   // estagio 0
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
@@ -109,6 +124,9 @@ void checktpa()
     }
     else if (((shiftedmillis - marcadoriniciotpa) >= tempo) && (bitRead(tpa_status, 1) == true))
     {
+      bitWrite(Status, 3, 0);
+      bitWrite(Status, 4, 0);
+      bitWrite(Status, 5, 0);
       PCF8575.digitalWrite(bomba1Pin, LOW);   // desliga as bombas todas e mete tpa=0 para não entrar no ciclo outra vez
       PCF8575.digitalWrite(bomba2Pin, LOW);
       PCF8575.digitalWrite(bomba3Pin, LOW);
@@ -122,31 +140,37 @@ void checktpa()
 
   if (outlets[5] == 1)
   {
+    bitWrite(Status, 3, 1);
     PCF8575.digitalWrite(bomba1Pin, HIGH);
   }
 
   if (outlets[6] == 1)
   {
+    bitWrite(Status, 4, 1);
     PCF8575.digitalWrite(bomba2Pin, HIGH);
   }
 
   if (outlets[7] == 1)
   {
+    bitWrite(Status, 5, 1);
     PCF8575.digitalWrite(bomba3Pin, HIGH);
   }
 
   if (outlets[5] == 2)
   {
+    bitWrite(Status, 3, 0);
     PCF8575.digitalWrite(bomba1Pin, LOW);
   }
 
   if (outlets[6] == 2)
   {
+    bitWrite(Status, 4, 0);
     PCF8575.digitalWrite(bomba2Pin, LOW);
   }
 
   if (outlets[7] == 2)
   {
+    bitWrite(Status, 5, 0);
     PCF8575.digitalWrite(bomba3Pin, LOW);
   }
 }

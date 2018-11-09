@@ -414,6 +414,7 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
     if (outlets_changed[4] == true)
     {
       outlets_changed[4] = false;
+      bitWrite(Status, 2, 0);
       PCF8575.digitalWrite(skimmerPin, LOW);
     }
 
@@ -421,19 +422,23 @@ void reposicao_agua_doce () // abre a solenoide 1 se o nível estiver baixo e se
     {
       if (analogRead(sensor3) < 400)
       {
+        bitWrite(Status, 2, 0);
         PCF8575.digitalWrite(skimmerPin, LOW);
       }
       else
       {
+        bitWrite(Status, 2, 1);
         PCF8575.digitalWrite(skimmerPin, HIGH);
       }
     }
     else if (outlets[4] == 1)
     {
+      bitWrite(Status, 2, 1);
       PCF8575.digitalWrite(skimmerPin, HIGH);
     }
     else if (outlets[4] == 2)
     {
+      bitWrite(Status, 2, 0);
       PCF8575.digitalWrite(skimmerPin, LOW);
     }
   }

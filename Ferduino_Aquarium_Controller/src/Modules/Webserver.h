@@ -108,7 +108,6 @@
         Json[F("rbLedW")] = LedToPercent(rbled_out);
         Json[F("redLedW")] = LedToPercent(rled_out);
         Json[F("uvLedW")] = LedToPercent(uvled_out);
-        Json[F("unix")] = rtc.getTimeStamp();
         Json[F("running")] = millis() / 1000;
         Json[F("speed")] = LedToPercent(fanSpeed);
         Json[F("moonPhase")] = fase;
@@ -116,6 +115,15 @@
         Json[F("date")] = rtc.getDateStr(FORMAT_LONG, FORMAT_LITTLEENDIAN, '-');
         Json[F("time")] = rtc.getTimeStr();
         Json[F("update")] = lastUpdate;
+        Json[F("outlet1")] = bitRead(status_parametros, 1); // Aquecedor
+        Json[F("outlet2")] = bitRead(status_parametros, 0); // Chiller
+        Json[F("outlet3")] = bitRead(status_parametros, 7); // Ozonizador
+        Json[F("outlet4")] = bitRead(status_parametros, 5); // Reator de cálcio
+        Json[F("outlet5")] = bitRead(Status, 2); // Skimmer
+        Json[F("outlet6")] = bitRead(Status, 3); // Bomba 1
+        Json[F("outlet7")] = bitRead(Status, 4); // Bomba 2
+        Json[F("outlet8")] = bitRead(Status, 5); // Bomba 3
+        Json[F("outlet9")] = bitRead(Status, 1); // Reposição
 
         strcpy(_message_, "[");
 

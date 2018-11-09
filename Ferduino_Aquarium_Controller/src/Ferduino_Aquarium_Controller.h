@@ -7,7 +7,7 @@
 // *************************************************************************************************
 // ************************* Variáveis globais *****************************************************
 // *************************************************************************************************
-const char lastUpdate[] = "16/10/2018"; // Data da última modificação
+const char lastUpdate[] = "09/11/2018"; // Data da última modificação
 
 // ****************************************************************************************************
 // ****************** Variáveis de textos e fontes ****************************************************
@@ -370,9 +370,11 @@ bool nivel_status6 = 0;             // Sinaliza nível baixo sensor 6
 // ************************ Variável de controle da reposição de água doce *****************
 // *****************************************************************************************
 byte Status = 0x0;
-// bit 1 // Sinaliza reposição ligada / desligada
-// bit 2
-// bit 3
+// bit 1 - Sinaliza reposição ligada / desligada
+// bit 2 - Sinaliza Skimmer ligado / desligado
+// bit 3 - Sinaliza bomba 1 ligada / desligada
+// bit 4 - Sinaliza bomba 1 ligada / desligada
+// bit 5 - Sinaliza bomba 1 ligada / desligada
 
 // *****************************************************************************************
 // ************************* Funções do ethernet shield ************************************
