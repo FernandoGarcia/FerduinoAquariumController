@@ -45,7 +45,7 @@
 
 // Uncomment the line bellow to use a digital tilt hydrometer (iSpindel) instead EC stamp and probe.
 // Descomente a linha abaixo para usar o densímetro digital (iSpindel) em vez de stamp e sonda de condutividade.
-#define TILT_HYDROMETER
+// #define TILT_HYDROMETER
 
 // Comment this two lines below if have not RFM12B wireless transceiver
 // #define RFM12B_LED_CONTROL   // Descomente esta linha para controlar os LEDs via RF

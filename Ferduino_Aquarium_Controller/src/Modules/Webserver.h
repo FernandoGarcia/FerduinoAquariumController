@@ -1,9 +1,9 @@
 #pragma once // Do not change this line!
- #ifndef USE_ESP8266 // Do not change this line
- 	void requestAction(char* topic, byte* payload, unsigned int length)
- #else // Do not change this line
-	void mqttData(void* response)
- #endif // Do not change this line
+#ifndef USE_ESP8266 // Do not change this line
+   void requestAction(char* topic, byte* payload, unsigned int length)
+#else // Do not change this line
+   void mqttData(void* response)
+#endif // Do not change this line
 {
   DynamicJsonBuffer jsonBuffer;
   JsonObject& Json = jsonBuffer.createObject();
@@ -119,11 +119,11 @@
         Json[F("outlet2")] = bitRead(status_parametros, 0); // Chiller
         Json[F("outlet3")] = bitRead(status_parametros, 7); // Ozonizador
         Json[F("outlet4")] = bitRead(status_parametros, 5); // Reator de cálcio
-        Json[F("outlet5")] = bitRead(Status, 2); // Skimmer
-        Json[F("outlet6")] = bitRead(Status, 3); // Bomba 1
-        Json[F("outlet7")] = bitRead(Status, 4); // Bomba 2
-        Json[F("outlet8")] = bitRead(Status, 5); // Bomba 3
-        Json[F("outlet9")] = bitRead(Status, 1); // Reposição
+        Json[F("outlet5")] = bitRead(Status, 2);            // Skimmer
+        Json[F("outlet6")] = bitRead(Status, 3);            // Bomba 1
+        Json[F("outlet7")] = bitRead(Status, 4);            // Bomba 2
+        Json[F("outlet8")] = bitRead(Status, 5);            // Bomba 3
+        Json[F("outlet9")] = bitRead(Status, 1);            // Reposição
 
         strcpy(_message_, "[");
 
@@ -1145,6 +1145,8 @@
           LOGLN(DEN_AUX);
           LOG(F("Temperature aux: "));
           LOGLN(temp_AUX);
+          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
 
