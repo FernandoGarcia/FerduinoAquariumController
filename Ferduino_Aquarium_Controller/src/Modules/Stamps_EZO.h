@@ -216,7 +216,7 @@
     Serial3.print('\r');
     delay(1000);
 
-    Serial3.print("RESPONSE,0"); // To disable response code
+    Serial3.print("*OK,0"); // To disable response code
     Serial3.print('\r');
     delay(1000);
     check_parametro_ph_aquario();
@@ -238,7 +238,7 @@
     Serial3.print('\r');
     delay(1000);
 
-    Serial3.print("RESPONSE,0"); // To disable response code
+    Serial3.print("*OK,0"); // To disable response code
     Serial3.print('\r');
     delay(1000);
     check_parametro_ph_reator();
@@ -259,7 +259,7 @@
     Serial3.print('\r');
     delay(1000);
 
-    Serial3.print("RESPONSE,0"); // To disable response code
+    Serial3.print("*OK,0"); // To disable response code
     Serial3.print('\r');
     delay(1000);
     check_parametro_orp();
@@ -281,7 +281,7 @@
     Serial3.print('\r');
     delay(1000);
 
-    Serial3.print("RESPONSE,0"); // To disable response code
+    Serial3.print("*OK,0"); // To disable response code
     Serial3.print('\r');
     delay(1000);
 
