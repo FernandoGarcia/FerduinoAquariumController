@@ -21,7 +21,7 @@
 // ******* Dúvidas, sugestões e elogios: info@ferduino.com **********************************************************************************************
 // ******************************************************************************************************************************************************
 
-// Este programa é compatível com a IDE  Arduino 1.8.7 e PlatformIO 3.6
+// Este programa é compatível com a IDE  Arduino 1.8.9 e PlatformIO 4.0
 
 // As funções para controle via web foram implementadas graças à preciosa ajuda do Simone Grimaldi e Danilo Castellano.
 
