@@ -431,34 +431,36 @@
 #endif
 
 #ifdef USE_SCREENSAVER
-  void clockScreen()
-  {
-    if (firstTime == true)
+ #ifdef USE_TFT
+    void clockScreen()
     {
-      clearScreen();
-    }
-    myGLCD.setFont(SevenSegNumFontPlus);
-    myGLCD.setColor(0, 174, 255);
-    myGLCD.print(rtc.getTimeStr(FORMAT_LONG), CENTER, 100);
+      if (firstTime == true)
+      {
+        clearScreen();
+      }
+      myGLCD.setFont(SevenSegNumFontPlus);
+      myGLCD.setColor(0, 174, 255);
+      myGLCD.print(rtc.getTimeStr(FORMAT_LONG), CENTER, 100);
 
-    myGLCD.setFont(BigFont);
+      myGLCD.setFont(BigFont);
 
-    myGLCD.print(rtc.getDOWStr(FORMAT_SHORT), 99, 170);
-    myGLCD.print((char *)",", 150, 170);
+      myGLCD.print(rtc.getDOWStr(FORMAT_SHORT), 99, 170);
+      myGLCD.print((char *)",", 150, 170);
 
-    if (t.date < 10)
-    {
-      myGLCD.print((char *)"0", 169, 170);
-      myGLCD.printNumI(t.date, 185, 170);
+      if (t.date < 10)
+      {
+        myGLCD.print((char *)"0", 169, 170);
+        myGLCD.printNumI(t.date, 185, 170);
+      }
+      else
+      {
+        myGLCD.printNumI(t.date, 169, 170);
+      }
+      myGLCD.print((char *)"DE", 211, 170);
+      myGLCD.print(rtc.getMonthStr(FORMAT_SHORT), 253, 170);
+      firstTime = false;
     }
-    else
-    {
-      myGLCD.printNumI(t.date, 169, 170);
-    }
-    myGLCD.print((char *)"DE", 211, 170);
-    myGLCD.print(rtc.getMonthStr(FORMAT_SHORT), 253, 170);
-    firstTime = false;
-  }
+ #endif
 #endif
 
 int NumMins(uint8_t ScheduleHour, uint8_t ScheduleMinute)
