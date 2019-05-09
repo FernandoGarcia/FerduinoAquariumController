@@ -36,17 +36,17 @@ void loop()
     }
   }
 
-  checktpa();                             // Verifica e executa a TPA automática.
+  checktpa();                               // Verifica e executa a TPA automática.
 
   if ((millis() - log_SD_millis) > 60000UL) // Executa funções a cada 1 minuto.
   {
-    selecionar_SPI(SD_CARD);              // Seleciona disposito SPI que será utilizado.
+    selecionar_SPI(SD_CARD);                // Seleciona disposito SPI que será utilizado.
 
-    logtempgraf();                        // Grava temperatura no cartão SD.
-    logphagraf();                         // Grava o PH do aquário no cartão SD.
-    logphrgraf();                         // Grava o PH do reator de cálcio no cartão SD.
-    logdengraf();                         // Grava densidade no cartão SD.
-    logorpgraf();                         // Grava o ORP no cartão SD.
+    logtempgraf();                          // Grava temperatura no cartão SD.
+    logphagraf();                           // Grava o PH do aquário no cartão SD.
+    logphrgraf();                           // Grava o PH do reator de cálcio no cartão SD.
+    logdengraf();                           // Grava densidade no cartão SD.
+    logorpgraf();                           // Grava o ORP no cartão SD.
     log_SD_millis = millis();
   }
 
@@ -56,7 +56,7 @@ void loop()
     {
       if ((millis() - dosadoras_millis) > 60000UL) // Verifica funções a cada 1 minuto.
       {
-        #ifdef WATCHDOG                          // Do not change this line
+        #ifdef WATCHDOG                            // Do not change this line
           wdt_disable();
         #endif // Do not change this line
         selecionar_SPI(SD_CARD);                 // Seleciona disposito SPI que será utilizado.
@@ -76,20 +76,22 @@ void loop()
         selecionar_SPI(ETHER_CARD);              // Seleciona disposito SPI que será utilizado.
         if (!MQTT.connected())
         {
-          if ((millis() - millis_mqtt) > 300000UL) // Tenta reconectar após 5 minutos
+          if (((millis() - millis_mqtt) > 300000UL) || (dosagem_executada == true)) // Tenta reconectar após 5 minutos ou após uma dosagem
           {
             reconnect();
             millis_mqtt = millis();
+            dosagem_executada = false;
           }
         }
         MQTT.loop();
       #else // Do not change this line
         if (MQTT_connected == false)
         {
-          if ((millis() - millis_mqtt) > 300000UL) // Tenta reconectar após 5 minutos
+          if (((millis() - millis_mqtt) > 300000UL) || (dosagem_executada == true)) // Tenta reconectar após 5 minutos ou após uma dosagem
           {
             sincronizar();
             millis_mqtt = millis();
+            dosagem_executada = false;
           }
         }
         ESP8266.Process();
@@ -296,7 +298,7 @@ void loop()
 
   alimentador_automatico();                        // Liga ou desliga o alimentador automático.
 
-  if (millis() - previousMillis > 5000UL)            // Verifica as funções a cada 5 segundos.
+  if (millis() - previousMillis > 5000UL)          // Verifica as funções a cada 5 segundos.
   {
     checkTempC();                                  // Verifica as temperaturas.
     reposicao_agua_doce();                         // Verifica se há a necessidade reposição da água doce.

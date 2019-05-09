@@ -94,6 +94,7 @@ void check_dosagem_personalizada()
                 digitalWrite(dosadora[i], LOW);
                 volume_dosado[i] += (dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]);
                 bitWrite(erro_dosagem, i, 0);
+                dosagem_executada = true;
               }
             }
             file.close();
@@ -171,6 +172,7 @@ void dosagem_manual()
   digitalWrite(dosadora[dosadora_selecionada], HIGH);
   delay(tempo_dosagem);
   digitalWrite(dosadora[dosadora_selecionada], LOW);
+  dosagem_executada = true;
 }
 
 void calibrar()
@@ -178,4 +180,5 @@ void calibrar()
   digitalWrite(dosadora[dosadora_selecionada], HIGH);
   delay(60000UL);
   digitalWrite(dosadora[dosadora_selecionada], LOW);
+  dosagem_executada = true;
 }
