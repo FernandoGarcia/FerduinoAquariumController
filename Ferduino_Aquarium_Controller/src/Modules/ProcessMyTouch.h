@@ -1976,7 +1976,7 @@ void processMyTouch()
             #ifdef WATCHDOG
               wdt_disable();
             #endif
-            delay(10000);
+            delay(10000UL);
             calibrar();
             #ifdef WATCHDOG
               wdt_enable(WDTO_8S);
@@ -2026,12 +2026,12 @@ void processMyTouch()
             strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[17])));
             printButton(buffer, iniciaR[0], iniciaR[1], iniciaR[2], iniciaR[3], false, 1);
 
-            tempo_dosagem = map ((dose_dosadora_manual[dosadora_selecionada] * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000);
+            tempo_dosagem = map ((dose_dosadora_manual[dosadora_selecionada] * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000UL);
             tempo_dosagem /= 2;
             #ifdef WATCHDOG
               wdt_disable();
             #endif
-            delay(10000);
+            delay(10000UL);
             dosagem_manual();
             #ifdef WATCHDOG
               wdt_enable(WDTO_8S);

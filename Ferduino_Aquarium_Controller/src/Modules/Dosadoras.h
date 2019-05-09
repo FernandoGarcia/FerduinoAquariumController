@@ -87,7 +87,7 @@ void check_dosagem_personalizada()
               minuto01 = atoi(buf);
               if (minuto01 ==  NumMins(t.hour, t.min))
               {
-                tempo_dosagem = map (((dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]) * 2), 0, fator_calib_dosadora_e[i], 0, 60000);
+                tempo_dosagem = map (((dose_dosadora_personalizada_e[i] / quantidade_dose_dosadora_personalizada_e[i]) * 2), 0, fator_calib_dosadora_e[i], 0, 60000UL);
                 tempo_dosagem /= 2;
                 digitalWrite(dosadora[i], HIGH);
                 delay(tempo_dosagem);
@@ -176,6 +176,6 @@ void dosagem_manual()
 void calibrar()
 {
   digitalWrite(dosadora[dosadora_selecionada], HIGH);
-  delay(60000);
+  delay(60000UL);
   digitalWrite(dosadora[dosadora_selecionada], LOW);
 }

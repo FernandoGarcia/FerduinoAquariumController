@@ -38,7 +38,7 @@ void loop()
 
   checktpa();                             // Verifica e executa a TPA automática.
 
-  if ((millis() - log_SD_millis) > 60000) // Executa funções a cada 1 minuto.
+  if ((millis() - log_SD_millis) > 60000UL) // Executa funções a cada 1 minuto.
   {
     selecionar_SPI(SD_CARD);              // Seleciona disposito SPI que será utilizado.
 
@@ -54,7 +54,7 @@ void loop()
   {
     if ((modo_alimentacao == false) || ((millis() < alimentacao_millis) && (modo_alimentacao == true)))
     {
-      if ((millis() - dosadoras_millis) > 60000) // Verifica funções a cada 1 minuto.
+      if ((millis() - dosadoras_millis) > 60000UL) // Verifica funções a cada 1 minuto.
       {
         #ifdef WATCHDOG                          // Do not change this line
           wdt_disable();
@@ -76,7 +76,7 @@ void loop()
         selecionar_SPI(ETHER_CARD);              // Seleciona disposito SPI que será utilizado.
         if (!MQTT.connected())
         {
-          if ((millis() - millis_mqtt) > 300000) // Tenta reconectar após 5 minutos
+          if ((millis() - millis_mqtt) > 300000UL) // Tenta reconectar após 5 minutos
           {
             reconnect();
             millis_mqtt = millis();
@@ -86,7 +86,7 @@ void loop()
       #else // Do not change this line
         if (MQTT_connected == false)
         {
-          if ((millis() - millis_mqtt) > 300000) // Tenta reconectar após 5 minutos
+          if ((millis() - millis_mqtt) > 300000UL) // Tenta reconectar após 5 minutos
           {
             sincronizar();
             millis_mqtt = millis();
@@ -96,7 +96,7 @@ void loop()
       #endif // Do not change this line
     }
 
-    if ((millis() - millis_enviar) > 120000)
+    if ((millis() - millis_enviar) > 120000UL)
     {
       if (bitRead(tpa_status, 1) == false)
       {
@@ -108,7 +108,7 @@ void loop()
 
     if (outlets_settings == true)
     {
-      if ((millis() - outlets_millis) > 300000) // Lê os valores da EEPROM se as configurações não forem salvas em até 5 minutos
+      if ((millis() - outlets_millis) > 300000UL) // Lê os valores da EEPROM se as configurações não forem salvas em até 5 minutos
       {
         for (byte i = 0; i < 9; i++)
         {
@@ -157,7 +157,7 @@ void loop()
   #endif // Do not change this line
 
   #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line
-    if ((millis() - millis_antes) >= 120000) // Executa as funções a cada 2 minutos.
+    if ((millis() - millis_antes) >= 120000UL) // Executa as funções a cada 2 minutos.
     {
 
       #ifdef USE_STAMP_FOR_CALCIUM_REACTOR // Do not change this line
@@ -183,7 +183,7 @@ void loop()
   #endif // Do not change this line
 
   #ifdef ETHERNET_SHIELD // Do not change this line
-    if ((web_dosage == true) && ((millis() - millis_dosagem) > 10000))
+    if ((web_dosage == true) && ((millis() - millis_dosagem) > 10000UL))
     {
       #ifdef WATCHDOG // Do not change this line
         wdt_disable();
@@ -195,7 +195,7 @@ void loop()
       #endif // Do not change this line
     }
 
-    if ((web_calibracao == true) && ((millis() - millis_dosagem) > 10000))
+    if ((web_calibracao == true) && ((millis() - millis_dosagem) > 10000UL))
     {
       #ifdef WATCHDOG // Do not change this line
         wdt_disable();
@@ -209,9 +209,9 @@ void loop()
   #endif // Do not change this line
 
   #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line
-    if ((millis() - lastPeriod_millis) > 5000)
+    if ((millis() - lastPeriod_millis) > 5000UL)
     {
-      if (millis() > 20000)
+      if (millis() > 20000UL)
       {
         selecionar_SPI(RFM);        // Seleciona disposito SPI que será utilizado.
         #ifdef RFM12B_LED_CONTROL   // Do not change this line
@@ -233,7 +233,7 @@ void loop()
   #ifdef ETHERNET_SHIELD // Do not change this line
     if (web_teste == true)
     {
-      if ((millis() - teste_led_millis) > 600000)
+      if ((millis() - teste_led_millis) > 600000UL)
       {
         web_teste = false;
         teste_em_andamento = false;
@@ -287,7 +287,7 @@ void loop()
     }
   }
 
-  if ((millis() - check_alimentador_millis) > 60000)
+  if ((millis() - check_alimentador_millis) > 60000UL)
   {
     selecionar_SPI(SD_CARD);
     check_alimentador(); // Verifica agendamendo do alimentador.
@@ -296,7 +296,7 @@ void loop()
 
   alimentador_automatico();                        // Liga ou desliga o alimentador automático.
 
-  if (millis() - previousMillis > 5000)            // Verifica as funções a cada 5 segundos.
+  if (millis() - previousMillis > 5000UL)            // Verifica as funções a cada 5 segundos.
   {
     checkTempC();                                  // Verifica as temperaturas.
     reposicao_agua_doce();                         // Verifica se há a necessidade reposição da água doce.
