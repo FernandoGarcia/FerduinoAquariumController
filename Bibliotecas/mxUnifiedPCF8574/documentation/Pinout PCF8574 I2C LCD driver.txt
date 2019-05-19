@@ -1,0 +1,36 @@
+PCF8574 I2C LCD driver
+========================
+
+Pin to chip interface
+---------------------
+
+     +---------------------+
+-SCL-+   ::: +---+         |
+-SCA-+   +-+ |PCF| ''': LED+-
+-VCC-+   |*| |   |  ..- jmp+-
+-GND-+   +-+ +---+         |
+     +---------------------+
+        1234567890123456
+        ||||||||||||||||
+
+
+Pinout
+------
+
+Pin Description
+ 1  GND
+ 2  VCC
+ 3  Contrast (adjustable VCC->Pot->Pin3)
+ 4  P0
+ 5  P1
+ 6  P2
+ 7  not connected
+ 8  not connected
+ 9  not connected
+10  not connected
+11  P4
+12  P5
+13  P6
+14  P7
+15  VCC (for LED)
+16  P3 (connected via LED jumper to J3Y (=S8050) transistor, sink)

@@ -1,0 +1,23 @@
+#######################################
+# Syntax Coloring For PCF8574_PCD8544
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+mxUnifiedPCF8574	KEYWORD1
+mxUnifiedPCF8575	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+digitalWrite	KEYWORD2
+shiftOut	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

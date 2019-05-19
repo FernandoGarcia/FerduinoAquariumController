@@ -16,7 +16,7 @@
 #include <SdFat.h>
 #include <FreeStack.h>
 #include <avr/pgmspace.h>
-#include <PCF8575.h>
+#include <mxUnifiedPCF8574.h>
 
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line!
  #include <RFM12B.h>

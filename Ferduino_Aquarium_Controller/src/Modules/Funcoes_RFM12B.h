@@ -48,8 +48,10 @@
 
     for (byte i = 0; i < 16; i++)
     {
-      // pins_status[i] = int(PCF8575.digitalRead(i));
-      LOGLN(PCF8575.digitalRead(i) ? "HIGH" : "LOW");
+      pins_status[i] = int(PCF8575.digitalRead(i));
+      LOG(i);
+      LOG(F(" = "));
+      LOGLN(pins_status[i] ? F("HIGH") : F("LOW"));
       pins_status[i] *= 255;
     }
 

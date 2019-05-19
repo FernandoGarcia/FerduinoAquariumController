@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring For PCF8574_PCD8544
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+mxUnifiedIO	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+digitalWrite	KEYWORD2
+digitalRead	KEYWORD2
+pinMode	KEYWORD2
+setBit	KEYWORD2
+getBit	KEYWORD2
+get8Bits	KEYWORD2
+send8Bits	KEYWORD2
+getNumPins	KEYWORD2
+specifyPins	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

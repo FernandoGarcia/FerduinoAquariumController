@@ -269,7 +269,7 @@ void configPins()
   pinMode(dosadora6, OUTPUT);          // Pino A14;
   pinMode(ChipSelect_RFM, OUTPUT);     // Pino A15;
 
-  PCF8575.begin(endereco_PCF8575TS);     // Inicia a comunicação com o PCF8575TS
+  PCF8575.begin();     // Inicia a comunicação com o PCF8575
   for (int i = 0; i < 16; i++)
   {
     PCF8575.pinMode(i, OUTPUT);
