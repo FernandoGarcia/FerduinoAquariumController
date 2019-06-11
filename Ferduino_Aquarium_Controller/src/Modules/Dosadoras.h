@@ -1,9 +1,9 @@
 #pragma once // Do not change this line!
 void criar_arquivos()
 {
-  byte contador = 0;
-  int minuto01 = 0;
-  int minuto11 = 0;
+  int interval = 0;
+  int schedule = 0;
+  int spacing = 0;
 
   if (file.open(arquivo[dosadora_selecionada], O_WRITE))
   {
@@ -13,47 +13,53 @@ void criar_arquivos()
   {
     if (file.open(arquivo[dosadora_selecionada], O_CREAT | O_APPEND | O_WRITE))
     {
-      minuto01 = NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
+      interval = NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
                  - NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
 
-      minuto01 /= 1 + quantidade_dose_dosadora_personalizada[dosadora_selecionada];
-
-      for (int i = 1; i <= quantidade_dose_dosadora_personalizada[dosadora_selecionada]; i++)
+      if(quantidade_dose_dosadora_personalizada[dosadora_selecionada] > 1)
       {
-        contador += 1;
-        if (contador == 1)
+        spacing = interval / (quantidade_dose_dosadora_personalizada[dosadora_selecionada] - 1);
+      }
+
+      for (byte i = 0; i < quantidade_dose_dosadora_personalizada[dosadora_selecionada]; i++)
+      {
+        if (i == 0)
         {
-          minuto11 = NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]) + minuto01;
+          schedule = NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
         }
-        if (contador > 1)
+        else if (i == quantidade_dose_dosadora_personalizada[dosadora_selecionada] - 1)
         {
-          minuto11 += minuto01;
+          schedule = NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada]);
+        }
+        else
+        {
+          schedule += spacing;
         }
 
-        if (minuto11 < 10)
+        if (schedule < 10)
         {
           file.print("000");
-          file.print(minuto11);
+          file.print(schedule);
           file.write((uint8_t*)"\0", 1);
           writeCRLF(file);
         }
-        else if (( minuto11 > 10) && (minuto11 < 100))
+        else if ((schedule >= 10) && (schedule < 100))
         {
           file.print("00");
-          file.print(minuto11);
+          file.print(schedule);
           file.write((uint8_t*)"\0", 1);
           writeCRLF(file);
         }
-        else if (( minuto11 >= 100) && (minuto11 < 1000))
+        else if ((schedule >= 100) && (schedule < 1000))
         {
           file.print("0");
-          file.print(minuto11);
+          file.print(schedule);
           file.write((uint8_t*)"\0", 1);
           writeCRLF(file);
         }
-        else if (minuto11 >= 1000)
+        else if (schedule >= 1000)
         {
-          file.print(minuto11);
+          file.print(schedule);
           file.write((uint8_t*)"\0", 1);
           writeCRLF(file);
         }

@@ -225,3 +225,4 @@ Bibliotecas/readme.txt
 .vscode/launch.json
 include/*
 FerduinoAquariumController.code-workspace
+.pio
