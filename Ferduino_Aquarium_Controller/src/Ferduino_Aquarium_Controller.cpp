@@ -30,6 +30,7 @@ void configPins();
 void requestAction(char* topic, byte* payload, unsigned int length);
 void mqttData(void* response);
 static bool waitForAck(byte theNodeID);
+int dosage_interval();
 
 // *************************************************************************************************
 // ****************************** Módulos **********************************************************

@@ -2456,42 +2456,48 @@ void processMyTouch()
         }
         else if (checkButtons(prOK[0], prOK[1], prOK[2], prOK[3]) == true)
         {
-          if ((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
-              && (minuto_final_dosagem_personalizada[dosadora_selecionada] < (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
+          if(quantidade_dose_dosadora_personalizada[dosadora_selecionada] > 1)
           {
-            myGLCD.setColor(255, 255, 0);
-            myGLCD.fillRoundRect(15, 90, 319, 155);
+            int interval = dosage_interval();
+            int spacing = interval / (quantidade_dose_dosadora_personalizada[dosadora_selecionada] - 1);
 
-            myGLCD.setColor(255, 0, 0);
-            myGLCD.drawRoundRect(15, 90, 319, 155);
+            if(spacing < 10)
+            {
+              myGLCD.setColor(255, 255, 0);
+              myGLCD.fillRoundRect(15, 90, 319, 155);
 
-            setFont(SMALL, 255, 0, 0, 255, 255, 0);
+              myGLCD.setColor(255, 0, 0);
+              myGLCD.drawRoundRect(15, 90, 319, 155);
 
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[176])));
-            myGLCD.print(buffer, 20, 110); // "O INTERVALO ENTRE A INICIAL E A FINAL"
+              setFont(SMALL, 255, 0, 0, 255, 255, 0);
 
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[177])));
-            myGLCD.print(buffer, 35, 130); // "DEVE SER DE NO MINIMO 10 MINUTOS!"
+              strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[176])));
+              myGLCD.print(buffer, 60, 110); // "O INTERVALO ENTRE DOSAGENS"
+
+              strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[177])));
+              myGLCD.print(buffer, 35, 130); // "DEVE SER DE NO MINIMO 10 MINUTOS!"
+            }
+            else
+            {
+              config_valores_salvar_dosadoras();
+              dispScreen = 21;
+              clearScreen();
+              selecionar_dosadora();
+              setFont(SMALL, 255, 255, 255, 0, 0, 0);
+
+              strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[171])));
+              myGLCD.print(buffer, 15, 220); // tabela_textos[171] = "MODO PERSONALIZADO SELECIONADO"
+
+              modo_manual = false;
+              modo_personalizado = true;
+              modo_calibrar = false;
+
+              selecionar_SPI(SD_CARD);
+              criar_arquivos();
+              Salvar_dosadora_EEPROM();
+            }
           }
-          else if (hora_final_dosagem_personalizada[dosadora_selecionada] < hora_inicial_dosagem_personalizada[dosadora_selecionada])
-          {
-            myGLCD.setColor(255, 255, 0);
-            myGLCD.fillRoundRect(15, 90, 319, 155);
-
-            myGLCD.setColor(255, 0, 0);
-            myGLCD.drawRoundRect(15, 90, 319, 155);
-
-            setFont(SMALL, 255, 0, 0, 255, 255, 0);
-
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[178])));
-            myGLCD.print(buffer, 50, 110); // "A HORA FINAL NAO PODE SER MENOR"
-
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_textos[179])));
-            myGLCD.print(buffer, 100, 130); // "QUE A INICIAL!"
-          }
-          else if (((hora_final_dosagem_personalizada[dosadora_selecionada] == hora_inicial_dosagem_personalizada[dosadora_selecionada])
-                    && (minuto_final_dosagem_personalizada[dosadora_selecionada] >= (minuto_inicial_dosagem_personalizada[dosadora_selecionada] + 10)))
-                   || (hora_final_dosagem_personalizada[dosadora_selecionada] > hora_inicial_dosagem_personalizada[dosadora_selecionada]))
+          else
           {
             config_valores_salvar_dosadoras();
             dispScreen = 21;

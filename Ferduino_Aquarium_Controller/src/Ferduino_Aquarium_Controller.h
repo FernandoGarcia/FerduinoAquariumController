@@ -452,6 +452,7 @@ float dose_dosadora_manual_e[6] = {20, 20, 20, 20, 20, 20};
 float fator_calib_dosadora_e[6] = {35.1, 35.2, 35.3, 35.4, 35.5, 35.6};
 byte erro_dosagem;
 bool dosagem_executada = false;
+byte condition;
 
 // *****************************************************************************************
 // ************************** Variáveis temporárias das dosadoras **************************

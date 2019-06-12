@@ -4,6 +4,7 @@ void criar_arquivos()
   int interval = 0;
   int schedule = 0;
   int spacing = 0;
+  int minutes_in_one_day = 1440;
 
   if (file.open(arquivo[dosadora_selecionada], O_WRITE))
   {
@@ -13,8 +14,7 @@ void criar_arquivos()
   {
     if (file.open(arquivo[dosadora_selecionada], O_CREAT | O_APPEND | O_WRITE))
     {
-      interval = NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
-                 - NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
+      interval = dosage_interval();
 
       if(quantidade_dose_dosadora_personalizada[dosadora_selecionada] > 1)
       {
@@ -34,6 +34,18 @@ void criar_arquivos()
         else
         {
           schedule += spacing;
+
+          if(condition == 2)
+          {
+            if(schedule > minutes_in_one_day)
+            {
+              schedule -= minutes_in_one_day;
+            }
+            if(schedule == minutes_in_one_day)
+            {
+              schedule = 0;
+            }
+          }
         }
 
         if (schedule < 10)
@@ -187,4 +199,26 @@ void calibrar()
   delay(60000UL);
   digitalWrite(dosadora[dosadora_selecionada], LOW);
   dosagem_executada = true;
+}
+
+int dosage_interval()
+{
+  int interval = 0;
+	int minutes_in_one_day = 1440;
+
+  if(NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
+     > NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]))
+  {
+    condition = 1;
+    interval = NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
+               - NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
+  }
+  else if(NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada])
+          < NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]))
+  {
+    condition = 2;
+    interval = minutes_in_one_day - NumMins(hora_inicial_dosagem_personalizada[dosadora_selecionada], minuto_inicial_dosagem_personalizada[dosadora_selecionada]);
+    interval += NumMins(hora_final_dosagem_personalizada[dosadora_selecionada], minuto_final_dosagem_personalizada[dosadora_selecionada]);
+  }
+  return interval;
 }
