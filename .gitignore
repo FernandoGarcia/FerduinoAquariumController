@@ -226,3 +226,4 @@ Bibliotecas/readme.txt
 include/*
 FerduinoAquariumController.code-workspace
 .pio
+uncrustify.cfg

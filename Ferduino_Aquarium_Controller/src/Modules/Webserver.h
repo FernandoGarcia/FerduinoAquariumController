@@ -1,8 +1,8 @@
-#pragma once // Do not change this line!
+#pragma once        // Do not change this line!
 #ifndef USE_ESP8266 // Do not change this line
-   void requestAction(char* topic, byte* payload, unsigned int length)
+  void requestAction(char* topic, byte* payload, unsigned int length)
 #else // Do not change this line
-   void mqttData(void* response)
+  void mqttData(void* response)
 #endif // Do not change this line
 {
   DynamicJsonBuffer jsonBuffer;

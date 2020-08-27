@@ -297,7 +297,7 @@ void check_densidade()
   }
   if (alarmDEN > 0)           // Liga o alarme
   {
-    if ((DEN >= (setDEN + offPHR + alarmDEN)) || (DEN <= (setDEN - offDEN - alarmDEN)))
+    if ((DEN >= (setDEN + offDEN + alarmDEN)) || (DEN <= (setDEN - offDEN - alarmDEN)))
     {
       bitWrite(status_parametros, 4, 1);
     }
