@@ -69,10 +69,10 @@ void loop()
     }
   }
 
-  #ifdef ETHERNET_SHIELD                         // Do not change this line
+  #if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266)                        // Do not change this line
     if (bitRead(tpa_status, 1) == false)
     {
-      #ifndef USE_ESP8266                        // Do not change this line
+      #ifdef USE_ETHERNET_SHIELD                 // Do not change this line
         selecionar_SPI(ETHER_CARD);              // Seleciona disposito SPI que será utilizado.
         if (!MQTT.connected())
         {
@@ -159,7 +159,7 @@ void loop()
   #endif // Do not change this line
 
   #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line
-    if ((millis() - millis_antes) >= 120000UL) // Executa as funções a cada 2 minutos.
+    if ((millis() - millis_antes) >= 120000UL)   // Executa as funções a cada 2 minutos.
     {
 
       #ifdef USE_STAMP_FOR_CALCIUM_REACTOR // Do not change this line
@@ -184,7 +184,7 @@ void loop()
     }
   #endif // Do not change this line
 
-  #ifdef ETHERNET_SHIELD // Do not change this line
+  #if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line
     if ((web_dosage == true) && ((millis() - millis_dosagem) > 10000UL))
     {
       #ifdef WATCHDOG // Do not change this line
@@ -232,7 +232,7 @@ void loop()
     teste_em_andamento = false;
   }
 
-  #ifdef ETHERNET_SHIELD // Do not change this line
+  #if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line
     if (web_teste == true)
     {
       if ((millis() - teste_led_millis) > 600000UL)
@@ -244,7 +244,7 @@ void loop()
     }
   #endif // Do not change this line
 
-  #ifdef USE_TFT // Do not change this line
+  #ifdef USE_TFT                                    // Do not change this line
     if ((dispScreen == 3) && (LEDtestTick == true)) // Imprime valores se o teste de todos os leds em andamento.
     {
       testScreen();

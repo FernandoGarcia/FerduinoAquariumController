@@ -9,7 +9,7 @@
 // #define FRENCH     // Si ce programme est utile pour vous, faire un don pour aider au développement. Paypal: fefegarcia_1@hotmail.com
 // #define GERMAN     // Wenn dieses Programm ist nützlich für Sie, eine Spende an mit Entwicklung zu helfen. Paypal: fefegarcia_1@hotmail.com
 // #define ITALIAN    // Se questo programma vi è utile, fate una donazione per aiutare con il suo sviluppo. Paypal: fefegarcia_1@hotmail.com
-#define PORTUGUESE   // Se este programa é útil para você, faça uma doação para ajudar no desenvolvimento. Paypal: fefegarcia_1@hotmail.com
+#define PORTUGUESE // Se este programa é útil para você, faça uma doação para ajudar no desenvolvimento. Paypal: fefegarcia_1@hotmail.com
 // #define SPANISH    // Si este programa es útil para usted, hacer una donación para ayudar con el desarrollo. Paypal: fefegarcia_1@hotmail.com
 
 // *************************************************************************************************
@@ -20,15 +20,15 @@
 // #define WATCHDOG // Reseta o controlador se a função "wdt_reset()" não for executada em até 8 segundos.
 // Essa função minimiza problemas com o travamento do código mas, pode apresentar incompatibilidades com alguns bootloaders
 
-// Comment the line below to disable ethernet functions
-#define ETHERNET_SHIELD // Comente esta linha para desativar as funções do ethernet shield.
+// Uncomment the line below if you are using an ethernet shield
+#define USE_ETHERNET_SHIELD // Descomente esta linha se você está usando um ethernet shield.
 
-// Uncomment the line bellow to use an ESP8266 as WIFI module
-// #define USE_ESP8266 // Descomente esta linha para usar um ESP8266 como módulo WIFI.
+// Uncomment the line below if you are using an ESP8266.
+//#define USE_ESP8266  // Descomente esta linha se está usando um ESP8266.
 
 // Comment this two lines below if have not stamps
 // Comente as duas linhas abaixo se não tiver stamps
-#define STAMPS_V4X     // Comente esta linha para usar Stamps EZO
+#define STAMPS_V4X // Comente esta linha para usar Stamps EZO
 // #define STAMPS_EZO     // Descomente esta linha para usar Stamps EZO
 
 // Comment the line below if you haven't a stamp for tank pH.
@@ -53,7 +53,7 @@
 
 // Comente esta linha para desativar as mensagens no monitor serial ou para usar os pinos 0 e 1 (RX e TX) como OUTPUT
 // Comment this line to disable the messages on serial monitor or to use pins 0 and 1 (RX e TX) as OUTPUT
-#define DEBUG  // Comente esta linha para usar os pinos 0 e 1 para controle dos coolers e buzzer.
+#define DEBUG // Comente esta linha para usar os pinos 0 e 1 para controle dos coolers e buzzer.
 
 // Comment the line below to disable this function
 // Comente a linha abaixo para desativar esta função
@@ -92,7 +92,7 @@
 // Select the suitable speed for your SD card. Don't leave two lines uncommented here.
 // Selecione a velocidade adequada para seu cartão SD. Não deixe duas linhas descomentadas aqui.
 // #define SD_CARD_SPEED SPI_FULL_SPEED    // Full speed
-#define SD_CARD_SPEED SPI_HALF_SPEED      // Half speed
+#define SD_CARD_SPEED SPI_HALF_SPEED       // Half speed
 // #define SD_CARD_SPEED SPI_QUARTER_SPEED // Quarter speed
 
 // Uncomment the line below if you have the  SD card on ethernet shield.
@@ -119,14 +119,15 @@
 // *************************************************************************************************
 // ************************* Inclusão de configurações *********************************************
 // *************************************************************************************************
-#include "src/Include/Library.h" // Do not change this line
+#include "src/Include/SanityCheck.h" // Do not change this line
+#include "src/Include/Library.h"     // Do not change this line
 
 // ****************************************************************************************************
 // ****************** Define funções dos pinos digitais e analógicos **********************************
 // ****************************************************************************************************
 // Pinos 0 e 1 reservados para a porta serial 0.
-const byte alarmPin = 0;          // Pino que aciona o alarme
-const byte desativarFanPin = 1;   // Pino que desativa os coolers.
+const byte alarmPin = 0;        // Pino que aciona o alarme
+const byte desativarFanPin = 1; // Pino que desativa os coolers.
 // Pino 2 reservado para INT do RFM12B.
 // Pinos 3, 4, 5, 6 e 7 reservados para o touch.
 // Pino 5 também é o chip select do cartão SD.
@@ -143,13 +144,13 @@ const byte multiplexadorS1Pin = 17; // Pino S1 de controle dos stamps
 // Pinos 18 e 19 reservados para o ESP8266.
 // Pinos 20 e 21 reservados para comunicação I2C do PCF8575 e RTC.
 // Pinos 22 à 41 reservados para o LCD.
-const byte aquecedorPin = 42;   // Pino que liga o aquecedor
-const byte chillerPin = 43;     // Pino que liga o chiller
-const byte ledPinMoon = 44;     // Pino que liga os leds da luz noturna
-const byte wavemaker1 = 45;     // Pino que controla o wavemaker 1
-const byte wavemaker2 = 46;     // Pino que controla o wavemaker 2
+const byte aquecedorPin = 42; // Pino que liga o aquecedor
+const byte chillerPin = 43;   // Pino que liga o chiller
+const byte ledPinMoon = 44;   // Pino que liga os leds da luz noturna
+const byte wavemaker1 = 45;   // Pino que controla o wavemaker 1
+const byte wavemaker2 = 46;   // Pino que controla o wavemaker 2
 // 47 and 48 are free
-const byte sensoresPin = 49;    // Pino que lê os sensores de temperatura
+const byte sensoresPin = 49;  // Pino que lê os sensores de temperatura
 // Pinos 50, 51 e 52 reservados para comunicação SPI
 // Pino 53 reservado para "select slave do ethernet shield.
 const byte sensor1 = 54;   // A0;      // Pino analógico que verifica se há tensão na bóia da quarentena.
@@ -170,49 +171,49 @@ const byte dosadora6 = 68; // A14;     // Bomba dosadora 6
 // ****************************************************************************************************
 ///************************************** PCF8575 ****************************************************
 // ****************************************************************************************************
-const byte ozonizadorPin = 0;     // P0       // Pino que liga o ozonizador
-const byte reatorPin = 1;         // P1       // Pino que liga o CO2 do reator.
-const byte bomba1Pin = 2;         // P2       // Bomba que tira água da quarentena.
-const byte bomba2Pin = 3;         // P3       // Bomba que tira água do sump.
-const byte bomba3Pin = 4;         // P4       // Bomba que coloca água no sump.
-const byte temporizador1 = 5;     // P5       // Pino que liga o timer 1.
-const byte temporizador2 = 6;     // P6       // Pino que liga o timer 2.
-const byte temporizador3 = 7;     // P7       // Pino que liga o timer 3.
-const byte temporizador4 = 8;     // P8       // Pino que liga o timer 4.
-const byte temporizador5 = 9;     // P9       // Pino que liga o timer 5.
-const byte solenoide1Pin = 10;    // P10      // Liga a reposição de água doce.
-const byte alimentadorPin = 11;   // P11      // Pino que controla o alimentador automático.
-const byte skimmerPin = 12;       // P12      // Pino que controla o skimmer
+const byte ozonizadorPin = 0;   // P0       // Pino que liga o ozonizador
+const byte reatorPin = 1;       // P1       // Pino que liga o CO2 do reator.
+const byte bomba1Pin = 2;       // P2       // Bomba que tira água da quarentena.
+const byte bomba2Pin = 3;       // P3       // Bomba que tira água do sump.
+const byte bomba3Pin = 4;       // P4       // Bomba que coloca água no sump.
+const byte temporizador1 = 5;   // P5       // Pino que liga o timer 1.
+const byte temporizador2 = 6;   // P6       // Pino que liga o timer 2.
+const byte temporizador3 = 7;   // P7       // Pino que liga o timer 3.
+const byte temporizador4 = 8;   // P8       // Pino que liga o timer 4.
+const byte temporizador5 = 9;   // P9       // Pino que liga o timer 5.
+const byte solenoide1Pin = 10;  // P10      // Liga a reposição de água doce.
+const byte alimentadorPin = 11; // P11      // Pino que controla o alimentador automático.
+const byte skimmerPin = 12;     // P12      // Pino que controla o skimmer
 
 // *****************************************************************************************
 // ************************** Senha para acessar os menus **********************************
 // *****************************************************************************************
-const char senha [7] = {'1', '2', '3', '4', '5', '6', '\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
+const char senha[7] = {'1', '2', '3', '4', '5', '6', '\0'}; // Insira sua senha aqui. O caracter '\0' não deve ser alterado.
 
 // *****************************************************************************************
 // ************************* Funções do ethernet shield ************************************
 // *****************************************************************************************
-#ifdef ETHERNET_SHIELD                                  // Do not change this line
-  const char *Username  = "FernandoGarcia";             // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
-  const char *APIKEY = "2e4e116a";                      // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
+#if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line
+  const char *Username = "FernandoGarcia";               // Coloque aqui o nome de usuário cadastrado no ferduino.com/webcontrol
+  const char *APIKEY = "2e4e116a";                       // Cole aqui a ApiKey gerada pelo ferduino.com/webcontrol
+#endif                                                   // Do not change this line
 
- #ifndef USE_ESP8266                                    // Do not change this line
-    byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Este MAC deve ser único na sua rede local.
-    byte ip[] = {192, 168, 0, 177};                     // Configure o IP conforme a sua rede local.
-    IPAddress dnsServer(8, 8, 8, 8);                    // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
-    IPAddress gateway(192, 168, 0, 1);                  // Configure o "Gateway" conforme a sua rede local.
-    IPAddress subnet(255, 255, 255, 0);                 // Configure a máscara de rede conforme a sua rede local.
- #endif  // Do not change this line
-#endif // Do not change this line
+#ifdef USE_ETHERNET_SHIELD                               // Do not change this line
+  byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};     // Este MAC deve ser único na sua rede local.
+  byte ip[] = {192, 168, 0, 177};                        // Configure o IP conforme a sua rede local.
+  IPAddress dnsServer(8, 8, 8, 8);                       // Configure o IP conforme a sua rede local. Este é o DNS do Google, geralmente não é necessário mudar.
+  IPAddress gateway(192, 168, 0, 1);                     // Configure o "Gateway" conforme a sua rede local.
+  IPAddress subnet(255, 255, 255, 0);                    // Configure a máscara de rede conforme a sua rede local.
+#endif                                                   // Do not change this line
 
 // *****************************************************************************************
 // *********************** Wireless transceiver (RFM12B) ***********************************
 // *****************************************************************************************
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line
-  #define MY_ID      99                                          // ID deste dispositivo
-  #define NETWORK_ID   100                                       // Todos os dispositivos devem estar na mesma rede.
-  #define TARGET_ID_LED   1                                      // 1 = ID do dispositivos que receberá a informação
-  #define TARGET_ID_RELAY   2                                    // 2 = ID do dispositivos que receberá a informação
-  #define KEY         "thisIsEncryptKey"                         // Esta senha deve ter exatamente 16 caracteres.
-  #define FREQUENCY   RF12_915MHZ                                // Frequência de operação do rádio.
-#endif // Do not change this line
+  #define MY_ID 99                                               // ID deste dispositivo
+  #define NETWORK_ID 100                                         // Todos os dispositivos devem estar na mesma rede.
+  #define TARGET_ID_LED 1                                        // 1 = ID do dispositivos que receberá a informação
+  #define TARGET_ID_RELAY 2                                      // 2 = ID do dispositivos que receberá a informação
+  #define KEY "thisIsEncryptKey"                                 // Esta senha deve ter exatamente 16 caracteres.
+  #define FREQUENCY RF12_915MHZ                                  // Frequência de operação do rádio.
+#endif                                                           // Do not change this line

@@ -1,17 +1,17 @@
-#pragma once        // Do not change this line!
-#ifndef USE_ESP8266 // Do not change this line
-  void requestAction(char* topic, byte* payload, unsigned int length)
-#else // Do not change this line
-  void mqttData(void* response)
+#pragma once               // Do not change this line!
+#ifdef USE_ETHERNET_SHIELD // Do not change this line
+  void requestAction(char *topic, byte *payload, unsigned int length)
+#else  // Do not change this line
+  void mqttData(void *response)
 #endif // Do not change this line
 {
   DynamicJsonBuffer jsonBuffer;
-  JsonObject& Json = jsonBuffer.createObject();
+  JsonObject &Json = jsonBuffer.createObject();
   char pub_message[MQTT_MAX_PACKET_SIZE] = "";
   char _message_[50] = "";
   byte cont = 0;
   byte dia;
-  #define COMMAND_SIZE  60
+  #define COMMAND_SIZE 60
   char clientline[COMMAND_SIZE];
   char inData[COMMAND_SIZE];
   byte index = 0;
@@ -32,7 +32,7 @@
   LOGLN(PUB_TOPIC);
   LOG(F("\nNew request: "));
 
-  #ifndef USE_ESP8266 // Do not change this line
+  #ifdef USE_ETHERNET_SHIELD // Do not change this line
     for (unsigned int i = 0; i < length; i++)
     {
       char c = (char)payload[i];
@@ -51,7 +51,7 @@
 
     index = 0;
 
-  #else // Do not change this line
+  #else  // Do not change this line
     ELClientResponse *res = (ELClientResponse *)response;
     String topic = res->popString();
     String message = res->popString();
@@ -299,7 +299,7 @@
 
           SaveDallasAddress();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -322,7 +322,7 @@
           rtc.setTime(atoi(inParse[5]), atoi(inParse[6]), atoi(inParse[7]));
           rtc.halt(false);
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -355,14 +355,14 @@
             semana_e[i] = atoi(inParse[i + 5]);
           }
           SalvartpaEEPROM();
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         if (atoi(inParse[1]) == 2)
         {
           bitWrite(tpa_status, 2, atoi(inParse[2]));
           Salvar_erro_tpa_EEPROM();
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -389,7 +389,7 @@
           teste_led_millis = millis();
           teste_em_andamento = true;
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2)
@@ -398,7 +398,7 @@
           teste_em_andamento = false;
           ler_predefinido_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -432,21 +432,21 @@
             cor[atoi(inParse[2])][i] = atoi(inParse[3 + cont]);
           }
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2) // mode = 2 to save values to eeprom
         {
           SaveLEDToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 3) // mode = 3 to discard values
         {
           ReadFromEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -466,7 +466,7 @@
           MaxI = atoi(inParse[3]);
           Salvar_luz_noturna_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
 
@@ -488,7 +488,7 @@
           HtempMax = atof(inParse[3]);
           salvar_coolersEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -510,7 +510,7 @@
           potR = atoi(inParse[3]);
           salvar_tempPotEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -534,7 +534,7 @@
           alarmTempC = atof(inParse[4]);
           SaveTempToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -542,7 +542,7 @@
       case 10: // dosage manual
         // send (case, dosing pump selected, dose)
         dosadora_selecionada = atoi(inParse[1]);
-        tempo_dosagem = map ((atof(inParse[2]) * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000UL);
+        tempo_dosagem = map((atof(inParse[2]) * 2), 0, fator_calib_dosadora_e[dosadora_selecionada], 0, 60000UL);
         volume_dosado[dosadora_selecionada] += atof(inParse[2]);
         tempo_dosagem /= 2;
         web_dosage = true;
@@ -586,7 +586,7 @@
           }
           Salvar_calib_dosadora_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -639,7 +639,7 @@
           criar_arquivos();
           Salvar_dosadora_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -663,7 +663,7 @@
           alarmPHA = atof(inParse[4]);
           SavePHAToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -687,7 +687,7 @@
           alarmPHR = atof(inParse[4]);
           SavePHRToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -711,7 +711,7 @@
           alarmORP = atoi(inParse[4]);
           SaveORPToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -735,7 +735,7 @@
           alarmDEN = atoi(inParse[4]);
           SaveDENToEEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -797,7 +797,7 @@
           salvar_timers_EEPROM();
           bitWrite(temporizador_modificado, (temporizador + 1), 1);
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -839,7 +839,7 @@
           amanhecer_anoitecer = atoi(inParse[14]);
           Salvar_predefinido_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -886,7 +886,7 @@
           selecionar_SPI(SD_CARD);
           criar_arquivos_alimentador();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2) // send (case, mode)
@@ -894,11 +894,11 @@
           inicia_alimentacao();
           if (modo_alimentacao == true)
           {
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+            strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           }
           else
           {
-            strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[1]))); // "{\"response\":\"stop\"}"
+            strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[1]))); // "{\"response\":\"stop\"}"
           }
 
           MQTT.publish(PUB_TOPIC, buffer, false);
@@ -960,7 +960,7 @@
           }
           Salvar_wave_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2)
@@ -981,14 +981,14 @@
             Pump2PWM_temp = atoi(inParse[4]);
           }
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 3)
         {
           ler_wave_EEPROM();
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -1019,7 +1019,7 @@
           salvar_outlets_EEPROM();
           outlets_settings = false;
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2)
@@ -1029,7 +1029,7 @@
           outlets_millis = millis();
           outlets_settings = true;
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 3)
@@ -1049,7 +1049,7 @@
           }
           outlets_settings = false;
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
@@ -1107,9 +1107,9 @@
           duracaoMinMaxRelampago[1] = atoi(inParse[22]);  // Duração máxima do relâmpago
 
           Salvar_clima_EEPROM();
-          probabilidadeNuvem();                                              // Calcula a probabilidade de ocorrer nuvens.
+          probabilidadeNuvem();                                               // Calcula a probabilidade de ocorrer nuvens.
 
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         else if (atoi(inParse[1]) == 2)
@@ -1145,14 +1145,14 @@
           LOGLN(DEN_AUX);
           LOG(F("Temperature aux: "));
           LOGLN(temp_AUX);
-          strcpy_P(buffer, (char*)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
+          strcpy_P(buffer, (char *)pgm_read_word_near(&(tabela_strings[0]))); // "{\"response\":\"ok\"}"
           MQTT.publish(PUB_TOPIC, buffer, false);
         }
         break;
 
       default: // Break the loop if function called doesn't match.
         break;
-    }// switch(ID)
+    } // switch(ID)
 
     if (Json.measureLength() > 2)
     {
@@ -1185,7 +1185,7 @@
 void enviar_dados()
 {
   DynamicJsonBuffer jsonBuffer;
-  JsonObject& Json = jsonBuffer.createObject();
+  JsonObject &Json = jsonBuffer.createObject();
   char pub_message[MQTT_MAX_PACKET_SIZE];
   char LOG_TOPIC[50];
 
@@ -1197,9 +1197,9 @@ void enviar_dados()
   LOG(F("\nLog: ")); // Envia dados
   LOGLN(LOG_TOPIC);
 
-  #ifndef USE_ESP8266 // Do not change this line
+  #ifdef USE_ETHERNET_SHIELD // Do not change this line
     if (MQTT.connected())
-  #else // Do not change this line
+  #else  // Do not change this line
     if (MQTT_connected == true)
   #endif // Do not change this line
   {
@@ -1243,7 +1243,6 @@ void enviar_dados()
     Json[F("V5")] = bitRead(erro_dosagem, 4);       // Erro dosagem dosadora 5
     Json[F("V6")] = bitRead(erro_dosagem, 5);       // Erro dosagem dosadora 6
 
-
     Json.printTo(pub_message, Json.measureLength() + 1);
     MQTT.publish(LOG_TOPIC, pub_message, false);
 
@@ -1268,9 +1267,9 @@ void enviar_dados()
     notconnected++;
     if ((notconnected >= (limite_falha - 2)) && (notconnected < limite_falha))
     {
-      #ifndef USE_ESP8266 // Do not change this line!
+      #ifdef USE_ETHERNET_SHIELD // Do not change this line!
         start_ethernet();
-      #else // Do not change this line!
+      #else  // Do not change this line!
         sincronizar();
       #endif // Do not change this line!
 
@@ -1289,7 +1288,7 @@ void enviar_dados()
   }
 }
 
-#ifndef USE_ESP8266 // Do not change this line
+#ifdef USE_ETHERNET_SHIELD // Do not change this line
   void reconnect()
   {
     byte i = 0;

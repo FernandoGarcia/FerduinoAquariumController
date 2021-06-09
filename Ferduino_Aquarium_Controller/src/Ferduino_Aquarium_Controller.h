@@ -7,12 +7,12 @@
 // *************************************************************************************************
 // ************************* Variáveis globais *****************************************************
 // *************************************************************************************************
-const char lastUpdate[] = "11/06/2019"; // Data da última modificação
+const char lastUpdate[] = "09/06/2021"; // Data da última modificação
 
 // ****************************************************************************************************
 // ****************** Variáveis de textos e fontes ****************************************************
 // ****************************************************************************************************
-#ifdef USE_TFT               // Do not change this line
+#ifdef USE_TFT // Do not change this line
   #define LARGE true
   #define SMALL false
   extern uint8_t RusFont1[]; // Declara que fontes vamos usar
@@ -59,16 +59,16 @@ Time t_temp, t;
 // *******************************************************************************************************
 #ifdef USE_TFT                            // Do not change this line
   UTFT myGLCD(TFT_MODEL, 38, 39, 40, 41); // "ITDB32WD" é o modelo do LCD
- #ifdef USE_TFT_SHIELD                    // Do not change this line
+  #ifdef USE_TFT_SHIELD                   // Do not change this line
     URTouch myTouch(6, 5, 4, 3, 2);       // Pinos usados pelo "touch" no TFT shield
- #else  // Do not change this line
+  #else                                    // Do not change this line
     URTouch myTouch(7, 6, 5, 4, 3);       // Pinos usados pelo "touch" no Ferduino Mega 2560
- #endif  // Do not change this line
+  #endif                                   // Do not change this line
 
   unsigned int ano = 0;
   byte dia = 0;
-  byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;  // Valor anterior de PWM.
-#endif // Do not change this line
+  byte whiteLed, blueLed, azulroyalLed, vermelhoLed, violetaLed;   // Valor anterior de PWM.
+#endif                                                           // Do not change this line
 
 byte dispScreen = 0;
 unsigned long previousMillis = 0;
@@ -127,10 +127,10 @@ float temp2beA;
 // *****************************************************************************************
 // ************************ Variáveis do controle do PH do aquário *************************
 // *****************************************************************************************
-float PHA = 0;              // PH do aquário
-float setPHA = 0;           // PH desejado do aquário
-float offPHA = 0;           // Variaçãoo permitida do PH do aquário
-float alarmPHA = 0;         // Variação para acionar o alarme de ph do aquário
+float PHA = 0;      // PH do aquário
+float setPHA = 0;   // PH desejado do aquário
+float offPHA = 0;   // Variaçãoo permitida do PH do aquário
+float alarmPHA = 0; // Variação para acionar o alarme de ph do aquário
 
 // *****************************************************************************************
 // ************************ Variáveis temporárias de controle do PH do aquário *************
@@ -142,19 +142,19 @@ float PHA2beA;
 // *****************************************************************************************
 // ************************ Variáveis de controle de densidade *****************************
 // *****************************************************************************************
-int DEN = 0;                 // Densidade
-int DEN_AUX = 0;             // Variável de densidade auxiliar para ser usar usada com o densímetro digital (iSpindel)
-int setDEN = 1025;           // Densidade desejada
-byte offDEN = 2;             // Variação permitida da densidade
-byte alarmDEN = 1;           // Variação para acionar o alarme de densidade
+int DEN = 0;       // Densidade
+int DEN_AUX = 0;   // Variável de densidade auxiliar para ser usar usada com o densímetro digital (iSpindel)
+int setDEN = 1025; // Densidade desejada
+byte offDEN = 2;   // Variação permitida da densidade
+byte alarmDEN = 1; // Variação para acionar o alarme de densidade
 
 // *****************************************************************************************
 // ************************ Variáveis de controle do PH do reator de cálcio ****************
 // *****************************************************************************************
-float PHR = 0;              // Valores PH reator
-float setPHR = 0;           // PH do reator desejado
-float offPHR = 0;           // Variacao permitida do PH do reator
-float alarmPHR = 0;         // Variacao para acionar o alarme do PH do reator de calcio
+float PHR = 0;      // Valores PH reator
+float setPHR = 0;   // PH do reator desejado
+float offPHR = 0;   // Variacao permitida do PH do reator
+float alarmPHR = 0; // Variacao para acionar o alarme do PH do reator de calcio
 
 // *****************************************************************************************
 // ************************ Variáveis temporárias de controle do PH do reator de cálcio ****
@@ -166,10 +166,10 @@ float PHR2beA;
 // *****************************************************************************************
 // ************************ Variáveis de controle da  ORP **********************************
 // *****************************************************************************************
-int ORP = 0;                // Valores ORP
-int setORP = 420;           // ORP desejada
-byte offORP = 10;           // Variação permitida da ORP
-byte alarmORP = 10;         // Variacão para acionar o alarme da ORP
+int ORP = 0;        // Valores ORP
+int setORP = 420;   // ORP desejada
+byte offORP = 10;   // Variação permitida da ORP
+byte alarmORP = 10; // Variacão para acionar o alarme da ORP
 
 // *****************************************************************************************
 // ************************ Variáveis temporárias de controle da ORP ***********************
@@ -191,24 +191,24 @@ byte DEN2beA;
 #ifdef USE_FAHRENHEIT // Do not change this line
   float HtempMin = 86.9;
   float HtempMax = 104.9;
-#else // Do not change this line
-  float HtempMin = 30.5;  // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
-  float HtempMax = 40.5;  // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
-#endif // Do not change this line
-int fanSpeed = 0;         // PWM dos coolers
+#else                    // Do not change this line
+  float HtempMin = 30.5; // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
+  float HtempMax = 40.5; // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
+#endif                   // Do not change this line
+int fanSpeed = 0;        // PWM dos coolers
 
 // *****************************************************************************************
 // ************** Variáveis temperárias de controle de velocidade dos coolers **************
 // *****************************************************************************************
-float HtempMin_temp = 0;    // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
-float HtempMax_temp = 0;    // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
+float HtempMin_temp = 0; // Declara a temperatura para iniciar o funcionamento das ventoinhas do dissipador
+float HtempMax_temp = 0; // Declara que as ventoinhas devem estar em sua velocidade máxima quando o dissipador estiver com 40°c
 
 // *****************************************************************************************
 // *********************** Variáveis de controle da temperatura do dissipador **************
 // *****************************************************************************************
-float tempH = 0;    // Temperatura do dissipador
-byte tempHR = 60;   // Temperatura para reduzir potência dos leds
-byte potR = 30;     // Porcentagem a ser reduzida.
+float tempH = 0;  // Temperatura do dissipador
+byte tempHR = 60; // Temperatura para reduzir potência dos leds
+byte potR = 30;   // Porcentagem a ser reduzida.
 
 // *****************************************************************************************
 // *********** Variáveis temporárias de controle da temperatura do dissipador **************
@@ -222,9 +222,9 @@ bool temperatura_baixou = false;       // Sinaliza que a temperatura dos leds es
 // *****************************************************************************************
 // ************************ Variáveis de controle da iluminação ****************************
 // *****************************************************************************************
-int LedChangTime = 0;          // Página de alteração do leds, tempo e valores.
-bool MeanWell = true;          // Se estiver usando drivers cuja potência máxima seja obtida aplicando zero volt e a mínima seja 5 volts altere de "true" para "false".
-bool LEDtestTick = false;      // Acelerar o tempo durante o teste dos leds.
+int LedChangTime = 0;     // Página de alteração do leds, tempo e valores.
+bool MeanWell = true;     // Se estiver usando drivers cuja potência máxima seja obtida aplicando zero volt e a mínima seja 5 volts altere de "true" para "false".
+bool LEDtestTick = false; // Acelerar o tempo durante o teste dos leds.
 int min_cnt;
 byte bled_out;
 byte wled_out;
@@ -308,11 +308,11 @@ byte amanhecer_anoitecer_t = 0;
 // ************************* LED design ****************************************************
 // *****************************************************************************************
 const byte cor_canal[5][3] = {
-  {255, 255, 255}, // Branco
-  {9, 184, 255},   // Azul
-  {58, 95, 205},   // Azul Royal
-  {255, 0, 0},     // Vermelho
-  {224, 102, 255}  // Violeta
+  {255, 255, 255},   // Branco
+  {9, 184, 255},     // Azul
+  {58, 95, 205},     // Azul Royal
+  {255, 0, 0},       // Vermelho
+  {224, 102, 255}    // Violeta
 };
 
 // *****************************************************************************************
@@ -331,9 +331,9 @@ byte fase = 0;
 byte hora = 0;
 byte minuto = 0;
 byte duracaomaximatpa = 0;
-byte semana_e[7];                    // Index 0 = segunda-feira, 1 = terça-feira, 2 = quarta-feira, 3 = quinta-feira, 4 = sexta-feira, 5 = sábado, 6 = domingo.
-byte tpa = 0;                        // Controla os estágios da TPA automática
-byte tpa_status = 0x0;               // 0 = false e 1 = true
+byte semana_e[7];      // Index 0 = segunda-feira, 1 = terça-feira, 2 = quarta-feira, 3 = quinta-feira, 4 = sexta-feira, 5 = sábado, 6 = domingo.
+byte tpa = 0;          // Controla os estágios da TPA automática
+byte tpa_status = 0x0; // 0 = false e 1 = true
 // bit 1 = Sinaliza TPA automática em andamento
 // bit 2 = Sinaliza falha durante a TPA automática
 unsigned long tempo = 0;             // Duração de cada estágio da TPA automática
@@ -354,17 +354,17 @@ byte semana[7];
 SdFat SD;
 SdFile file;
 unsigned long log_SD_millis = 0;
-void writeCRLF(SdFile& f);
+void writeCRLF(SdFile &f);
 
 // *****************************************************************************************
 // *********************** Variável do controle de níveis **********************************
 // *****************************************************************************************
-bool nivel_status1 = 0;             // Sinaliza nível baixo sensor 1
-bool nivel_status2 = 0;             // Sinaliza nível baixo sensor 2
-bool nivel_status3 = 0;             // Sinaliza nível baixo sensor 3
-bool nivel_status4 = 0;             // Sinaliza nível baixo sensor 4
-bool nivel_status5 = 0;             // Sinaliza nível baixo sensor 5
-bool nivel_status6 = 0;             // Sinaliza nível baixo sensor 6
+bool nivel_status1 = 0; // Sinaliza nível baixo sensor 1
+bool nivel_status2 = 0; // Sinaliza nível baixo sensor 2
+bool nivel_status3 = 0; // Sinaliza nível baixo sensor 3
+bool nivel_status4 = 0; // Sinaliza nível baixo sensor 4
+bool nivel_status5 = 0; // Sinaliza nível baixo sensor 5
+bool nivel_status6 = 0; // Sinaliza nível baixo sensor 6
 
 // *****************************************************************************************
 // ************************ Variável de controle da reposição de água doce *****************
@@ -379,18 +379,18 @@ byte Status = 0x0;
 // *****************************************************************************************
 // ************************* Funções do ethernet shield ************************************
 // *****************************************************************************************
-#ifdef ETHERNET_SHIELD          // Do not change this line
-  const byte limite_falha = 30; // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.
+#if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line
+  const byte limite_falha = 30;                          // Reseta o controlador após 30 tentativas de upload para Ferduino. Utilize sempre um valor maior ou igual a 3.
 
- #ifndef USE_ESP8266            // Do not change this line
+  #ifdef USE_ETHERNET_SHIELD                             // Do not change this line
     EthernetClient client;
     PubSubClient MQTT(client);
- #else  // Do not change this line
+  #else // Do not change this line
     ELClient ESP8266(&Serial1);
     ELClientMqtt MQTT(&ESP8266);
     bool MQTT_connected = false;
     #define MQTT_MAX_PACKET_SIZE 550
- #endif  // Do not change this line
+  #endif // Do not change this line
 
   char *inParse[20];
   unsigned long millis_mqtt = 0;
@@ -412,13 +412,13 @@ bool web_teste = false;
   const byte ph2 = 1;                          // Y1
   const byte orp = 2;                          // Y2
   const byte ec = 3;                           // Y3
-#endif // Do not change this line
+#endif                                         // Do not change this line
 
 // *****************************************************************************************
 // ************************** Variáveis da solicitação de senha ****************************
 // *****************************************************************************************
 char stCurrent[7] = "";
-char limpar_senha [7] = "";
+char limpar_senha[7] = "";
 byte stCurrentLen = 0;
 
 // *****************************************************************************************
@@ -513,18 +513,18 @@ byte temporizador_ativado[5];
 // *****************************************************************************************
 // ************************** Variáveis do PCF8575 *****************************************
 // *****************************************************************************************
-  mxUnifiedPCF8575 PCF8575 = mxUnifiedPCF8575(0x20); // Endereço em hexadecimal = 0x20
+mxUnifiedPCF8575 PCF8575 = mxUnifiedPCF8575(0x20); // Endereço em hexadecimal = 0x20
 
 // *****************************************************************************************
 // *********************** Wireless transceiver (RFM12B) ***********************************
 // *****************************************************************************************
 #if defined(RFM12B_LED_CONTROL) || defined(RFM12B_RELAY_CONTROL) // Do not change this line
   RFM12B radio;
-  #define ACK_TIME    200
-  const byte limite_sem_resposta = 4;                            // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
+  #define ACK_TIME 200
+  const byte limite_sem_resposta = 4; // Reseta o controlador após 4 envios sem resposta. Para desabilitar esta função altere o valor para 0 (ZERO).
   unsigned long lastPeriod_millis = 0;
-  bool requestACK_LED = false;                                   // true = Solicitar uma resposta do dispositivo que recebe a informação
-  bool requestACK_RELAY = false;                                 // true = Solicitar uma resposta do dispositivo que recebe a informação
+  bool requestACK_LED = false;        // true = Solicitar uma resposta do dispositivo que recebe a informação
+  bool requestACK_RELAY = false;      // true = Solicitar uma resposta do dispositivo que recebe a informação
   byte nothing = 0;
 #endif // Do not change this line
 
@@ -548,9 +548,8 @@ byte temporizador_ativado[5];
     byte channel_13; // canal extra
     byte channel_14; // canal extra
     byte channel_15; // canal extra
-  }
-  Payload_led;
-  Payload_led theData_led  = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
+  } Payload_led;
+  Payload_led theData_led = {MY_ID, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 #endif // Do not change this line
 
 #ifdef RFM12B_RELAY_CONTROL // Do not change this line
@@ -573,9 +572,8 @@ byte temporizador_ativado[5];
     byte relay_13;
     byte relay_14;
     byte relay_15;
-  }
-  Payload_relay;
-  Payload_relay theData_relay  = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  } Payload_relay;
+  Payload_relay theData_relay = {MY_ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 #endif // Do not change this line
 
 // *****************************************************************************************
@@ -589,13 +587,13 @@ const byte RFM = 2;
   const byte ChipSelect_SD = 4;      // Para cartão SD conectado no "ethernet shield".
 #elif defined USE_PIN_53_FOR_SD_CARD // Do not change this line
   const byte ChipSelect_SD = 53;     // Para cartão SD conectado no TFT.
-#else // Do not change this line
+#else                                // Do not change this line
   const byte ChipSelect_SD = 5;      // Para o Ferduino Mega 2560
-#endif // Do not change this line
+#endif                               // Do not change this line
 
 #ifdef USE_PIN_53_FOR_SD_CARD        // Do not change this line
   const byte SelectSlave_ETH = 4;
-#else // Do not change this line
+#else  // Do not change this line
   const byte SelectSlave_ETH = 53;
 #endif // Do not change this line
 
@@ -613,7 +611,7 @@ float temperatura_ambiente_temp = 0; // Temperatura temporária
 #ifdef NIGHT_MODE                // Do not change this line
   const float POWER_PUMP1 = 0.5; // 50%
   const float POWER_PUMP2 = 0.5; // 50%
-#endif // Do not change this line
+#endif                           // Do not change this line
 byte modo_selecionado = 1;
 byte Pump1PWM_temp = 0;
 byte Pump2PWM_temp = 0;
@@ -653,77 +651,84 @@ byte alimentacao_wavemaker_on_off_temp = 0;
 // *****************************************************************************************
 // ************************** Variáveis de controle da potência dos leds *******************
 // *****************************************************************************************
-byte wled[96] = {                         // Potência de saída dos leds brancos 255 = 100% da potência
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 0 e 2
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 2 e 4
-  0, 0, 0, 0, 12, 21, 30, 39,             // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,       // 6 e 8
-  120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
-  192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
-  255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
-  183, 174, 165, 156, 147, 138, 129, 120, // 14 e 16
-  111, 102, 93, 84, 75, 66, 57, 48,       // 16 e 18
-  39, 30, 21, 12, 0, 0, 0, 0,             // 18 a 20
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 20 e 22
-  0, 0, 0, 0, 0, 0, 0, 0                  // 22 a 0
+byte wled[96] = {
+  // Potência de saída dos leds brancos 255 = 100% da potência
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 0 e 2
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 2 e 4
+  0, 0, 0, 0, 12, 21, 30, 39,               // 4 e 6
+  48, 57, 66, 75, 84, 93, 102, 111,         // 6 e 8
+  120, 129, 138, 147, 156, 165, 174, 183,   // 8 e 10
+  192, 201, 210, 219, 228, 237, 246, 255,   // 10 e 12
+  255, 246, 237, 228, 219, 210, 201, 192,   // 12 e 14
+  183, 174, 165, 156, 147, 138, 129, 120,   // 14 e 16
+  111, 102, 93, 84, 75, 66, 57, 48,         // 16 e 18
+  39, 30, 21, 12, 0, 0, 0, 0,               // 18 a 20
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 20 e 22
+  0, 0, 0, 0, 0, 0, 0, 0                    // 22 a 0
 };
 
-byte bled[96] = {                         // Potência de saída dos leds azuis 255 = 100% da potência
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 0 e 2
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 2 e 4
-  0, 0, 0, 0, 12, 21, 30, 39,             // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,       // 6 e 8
-  120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
-  192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
-  255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
-  183, 174, 165, 156, 147, 138, 129, 120, // 14 e 16
-  111, 102, 93, 84, 75, 66, 57, 48,       // 16 e 18
-  39, 30, 21, 12, 0, 0, 0, 0,             // 18 a 20
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 20 e 22
-  0, 0, 0, 0, 0, 0, 0, 0                  // 22 a 0
+byte bled[96] = {
+  // Potência de saída dos leds azuis 255 = 100% da potência
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 0 e 2
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 2 e 4
+  0, 0, 0, 0, 12, 21, 30, 39,               // 4 e 6
+  48, 57, 66, 75, 84, 93, 102, 111,         // 6 e 8
+  120, 129, 138, 147, 156, 165, 174, 183,   // 8 e 10
+  192, 201, 210, 219, 228, 237, 246, 255,   // 10 e 12
+  255, 246, 237, 228, 219, 210, 201, 192,   // 12 e 14
+  183, 174, 165, 156, 147, 138, 129, 120,   // 14 e 16
+  111, 102, 93, 84, 75, 66, 57, 48,         // 16 e 18
+  39, 30, 21, 12, 0, 0, 0, 0,               // 18 a 20
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 20 e 22
+  0, 0, 0, 0, 0, 0, 0, 0                    // 22 a 0
 };
 
-byte rbled[96] = {                        // Potência de saída dos leds brancos 255 = 100% da potência
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 0 e 2
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 2 e 4
-  0, 0, 0, 0, 12, 21, 30, 39,             // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,       // 6 e 8
-  120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
-  192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
-  255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
-  183, 174, 165, 156, 147, 138, 129, 120, // 14 e 16
-  111, 102, 93, 84, 75, 66, 57, 48,       // 16 e 18
-  39, 30, 21, 12, 0, 0, 0, 0,             // 18 a 20
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 20 e 22
-  0, 0, 0, 0, 0, 0, 0, 0                  // 22 a 0
+byte rbled[96] = {
+  // Potência de saída dos leds brancos 255 = 100% da potência
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 0 e 2
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 2 e 4
+  0, 0, 0, 0, 12, 21, 30, 39,               // 4 e 6
+  48, 57, 66, 75, 84, 93, 102, 111,         // 6 e 8
+  120, 129, 138, 147, 156, 165, 174, 183,   // 8 e 10
+  192, 201, 210, 219, 228, 237, 246, 255,   // 10 e 12
+  255, 246, 237, 228, 219, 210, 201, 192,   // 12 e 14
+  183, 174, 165, 156, 147, 138, 129, 120,   // 14 e 16
+  111, 102, 93, 84, 75, 66, 57, 48,         // 16 e 18
+  39, 30, 21, 12, 0, 0, 0, 0,               // 18 a 20
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 20 e 22
+  0, 0, 0, 0, 0, 0, 0, 0                    // 22 a 0
 };
-byte rled[96] = {                         // Potência de saída dos leds brancos 255 = 100% da potência
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 0 e 2
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 2 e 4
-  0, 0, 0, 0, 12, 21, 30, 39,             // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,       // 6 e 8
-  120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
-  192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
-  255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
-  183, 174, 165, 156, 147, 138, 129, 120, // 14 e 16
-  111, 102, 93, 84, 75, 66, 57, 48,       // 16 e 18
-  39, 30, 21, 12, 0, 0, 0, 0,             // 18 a 20
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 20 e 22
-  0, 0, 0, 0, 0, 0, 0, 0                  // 22 a 0
+
+byte rled[96] = {
+  // Potência de saída dos leds brancos 255 = 100% da potência
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 0 e 2
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 2 e 4
+  0, 0, 0, 0, 12, 21, 30, 39,               // 4 e 6
+  48, 57, 66, 75, 84, 93, 102, 111,         // 6 e 8
+  120, 129, 138, 147, 156, 165, 174, 183,   // 8 e 10
+  192, 201, 210, 219, 228, 237, 246, 255,   // 10 e 12
+  255, 246, 237, 228, 219, 210, 201, 192,   // 12 e 14
+  183, 174, 165, 156, 147, 138, 129, 120,   // 14 e 16
+  111, 102, 93, 84, 75, 66, 57, 48,         // 16 e 18
+  39, 30, 21, 12, 0, 0, 0, 0,               // 18 a 20
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 20 e 22
+  0, 0, 0, 0, 0, 0, 0, 0                    // 22 a 0
 };
-byte uvled[96] = {                        // Potência de saída dos leds brancos 255 = 100% da potência
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 0 e 2
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 2 e 4
-  0, 0, 0, 0, 12, 21, 30, 39,             // 4 e 6
-  48, 57, 66, 75, 84, 93, 102, 111,       // 6 e 8
-  120, 129, 138, 147, 156, 165, 174, 183, // 8 e 10
-  192, 201, 210, 219, 228, 237, 246, 255, // 10 e 12
-  255, 246, 237, 228, 219, 210, 201, 192, // 12 e 14
-  183, 174, 165, 156, 147, 138, 129, 120, // 14 e 16
-  111, 102, 93, 84, 75, 66, 57, 48,       // 16 e 18
-  39, 30, 21, 12, 0, 0, 0, 0,             // 18 a 20
-  0, 0, 0, 0, 0, 0, 0, 0,                 // 20 e 22
-  0, 0, 0, 0, 0, 0, 0, 0                  // 22 a 0
+
+byte uvled[96] = {
+  // Potência de saída dos leds brancos 255 = 100% da potência
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 0 e 2
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 2 e 4
+  0, 0, 0, 0, 12, 21, 30, 39,               // 4 e 6
+  48, 57, 66, 75, 84, 93, 102, 111,         // 6 e 8
+  120, 129, 138, 147, 156, 165, 174, 183,   // 8 e 10
+  192, 201, 210, 219, 228, 237, 246, 255,   // 10 e 12
+  255, 246, 237, 228, 219, 210, 201, 192,   // 12 e 14
+  183, 174, 165, 156, 147, 138, 129, 120,   // 14 e 16
+  111, 102, 93, 84, 75, 66, 57, 48,         // 16 e 18
+  39, 30, 21, 12, 0, 0, 0, 0,               // 18 a 20
+  0, 0, 0, 0, 0, 0, 0, 0,                   // 20 e 22
+  0, 0, 0, 0, 0, 0, 0, 0                    // 22 a 0
 };
 
 byte *cor[5] = {wled, bled, rbled, rled, uvled};
@@ -731,12 +736,11 @@ byte *cor[5] = {wled, bled, rbled, rled, uvled};
 // *****************************************************************************************
 // ************************** Textos *******************************************************
 // *****************************************************************************************
-#ifdef ETHERNET_SHIELD // Do not change this line
+#if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line
   const char string0[] PROGMEM = "{\"response\":\"ok\"}";
   const char string1[] PROGMEM = "{\"response\":\"stop\"}";
 
-  const char* const tabela_strings[] PROGMEM =
-  {
+  const char *const tabela_strings[] PROGMEM = {
     string0, string1
   };
 #endif // Do not change this line

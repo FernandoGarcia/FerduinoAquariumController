@@ -13,7 +13,7 @@ void setup()
   #endif // Do not change this line
 
   #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
-    Serial3.begin(38400); // Inicia a comunicação com a  porta serial 3 onde estão conectados os "stamps".
+    Serial3.begin(38400);                        // Inicia a comunicação com a  porta serial 3 onde estão conectados os "stamps".
   #endif // Do not change this line!
 
   configPins();                        // Define a função dos pinos.
@@ -144,10 +144,10 @@ void setup()
     #endif // Do not change this line
   #endif // Do not change this line!
 
-  #ifdef ETHERNET_SHIELD                        // Do not change this line!
-    #ifndef USE_ESP8266                         // Do not change this line!
+  #if defined(USE_ETHERNET_SHIELD) || defined(USE_ESP8266) // Do not change this line!
+    #ifdef USE_ETHERNET_SHIELD                             // Do not change this line!
       start_ethernet();
-      MQTT.setServer("www.ferduino.com", 1883); // Do NOT change this URL!
+      MQTT.setServer("www.ferduino.com", 1883);            // Do NOT change this URL!
       MQTT.setCallback(requestAction);
 
       if (!MQTT.connected())
@@ -156,7 +156,6 @@ void setup()
       }
     #else
       Serial1.begin(38400);
-
       ESP8266.wifiCb.attach(wifiCb);
       sincronizar();
     #endif // Do not change this line!
@@ -189,29 +188,16 @@ void setup()
 // ***************************************************************************************************************************************
 // ****************************** Fim do setup() *****************************************************************************************
 // ***************************************************************************************************************************************
-#ifdef ETHERNET_SHIELD // Do not change this line!
- #ifndef USE_ESP8266   // Do not change this line
-    void start_ethernet()
-    {
-      selecionar_SPI(ETHER_CARD); // Seleciona disposito SPI que será utilizado.
-      Ethernet.init(SelectSlave_ETH);
+#ifdef USE_ETHERNET_SHIELD    // Do not change this line
+  void start_ethernet()
+  {
+    selecionar_SPI(ETHER_CARD);   // Seleciona disposito SPI que será utilizado.
+    Ethernet.init(SelectSlave_ETH);
 
-      #ifdef USE_DHCP // Do not change this line
-        if(Ethernet.begin(mac) == 0)
-        {
-          LOGLN(F("Failed to configure Ethernet using DHCP"));
-
-          if (Ethernet.hardwareStatus() == EthernetNoHardware)
-          {
-            LOGLN(F("Ethernet shield was not found."));
-          }
-          if (Ethernet.linkStatus() == LinkOFF)
-          {
-            LOGLN(F("Ethernet cable is not connected."));
-          }
-        }
-      #else // Do not change this line
-        Ethernet.begin(mac, ip, dnsServer, gateway, subnet);
+    #ifdef USE_DHCP   // Do not change this line
+      if(Ethernet.begin(mac) == 0)
+      {
+        LOGLN(F("Failed to configure Ethernet using DHCP"));
 
         if (Ethernet.hardwareStatus() == EthernetNoHardware)
         {
@@ -221,13 +207,24 @@ void setup()
         {
           LOGLN(F("Ethernet cable is not connected."));
         }
-      #endif // Do not change this line
+      }
+    #else // Do not change this line
+      Ethernet.begin(mac, ip, dnsServer, gateway, subnet);
 
-      LOG(F("\nController IP: "));
-      LOGLN(Ethernet.localIP());
-    }
- #endif // Do not change this line!
-#endif  // Do not change this line!
+      if (Ethernet.hardwareStatus() == EthernetNoHardware)
+      {
+        LOGLN(F("Ethernet shield was not found."));
+      }
+      if (Ethernet.linkStatus() == LinkOFF)
+      {
+        LOGLN(F("Ethernet cable is not connected."));
+      }
+    #endif // Do not change this line
+
+    LOG(F("\nController IP: "));
+    LOGLN(Ethernet.localIP());
+  }
+#endif // Do not change this line!
 
 void configPins()
 {
@@ -269,7 +266,7 @@ void configPins()
   pinMode(dosadora6, OUTPUT);          // Pino A14;
   pinMode(ChipSelect_RFM, OUTPUT);     // Pino A15;
 
-  PCF8575.begin();     // Inicia a comunicação com o PCF8575
+  PCF8575.begin();                     // Inicia a comunicação com o PCF8575
   for (int i = 0; i < 16; i++)
   {
     PCF8575.pinMode(i, OUTPUT);

@@ -227,3 +227,4 @@ include/*
 FerduinoAquariumController.code-workspace
 .pio
 uncrustify.cfg
+.editorconfig

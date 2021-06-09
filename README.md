@@ -36,35 +36,35 @@ Therefore, this is completely Open Source and always will be.
 
 ## TFT touch screen interface
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=26">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=26">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=28">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=28">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=38">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=38">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=27">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=27">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=240">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=240">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=451">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=451">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=242">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=242">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=241">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=10&image_id=241">
 
 ## Web interface
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=511">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=511">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=512">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=512">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=513">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=513">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=514">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=514">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=515">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=515">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=516">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=516">
 
 ## Part list
 
@@ -86,19 +86,19 @@ Therefore, this is completely Open Source and always will be.
 
 [3 x Temperature sensor DS18B20]
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=524">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=524">
 
 [1 x Relay board]
 
-<img width="50%" src="http://ferduino.com/wp-content/uploads/2015/09/SSR-module-board-16-channels.jpg">
+<img width="50%" src="https://ferduino.com/wp-content/uploads/2015/09/SSR-module-board-16-channels.jpg">
 
 [Prototype shield] or [screw shield]
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
 
 <img width="50%" src="http://shop.aqualed-light.com/images/due_mega_screw_top800x600.jpg">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
 
 1 x [Ethernet shield W5100],  [module] or [ESP8266]
 
@@ -106,11 +106,11 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="http://www.robotshop.com/media/files/images/w5100-ethernet-network-module-1-large.jpg">
 
-<img width="50%" src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
 
 [6 x Float switch]
 
-<img width="50%" src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=53">
+<img width="50%" src="https://ferduino.com/forum/gallery/image.php?album_id=11&image_id=53">
 
 [6 x Dosing pump]
 
@@ -118,11 +118,11 @@ Therefore, this is completely Open Source and always will be.
 
 [Circuits pH, ORP and EC]
 
-<img src="http://ferduino.com/forum/gallery/image.php?album_id=11&image_id=54">
+<img src="https://ferduino.com/forum/gallery/image.php?album_id=11&image_id=54">
 
 [1 x Multi circuit UART carrier board]
 
-<img src="http://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=234">
+<img src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=234">
 
 [1 x PCF8575]
 
@@ -154,15 +154,15 @@ Energy monitor.
 
 [stilo]: https://code.google.com/archive/p/stilo/downloads
 
-[web control]: http://ferduino.com/webcontrol
+[web control]: https://ferduino.com/webcontrol
 
 [arduino]: http://arduino.cc
 
-[forum]: http://ferduino.com/forum
+[forum]: https://ferduino.com/forum
 
-[this topic]: http://ferduino.com/forum/viewtopic.php?f=24&t=40
+[this topic]: https://ferduino.com/forum/viewtopic.php?f=24&t=40
 
-[this tutorial]: http://ferduino.com/forum/viewtopic.php?f=8&t=34
+[this tutorial]: https://ferduino.com/forum/viewtopic.php?f=8&t=34
 
 [1 x arduino mega 2560]: http://www.ebay.com/sch/i.html?_odkw=arduino+mega+2560r3&LH_BIN=1&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR5.TRC2.A0.H0.Xarduino+mega+2560+r3&_nkw=arduino+mega+2560+r3&_sacat=0
 
@@ -174,7 +174,7 @@ Energy monitor.
 
 [3 x temperature sensor ds18b20]: http://www.ebay.com/sch/i.html?_trksid=p2055845.m570.l1313.TR11.TRC1.A0.H0.Xds18b20&_nkw=ds18b20&_sacat=0&_from=R40
 
-[1 x relay board]: http://ferduino.com/product/solid-state-relay-board-16-channels/
+[1 x relay board]: https://ferduino.com/product/solid-state-relay-board-16-channels/
 
 [prototype shield]: http://www.ebay.com/sch/i.html?_odkw=relay+board+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xprototype+shield+arduino+mega&_nkw=prototype+shield+arduino+mega&_sacat=0
 
@@ -198,6 +198,6 @@ Energy monitor.
 
 [tft shield]: https://www.ferduino.com/forum/viewtopic.php?f=24&t=488
 
-[ethernet shield and module]: http://www.ferduino.com/forum/viewtopic.php?f=24&t=36
+[ethernet shield and module]: https://www.ferduino.com/forum/viewtopic.php?f=24&t=36
 
-[add wifi with less than $5]: http://www.ferduino.com/forum/viewtopic.php?f=24&t=382
+[add wifi with less than $5]: https://www.ferduino.com/forum/viewtopic.php?f=24&t=382
