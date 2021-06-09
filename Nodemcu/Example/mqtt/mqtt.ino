@@ -6,7 +6,7 @@ const char *APIKEY = "2e4e116a";
 
 // Initialize a connection to esp-link using the normal hardware serial port both for
 // SLIP and for debug messages.
-ELClient ESP8266(&Serial1);
+ELClient ESP8266(&Serial3);
 ELClientMqtt MQTT(&ESP8266);
 
 unsigned long last_millis;
@@ -72,9 +72,9 @@ void mqttData(void* response)
 {
   ELClientResponse *res = (ELClientResponse *)response;
 
-  //Serial.print("Topic: ");
+  // Serial.print("Topic: ");
   String topic = res->popString();
-  //Serial.println(topic);
+  // Serial.println(topic);
 
   Serial.print("Message: ");
   String message = res->popString();
@@ -116,7 +116,7 @@ void setup()
 
   while (!Serial)
   {
-    ; // Nothing to do. :)
+    // Nothing to do. :)
   }
   Serial.flush();
   Serial.println();

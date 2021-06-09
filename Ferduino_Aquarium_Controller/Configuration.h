@@ -21,10 +21,10 @@
 // Essa função minimiza problemas com o travamento do código mas, pode apresentar incompatibilidades com alguns bootloaders
 
 // Uncomment the line below if you are using an ethernet shield
-#define USE_ETHERNET_SHIELD // Descomente esta linha se você está usando um ethernet shield.
+// #define USE_ETHERNET_SHIELD // Descomente esta linha se você está usando um ethernet shield.
 
 // Uncomment the line below if you are using an ESP8266.
-//#define USE_ESP8266  // Descomente esta linha se está usando um ESP8266.
+#define USE_ESP8266  // Descomente esta linha se está usando um ESP8266.
 
 // Comment this two lines below if have not stamps
 // Comente as duas linhas abaixo se não tiver stamps
@@ -138,10 +138,10 @@ const byte ledPinWhite = 10;        // Pino que liga os leds brancos
 const byte ledPinRoyBlue = 11;      // Pino que liga os leds "royal blue"
 const byte ledPinRed = 12;          // Pino que liga os leds vermelho
 const byte fanPin = 13;             // Pino que controla a velocidade das ventoinhas do dissipador
-// Pinos 14 e 15 reservados para a porta serial 3 que se comunica com os "Stamps"
+// Pinos 14 e 15 reservados para a porta serial 3 que se comunica com o ESP8266
 const byte multiplexadorS0Pin = 16; // Pino S0 de controle dos stamps
 const byte multiplexadorS1Pin = 17; // Pino S1 de controle dos stamps
-// Pinos 18 e 19 reservados para o ESP8266.
+// Pinos 18 e 19 reservados para a porta Serial 1 que se comunica com os "stamps" da Atlas.
 // Pinos 20 e 21 reservados para comunicação I2C do PCF8575 e RTC.
 // Pinos 22 à 41 reservados para o LCD.
 const byte aquecedorPin = 42; // Pino que liga o aquecedor

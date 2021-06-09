@@ -12,19 +12,19 @@
       Open_channel(ph1);
       delay(50);
       #ifdef USE_FAHRENHEIT
-        Serial3.print((tempC - 32) / 1.8);
+        Serial1.print((tempC - 32) / 1.8);
       #else
-        Serial3.print(tempC);
+        Serial1.print(tempC);
       #endif
-      Serial3.print('\r');
+      Serial1.print('\r');
       delay(500);
 
-      if (Serial3.available() > 3)
+      if (Serial1.available() > 3)
       {
-        holding = Serial3.available();
+        holding = Serial1.available();
         for (byte i = 1; i <= holding; i++)
         {
-          sensorstring[i] = Serial3.read();
+          sensorstring[i] = Serial1.read();
         }
 
         if (holding == 5)
@@ -37,7 +37,7 @@
           PHA = ((sensorstring[1] - 48) * 1000 + (sensorstring[2] - 48) * 100 + (sensorstring[4] - 48) * 10 + (sensorstring[5] - 48));
           PHA /= 100;
         }
-        Serial3.flush();
+        Serial1.flush();
         break;
       }
     }
@@ -55,19 +55,19 @@
       Open_channel(ph2);
       delay(50);
       #ifdef USE_FAHRENHEIT
-        Serial3.print((tempC - 32) / 1.8);
+        Serial1.print((tempC - 32) / 1.8);
       #else
-        Serial3.print(tempC);
+        Serial1.print(tempC);
       #endif
-      Serial3.print('\r');
+      Serial1.print('\r');
       delay(500);
 
-      if (Serial3.available() > 3)
+      if (Serial1.available() > 3)
       {
-        holding = Serial3.available();
+        holding = Serial1.available();
         for (byte i = 1; i <= holding; i++)
         {
-          sensorstring[i] = Serial3.read();
+          sensorstring[i] = Serial1.read();
         }
         if (holding == 5)
         {
@@ -79,7 +79,7 @@
           PHR = ((sensorstring[1] - 48) * 1000 + (sensorstring[2] - 48) * 100 + (sensorstring[4] - 48) * 10 + (sensorstring[5] - 48));
           PHR /= 100;
         }
-        Serial3.flush();
+        Serial1.flush();
         break;
       }
     }
@@ -96,16 +96,16 @@
     {
       Open_channel(orp);
       delay(50);
-      Serial3.print("r"),
-      Serial3.print('\r');
+      Serial1.print("r"),
+      Serial1.print('\r');
       delay(500);
 
-      if (Serial3.available() > 3)
+      if (Serial1.available() > 3)
       {
-        holding = Serial3.available();
+        holding = Serial1.available();
         for (byte i = 1; i <= holding; i++)
         {
-          sensorstring[i] = Serial3.read();
+          sensorstring[i] = Serial1.read();
         }
         if (holding == 5)
         {
@@ -115,7 +115,7 @@
         {
           ORP = ((sensorstring[1] - 48) * 100 + (sensorstring[2] - 48) * 10 + (sensorstring[3] - 48));
         }
-        Serial3.flush();
+        Serial1.flush();
         break;
       }
     }
@@ -133,25 +133,25 @@
       Open_channel(ec);
       delay(50);
       #ifdef USE_FAHRENHEIT
-        Serial3.print((tempC - 32) / 1.8);
+        Serial1.print((tempC - 32) / 1.8);
       #else
-        Serial3.print(tempC);
+        Serial1.print(tempC);
       #endif
-      Serial3.print('\r');
+      Serial1.print('\r');
       delay(500);
-      if (Serial3.available() > 3)
+      if (Serial1.available() > 3)
       {
-        holding = Serial3.available();
+        holding = Serial1.available();
         for (byte i = 1; i <= 15; i++)
         {
-          sensorstring[i] = Serial3.read();
+          sensorstring[i] = Serial1.read();
         }
 
         if (holding == 5)
         {
           DEN = ((sensorstring[1] - 48) * 1000 + (sensorstring[3] - 48) * 100 + (sensorstring[4] - 48 * 10) + (sensorstring[5] - 48));
         }
-        Serial3.flush();
+        Serial1.flush();
         break;
       }
     }
@@ -162,12 +162,12 @@
   {
     Open_channel(ph1);
     delay(50);
-    Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
-    Serial3.print('\r');
+    Serial1.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
+    Serial1.print('\r');
     delay(1000);
-    Serial3.flush();
-    Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
-    Serial3.print('\r');
+    Serial1.flush();
+    Serial1.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
+    Serial1.print('\r');
     delay(1000);
     check_parametro_ph_aquario();
   }
@@ -176,12 +176,12 @@
   {
     Open_channel(ph2);
     delay(50);
-    Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
-    Serial3.print('\r');
+    Serial1.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
+    Serial1.print('\r');
     delay(1000);
-    Serial3.flush();
-    Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
-    Serial3.print('\r');
+    Serial1.flush();
+    Serial1.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
+    Serial1.print('\r');
     delay(1000);
     check_parametro_ph_reator();
   }
@@ -190,12 +190,12 @@
   {
     Open_channel(orp);
     delay(50);
-    Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
-    Serial3.print('\r');
+    Serial1.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
+    Serial1.print('\r');
     delay(1000);
-    Serial3.flush();
-    Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
-    Serial3.print('\r');
+    Serial1.flush();
+    Serial1.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
+    Serial1.print('\r');
     delay(1000);
     check_parametro_orp();
   }
@@ -204,12 +204,12 @@
   {
     Open_channel(ec);
     delay(50);
-    Serial3.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
-    Serial3.print('\r');
+    Serial1.print("e"); // Envia um comando para que o "stamp" pare de enviar as leituras.
+    Serial1.print('\r');
     delay(1000);
-    Serial3.flush();
-    Serial3.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
-    Serial3.print('\r');
+    Serial1.flush();
+    Serial1.print("L0"); // Envia um comando para que o "stamp" apague o led de depuração.
+    Serial1.print('\r');
     delay(1000);
     check_parametro_densidade();
   }
@@ -250,7 +250,7 @@
         digitalWrite(multiplexadorS1Pin, HIGH);
         break;
     }
-    Serial3.print('\r');
+    Serial1.print('\r');
     return;
   }
 #endif

@@ -1,4 +1,4 @@
-# Ferduino Aquarium Controller [![Build Status](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController.svg?branch=master)](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController)
+# Ferduino Aquarium Controller [![Build Status](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController.svg?branch=RobotDyn_Mega_WiFi)](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController)
 
 ## About
 

@@ -13,7 +13,7 @@ void setup()
   #endif // Do not change this line
 
   #if defined(STAMPS_EZO) || defined(STAMPS_V4X) // Do not change this line!
-    Serial3.begin(38400);                        // Inicia a comunicação com a  porta serial 3 onde estão conectados os "stamps".
+    Serial1.begin(38400);                        // Inicia a comunicação com a  porta serial 3 onde estão conectados os "stamps".
   #endif // Do not change this line!
 
   configPins();                        // Define a função dos pinos.
@@ -155,7 +155,7 @@ void setup()
         reconnect();
       }
     #else
-      Serial1.begin(38400);
+      Serial3.begin(38400);
       ESP8266.wifiCb.attach(wifiCb);
       sincronizar();
     #endif // Do not change this line!

@@ -386,7 +386,7 @@ byte Status = 0x0;
     EthernetClient client;
     PubSubClient MQTT(client);
   #else // Do not change this line
-    ELClient ESP8266(&Serial1);
+    ELClient ESP8266(&Serial3);
     ELClientMqtt MQTT(&ESP8266);
     bool MQTT_connected = false;
     #define MQTT_MAX_PACKET_SIZE 550
