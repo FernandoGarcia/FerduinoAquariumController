@@ -412,9 +412,17 @@
   bool checkButtons(int x1, int y1, int x2, int y2)
   {
     bool match = false;
-    int touch_x = myTouch.getX();
-    int touch_y = myTouch.getY();
+    int touch_x = 0;
+    int touch_y = 0;
 
+    #ifndef INVERT_TOUCH
+      touch_x = myTouch.getX();
+      touch_y = myTouch.getY();
+    #else
+      touch_x = 399 - myTouch.getX(); // Inverte as coordenadas X
+      touch_y = 239 - myTouch.getY(); // Inverte as coordenadas Y
+    #endif
+    
     if ((touch_x >= x1) && (touch_x <= x2) && (touch_y >= y1) && (touch_y <= y2))
     {
       match = true;
