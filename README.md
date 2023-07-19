@@ -1,4 +1,4 @@
-# Ferduino Aquarium Controller [![Build Status](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController.svg?branch=master)](https://travis-ci.com/FernandoGarcia/FerduinoAquariumController)
+# Ferduino Aquarium Controller ![Build status](https://github.com/FernandoGarcia/FerduinoAquariumController/actions/workflows/build.yml/badge.svg?event=push)
 
 ## About
 
@@ -74,7 +74,7 @@ Therefore, this is completely Open Source and always will be.
 
 [1 x TFT touch screen with resolution 400 x 240]
 
-<img width="50%" src="http://imall.iteadstudio.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/im120419006_3.jpg">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=749">
 
 [1 X TFT shield]
 
@@ -96,7 +96,7 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=112">
 
-<img width="50%" src="http://shop.aqualed-light.com/images/due_mega_screw_top800x600.jpg">
+<img width="50%" src="https://www.aqualed-light.com/wp-content/uploads/2018/09/Due_Mega_TFT_V4_001.jpg">
 
 <img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=474">
 
@@ -104,7 +104,7 @@ Therefore, this is completely Open Source and always will be.
 
 <img width="50%" src="http://arduino.cc/en/uploads/Main/ArduinoEthernetShieldV3.jpg">
 
-<img width="50%" src="http://www.robotshop.com/media/files/images/w5100-ethernet-network-module-1-large.jpg">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=759">
 
 <img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=489">
 
@@ -114,7 +114,7 @@ Therefore, this is completely Open Source and always will be.
 
 [6 x Dosing pump]
 
-<img width="50%" src="https://farm9.staticflickr.com/8285/7711962498_8b684c255f_c.jpg">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=742">
 
 [Circuits pH, ORP and EC]
 
@@ -126,7 +126,7 @@ Therefore, this is completely Open Source and always will be.
 
 [1 x PCF8575]
 
-<img width="50%" src="https://farm9.staticflickr.com/8219/8314703390_8313292651_c.jpg">
+<img width="50%" src="https://www.ferduino.com/forum/gallery/image.php?album_id=11&image_id=685">
 
 ## Circuits
 
@@ -178,7 +178,7 @@ Energy monitor.
 
 [prototype shield]: http://www.ebay.com/sch/i.html?_odkw=relay+board+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xprototype+shield+arduino+mega&_nkw=prototype+shield+arduino+mega&_sacat=0
 
-[screw shield]: http://shop.aqualed-light.com/product_info.php?cPath=1_17&products_id=30
+[screw shield]: https://www.aqualed-light.com/en/produto/arduino-due-mega-screw-shield-with-tft-connector-and-rtc/
 
 [ethernet shield w5100]: http://www.ebay.com/sch/i.html?_odkw=ethernet+shield+arduino&LH_BIN=1&_sop=15&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR2.TRC1.A0.H0.Xethernet+shield+arduino+mega+2560&_nkw=ethernet+shield+arduino+mega+2560&_sacat=0
 
