@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2018 Bill Greiman
+ * Copyright (c) 2011-2022 Bill Greiman
  * This file is part of the SdFat library for SD memory cards.
  *
  * MIT License
@@ -22,19 +22,19 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- /**
+/**
  * \file
  * \brief Minimal AVR Serial driver.
  */
 #ifndef MinimumSerial_h
 #define MinimumSerial_h
-#include "SysCall.h"
+#include "common/SysCall.h"
 //==============================================================================
 /**
  * \class MinimumSerial
  * \brief mini serial class for the %SdFat library.
  */
-class MinimumSerial : public Print {
+class MinimumSerial : public print_t {
  public:
   /** \return true for hardware serial */
   operator bool() { return true; }
@@ -62,6 +62,6 @@ class MinimumSerial : public Print {
    * \return 1
    */
   size_t write(uint8_t b);
-  using Print::write;
+  using print_t::write;
 };
 #endif  // MinimumSerial_h

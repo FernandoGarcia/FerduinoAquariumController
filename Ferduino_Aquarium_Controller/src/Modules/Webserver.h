@@ -5,8 +5,7 @@
   void mqttData(void *response)
 #endif // Do not change this line
 {
-  DynamicJsonBuffer jsonBuffer;
-  JsonObject &Json = jsonBuffer.createObject();
+  DynamicJsonDocument Json(MQTT_MAX_PACKET_SIZE);
   char pub_message[MQTT_MAX_PACKET_SIZE] = "";
   char _message_[50] = "";
   byte cont = 0;
@@ -144,7 +143,7 @@
         Json[F("haveraNuvem")] = haveraNuvem;
         Json[F("haveraRelampago")] = haveraRelampago;
 
-        Json.printTo(pub_message, Json.measureLength() + 1);
+        serializeJson(Json, pub_message);
         MQTT.publish(PUB_TOPIC, pub_message, false);
         break;
 
@@ -233,7 +232,7 @@
           Json[F("ap2")] = sonda_associada_2;
           Json[F("ap3")] = sonda_associada_3;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1)         // mode = 1 to save values
@@ -310,7 +309,7 @@
           Json[F("date")] = rtc.getDateStr(FORMAT_LONG, FORMAT_BIGENDIAN, '-');
           Json[F("time")] = rtc.getTimeStr();
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else
@@ -342,7 +341,7 @@
           Json[F("sunday")] = semana_e[6];
           Json[F("status")] = bitRead(tpa_status, 2);
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         if (atoi(inParse[1]) == 1)
@@ -375,7 +374,7 @@
           Json[F("uvLedW")] = uvled_out;
           Json[F("redLedW")] = rled_out;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to change values
@@ -457,7 +456,7 @@
           Json[F("min")] = MinI;
           Json[F("max")] = MaxI;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -479,7 +478,7 @@
           Json[F("minfan")] = HtempMin;
           Json[F("maxfan")] = HtempMax;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -501,7 +500,7 @@
           Json[F("templimit")] = tempHR;
           Json[F("potred")] = potR;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -524,7 +523,7 @@
           Json[F("offTemp")] = offTempC;
           Json[F("alarmTemp")] = alarmTempC;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -548,7 +547,7 @@
         web_dosage = true;
         Json[F("wait")] = String((tempo_dosagem / 1000) + 10);
 
-        Json.printTo(pub_message, Json.measureLength() + 1);
+        serializeJson(Json, pub_message);
         MQTT.publish(PUB_TOPIC, pub_message, false);
 
         millis_dosagem = millis();
@@ -562,7 +561,7 @@
           config_valores_calib_temp();
           Json[F("calib")] = fator_calib_dosadora[dosadora_selecionada];
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // send (case, mode, dosing pump selected) mode = 1 to dose
@@ -570,7 +569,7 @@
           dosadora_selecionada = atoi(inParse[2]);
           Json[F("wait")] = 70;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
 
           web_calibracao = true;
@@ -614,7 +613,7 @@
           Json[F("dose")] = dose_dosadora_personalizada[dosadora_selecionada];
           Json[F("onoff")] = modo_personalizado_on[dosadora_selecionada];
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // Send (case, mode, dosing pump selected, values)
@@ -653,7 +652,7 @@
           Json[F("offPHA")] = offPHA;
           Json[F("alarmPHA")] = alarmPHA;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -677,7 +676,7 @@
           Json[F("offPHR")] = offPHR;
           Json[F("alarmPHR")] = alarmPHR;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -701,7 +700,7 @@
           Json[F("offORP")] = offORP;
           Json[F("alarmORP")] = alarmORP;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -725,7 +724,7 @@
           Json[F("offDEN")] = offDEN;
           Json[F("alarmDEN")] = alarmDEN;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // mode = 1 to save values
@@ -780,7 +779,7 @@
           Json[F("mEnd")] = off_minuto[temporizador];
           Json[F("activated")] = temporizador_ativado[temporizador];
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
 
@@ -819,7 +818,7 @@
           Json[F("PWM")] = pwm_pre_definido;
           Json[F("ramp")] = amanhecer_anoitecer;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else
@@ -864,7 +863,7 @@
           Json[F("feederOnOff")] = bitRead(alimentacao_wavemaker_on_off, 0);
           Json[F("waveOnOff")] = bitRead(alimentacao_wavemaker_on_off, 1);
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1) // send (case, mode, values)
@@ -938,7 +937,7 @@
           Json[F("period")] = periodo;
           Json[F("duration")] = duracao;
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1)
@@ -1079,7 +1078,7 @@
           Json[F("durationMinL")] = duracaoMinMaxRelampago[0];
           Json[F("durationMaxL")] = duracaoMinMaxRelampago[1];
 
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         else if (atoi(inParse[1]) == 1)
@@ -1120,7 +1119,7 @@
           millis_nuvem = millis();
 
           Json[F("wait")] = String(duracaoNuvem + duracaoRelampago);
-          Json.printTo(pub_message, Json.measureLength() + 1);
+          serializeJson(Json, pub_message);
           MQTT.publish(PUB_TOPIC, pub_message, false);
         }
         break;
@@ -1154,24 +1153,24 @@
         break;
     } // switch(ID)
 
-    if (Json.measureLength() > 2)
+    if (measureJson(Json) > 2)
     {
       LOG(F("\nJSON size: "));
-      LOGLN(Json.measureLength());
+      LOGLN(measureJson(Json));
       LOGLN(F("JSON:"));
       #ifdef DEBUG
-        Json.prettyPrintTo(Serial);
+        serializeJson(Json, Serial);
       #endif
       LOGLN();
     }
-    if ((strlen(pub_message) > 0) && (Json.measureLength() <= 2))
+    if ((strlen(pub_message) > 0) && (measureJson(Json) <= 2))
     {
       LOG(F("\nMessage size: "));
       LOGLN(strlen(pub_message));
       LOGLN(F("Message:"));
       LOGLN(pub_message);
     }
-    if ((strlen(buffer) > 0) && (strlen(pub_message) == 0) && (Json.measureLength() <= 2))
+    if ((strlen(buffer) > 0) && (strlen(pub_message) == 0) && (measureJson(Json) <= 2))
     {
       LOG(F("\nBuffer size: "));
       LOGLN(strlen(buffer));
@@ -1184,8 +1183,7 @@
 
 void enviar_dados()
 {
-  DynamicJsonBuffer jsonBuffer;
-  JsonObject &Json = jsonBuffer.createObject();
+  DynamicJsonDocument Json(MQTT_MAX_PACKET_SIZE);
   char pub_message[MQTT_MAX_PACKET_SIZE];
   char LOG_TOPIC[50];
 
@@ -1243,7 +1241,7 @@ void enviar_dados()
     Json[F("V5")] = bitRead(erro_dosagem, 4);       // Erro dosagem dosadora 5
     Json[F("V6")] = bitRead(erro_dosagem, 5);       // Erro dosagem dosadora 6
 
-    Json.printTo(pub_message, Json.measureLength() + 1);
+    serializeJson(Json, pub_message);
     MQTT.publish(LOG_TOPIC, pub_message, false);
 
     for (byte i = 0; i < 6; i++)
@@ -1253,10 +1251,10 @@ void enviar_dados()
     notconnected = 0;
 
     LOG(F("\nJSON size: "));
-    LOGLN(Json.measureLength());
+    LOGLN(measureJson(Json));
     LOGLN(F("JSON:"));
     #ifdef DEBUG
-      Json.prettyPrintTo(Serial);
+      serializeJson(Json, Serial);
     #endif
     LOGLN("");
   }

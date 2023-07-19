@@ -1,134 +1,161 @@
-Arduino JSON library
-====================
+<p align="center">
+  <a href="https://arduinojson.org/"><img alt="ArduinoJson" src="https://arduinojson.org/images/logo.svg" width="200" /></a>
+</p>
 
-[![Build status](https://ci.appveyor.com/api/projects/status/m7s53wav1l0abssg/branch/master?svg=true)](https://ci.appveyor.com/project/bblanchon/arduinojson/branch/master) [![Build Status](https://travis-ci.org/bblanchon/ArduinoJson.svg?branch=master)](https://travis-ci.org/bblanchon/ArduinoJson) [![Coverage Status](https://img.shields.io/coveralls/bblanchon/ArduinoJson.svg)](https://coveralls.io/r/bblanchon/ArduinoJson?branch=master) [![Star this project](http://githubbadges.com/star.svg?user=bblanchon&repo=ArduinoJson&style=flat&color=fff&background=007ec6)](https://github.com/bblanchon/ArduinoJson)
+---
 
-*An elegant and efficient JSON library for embedded systems.*
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bblanchon/ArduinoJson/ci.yml?branch=6.x&logo=github)](https://github.com/bblanchon/ArduinoJson/actions?query=workflow%3A%22Continuous+Integration%22+branch%3A6.x)
+[![Continuous Integration](https://ci.appveyor.com/api/projects/status/m7s53wav1l0abssg/branch/6.x?svg=true)](https://ci.appveyor.com/project/bblanchon/arduinojson/branch/6.x)
+[![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/arduinojson.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:arduinojson)
+[![Coveralls branch](https://img.shields.io/coveralls/github/bblanchon/ArduinoJson/6.x?logo=coveralls)](https://coveralls.io/github/bblanchon/ArduinoJson?branch=6.x)  
+[![Arduino Library Manager](https://img.shields.io/static/v1?label=Arduino&message=v6.21.2&logo=arduino&logoColor=white&color=blue)](https://www.ardu-badge.com/ArduinoJson/6.21.2)
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/bblanchon/library/ArduinoJson.svg?version=6.21.2)](https://registry.platformio.org/packages/libraries/bblanchon/ArduinoJson?version=6.21.2) 
+[![ESP IDF](https://img.shields.io/static/v1?label=ESP+IDF&message=v6.21.2&logo=cpu&logoColor=white&color=blue)](https://components.espressif.com/components/bblanchon/arduinojson)  
+[![GitHub stars](https://img.shields.io/github/stars/bblanchon/ArduinoJson?style=flat&logo=github&color=orange)](https://github.com/bblanchon/ArduinoJson/stargazers)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/bblanchon?logo=github&color=orange)](https://github.com/sponsors/bblanchon)
 
-It's designed to have the most intuitive API, the smallest footprint and works without any allocation on the heap (no malloc).
+ArduinoJson is a C++ JSON library for Arduino and IoT (Internet Of Things).
 
-It has been written with Arduino in mind, but it isn't linked to Arduino libraries so you can use this library in any other C++ project.
+## Features
 
-Features
---------
+* [JSON deserialization](https://arduinojson.org/v6/api/json/deserializejson/)
+    * [Optionally decodes UTF-16 escape sequences to UTF-8](https://arduinojson.org/v6/api/config/decode_unicode/)
+    * [Optionally stores links to the input buffer (zero-copy)](https://arduinojson.org/v6/api/json/deserializejson/)
+    * [Optionally supports comments in the input](https://arduinojson.org/v6/api/config/enable_comments/)
+    * [Optionally filters the input to keep only desired values](https://arduinojson.org/v6/api/json/deserializejson/#filtering)
+    * Supports single quotes as a string delimiter
+    * Compatible with [NDJSON](http://ndjson.org/) and [JSON Lines](https://jsonlines.org/)
+* [JSON serialization](https://arduinojson.org/v6/api/json/serializejson/)
+    * [Can write to a buffer or a stream](https://arduinojson.org/v6/api/json/serializejson/)
+    * [Optionally indents the document (prettified JSON)](https://arduinojson.org/v6/api/json/serializejsonpretty/)
+* [MessagePack serialization](https://arduinojson.org/v6/api/msgpack/serializemsgpack/)
+* [MessagePack deserialization](https://arduinojson.org/v6/api/msgpack/deserializemsgpack/)
+* Efficient
+    * [Twice smaller than the "official" Arduino_JSON library](https://arduinojson.org/2019/11/19/arduinojson-vs-arduino_json/)
+    * [Almost 10% faster than the "official" Arduino_JSON library](https://arduinojson.org/2019/11/19/arduinojson-vs-arduino_json/)
+    * [Consumes roughly 10% less RAM than the "official" Arduino_JSON library](https://arduinojson.org/2019/11/19/arduinojson-vs-arduino_json/)
+    * [Fixed memory allocation, no heap fragmentation](https://arduinojson.org/v6/api/jsondocument/)
+    * [Optionally works without heap memory (zero malloc)](https://arduinojson.org/v6/api/staticjsondocument/)
+    * [Deduplicates strings](https://arduinojson.org/news/2020/08/01/version-6-16-0/)
+* Versatile
+    * Supports [custom allocators (to use external RAM chip, for example)](https://arduinojson.org/v6/how-to/use-external-ram-on-esp32/)
+    * Supports [`String`](https://arduinojson.org/v6/api/config/enable_arduino_string/), [`std::string`](https://arduinojson.org/v6/api/config/enable_std_string/), and [`std::string_view`](https://arduinojson.org/v6/api/config/enable_string_view/)
+    * Supports [`Stream`](https://arduinojson.org/v6/api/config/enable_arduino_stream/) and [`std::istream`/`std::ostream`](https://arduinojson.org/v6/api/config/enable_std_stream/)
+    * Supports [Flash strings](https://arduinojson.org/v6/api/config/enable_progmem/)
+    * Supports [custom readers](https://arduinojson.org/v6/api/json/deserializejson/#custom-reader) and [custom writers](https://arduinojson.org/v6/api/json/serializejson/#custom-writer)
+    * Supports [custom converters](https://arduinojson.org/news/2021/05/04/version-6-18-0/)
+* Portable
+    * Usable on any C++ project (not limited to Arduino)
+    * Compatible with C++11, C++14 and C++17
+    * Support for C++98/C++03 available on [ArduinoJson 6.20.x](https://github.com/bblanchon/ArduinoJson/tree/6.20.x)
+    * Zero warnings with `-Wall -Wextra -pedantic` and `/W4`
+    * [Header-only library](https://en.wikipedia.org/wiki/Header-only)
+    * Works with virtually any board
+        * Arduino boards: [Uno](https://amzn.to/38aL2ik), [Due](https://amzn.to/36YkWi2), [Micro](https://amzn.to/35WkdwG), [Nano](https://amzn.to/2QTvwRX), [Mega](https://amzn.to/36XWhuf), [Yun](https://amzn.to/30odURc), [Leonardo](https://amzn.to/36XWjlR)...
+        * Espressif chips: [ESP8266](https://amzn.to/36YluV8), [ESP32](https://amzn.to/2G4pRCB)
+        * Lolin (WeMos) boards: [D1 mini](https://amzn.to/2QUpz7q), [D1 Mini Pro](https://amzn.to/36UsGSs)...
+        * Teensy boards: [4.0](https://amzn.to/30ljXGq), [3.2](https://amzn.to/2FT0EuC), [2.0](https://amzn.to/2QXUMXj)
+        * Particle boards: [Argon](https://amzn.to/2FQHa9X), [Boron](https://amzn.to/36WgLUd), [Electron](https://amzn.to/30vEc4k), [Photon](https://amzn.to/387F9Cd)...
+        * Texas Instruments boards: [MSP430](https://amzn.to/30nJWgg)...
+        * Soft cores: [Nios II](https://en.wikipedia.org/wiki/Nios_II)...
+    * Tested on all major development environments
+        * [Arduino IDE](https://www.arduino.cc/en/Main/Software)
+        * [Atmel Studio](http://www.atmel.com/microsite/atmel-studio/)
+        * [Atollic TrueSTUDIO](https://atollic.com/truestudio/)
+        * [Energia](http://energia.nu/)
+        * [IAR Embedded Workbench](https://www.iar.com/iar-embedded-workbench/)
+        * [Keil uVision](http://www.keil.com/)
+        * [MPLAB X IDE](http://www.microchip.com/mplab/mplab-x-ide)
+        * [Particle](https://www.particle.io/)
+        * [PlatformIO](http://platformio.org/)
+        * [Sloeber plugin for Eclipse](https://eclipse.baeyens.it/)
+        * [Visual Micro](http://www.visualmicro.com/)
+        * [Visual Studio](https://www.visualstudio.com/)
+    * [Even works with online compilers like wandbox.org](https://wandbox.org/permlink/RlZSKy17DjJ6HcdN)
+    * [CMake friendly](https://arduinojson.org/v6/how-to/use-arduinojson-with-cmake/)
+* Well designed
+    * [Elegant API](http://arduinojson.org/v6/example/)
+    * [Thread-safe](https://en.wikipedia.org/wiki/Thread_safety)
+    * Self-contained (no external dependency)
+    * `const` friendly
+    * [`for` friendly](https://arduinojson.org/v6/api/jsonobject/begin_end/)
+    * [TMP friendly](https://en.wikipedia.org/wiki/Template_metaprogramming)
+    * Handles [integer overflows](https://arduinojson.org/v6/api/jsonvariant/as/#integer-overflows)
+* Well tested
+    * [Unit test coverage close to 100%](https://coveralls.io/github/bblanchon/ArduinoJson?branch=6.x)
+    * Continuously tested on
+        * [Visual Studio 2017, 2019, 2022](https://ci.appveyor.com/project/bblanchon/arduinojson/branch/6.x)
+        * [GCC 5, 6, 7, 8, 9, 10, 11](https://github.com/bblanchon/ArduinoJson/actions?query=workflow%3A%22Continuous+Integration%22)
+        * [Clang 3.8, 3.9, 4.0, 5.0, 6.0, 7, 8, 9, 10](https://github.com/bblanchon/ArduinoJson/actions?query=workflow%3A%22Continuous+Integration%22)
+    * [Continuously fuzzed with Google OSS Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:arduinojson)
+    * Passes all default checks of [clang-tidy](https://releases.llvm.org/10.0.0/tools/clang/tools/extra/docs/clang-tidy/)
+* Well documented
+    * [Tutorials](https://arduinojson.org/v6/doc/deserialization/)
+    * [Examples](https://arduinojson.org/v6/example/)
+    * [How-tos](https://arduinojson.org/v6/example/)
+    * [FAQ](https://arduinojson.org/v6/faq/)
+    * [Troubleshooter](https://arduinojson.org/v6/troubleshooter/)
+    * [Book](https://arduinojson.org/book/)
+    * [Changelog](CHANGELOG.md)
+* Vibrant user community
+    * Most popular of all Arduino libraries on [GitHub](https://github.com/search?o=desc&q=arduino+library&s=stars&type=Repositories)
+    * [Used in hundreds of projects](https://www.hackster.io/search?i=projects&q=arduinojson)
+    * [Responsive support](https://github.com/bblanchon/ArduinoJson/issues?q=is%3Aissue+is%3Aclosed)
 
-* JSON decoding (comments are supported)
-* JSON encoding (with optional indentation)
-* Elegant API, very easy to use
-* Fixed memory allocation (zero malloc)
-* No data duplication (zero copy)
-* Portable (written in C++98)
-* Self-contained (no external dependency)
-* Small footprint
-* Header-only library
-* MIT License
+## Quickstart
 
-Works on
---------
+### Deserialization
 
-* All Arduino boards (Uno, Due, Mini, Micro, Yun...)
-* ESP8266
-* Teensy
-* Intel Edison and Galileo
-* PlatformIO
-* Energia
-* RedBearLab boards (BLE Nano...)
-* Computers (Windows, Linux, OSX...)
-
-See [FAQ: Compatibility issues](https://github.com/bblanchon/ArduinoJson/wiki/Compatibility-issues)
-
-Quick start
------------
-
-#### Decoding / Parsing
+Here is a program that parses a JSON document with ArduinoJson.
 
 ```c++
 char json[] = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
 
-StaticJsonBuffer<200> jsonBuffer;
+DynamicJsonDocument doc(1024);
+deserializeJson(doc, json);
 
-JsonObject& root = jsonBuffer.parseObject(json);
-
-const char* sensor = root["sensor"];
-long time          = root["time"];
-double latitude    = root["data"][0];
-double longitude   = root["data"][1];
+const char* sensor = doc["sensor"];
+long time          = doc["time"];
+double latitude    = doc["data"][0];
+double longitude   = doc["data"][1];
 ```
 
-#### Encoding / Generating
+See the [tutorial on arduinojson.org](https://arduinojson.org/v6/doc/deserialization/)
+
+### Serialization
+
+Here is a program that generates a JSON document with ArduinoJson:
 
 ```c++
-StaticJsonBuffer<200> jsonBuffer;
+DynamicJsonDocument doc(1024);
 
-JsonObject& root = jsonBuffer.createObject();
-root["sensor"] = "gps";
-root["time"] = 1351824120;
+doc["sensor"] = "gps";
+doc["time"]   = 1351824120;
+doc["data"][0] = 48.756080;
+doc["data"][1] = 2.302038;
 
-JsonArray& data = root.createNestedArray("data");
-data.add(48.756080, 6);  // 6 is the number of decimals to print
-data.add(2.302038, 6);   // if not specified, 2 digits are printed
-
-root.printTo(Serial);
+serializeJson(doc, Serial);
 // This prints:
 // {"sensor":"gps","time":1351824120,"data":[48.756080,2.302038]}
 ```
 
+See the [tutorial on arduinojson.org](https://arduinojson.org/v6/doc/serialization/)
 
-Documentation
--------------
+## Sponsors
 
-The documentation is available online in the [Arduino JSON wiki](https://github.com/bblanchon/ArduinoJson/wiki)
+ArduinoJson is thankful to its sponsors. Please give them a visit; they deserve it!
 
-Testimonials
-------------
+<p>
+  <a href="https://www.programmingelectronics.com/" rel="sponsored">
+    <img src="https://arduinojson.org/images/2021/10/programmingeleactronicsacademy.png" alt="Programming Electronics Academy" width="200">
+  </a>
+</p>
+<p>
+  <a href="https://github.com/1technophile" rel="sponsored">
+    <img alt="1technophile" src="https://avatars.githubusercontent.com/u/12672732?s=40&v=4">
+  </a>
+</p>
 
-From Arduino's Forum user `jflaplante`:
-> I tried aJson json-arduino before trying your library. I always ran into memory problem after a while.
-> I have no such problem so far with your library. It is working perfectly with my web services.
+If you run a commercial project that embeds ArduinoJson, think about [sponsoring the library's development](https://github.com/sponsors/bblanchon): it ensures the code that your products rely on stays actively maintained. It can also give your project some exposure to the makers' community.
 
-From StackOverflow user `thegreendroid`:
-> It has a really elegant, simple API and it works like a charm on embedded and Windows/Linux platforms. We recently started using this on an embedded project and I can vouch for its quality.
-
-From GitHub user `zacsketches`:
-> Thanks for a great library!!!
-> I've been watching you consistently develop this library over the past six months, and I used it today for a publish and subscribe architecture designed to help hobbyists move into more advanced robotics. Your library allowed me to implement remote subscription in order to facilitate multi-processor robots.
-> ArduinoJson saved me a week's worth of time!!
-
-[From Reddit user `erm_what_`](https://www.reddit.com/r/arduino/comments/3jj6ep/announcing_arduinojson_50/cusjk8c):
-> This is a great library and I wouldn't be able to do the project I'm doing without it. I completely recommend it.
-
-[From Reddit user `makerhacks`](https://www.reddit.com/r/arduino/comments/3jj6ep/announcing_arduinojson_50/cusqg7b):
-> I am just starting an ESP8266 clock project and now I can output JSON from my server script and interpret it painlessly.
-
-[From Twitter user `@hemalchevli`](https://twitter.com/hemalchevli/status/715788439397011456):
-> ArduinoJson library should be used as a benchmark/reference for making libraries. Truly elegant.
-
-[From GitHub user `sticilface`](https://github.com/bblanchon/ArduinoJson/issues/381#issuecomment-260203594):
-> its a great lib:) and i use it in everything!
-
-Donators
---------
-
-Special thanks to the following persons and companies who made generous donations to the library author:
-
-* Robert Murphy <img alt='USA' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fa-1f1f8.svg' width='18' height='18'>
-* Surge Communications <img alt='USA' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fa-1f1f8.svg' width='18' height='18'>
-* Alex Scott <img alt='United Kingdom' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1ec-1f1e7.svg' width='18' height='18'>
-* Firepick Services LLC <img alt='USA' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fa-1f1f8.svg' width='18' height='18'>
-* A B Doodkorte <img alt='Netherlands' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1f3-1f1f1.svg' width='18' height='18'>
-* Scott Smith <img alt='USA' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fa-1f1f8.svg' width='18' height='18'>
-* Johann Stieger <img alt='Austria' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1e6-1f1f9.svg' width='18' height='18'>
-* Gustavo Donizeti Gini <img alt='Brazil' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1e7-1f1f7.svg' width='18' height='18'>
-* Charles-Henri Hallard <img alt='France' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1eb-1f1f7.svg' width='18' height='18'>
-* Martijn van den Burg <img alt='Netherlands' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1f3-1f1f1.svg' width='18' height='18'>
-* Nick Koumaris <img alt='Greece' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1ec-1f1f7.svg' width='18' height='18'>
-* Jon Williams <img alt='USA' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fa-1f1f8.svg' width='18' height='18'>
-* Kestutis Liaugminas <img alt='Lithuania' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1f1-1f1f9.svg' width='18' height='18'>
-* Darlington Adibe <img alt='Nigeria' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1f3-1f1ec.svg' width='18' height='18'>
-* Yoeri Kroon <img alt='Netherlands' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1f3-1f1f1.svg' width='18' height='18'>
-* Andrew Melvin <img alt='United Kingdom' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1ec-1f1e7.svg' width='18' height='18'>
-* Doanh Luong <img alt ='Vietnam' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.1.4/assets/svg/1f1fb-1f1f3.svg' width='18' height='18'>
-
----
-
-Found this library useful? Please star this project or [help me back with a donation!](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donate%40benoitblanchon%2efr&lc=GB&item_name=Benoit%20Blanchon&item_number=Arduino%20JSON&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted) :smile:
+If you are an individual user and want to support the development (or give a sign of appreciation), consider purchasing the book [Mastering ArduinoJson](https://arduinojson.org/book/)&nbsp;❤, or simply [cast a star](https://github.com/bblanchon/ArduinoJson/stargazers)&nbsp;⭐.

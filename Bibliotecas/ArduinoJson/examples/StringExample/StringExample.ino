@@ -1,58 +1,77 @@
-// Copyright Benoit Blanchon 2014-2016
+// ArduinoJson - https://arduinojson.org
+// Copyright © 2014-2023, Benoit BLANCHON
 // MIT License
 //
-// Arduino JSON library
-// https://github.com/bblanchon/ArduinoJson
-// If you like this project, please add a star!
+// This example shows the different ways you can use String with ArduinoJson.
+//
+// Use String objects sparingly, because ArduinoJson duplicates them in the
+// JsonDocument. Prefer plain old char[], as they are more efficient in term of
+// code size, speed, and memory usage.
+//
+// https://arduinojson.org/v6/example/string/
 
 #include <ArduinoJson.h>
 
-// About
-// -----
-// This example shows the different ways you can use String with ArduinoJson.
-// Please don't see this as an invitation to use String.
-// On the contrary, you should always use char[] when possible, it's much more
-// efficient in term of code size, speed and memory usage.
-
 void setup() {
-  DynamicJsonBuffer jsonBuffer;
+  DynamicJsonDocument doc(1024);
 
   // You can use a String as your JSON input.
-  // WARNING: the content of the String will be duplicated in the JsonBuffer.
+  // WARNING: the string in the input  will be duplicated in the JsonDocument.
   String input =
       "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
-  JsonObject& root = jsonBuffer.parseObject(input);
+  deserializeJson(doc, input);
 
-  // You can use a String to get an element of a JsonObject
+  // You can use a String as a key to get a member from JsonDocument
   // No duplication is done.
-  long time = root[String("time")];
+  long time = doc[String("time")];
 
-  // You can use a String to set an element of a JsonObject
-  // WARNING: the content of the String will be duplicated in the JsonBuffer.
-  root[String("time")] = time;
+  // You can use a String as a key to set a member of a JsonDocument
+  // WARNING: the content of the String will be duplicated in the JsonDocument.
+  doc[String("time")] = time;
 
-  // You can get a String from a JsonObject or JsonArray:
-  // No duplication is done, at least not in the JsonBuffer.
-  String sensor = root["sensor"];
+  // You can get the content of a JsonVariant as a String
+  // No duplication is done, at least not in the JsonDocument.
+  String sensor = doc["sensor"];
 
   // Unfortunately, the following doesn't work (issue #118):
-  // sensor = root["sensor"]; // <-  error "ambiguous overload for 'operator='"
+  // sensor = doc["sensor"]; // <-  error "ambiguous overload for 'operator='"
   // As a workaround, you need to replace by:
-  sensor = root["sensor"].as<String>();
+  sensor = doc["sensor"].as<String>();
 
-  // You can set a String to a JsonObject or JsonArray:
-  // WARNING: the content of the String will be duplicated in the JsonBuffer.
-  root["sensor"] = sensor;
+  // You can set a String as the content of a JsonVariant
+  // WARNING: the content of the String will be duplicated in the JsonDocument.
+  doc["sensor"] = sensor;
+
+  // It works with serialized() too:
+  doc["sensor"] = serialized(sensor);
 
   // You can also concatenate strings
-  // WARNING: the content of the String will be duplicated in the JsonBuffer.
-  root[String("sen") + "sor"] = String("gp") + "s";
+  // WARNING: the content of the String will be duplicated in the JsonDocument.
+  doc[String("sen") + "sor"] = String("gp") + "s";
+
+  // You can compare the content of a JsonObject with a String
+  if (doc["sensor"] == sensor) {
+    // ...
+  }
 
   // Lastly, you can print the resulting JSON to a String
+  // WARNING: it doesn't replace the content but appends to it
   String output;
-  root.printTo(output);
+  serializeJson(doc, output);
 }
 
 void loop() {
   // not used in this example
 }
+
+// See also
+// --------
+//
+// https://arduinojson.org/ contains the documentation for all the functions
+// used above. It also includes an FAQ that will help you solve any problem.
+//
+// The book "Mastering ArduinoJson" contains a quick C++ course that explains
+// how your microcontroller stores strings in memory. On several occasions, it
+// shows how you can avoid String in your program.
+// Learn more at https://arduinojson.org/book/
+// Use the coupon code TWENTY for a 20% discount ❤❤❤❤❤

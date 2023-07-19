@@ -1,5 +1,4 @@
+.devcontainer/
 .github/
 examples/
-scripts/
-test/
-third-party/
+extras/
